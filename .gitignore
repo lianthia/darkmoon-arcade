@@ -1,2 +1,16 @@
+# Python
 __pycache__/
 *.pyc
+.venv/
+
+# Editors and OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Packaging output
+*.zip
+/dist/
