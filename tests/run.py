@@ -5,21 +5,26 @@ import sys
 from lupa import luajit21 as lupa
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-ADDON = ROOT / "MurlocBlast"
+ADDON = ROOT / "DarkmoonArcade"
 
 
 def main() -> int:
     lua = lupa.LuaRuntime(unpack_returned_tuples=True)
     lua.execute("ns = {}")
     loader = lua.eval(
-        "function(code, name) local f, err = loadstring(code, name); if not f then error(err) end; f('MurlocBlast', ns) end"
+        "function(code, name) local f, err = loadstring(code, name); if not f then error(err) end; f('DarkmoonArcade', ns) end"
     )
-    for rel in ("Core/Grid.lua", "Core/Levels.lua", "Core/Game.lua"):
+    for rel in (
+        "Games/MurlocBlast/Grid.lua",
+        "Games/MurlocBlast/Levels.lua",
+        "Games/MurlocBlast/Game.lua",
+        "Games/FlappyGriffin/Game.lua",
+    ):
         loader((ADDON / rel).read_text(encoding="utf-8"), "@" + rel)
 
     failures = 0
     for test_file in sorted((ROOT / "tests").glob("test_*.lua")):
-        result = lua.execute((test_file).read_text(encoding="utf-8"))
+        result = lua.execute(test_file.read_text(encoding="utf-8"))
         passed, failed = result
         failures += failed
         print(f"{test_file.name}: {passed} passed, {failed} failed")

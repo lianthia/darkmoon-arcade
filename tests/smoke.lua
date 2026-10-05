@@ -71,7 +71,32 @@ function CreateFont() return Wrap({}) end
 UISpecialFrames = {}
 tinsert = table.insert
 SlashCmdList = {}
-SOUNDKIT = { IG_MAINMENU_OPEN = 1, IG_MAINMENU_CLOSE = 2, U_CHAT_SCROLL_BUTTON = 3 }
+SOUNDKIT = setmetatable({}, { __index = function() return 1 end })
+function GetMinimapShape() return "ROUND" end
+MinimalSliderWithSteppersMixin = { Label = { Right = 1 } }
+function CreateSettingsListSectionHeaderInitializer() return {} end
+local settingCallbacks, dropdownOptions = {}, {}
+Settings = {
+    VarType = { Boolean = "boolean", Number = "number", String = "string" },
+    RegisterVerticalLayoutCategory = function()
+        return { GetID = function() return 1 end }, { AddInitializer = function() end }
+    end,
+    RegisterAddOnSetting = function(_, variable, key, tbl, _, _, default)
+        if tbl[key] == nil then tbl[key] = default end
+        return { variable = variable, key = key, tbl = tbl }
+    end,
+    CreateCheckbox = function() end,
+    CreateDropdown = function(_, setting, options) dropdownOptions[setting.variable] = { setting = setting, options = options } end,
+    CreateControlTextContainer = function()
+        local data = {}
+        return { Add = function(_, value, label) data[#data + 1] = { value = value, label = label } end, GetData = function() return data end }
+    end,
+    CreateSliderOptions = function() return { SetLabelFormatter = function(_, _, fn) fn(1.15) end } end,
+    CreateSlider = function() end,
+    SetOnValueChangedCallback = function(variable, fn) settingCallbacks[variable] = fn end,
+    RegisterAddOnCategory = function() end,
+    OpenToCategory = function() end,
+}
 LE_PARTY_CATEGORY_INSTANCE = 2
 Enum = { UIMapType = { Continent = 2 } }
 C_Timer = { After = function(delay, fn) timers[#timers + 1] = { at = now + delay, fn = fn } end }
@@ -122,7 +147,7 @@ function TaxiGetDestY(_, hop) return 0.68 - hop * 0.02 end
 local ns = {}
 for _, file in ipairs(ADDON_FILES) do
     local fn = assert(loadstring(ADDON_SOURCES[file], "@" .. file))
-    fn("MurlocBlast", ns)
+    fn("DarkmoonArcade", ns)
 end
 
 local function Fire(event, ...)
@@ -166,67 +191,89 @@ local function ClickVisibleButtons(rnd)
     return clicked
 end
 
-MurlocBlastDB = { highscore = 1234, maxLevel = 3 } -- pre-0.2 save
-Fire("ADDON_LOADED", "MurlocBlast")
+DarkmoonArcadeDB = nil
+Fire("ADDON_LOADED", "DarkmoonArcade")
 Fire("PLAYER_LOGIN")
-assert(#MurlocBlastDB.scores.normal == 1 and MurlocBlastDB.progress.normal == 3, "migration")
+assert(DarkmoonArcadeDB.flightGame == "murlocblast", "defaults")
 
-local Window = ns.Window
-SlashCmdList.MURLOCBLAST("")
+local Window, Arcade = ns.Window, ns.Arcade
+assert(#Arcade.order == 2, "two games registered")
+SlashCmdList.DARKMOONARCADE("")
 assert(Window.frame._shown, "window should be shown")
 
-local results = { clears = 0, overs = 0, clicks = 0 }
+local results = { murloc = 0, flappy = 0, clicks = 0, best = 0 }
 local seed = 42
 local function rnd(n) seed = (seed * 16807) % 2147483647; return seed % n end
 
--- Flight starts while the menu is open.
+-- Flight start opens the configured game.
 TakeTaxiNode(2)
 onTaxi = true
 Fire("PLAYER_CONTROL_LOST")
 Tick(1)
-assert(ns.Flight.current and ns.Flight.current.estimate, "flight estimate")
+assert(Window.activeGame and Window.activeGame.id == "murlocblast", "flight opens murloc blast")
 assert(Window.flightText._text and Window.flightText._text:find("Sturmwind"), "flight text")
 
-for _ = 1, 500 do
-    local game = Window.game
-    if game.state == "PLAYING" then
+for step = 1, 900 do
+    local game = Window.activeGame
+    local state = game and game.game.state
+    if game and game.id == "murlocblast" and state == "PLAYING" then
         cursorX, cursorY = 100 + rnd(432), 600 - rnd(380)
         Tick(0.05)
-        Window.field._scripts.OnMouseDown(Window.field, "LeftButton")
-        if rnd(5) == 0 then Window.field._scripts.OnMouseDown(Window.field, "RightButton") end
+        game.field._scripts.OnMouseDown(game.field, "LeftButton")
+        if rnd(5) == 0 then game.field._scripts.OnMouseDown(game.field, "RightButton") end
         Window.frame._scripts.OnKeyDown(Window.frame, "LEFT")
         Tick(0.1)
         Window.frame._scripts.OnKeyUp(Window.frame, "LEFT")
-        Tick(0.6)
-        if rnd(40) == 0 then Window.frame._scripts.OnKeyDown(Window.frame, "P") end
+        Tick(0.5)
+        results.murloc = results.murloc + 1
+    elseif game and game.id == "flappygriffin" and (state == "PLAYING" or (state == "READY" and not game.overlay.current)) then
+        if rnd(3) == 0 then game.container._scripts.OnMouseDown(game.container, "LeftButton") end
+        if rnd(4) == 0 then Window.frame._scripts.OnKeyDown(Window.frame, "SPACE") end
+        Tick(0.15)
+        results.flappy = results.flappy + 1
+        results.best = math.max(results.best, game.game.score)
     else
-        Tick(1.5)
-        if game.state == "CLEAR" then results.clears = results.clears + 1 end
-        if game.state == "OVER" then results.overs = results.overs + 1 end
+        Tick(1.2)
         results.clicks = results.clicks + ClickVisibleButtons(rnd)
-        if not Window.frame._shown then SlashCmdList.MURLOCBLAST("") end
+        if not Window.frame._shown then SlashCmdList.DARKMOONARCADE("") end
     end
+    if step % 150 == 0 then SlashCmdList.DARKMOONARCADE(step % 300 == 0 and "flappygriffin" or "murlocblast") end
+    if rnd(60) == 0 then Window.frame._scripts.OnKeyDown(Window.frame, "P") end
 end
+assert(results.murloc > 0 and results.flappy > 0, "both games were played")
 
--- Landing pauses the game and records the flight.
-Window:StartGame(1)
+-- Landing pauses and records the flight.
+SlashCmdList.DARKMOONARCADE("flappygriffin")
+Window.activeGame:NewRun()
+Window.activeGame.game:Flap()
 onTaxi = false
 Fire("PLAYER_CONTROL_GAINED")
 Tick(1)
-assert(Window.game.state == "PAUSED", "landing should pause")
-assert(MurlocBlastDB.flights["Goldhain > Sturmwind"], "flight duration recorded")
+assert(Window.activeGame.game.state == "PAUSED", "landing should pause")
+assert(DarkmoonArcadeDB.flights["Goldhain > Sturmwind"], "flight duration recorded")
+
+-- Settings callbacks and dropdown contents.
+for variable, entry in pairs(dropdownOptions) do
+    local data = entry.options()
+    assert(#data > 0, variable .. " options")
+    for _, option in ipairs(data) do
+        entry.setting.tbl[entry.setting.key] = option.value
+        if settingCallbacks[variable] then settingCallbacks[variable](nil, nil, option.value) end
+    end
+end
+for variable, fn in pairs(settingCallbacks) do fn(nil, nil, true) end
+DarkmoonArcadeDB.language = "auto"
+Window:ApplyLanguage()
 
 Fire("PLAYER_REGEN_DISABLED")
 assert(not Window.frame._shown, "combat should hide the window")
-for _, cmd in ipairs({ "options", "minimap", "minimap", "reset", "help" }) do
-    SlashCmdList.MURLOCBLAST(cmd)
+for _, cmd in ipairs({ "options", "minimap", "minimap", "fg anim 4", "fg facing 1.5", "fg nope", "reset", "help" }) do
+    SlashCmdList.DARKMOONARCADE(cmd)
 end
-for _, language in ipairs(ns.LANGUAGES) do
-    MurlocBlastDB.language = language
-    Window:ApplyLanguage()
-end
-_G.MurlocBlastMinimapButton._scripts.OnEnter(_G.MurlocBlastMinimapButton)
-_G.MurlocBlastMinimapButton._scripts.OnClick(_G.MurlocBlastMinimapButton, "RightButton")
+DarkmoonArcade_OnAddonCompartmentEnter(nil, Wrap({}))
+DarkmoonArcade_OnAddonCompartmentClick(nil, "LeftButton")
+_G.DarkmoonArcadeMinimapButton._scripts.OnEnter(_G.DarkmoonArcadeMinimapButton)
+_G.DarkmoonArcadeMinimapButton._scripts.OnClick(_G.DarkmoonArcadeMinimapButton, "RightButton")
 Tick(1)
 
-return results.clears, results.overs, results.clicks, #chat
+return results.murloc, results.flappy, results.clicks, results.best

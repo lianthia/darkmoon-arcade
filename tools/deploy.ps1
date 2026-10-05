@@ -5,8 +5,8 @@ param(
     [switch]$Copy
 )
 $ErrorActionPreference = "Stop"
-$source = Join-Path $PSScriptRoot "..\MurlocBlast" | Resolve-Path
-$target = Join-Path $AddOnsDir "MurlocBlast"
+$source = Join-Path $PSScriptRoot "..\DarkmoonArcade" | Resolve-Path
+$target = Join-Path $AddOnsDir "DarkmoonArcade"
 
 if (Test-Path $target) {
     $item = Get-Item $target -Force

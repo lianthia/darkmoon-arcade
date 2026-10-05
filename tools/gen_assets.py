@@ -9,7 +9,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-MEDIA = ROOT / "MurlocBlast" / "media"
+MEDIA = ROOT / "DarkmoonArcade" / "media"
 MEDIA.mkdir(parents=True, exist_ok=True)
 
 SS = 4  # supersampling factor for anti-aliasing
@@ -29,8 +29,10 @@ COLORS = {
 }
 
 
-def save_tga(img: Image.Image, name: str):
-    img.save(MEDIA / f"{name}.tga")
+def save_tga(img: Image.Image, name: str, folder: str = "murlocblast"):
+    target = MEDIA / folder
+    target.mkdir(parents=True, exist_ok=True)
+    img.save(target / f"{name}.tga")
 
 
 def grid(size):
@@ -389,7 +391,7 @@ def place(sig, offset, total):
     return out
 
 
-def write_ogg(sig, name, gain=0.8):
+def write_ogg(sig, name, gain=0.8, folder="murlocblast"):
     sig = sig / (np.abs(sig).max() + 1e-9) * gain
     pcm = (sig * 32767).astype(np.int16)
     with tempfile.TemporaryDirectory() as tmp:
@@ -400,7 +402,7 @@ def write_ogg(sig, name, gain=0.8):
             w.setframerate(RATE)
             w.writeframes(pcm.tobytes())
         subprocess.run(
-            ["ffmpeg", "-y", "-loglevel", "error", "-i", str(wav_path), "-c:a", "libvorbis", "-q:a", "5", str(MEDIA / f"{name}.ogg")],
+            ["ffmpeg", "-y", "-loglevel", "error", "-i", str(wav_path), "-c:a", "libvorbis", "-q:a", "5", str(MEDIA / folder / f"{name}.ogg")],
             check=True,
         )
 
@@ -454,13 +456,10 @@ def main():
         save_tga(symbol(SYMBOLS[i - 1]), f"symbol{i}")
     save_tga(stone(), "bubble9")
     save_tga(bomb(), "bubble10")
-    icon = bubble(COLORS["blue"])
-    icon.alpha_composite(symbol("star").point(lambda a: a * 0.85))
-    save_tga(icon, "icon")
-    save_tga(glow(), "glow")
-    save_tga(ring(), "ring")
-    save_tga(spark(), "spark")
-    save_tga(dot(), "dot")
+    save_tga(glow(), "glow", "")
+    save_tga(ring(), "ring", "")
+    save_tga(spark(), "spark", "")
+    save_tga(dot(), "dot", "")
     save_tga(background(), "background")
     save_tga(ceiling(), "ceiling")
     save_tga(arrow(), "arrow")
