@@ -2,7 +2,7 @@
 ## Title: Darkmoon Arcade
 ## Notes: Mini games for long flights: Murloc Blast, Flappy Griffin and more.
 ## Category: Mini Games
-## Version: 0.7.1
+## Version: 0.8.0
 ## SavedVariables: DarkmoonArcadeDB
 ## IconTexture: Interface\AddOns\DarkmoonArcade\media\icon
 ## AddonCompartmentFunc: DarkmoonArcade_OnAddonCompartmentClick

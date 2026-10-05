@@ -253,32 +253,42 @@ function Widgets.ShowAchievements(module)
 end
 
 function Widgets.AchievementsPage(overlay, width, gameId, onBack)
+    local PER_PAGE, ROW_HEIGHT = 7, 44
     local page = overlay:AddPage("achievements")
-    local title = Widgets.PageTitle(page, "ACHIEVEMENTS", -26)
+    local title = Widgets.PageTitle(page, "ACHIEVEMENTS", -22)
     local count = Widgets.Text(page, 12, "gray")
     count:SetPoint("TOP", title, "BOTTOM", 0, -4)
 
     local defs = ns.Achievements.ForGame(gameId)
-    local rowHeight = math.min(44, math.floor(300 / math.max(1, #defs)))
+    local pages = math.max(1, math.ceil(#defs / PER_PAGE))
+    local current = 1
+
     local rows = {}
-    for i, def in ipairs(defs) do
-        local y = -84 - (i - 1) * rowHeight
-        local icon = page:CreateTexture(nil, "ARTWORK")
-        icon:SetSize(rowHeight - 8, rowHeight - 8)
-        icon:SetPoint("TOPLEFT", 36, y)
-        icon:SetTexture(def.icon)
-        local name = Widgets.LocalizedText(page, 13, "gold", def.nameKey)
-        name:SetPoint("TOPLEFT", icon, "TOPRIGHT", 10, -1)
-        local desc = Widgets.LocalizedText(page, 10, "white", def.descKey)
-        desc:SetPoint("TOPLEFT", name, "BOTTOMLEFT", 0, -2)
-        desc:SetWidth(width - 140)
-        desc:SetJustifyH("LEFT")
-        local check = page:CreateTexture(nil, "ARTWORK")
-        check:SetSize(20, 20)
-        check:SetPoint("TOPRIGHT", page, "TOPRIGHT", -36, y - (rowHeight - 28) / 2)
-        check:SetTexture("Interface\\RaidFrame\\ReadyCheck-Ready")
-        rows[i] = { def = def, icon = icon, name = name, desc = desc, check = check }
+    for i = 1, PER_PAGE do
+        local y = -82 - (i - 1) * ROW_HEIGHT
+        local row = {}
+        row.icon = page:CreateTexture(nil, "ARTWORK")
+        row.icon:SetSize(34, 34)
+        row.icon:SetPoint("TOPLEFT", 30, y)
+        row.name = Widgets.Text(page, 13, "gold")
+        row.name:SetPoint("TOPLEFT", row.icon, "TOPRIGHT", 10, -1)
+        row.desc = Widgets.Text(page, 10, "white")
+        row.desc:SetPoint("TOPLEFT", row.name, "BOTTOMLEFT", 0, -2)
+        row.desc:SetWidth(width - 130)
+        row.desc:SetJustifyH("LEFT")
+        row.check = page:CreateTexture(nil, "ARTWORK")
+        row.check:SetSize(20, 20)
+        row.check:SetPoint("TOPRIGHT", page, "TOPRIGHT", -30, y - 7)
+        row.check:SetTexture("Interface\\RaidFrame\\ReadyCheck-Ready")
+        rows[i] = row
     end
+
+    local pager = Widgets.Cycler(page, 140, function(dir)
+        current = (current - 1 + dir) % pages + 1
+        page.refresh()
+    end)
+    pager:SetPoint("BOTTOM", 0, 52)
+    pager:SetShown(pages > 1)
 
     local back = Widgets.Button(page, 200, 26, "BACK", onBack)
     back:SetPoint("BOTTOM", 0, 18)
@@ -286,13 +296,25 @@ function Widgets.AchievementsPage(overlay, width, gameId, onBack)
     page.refresh = function()
         local done, total = ns.Achievements.Count(gameId)
         count:SetText(("%d / %d"):format(done, total))
-        for _, row in ipairs(rows) do
-            local unlocked = ns.Achievements.IsDone(row.def.id)
-            row.icon:SetDesaturated(not unlocked)
-            row.icon:SetAlpha(unlocked and 1 or 0.45)
-            row.name:SetAlpha(unlocked and 1 or 0.6)
-            row.desc:SetAlpha(unlocked and 1 or 0.6)
-            row.check:SetShown(unlocked)
+        pager.label:SetText(("%d / %d"):format(current, pages))
+        for i, row in ipairs(rows) do
+            local def = defs[(current - 1) * PER_PAGE + i]
+            if def then
+                local unlocked = ns.Achievements.IsDone(def.id)
+                row.icon:SetTexture(def.icon)
+                row.icon:SetDesaturated(not unlocked)
+                row.icon:SetAlpha(unlocked and 1 or 0.45)
+                row.name:SetText(L[def.nameKey])
+                row.desc:SetText(L[def.descKey])
+                row.name:SetAlpha(unlocked and 1 or 0.6)
+                row.desc:SetAlpha(unlocked and 1 or 0.6)
+                row.check:SetShown(unlocked)
+            else
+                row.check:Hide()
+            end
+            row.icon:SetShown(def ~= nil)
+            row.name:SetShown(def ~= nil)
+            row.desc:SetShown(def ~= nil)
         end
     end
     return page

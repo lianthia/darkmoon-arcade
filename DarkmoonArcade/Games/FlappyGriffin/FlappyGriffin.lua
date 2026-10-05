@@ -32,7 +32,7 @@ local Module = {
     descKey = "FG_DESC",
     helpKey = "FG_HELP",
     tile = "tiles/flappygriffin",
-    defaults = { runs = 0 },
+    defaults = { runs = 0, pillars = 0 },
 }
 
 local FLIGHT_ICON = "Interface\\TaxiFrame\\UI-Taxi-Icon-Green"
@@ -45,8 +45,16 @@ Achievements.Register("flappygriffin", {
     { id = "fg_gold", nameKey = "FG_ACH_GOLD", descKey = "FG_ACH_GOLD_DESC", icon = Media.Tex("flappy/medal_gold") },
     { id = "fg_darkmoon", nameKey = "FG_ACH_DARKMOON", descKey = "FG_ACH_DARKMOON_DESC", icon = Media.Tex("portrait") },
     { id = "fg_runs", nameKey = "FG_ACH_RUNS", descKey = "FG_ACH_RUNS_DESC", icon = FLIGHT_ICON },
+    { id = "fg_score150", nameKey = "FG_ACH_SCORE150", descKey = "FG_ACH_SCORE150_DESC", icon = Media.Tex("portrait") },
+    { id = "fg_tickets15", nameKey = "FG_ACH_TICKETS15", descKey = "FG_ACH_TICKETS15_DESC", icon = 134481 },
+    { id = "fg_streak", nameKey = "FG_ACH_STREAK", descKey = "FG_ACH_STREAK_DESC", icon = 134481 },
+    { id = "fg_purist", nameKey = "FG_ACH_PURIST", descKey = "FG_ACH_PURIST_DESC", icon = Media.Tex("flappy/medal_silver") },
+    { id = "fg_runs100", nameKey = "FG_ACH_RUNS100", descKey = "FG_ACH_RUNS100_DESC", icon = FLIGHT_ICON },
+    { id = "fg_pillars", nameKey = "FG_ACH_PILLARS", descKey = "FG_ACH_PILLARS_DESC", icon = Media.Tex("flappy/medal_gold") },
+    { id = "fg_flight", nameKey = "FG_ACH_FLIGHT", descKey = "FG_ACH_FLIGHT_DESC", icon = FLIGHT_ICON },
 })
 local RUNS_FOR_ACHIEVEMENT, TICKETS_FOR_ACHIEVEMENT = 25, 5
+local GOALS = { runs = 100, tickets = 15, streak = 10, purist = 30, pillars = 2500, flight = 25, score = 150 }
 
 local function Tex(name) return Media.Tex("flappy/" .. name) end
 local function Sound(name) Media.Play("flappy/" .. name) end
@@ -420,9 +428,11 @@ function Module:OnGameEvent(name, data)
     if name == "start" then
         Voice("aggro", true)
         self.runTickets = 0
+        self.ticketStreak = 0
         local settings = Arcade.Settings(self)
         settings.runs = settings.runs + 1
         if settings.runs >= RUNS_FOR_ACHIEVEMENT then Achievements.Unlock("fg_runs") end
+        if settings.runs >= GOALS.runs then Achievements.Unlock("fg_runs100") end
     elseif name == "flap" then
         Sound("flap")
         self:SpawnFeathers(Game.GRIFFIN_X - 18, self.game.y + 6, 3)
@@ -438,6 +448,14 @@ function Module:OnGameEvent(name, data)
         Sound("point")
         self:UpdateHud()
         Achievements.Unlock("fg_first")
+        local settings = Arcade.Settings(self)
+        settings.pillars = settings.pillars + 1
+        if settings.pillars >= GOALS.pillars then Achievements.Unlock("fg_pillars") end
+        if data.score >= GOALS.score then Achievements.Unlock("fg_score150") end
+        if data.score >= GOALS.purist and (self.runTickets or 0) == 0 then Achievements.Unlock("fg_purist") end
+        if data.score >= GOALS.flight and ns.Flight.current then Achievements.Unlock("fg_flight") end
+    elseif name == "ticketMissed" then
+        self.ticketStreak = 0
         if data.score % 10 == 0 then Voice("attack") end
     elseif name == "ticket" then
         if ns.db.sound then PlaySound(SOUNDKIT.LOOT_WINDOW_COIN_SOUND) end
@@ -445,6 +463,9 @@ function Module:OnGameEvent(name, data)
         self:SpawnText(data.x, data.y - 10, "+" .. Game.TICKET_POINTS, 16, 1, 0.85, 0.3)
         self.runTickets = (self.runTickets or 0) + 1
         if self.runTickets >= TICKETS_FOR_ACHIEVEMENT then Achievements.Unlock("fg_tickets") end
+        if self.runTickets >= GOALS.tickets then Achievements.Unlock("fg_tickets15") end
+        self.ticketStreak = (self.ticketStreak or 0) + 1
+        if self.ticketStreak >= GOALS.streak then Achievements.Unlock("fg_streak") end
         self:UpdateHud()
     elseif name == "hit" then
         Sound("hit")

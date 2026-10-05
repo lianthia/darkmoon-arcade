@@ -21,6 +21,7 @@ local Module = {
         difficulty = "normal",
         symbols = true,
         progress = {},
+        popped = 0,
     },
 }
 
@@ -40,7 +41,18 @@ Achievements.Register("murlocblast", {
     { id = "mb_level10", nameKey = "MB_ACH_LEVEL10", descKey = "MB_ACH_LEVEL10_DESC", icon = BubbleIcon(5) },
     { id = "mb_hard10", nameKey = "MB_ACH_HARD10", descKey = "MB_ACH_HARD10_DESC", icon = BubbleIcon(1) },
     { id = "mb_score", nameKey = "MB_ACH_SCORE", descKey = "MB_ACH_SCORE_DESC", icon = BubbleIcon(7) },
+    { id = "mb_level20", nameKey = "MB_ACH_LEVEL20", descKey = "MB_ACH_LEVEL20_DESC", icon = BubbleIcon(4) },
+    { id = "mb_hard20", nameKey = "MB_ACH_HARD20", descKey = "MB_ACH_HARD20_DESC", icon = BubbleIcon(5) },
+    { id = "mb_score100", nameKey = "MB_ACH_SCORE100", descKey = "MB_ACH_SCORE100_DESC", icon = BubbleIcon(2) },
+    { id = "mb_landslide", nameKey = "MB_ACH_LANDSLIDE", descKey = "MB_ACH_LANDSLIDE_DESC", icon = BubbleIcon(9) },
+    { id = "mb_bombs", nameKey = "MB_ACH_BOMBS", descKey = "MB_ACH_BOMBS_DESC", icon = BubbleIcon(10) },
+    { id = "mb_calm", nameKey = "MB_ACH_CALM", descKey = "MB_ACH_CALM_DESC", icon = BubbleIcon(3) },
+    { id = "mb_close", nameKey = "MB_ACH_CLOSE", descKey = "MB_ACH_CLOSE_DESC", icon = BubbleIcon(1) },
+    { id = "mb_popped", nameKey = "MB_ACH_POPPED", descKey = "MB_ACH_POPPED_DESC", icon = BubbleIcon(8) },
+    { id = "mb_flight", nameKey = "MB_ACH_FLIGHT", descKey = "MB_ACH_FLIGHT_DESC", icon = "Interface\\TaxiFrame\\UI-Taxi-Icon-Green" },
 })
+
+local POPPED_GOAL = 5000
 
 local function DifficultyName(difficulty)
     return L[difficulty:upper()]
@@ -260,24 +272,37 @@ end
 function Module:OnGameEvent(name, data)
     local game = self.game
     if name == "score" or name == "level" then
+        if name == "level" then self.levelBombs = 0 end
         self:UpdateHud()
         if game.score >= 25000 then Achievements.Unlock("mb_score") end
+        if game.score >= 100000 then Achievements.Unlock("mb_score100") end
     elseif name == "pop" then
         if data.combo >= 3 then Achievements.Unlock("mb_combo3") end
         if data.combo >= 5 then Achievements.Unlock("mb_combo5") end
+        local settings = MB.Settings()
+        settings.popped = settings.popped + #data.cells
+        if settings.popped >= POPPED_GOAL then Achievements.Unlock("mb_popped") end
     elseif name == "explode" then
         Achievements.Unlock("mb_bomb")
+        self.levelBombs = (self.levelBombs or 0) + 1
+        if self.levelBombs >= 3 then Achievements.Unlock("mb_bombs") end
     elseif name == "drop" then
         local stones = 0
         for _, cell in ipairs(data.cells) do
             if cell.color == Levels.STONE then stones = stones + 1 end
         end
         if #data.cells >= 10 then Achievements.Unlock("mb_avalanche") end
+        if #data.cells >= 25 then Achievements.Unlock("mb_landslide") end
         if stones >= 3 then Achievements.Unlock("mb_stones") end
     elseif name == "clear" then
         Achievements.Unlock("mb_first")
         if game.level >= 10 then Achievements.Unlock("mb_level10") end
         if game.level >= 10 and game.difficulty == "hard" then Achievements.Unlock("mb_hard10") end
+        if game.level >= 20 then Achievements.Unlock("mb_level20") end
+        if game.level >= 20 and game.difficulty == "hard" then Achievements.Unlock("mb_hard20") end
+        if game.level >= 6 and game.drops == 0 then Achievements.Unlock("mb_calm") end
+        if game.drops >= 6 then Achievements.Unlock("mb_close") end
+        if ns.Flight.current then Achievements.Unlock("mb_flight") end
         local settings = MB.Settings()
         settings.progress[game.difficulty] = math.max(self:Progress(), game.level + 1)
         C_Timer.After(1.2, function()

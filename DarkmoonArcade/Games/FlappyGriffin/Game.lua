@@ -162,6 +162,7 @@ function Game:Update(dt)
                 pillar.passed = true
                 self.score = self.score + 1
                 self:Emit("score", { score = self.score, points = 1 })
+                if pillar.ticket and not pillar.ticket.taken then self:Emit("ticketMissed") end
             end
             local ticket = pillar.ticket
             if ticket and not ticket.taken then
