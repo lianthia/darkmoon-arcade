@@ -111,15 +111,16 @@ function Window:Create()
     logo:SetTexture(Media.Tex("logo"))
     logo:SetTexCoord(0, 1, 0, 330 / 512)
 
-    local inset = CreateFrame("Frame", nil, chrome, "InsetFrameTemplate")
-    inset:SetPoint("TOPLEFT", INSET_SIDE, -INSET_TOP)
-    inset:SetPoint("BOTTOMRIGHT", -INSET_SIDE, INSET_BOTTOM)
-    inset:SetFrameLevel(chrome:GetFrameLevel() + 2)
+    -- One continuous surface behind header, content and footer; the panel border draws on top.
+    local surface = chrome:CreateTexture(nil, "BACKGROUND", nil, 2)
+    surface:SetPoint("TOPLEFT", 4, -4)
+    surface:SetPoint("BOTTOMRIGHT", -4, 4)
+    surface:SetTexture(Media.Tex("hub_background"))
 
-    local content = CreateFrame("Frame", nil, inset)
+    local content = CreateFrame("Frame", nil, chrome)
     content:SetSize(CONTENT_W, CONTENT_H)
-    content:SetPoint("TOPLEFT", INSET_PAD, -INSET_PAD)
-    content:SetFrameLevel(inset:GetFrameLevel() + 2)
+    content:SetPoint("TOPLEFT", INSET_SIDE + INSET_PAD, -(INSET_TOP + INSET_PAD))
+    content:SetFrameLevel(chrome:GetFrameLevel() + 4)
     self.content = content
 
     local field = CreateFrame("Frame", nil, content)
@@ -204,16 +205,11 @@ function Window:CreateSidebar()
     bar:SetPoint("TOPRIGHT")
     self.sidebar = bar
 
-    local bg = bar:CreateTexture(nil, "BACKGROUND")
-    bg:SetAllPoints()
-    bg:SetTexture(Media.Tex("hub_background"))
-    bg:SetTexCoord(0, SIDEBAR_W / 512, 0, CONTENT_H / 512)
-
     local divider = bar:CreateTexture(nil, "BORDER")
-    divider:SetColorTexture(0, 0, 0, 0.8)
-    divider:SetPoint("TOPRIGHT", bar, "TOPLEFT", 0, 0)
-    divider:SetPoint("BOTTOMRIGHT", bar, "BOTTOMLEFT", 0, 0)
-    divider:SetWidth(GUTTER)
+    divider:SetColorTexture(0.85, 0.65, 0.3, 0.35)
+    divider:SetPoint("TOP", bar, "TOPLEFT", -GUTTER / 2, -12)
+    divider:SetPoint("BOTTOM", bar, "BOTTOMLEFT", -GUTTER / 2, 12)
+    divider:SetWidth(1)
 
     local s = {}
     s.name = Widgets.Text(bar, 16, "gold")
@@ -307,11 +303,6 @@ function Window:CreateHub()
     hub:SetAllPoints()
     hub:SetFrameLevel(self.content:GetFrameLevel() + 5)
     self.hub = hub
-
-    local bg = hub:CreateTexture(nil, "BACKGROUND")
-    bg:SetAllPoints()
-    bg:SetTexture(Media.Tex("hub_background"))
-    bg:SetTexCoord(0, 1, 0, CONTENT_H / 512)
 
     -- Title, cards and flight hint form one block, centered in the hub.
     local columns = math.min(TILE_COLUMNS, #Arcade.order)
