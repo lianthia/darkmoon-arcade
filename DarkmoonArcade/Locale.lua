@@ -9,6 +9,8 @@ function ns.AddStrings(language, values)
 end
 
 ns.AddStrings("enUS", {
+    OPT_TAB_GENERAL = "General",
+    OPT_TAB_GAMES = "Games",
     OPT_SECTION_SOUND = "Sound",
     OPT_SECTION_FLIGHTS = "Flights",
     HELP = "Help",
@@ -84,6 +86,8 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    OPT_TAB_GENERAL = "Allgemein",
+    OPT_TAB_GAMES = "Spiele",
     OPT_SECTION_SOUND = "Sound",
     OPT_SECTION_FLIGHTS = "Flüge",
     HELP = "Hilfe",
@@ -156,6 +160,8 @@ ns.AddStrings("deDE", {
 })
 
 ns.AddStrings("frFR", {
+    OPT_TAB_GENERAL = "Général",
+    OPT_TAB_GAMES = "Jeux",
     OPT_SECTION_SOUND = "Son",
     OPT_SECTION_FLIGHTS = "Vols",
     HELP = "Aide",
@@ -229,6 +235,8 @@ ns.AddStrings("frFR", {
 })
 
 ns.AddStrings("esES", {
+    OPT_TAB_GENERAL = "General",
+    OPT_TAB_GAMES = "Juegos",
     OPT_SECTION_SOUND = "Sonido",
     OPT_SECTION_FLIGHTS = "Vuelos",
     HELP = "Ayuda",
@@ -302,6 +310,8 @@ ns.AddStrings("esES", {
 })
 
 ns.AddStrings("ruRU", {
+    OPT_TAB_GENERAL = "Общие",
+    OPT_TAB_GAMES = "Игры",
     OPT_SECTION_SOUND = "Звук",
     OPT_SECTION_FLIGHTS = "Полёты",
     HELP = "Помощь",
@@ -376,6 +386,8 @@ ns.AddStrings("ruRU", {
 })
 
 ns.AddStrings("zhCN", {
+    OPT_TAB_GENERAL = "常规",
+    OPT_TAB_GAMES = "游戏",
     OPT_SECTION_SOUND = "声音",
     OPT_SECTION_FLIGHTS = "飞行",
     HELP = "帮助",

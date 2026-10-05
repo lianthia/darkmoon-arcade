@@ -48,7 +48,7 @@ function SettingsPage.Definitions()
     for _, id in ipairs(ns.Arcade.order) do
         local game = ns.Arcade.games[id]
         if game.Options then
-            defs[#defs + 1] = { kind = "section", label = game.nameKey }
+            defs[#defs + 1] = { kind = "section", label = game.nameKey, tab = "games" }
             for _, def in ipairs(game:Options()) do defs[#defs + 1] = def end
         end
     end
