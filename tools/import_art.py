@@ -17,7 +17,7 @@ def background_mask(src):
     r, b = src[..., 0], src[..., 2]
     colored = ((b > r + 6) & (mx > 40)) | (mx >= 200) | ((r > 150) & (src[..., 1] > 90))
     protected = np.asarray(Image.fromarray((colored * 255).astype(np.uint8)).filter(ImageFilter.MaxFilter(19))) > 0
-    passable = ((mx > 24) & (b <= r + 6) & (mx < 200)) | ((mx <= 24) & ~protected) | ((b > r) & (mx > 24) & (mx < 48))
+    passable = ((mx > 24) & (b <= r + 6) & (mx < 200)) | ((mx <= 24) & ~protected)
     seen = np.zeros((h, w), bool)
     queue = deque()
     for y in range(h):

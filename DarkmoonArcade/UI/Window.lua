@@ -318,13 +318,7 @@ end
 
 function Window:CreateFooter()
     local chrome = self.chrome
-    self.flightText = Widgets.Text(chrome, 12, "blue")
-    self.flightText:SetPoint("BOTTOM", 8, 19)
-    local icon = chrome:CreateTexture(nil, "ARTWORK")
-    icon:SetTexture("Interface\\TaxiFrame\\UI-Taxi-Icon-Green")
-    icon:SetSize(16, 16)
-    icon:SetPoint("RIGHT", self.flightText, "LEFT", -6, 0)
-    self.flightIcon = icon
+    self:CreateFlightPanel()
 
     -- Hub: options on the right. Games: main menu on the left, achievements on the right.
     local options = Widgets.Button(chrome, 124, 26, "OPTIONS", function() self:OpenOptions() end)
@@ -568,17 +562,41 @@ function Window:ApplyLanguage()
     self:UpdateSidebar()
 end
 
+-- A small plate below the window, shown only during flights.
+function Window:CreateFlightPanel()
+    local panel = CreateFrame("Frame", nil, self.frame)
+    panel:SetHeight(30)
+    panel:SetPoint("TOP", self.frame, "BOTTOM", 0, -6)
+    local fill = panel:CreateTexture(nil, "BACKGROUND")
+    fill:SetAllPoints()
+    fill:SetColorTexture(0.05, 0.02, 0.08, 0.92)
+    Widgets.Rim(panel, panel)
+    local icon = panel:CreateTexture(nil, "ARTWORK")
+    icon:SetTexture("Interface\\TaxiFrame\\UI-Taxi-Icon-Green")
+    icon:SetSize(16, 16)
+    icon:SetPoint("LEFT", 12, 0)
+    self.flightText = Widgets.Text(panel, 12, "blue")
+    self.flightText:SetPoint("LEFT", icon, "RIGHT", 6, 0)
+    self.flightTime = Widgets.Text(panel, 12, "gold")
+    self.flightTime:SetPoint("LEFT", self.flightText, "RIGHT", 12, 0)
+    panel:Hide()
+    self.flightPanel = panel
+end
+
 function Window:UpdateFlightInfo()
     local dest, seconds, exact, isEstimate = Flight:Status()
     if not dest or not ns.db.flightTime then
-        self.flightIcon:Hide()
-        self.flightText:SetText("")
+        self.flightPanel:Hide()
         return
     end
-    self.flightIcon:Show()
-    local timeText = isEstimate and ((exact and "" or "~") .. ns.FormatTime(seconds)) or ns.FormatTime(seconds)
-    local label = dest ~= "" and L.FLIGHT_TO:format(dest) or L.IN_FLIGHT
-    self.flightText:SetText(label .. "  ·  " .. timeText)
+    self.flightText:SetText(dest ~= "" and L.FLIGHT_TO:format(dest) or L.IN_FLIGHT)
+    if isEstimate then
+        self.flightTime:SetText(L.FLIGHT_LEFT:format((exact and "" or "~") .. ns.FormatTime(seconds)))
+    else
+        self.flightTime:SetText(L.FLIGHT_MEASURING)
+    end
+    self.flightPanel:SetWidth(12 + 16 + 6 + self.flightText:GetStringWidth() + 12 + self.flightTime:GetStringWidth() + 16)
+    self.flightPanel:Show()
 end
 
 function Window:OnUpdate(dt)

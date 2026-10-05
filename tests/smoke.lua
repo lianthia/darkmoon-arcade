@@ -9,7 +9,7 @@ local chat = {}
 
 local NUMBER_GETTERS = {
     GetLeft = 100, GetTop = 600, GetEffectiveScale = 1, GetScale = 1, GetFrameLevel = 1,
-    GetWidth = 100, GetHeight = 100, GetAlpha = 1,
+    GetWidth = 100, GetHeight = 100, GetAlpha = 1, GetStringWidth = 50,
 }
 
 local methods = {
@@ -100,9 +100,26 @@ Settings = {
 }
 LE_PARTY_CATEGORY_INSTANCE = 2
 Enum = { UIMapType = { Continent = 2 } }
-C_Timer = { After = function(delay, fn) timers[#timers + 1] = { at = now + delay, fn = fn } end }
+C_Timer = {
+    After = function(delay, fn) timers[#timers + 1] = { at = now + delay, fn = fn } end,
+    NewTicker = function(interval, fn)
+        local ticker = { cancelled = false }
+        local function Schedule()
+            timers[#timers + 1] = { at = now + interval, fn = function()
+                if ticker.cancelled then return end
+                fn()
+                Schedule()
+            end }
+        end
+        Schedule()
+        function ticker:Cancel() self.cancelled = true end
+        return ticker
+    end,
+}
+local playerX, playerY = 0.40, 0.70
 C_Map = {
     GetBestMapForUnit = function() return 1429 end,
+    GetPlayerMapPosition = function() return { GetXY = function() return playerX, playerY end } end,
     GetMapInfo = function(id) return { mapType = id == 13 and 2 or 3, parentMapID = 13 } end,
     GetWorldPosFromMapPos = function(_, v)
         return 0, { GetXY = function() return v.x * 20000, v.y * 30000 end }
@@ -233,7 +250,12 @@ local function rnd(n) seed = (seed * 16807) % 2147483647; return seed % n end
 TakeTaxiNode(2)
 onTaxi = true
 Fire("PLAYER_CONTROL_LOST")
-Tick(1)
+for _ = 1, 8 do
+    playerX, playerY = playerX + 0.0015, playerY - 0.003
+    Tick(0.5)
+end
+local _, remaining, _, isEstimate = ns.Flight:Status()
+assert(isEstimate and remaining > 0, "live flight estimate")
 assert(Window.activeGame and Window.activeGame.id == "murlocblast", "flight opens murloc blast")
 assert(Window.flightText._text and Window.flightText._text:find("Sturmwind"), "flight text")
 

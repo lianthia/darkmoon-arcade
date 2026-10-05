@@ -9,6 +9,8 @@ function ns.AddStrings(language, values)
 end
 
 ns.AddStrings("enUS", {
+    FLIGHT_MEASURING = "measuring…",
+    FLIGHT_LEFT = "%s left",
     OPT_TAB_GENERAL = "General",
     OPT_TAB_GAMES = "Games",
     OPT_SECTION_SOUND = "Sound",
@@ -86,6 +88,8 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    FLIGHT_MEASURING = "wird gemessen…",
+    FLIGHT_LEFT = "noch %s",
     OPT_TAB_GENERAL = "Allgemein",
     OPT_TAB_GAMES = "Spiele",
     OPT_SECTION_SOUND = "Sound",
@@ -160,6 +164,8 @@ ns.AddStrings("deDE", {
 })
 
 ns.AddStrings("frFR", {
+    FLIGHT_MEASURING = "mesure…",
+    FLIGHT_LEFT = "encore %s",
     OPT_TAB_GENERAL = "Général",
     OPT_TAB_GAMES = "Jeux",
     OPT_SECTION_SOUND = "Son",
@@ -235,6 +241,8 @@ ns.AddStrings("frFR", {
 })
 
 ns.AddStrings("esES", {
+    FLIGHT_MEASURING = "midiendo…",
+    FLIGHT_LEFT = "quedan %s",
     OPT_TAB_GENERAL = "General",
     OPT_TAB_GAMES = "Juegos",
     OPT_SECTION_SOUND = "Sonido",
@@ -310,6 +318,8 @@ ns.AddStrings("esES", {
 })
 
 ns.AddStrings("ruRU", {
+    FLIGHT_MEASURING = "измерение…",
+    FLIGHT_LEFT = "осталось %s",
     OPT_TAB_GENERAL = "Общие",
     OPT_TAB_GAMES = "Игры",
     OPT_SECTION_SOUND = "Звук",
@@ -386,6 +396,8 @@ ns.AddStrings("ruRU", {
 })
 
 ns.AddStrings("zhCN", {
+    FLIGHT_MEASURING = "测量中…",
+    FLIGHT_LEFT = "剩余 %s",
     OPT_TAB_GENERAL = "常规",
     OPT_TAB_GAMES = "游戏",
     OPT_SECTION_SOUND = "声音",
