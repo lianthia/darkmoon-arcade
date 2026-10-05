@@ -159,13 +159,14 @@ function Module:Build(container)
     self.total:SetTextColor(1, 0.85, 0.2)
     self.total:Hide()
 
-    local controlsY = GRID_Y + Game.ROWS * CELL + 16
-    self.spinButton = Widgets.Button(container, 170, 32, "GS_SPIN", function() self:Spin() end)
+    -- Spin button centered below the machine; inventory and removals on their own row.
+    local controlsY = GRID_Y + Game.ROWS * CELL + 12
+    self.spinButton = Widgets.Button(container, 190, 32, "GS_SPIN", function() self:Spin() end)
     self.spinButton:SetPoint("TOP", 0, -controlsY)
-    self.inventoryButton = Widgets.Button(container, 116, 24, nil, function() self.overlay:Show("inventory") end)
-    self.inventoryButton:SetPoint("TOPLEFT", GRID_X, -(controlsY + 4))
+    self.inventoryButton = Widgets.Button(container, 140, 22, nil, function() self.overlay:Show("inventory") end)
+    self.inventoryButton:SetPoint("TOPLEFT", GRID_X, -(controlsY + 38))
     self.removalText = Widgets.Text(container, 11, "white")
-    self.removalText:SetPoint("TOPRIGHT", container, "TOPLEFT", GRID_X + Game.COLS * CELL, -(controlsY + 10))
+    self.removalText:SetPoint("TOPRIGHT", container, "TOPLEFT", GRID_X + Game.COLS * CELL, -(controlsY + 43))
 
     local game = Game.New()
     self.game = game
@@ -257,6 +258,7 @@ function Module:CreatePages()
     local continue = Widgets.Button(rent, 200, 26, "GS_CONTINUE", function()
         self.overlay:Hide()
         self.phase = "idle"
+        self:UpdatePlates()
     end)
     continue:SetPoint("TOP", 0, -250)
     rent.refresh = function(data)
