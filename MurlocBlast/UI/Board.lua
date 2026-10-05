@@ -1,13 +1,14 @@
 local _, ns = ...
 
-local Game, Media, L = ns.Game, ns.Media, ns.L
+local Game, Levels, Media, L = ns.Game, ns.Levels, ns.Media, ns.L
 
 local Board = {}
 ns.Board = Board
 
 local W, H, R = Game.WIDTH, Game.HEIGHT, Game.RADIUS
 local D = R * 2
-local BG_USED = H / 512
+local TEX_W, TEX_H = W / 512, H / 512
+local LAUNCH_X, LAUNCH_Y = W / 2, Game.LAUNCH_Y
 local SYMBOL_ALPHA = 0.45
 local MURLOC_NPC_ID = 46 -- Murloc Forager, Elwynn Forest
 
@@ -33,7 +34,9 @@ local function ShowBall(ball, color, x, y, size, alpha, dead)
     ball.tex:SetAlpha(alpha)
     Place(ball.tex, x, y)
     ball.tex:Show()
-    if ns.db.symbols then
+    if ns.db.symbols and Levels.IsColor(color) then
+        local tint = Media.SYMBOL_TINT[color]
+        if tint then ball.sym:SetVertexColor(tint[1], tint[2], tint[3]) else ball.sym:SetVertexColor(1, 1, 1) end
         ball.sym:SetTexture(Media.Tex("symbol" .. color))
         ball.sym:SetSize(size, size)
         ball.sym:SetAlpha(alpha * SYMBOL_ALPHA)
@@ -58,7 +61,7 @@ function Board:Create(parent)
     local bg = field:CreateTexture(nil, "BACKGROUND")
     bg:SetAllPoints()
     bg:SetTexture(Media.Tex("background"))
-    bg:SetTexCoord(0, 1, 0, BG_USED)
+    bg:SetTexCoord(0, TEX_W, 0, TEX_H)
 
     local ceiling = field:CreateTexture(nil, "BORDER")
     ceiling:SetTexture(Media.Tex("ceiling"))
@@ -70,7 +73,7 @@ function Board:Create(parent)
     local death = field:CreateTexture(nil, "BORDER", nil, 2)
     death:SetColorTexture(1, 0.3, 0.25, 0.35)
     death:SetHeight(2)
-    death:SetPoint("LEFT", field, "TOPLEFT", 0, -(R * 2 + (Game.VISIBLE_ROWS - 1) * (D * math.sqrt(3) / 2)))
+    death:SetPoint("LEFT", field, "TOPLEFT", 0, -Game.DEATH_Y)
     death:SetPoint("RIGHT", field, "TOPRIGHT", 0, 0)
     self.death = death
 
@@ -105,7 +108,7 @@ function Board:Create(parent)
     end)
     self.textPool = Media.Pool(function()
         local fs = fxLayer:CreateFontString(nil, "OVERLAY")
-        fs:SetFont(Media.FONT, 16, "OUTLINE")
+        fs:SetFont(Media.FontFile(), 16, "OUTLINE")
         return fs
     end, function(fs) fs:Hide() end)
 
@@ -123,43 +126,46 @@ end
 
 function Board:CreateLauncher()
     local layer = self.launcherLayer
-    local x, y = W / 2, Game.LAUNCH_Y
+    local x, y = LAUNCH_X, LAUNCH_Y
 
     local base = layer:CreateTexture(nil, "ARTWORK", nil, 0)
     base:SetTexture(Media.Tex("launcher"))
-    base:SetSize(76, 76)
+    base:SetSize(84, 84)
     Place(base, x, y)
 
     local arrow = layer:CreateTexture(nil, "ARTWORK", nil, 2)
     arrow:SetTexture(Media.Tex("arrow"))
-    arrow:SetSize(120, 120)
+    arrow:SetSize(132, 132)
     Place(arrow, x, y)
     self.arrow = arrow
 
     self.currentBall = CreateBall(layer, 4)
 
-    local nextX, nextY = x - 72, y + 6
+    local nextX, nextY = x - 84, y + 8
     local nextRing = layer:CreateTexture(nil, "ARTWORK", nil, 0)
     nextRing:SetTexture(Media.Tex("launcher"))
-    nextRing:SetSize(44, 44)
+    nextRing:SetSize(48, 48)
     Place(nextRing, nextX, nextY)
     self.nextBall = CreateBall(layer, 4)
     self.nextPos = { nextX, nextY }
 
     local label = layer:CreateFontString(nil, "OVERLAY")
-    label:SetFont(Media.FONT, 10, "OUTLINE")
-    label:SetTextColor(0.85, 0.95, 1)
-    label:SetText(L.NEXT)
-    label:SetPoint("BOTTOM", layer, "TOPLEFT", nextX, -(nextY - 24))
+    label:SetFontObject(Media.Font(10, "blue"))
+    label:SetPoint("BOTTOM", layer, "TOPLEFT", nextX, -(nextY - 26))
+    self.nextLabel = label
 
     -- Purely decorative; pcall because model APIs differ between client flavors.
     local model = CreateFrame("PlayerModel", nil, layer)
-    model:SetSize(96, 96)
-    model:SetPoint("CENTER", layer, "TOPLEFT", x + 82, -(y - 14))
+    model:SetSize(110, 110)
+    model:SetPoint("CENTER", layer, "TOPLEFT", x + 104, -(y - 16))
     model:SetFrameLevel(layer:GetFrameLevel() + 1)
     pcall(model.SetCreature, model, MURLOC_NPC_ID)
     pcall(model.SetFacing, model, -0.6)
     self.model = model
+end
+
+function Board:RefreshTexts()
+    self.nextLabel:SetText(L.NEXT)
 end
 
 function Board:PlayModelAnimation(id)
@@ -184,7 +190,7 @@ end
 
 function Board:CreatePips()
     self.pips = {}
-    for i = 1, 9 do
+    for i = 1, 12 do
         local pip = self.launcherLayer:CreateTexture(nil, "ARTWORK", nil, 1)
         pip:SetTexture(Media.Tex("dot"))
         pip:SetSize(9, 9)
@@ -218,8 +224,8 @@ end
 function Board:SyncLauncher()
     local game = self.game
     if game.current and game.state ~= "READY" then
-        ShowBall(self.currentBall, game.current, W / 2, Game.LAUNCH_Y, D)
-        ShowBall(self.nextBall, game.next, self.nextPos[1], self.nextPos[2], 24)
+        ShowBall(self.currentBall, game.current, LAUNCH_X, LAUNCH_Y, D)
+        ShowBall(self.nextBall, game.next, self.nextPos[1], self.nextPos[2], 26)
     else
         HideBall(self.currentBall)
         HideBall(self.nextBall)
@@ -319,7 +325,7 @@ end
 
 function Board:SpawnText(x, y, text, size, r, g, b, rise, duration)
     local fs = self.textPool.Acquire()
-    fs:SetFont(Media.FONT, size, "OUTLINE")
+    fs:SetFont(Media.FontFile(), size, "OUTLINE")
     fs:SetTextColor(r, g, b)
     fs:SetText(text)
     fs:Show()
@@ -397,7 +403,10 @@ end
 function Board:OnGameEvent(name, data)
     local game = self.game
     if name == "board" or name == "level" or name == "swap" then
-        if name == "level" then self:Reset() end
+        if name == "level" then
+            self:Reset()
+            Media.Voice("aggro", true)
+        end
         self:SyncBoard()
         if name == "swap" then Media.Play("swap") end
     elseif name == "shoot" then
@@ -425,6 +434,7 @@ function Board:OnGameEvent(name, data)
         if data.combo >= 2 then
             self:SpawnText(W / 2, H * 0.55, L.COMBO:format(data.combo), 22, 1, 0.55, 0.15, 30, 1.1)
         end
+        if data.combo >= 3 then Media.Voice("attack") end
         if #data.cells >= 6 then self:Shake(3, 0.2) end
     elseif name == "drop" then
         self:SyncBoard()
@@ -434,9 +444,24 @@ function Board:OnGameEvent(name, data)
         local cx, cy = Centroid(data.cells, game, self.displayCeil)
         C_Timer.After(0.15, function() Media.Play("drop") end)
         self:SpawnText(cx, cy + 20, "+" .. ns.FormatNumber(data.points), 18, 0.5, 1, 0.6, 44, 1.1)
-        if #data.cells >= 5 then self:Shake(4, 0.3) end
+        if #data.cells >= 5 then
+            self:Shake(4, 0.3)
+            Media.Voice("fidget")
+        end
+    elseif name == "explode" then
+        local y = data.y - game:CeilingY() + self.displayCeil
+        Media.Play("explode")
+        self:SpawnGlow(data.x, y, 10, { 40, 170 }, 0.45)
+        self:SpawnGlow(data.x, y, 7, { 30, 150 }, 0.35, "ring")
+        self:SpawnSparks(data.x, y, 10, 16)
+        self:Shake(7, 0.4)
+    elseif name == "bombReady" then
+        self:SpawnText(W / 2, H * 0.62, L.BOMB_READY, 18, 1, 0.4, 0.25, 26, 1.2)
+        Media.Voice("attack", true)
+        self:SyncLauncher()
     elseif name == "ceiling" then
         Media.Play("ceiling")
+        Media.Voice("wound")
         self:Shake(5, 0.4)
         self:SyncPips()
     elseif name == "warn" then
@@ -444,6 +469,7 @@ function Board:OnGameEvent(name, data)
         self:SyncPips()
     elseif name == "clear" then
         Media.Play("clear")
+        C_Timer.After(0.6, function() Media.Voice("aggro", true) end)
         self:PlayModelAnimation(68)
         for _ = 1, 10 do
             self:SpawnSparks(random(30, W - 30), random(40, 260), random(1, 6), 3)
@@ -452,6 +478,7 @@ function Board:OnGameEvent(name, data)
         self:SyncPips()
     elseif name == "over" then
         Media.Play("gameover")
+        Media.Voice("death", true)
         self:SyncBoard()
         self:Shake(6, 0.5)
     end
@@ -461,7 +488,7 @@ function Board:ApplyCeiling()
     local h = self.displayCeil
     if h >= 1 then
         self.ceiling:SetHeight(h)
-        self.ceiling:SetTexCoord(0, 1, 1 - h / 512, 1)
+        self.ceiling:SetTexCoord(0, TEX_W, 1 - h / 512, 1)
         self.ceiling:Show()
     else
         self.ceiling:Hide()
@@ -479,10 +506,10 @@ function Board:UpdateAim()
     end
     if self.lastTraceAngle ~= game.angle or self.lastTraceCeil ~= game.drops or self.traceDirty then
         self.lastTraceAngle, self.lastTraceCeil, self.traceDirty = game.angle, game.drops, false
-        self.trace = game:Trace(900)
+        self.trace = game:Trace(game.guideLength)
     end
     local points = self.trace
-    local spacing, offset = 15, 34 - (GetTime() * 30) % 15
+    local spacing, offset = 16, 40 - (GetTime() * 30) % 16
     local index, travelled = 1, 0
     local c = Media.COLORS[game.current] or { 1, 1, 1 }
     for seg = 1, #points - 1 do

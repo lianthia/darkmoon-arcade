@@ -16,6 +16,7 @@ function Grid.New(cols, rows, radius)
     g.radius = radius
     g.diameter = radius * 2
     g.rowHeight = g.diameter * SQRT3_2
+    g.maxColor = math.huge
     g.cells = {}
     for r = 0, rows - 1 do
         g.cells[r] = {}
@@ -89,11 +90,11 @@ function Grid:LowestRow()
     return lowest
 end
 
--- Sorted so that color picks stay deterministic for a given RNG.
+-- Matchable colors only (no stones); sorted so picks stay deterministic for a given RNG.
 function Grid:ColorsPresent()
     local seen, list = {}, {}
     self:Each(function(_, _, v)
-        if not seen[v] then
+        if v <= self.maxColor and not seen[v] then
             seen[v] = true
             list[#list + 1] = v
         end

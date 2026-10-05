@@ -9,13 +9,16 @@ local Game = {}
 Game.__index = Game
 ns.Game = Game
 
-Game.COLS = 8
-Game.RADIUS = 16
+Game.COLS = 12
+Game.RADIUS = 18
 Game.VISIBLE_ROWS = 12
 Game.WIDTH = Game.COLS * Game.RADIUS * 2
-Game.HEIGHT = 400
-Game.LAUNCH_Y = 372
-Game.SHOT_SPEED = 780
+Game.DEATH_Y = Game.RADIUS * 2 + (Game.VISIBLE_ROWS - 1) * Game.RADIUS * math.sqrt(3)
+Game.LAUNCH_Y = math.floor(Game.DEATH_Y + 44)
+Game.HEIGHT = Game.LAUNCH_Y + 40
+Game.SHOT_SPEED = 900
+Game.BOMB_REACH = 1.6
+Game.BOMB_EVERY = 3
 Game.MIN_ANGLE = math.rad(8)
 Game.HIT_FACTOR = 0.82
 Game.MAX_COMBO = 5
@@ -24,8 +27,11 @@ function Game.New(random)
     local g = setmetatable({}, Game)
     g.random = random or math.random
     g.grid = Grid.New(Game.COLS, Game.VISIBLE_ROWS + 1, Game.RADIUS)
+    g.grid.maxColor = Levels.MAX_COLORS
     g.rowHeight = g.grid.rowHeight
-    g.deathY = Game.RADIUS * 2 + (Game.VISIBLE_ROWS - 1) * g.rowHeight
+    g.deathY = Game.DEATH_Y
+    g.difficulty = "normal"
+    g.guideLength = 900
     g.launchX = Game.WIDTH / 2
     g.launchY = Game.LAUNCH_Y
     g.angle = math.pi / 2
@@ -60,7 +66,8 @@ end
 function Game:StartLevel(level, keepScore)
     self.level = level
     if not keepScore then self.score = 0 end
-    local meta = Levels.Load(self.grid, level)
+    local meta = Levels.Load(self.grid, level, self.difficulty)
+    self.guideLength = meta.guide
     self.dropInterval = meta.drop
     self.shotsUntilDrop = meta.drop
     self.drops = 0
@@ -209,6 +216,16 @@ function Game:RemoveCells(cells)
     return payload
 end
 
+function Game:CellsInReach(x, y, reach)
+    local cells = {}
+    local limit = reach * reach
+    self.grid:Each(function(r, c)
+        local cx, cy = self:CellPosition(r, c)
+        if (cx - x) ^ 2 + (cy - y) ^ 2 <= limit then cells[#cells + 1] = { r, c } end
+    end)
+    return cells
+end
+
 function Game:AddScore(points)
     self.score = self.score + points
     self:Emit("score", { score = self.score, points = points })
@@ -226,10 +243,18 @@ function Game:Land(shot)
     local lx, ly = self:CellPosition(r, c)
     self:Emit("land", { r = r, c = c, x = lx, y = ly, color = shot.color })
 
-    local group = grid:FindGroup(r, c)
-    if #group >= 3 then
+    local cleared
+    if shot.color == Levels.BOMB then
+        cleared = self:CellsInReach(lx, ly, Game.BOMB_REACH * grid.diameter)
+        self:Emit("explode", { x = lx, y = ly })
+    elseif Levels.IsColor(shot.color) then
+        cleared = grid:FindGroup(r, c)
+        if #cleared < 3 then cleared = nil end
+    end
+
+    if cleared then
         self.combo = math.min(self.combo + 1, Game.MAX_COMBO)
-        local popped = self:RemoveCells(group)
+        local popped = self:RemoveCells(cleared)
         local popPoints = #popped * 10 * self.combo
         self:Emit("pop", { cells = popped, points = popPoints, combo = self.combo })
         local dropped = self:RemoveCells(grid:FindFloating())
@@ -239,14 +264,25 @@ function Game:Land(shot)
             self:Emit("drop", { cells = dropped, points = dropPoints })
         end
         self:AddScore(popPoints + dropPoints)
+        if self.combo % Game.BOMB_EVERY == 0 then
+            self.next = Levels.BOMB
+            self:Emit("bombReady")
+        end
     else
         self.combo = 0
     end
 
-    if grid:Count() == 0 then
+    if #grid:ColorsPresent() == 0 then
+        local leftovers = {}
+        grid:Each(function(cr, cc) leftovers[#leftovers + 1] = { cr, cc } end)
+        local stonePoints = 0
+        if #leftovers > 0 then
+            stonePoints = #leftovers * 50
+            self:Emit("drop", { cells = self:RemoveCells(leftovers), points = stonePoints })
+        end
         local par = 10 + self.level * 2
         local bonus = 500 + math.max(0, par - self.shots) * 100
-        self:AddScore(bonus)
+        self:AddScore(bonus + stonePoints)
         self.state = "CLEAR"
         self:Emit("clear", { bonus = bonus, level = self.level })
         return
@@ -269,8 +305,8 @@ function Game:Land(shot)
     -- Never hand out a color that no longer exists on the board.
     local present = {}
     for _, color in ipairs(grid:ColorsPresent()) do present[color] = true end
-    if not present[self.current] then self.current = self:PickColor() end
-    if not present[self.next] then self.next = self:PickColor() end
+    if not present[self.current] and self.current ~= Levels.BOMB then self.current = self:PickColor() end
+    if not present[self.next] and self.next ~= Levels.BOMB then self.next = self:PickColor() end
     self:Emit("board")
 end
 

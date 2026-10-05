@@ -2,15 +2,17 @@
 ## Title: Murloc Blast
 ## Notes: A bubble shooter for long flights. Mrglglglgl!
 ## Notes-deDE: Ein Bubble-Shooter für lange Flüge. Mrglglglgl!
-## Version: 0.1.0
+## Version: 0.2.0
 ## SavedVariables: MurlocBlastDB
-## IconTexture: Interface\AddOns\MurlocBlast\media\bubble4
+## IconTexture: Interface\AddOns\MurlocBlast\media\icon
 
 Locale.lua
 Core\Grid.lua
 Core\Levels.lua
 Core\Game.lua
+Flight.lua
 UI\Media.lua
 UI\Board.lua
 UI\Window.lua
+UI\Minimap.lua
 Main.lua

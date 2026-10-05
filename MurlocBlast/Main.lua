@@ -1,26 +1,47 @@
 local ADDON, ns = ...
 
-local L, Window = ns.L, ns.Window
+local L, Window, Flight, Media = ns.L, ns.Window, ns.Flight, ns.Media
 
 local DEFAULTS = {
-    highscore = 0,
-    maxLevel = 1,
     sound = true,
+    voices = true,
     symbols = true,
     flight = true,
-    scale = 1.15,
+    flightTime = true,
+    minimap = true,
+    minimapAngle = 200,
+    scale = 1.0,
+    language = "auto",
+    difficulty = "normal",
 }
 
-local function Print(msg)
+function ns.Print(msg)
     print("|cff33ccffMurloc Blast|r " .. msg)
 end
 
 local function InitDB()
-    MurlocBlastDB = MurlocBlastDB or {}
+    local db = MurlocBlastDB or {}
+    MurlocBlastDB = db
     for k, v in pairs(DEFAULTS) do
-        if MurlocBlastDB[k] == nil then MurlocBlastDB[k] = v end
+        if db[k] == nil then db[k] = v end
     end
-    ns.db = MurlocBlastDB
+    db.scores = db.scores or {}
+    db.progress = db.progress or {}
+    for _, difficulty in ipairs(ns.Levels.DIFFICULTIES) do
+        db.scores[difficulty] = db.scores[difficulty] or {}
+        db.progress[difficulty] = db.progress[difficulty] or 1
+    end
+    db.flights = db.flights or {}
+    db.flightRate = db.flightRate or {}
+    -- Pre-0.2 saves had a single record and level.
+    if db.highscore then
+        if db.highscore > 0 then
+            table.insert(db.scores.normal, { score = db.highscore, level = db.maxLevel or 1, time = time() })
+        end
+        db.progress.normal = math.max(db.progress.normal, db.maxLevel or 1)
+        db.highscore, db.maxLevel = nil, nil
+    end
+    ns.db = db
 end
 
 local events = CreateFrame("Frame")
@@ -30,28 +51,36 @@ local function CheckTaxi()
     local nowOnTaxi = UnitOnTaxi("player")
     if nowOnTaxi and not onTaxi then
         onTaxi = true
+        Flight:Start()
         if ns.db.flight and not InCombatLockdown() then
             Window.frame:Show()
         end
+        if Window.currentPage == "menu" then Window.pages.menu.refresh() end
     elseif not nowOnTaxi and onTaxi then
         onTaxi = false
+        Flight:Finish()
         if Window.frame:IsShown() then Window:Pause(true) end
+        if Window.currentPage == "menu" then Window.pages.menu.refresh() end
     end
 end
 
 events:SetScript("OnEvent", function(_, event, arg1)
     if event == "ADDON_LOADED" and arg1 == ADDON then
         InitDB()
+        ns.SetLanguage(ns.db.language)
+        Media.ApplyLanguageFonts()
         Window:Create()
+        ns.Minimap:Create()
+        Flight:Init()
         events:UnregisterEvent("ADDON_LOADED")
     elseif event == "PLAYER_LOGIN" then
-        Print(L.LOADED)
+        ns.Print(L.LOADED)
         CheckTaxi()
     elseif event == "PLAYER_REGEN_DISABLED" then
         if Window.frame:IsShown() then
             Window:Pause()
             Window.frame:Hide()
-            Print(L.COMBAT)
+            ns.Print(L.COMBAT)
         end
     elseif event == "PLAYER_CONTROL_LOST" or event == "PLAYER_CONTROL_GAINED" then
         -- UnitOnTaxi flips slightly after the control events fire.
@@ -64,37 +93,27 @@ events:RegisterEvent("PLAYER_REGEN_DISABLED")
 events:RegisterEvent("PLAYER_CONTROL_LOST")
 events:RegisterEvent("PLAYER_CONTROL_GAINED")
 
-local function Toggle(field, label)
-    ns.db[field] = not ns.db[field]
-    Print(ns.db[field] and L[label .. "_ON"] or L[label .. "_OFF"])
-end
-
 SLASH_MURLOCBLAST1 = "/mb"
 SLASH_MURLOCBLAST2 = "/murlocblast"
 SlashCmdList.MURLOCBLAST = function(input)
-    local cmd, arg = strtrim(input or ""):lower():match("^(%S*)%s*(.-)$")
-    if cmd == "" then
-        if InCombatLockdown() then
-            Print(L.COMBAT)
-        else
-            Window:Toggle()
-        end
-    elseif cmd == "flight" then
-        Toggle("flight", "FLIGHT")
-    elseif cmd == "sound" then
-        Toggle("sound", "SOUND")
-    elseif cmd == "symbols" then
-        Toggle("symbols", "SYMBOLS")
-        ns.Board:SyncBoard()
-    elseif cmd == "scale" and tonumber(arg) then
-        ns.db.scale = math.max(0.6, math.min(2, tonumber(arg)))
-        Window:ApplyScale()
-        Print(L.SCALE_SET:format(ns.db.scale))
+    local cmd = strtrim(input or ""):lower()
+    if InCombatLockdown() and (cmd == "" or cmd == "options") then
+        ns.Print(L.COMBAT)
+    elseif cmd == "" then
+        Window:Toggle()
+    elseif cmd == "options" or cmd == "config" then
+        Window:OpenOptions()
+    elseif cmd == "minimap" then
+        ns.db.minimap = not ns.db.minimap
+        ns.Minimap:Update()
     elseif cmd == "reset" then
-        ns.db.highscore, ns.db.maxLevel = 0, 1
+        for _, difficulty in ipairs(ns.Levels.DIFFICULTIES) do
+            ns.db.scores[difficulty] = {}
+            ns.db.progress[difficulty] = 1
+        end
         Window:UpdateHud()
-        Print(L.RESET_DONE)
+        ns.Print(L.RESET_DONE)
     else
-        Print(L.USAGE)
+        ns.Print(L.USAGE)
     end
 end

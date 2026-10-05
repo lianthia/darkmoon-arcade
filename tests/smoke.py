@@ -16,8 +16,8 @@ def main() -> int:
     g = lua.globals()
     g.ADDON_FILES = lua.table_from(files)
     g.ADDON_SOURCES = lua.table_from({f: (ADDON / f).read_text(encoding="utf-8") for f in files})
-    clears, overs = lua.execute((ROOT / "tests" / "smoke.lua").read_text(encoding="utf-8"))
-    print(f"smoke: ok ({clears} levels cleared, {overs} games over)")
+    clears, overs, clicks, chats = lua.execute((ROOT / "tests" / "smoke.lua").read_text(encoding="utf-8"))
+    print(f"smoke: ok ({clears} levels cleared, {overs} games over, {clicks} button clicks, {chats} chat shares)")
     return 0
 
 
