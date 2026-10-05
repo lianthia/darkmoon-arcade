@@ -112,7 +112,7 @@ function Widgets.NewOverlay(parent)
     frame:EnableMouse(true)
     local shade = frame:CreateTexture(nil, "BACKGROUND")
     shade:SetAllPoints()
-    shade:SetColorTexture(0, 0.02, 0.05, 0.72)
+    shade:SetColorTexture(0.01, 0.01, 0.03, 0.88)
     return setmetatable({ frame = frame, pages = {} }, Overlay)
 end
 

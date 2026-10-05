@@ -10,10 +10,11 @@ local BOARD_X, BOARD_Y = 16, 14
 local GEM_SIZE = 44
 local HINT_DELAY = 8
 
--- interface/icons/inv_misc_gem_*: ruby, topaz, golden draenite, emerald, sapphire, amethyst, diamond.
-local GEM_ICONS = { 134129, 134136, 134113, 134105, 134132, 134075, 134095 }
+-- interface/icons/inv_misc_gem_*: ruby, topaz, flame spessarite, emerald, sapphire, amethyst, diamond.
+-- One gem per hue (red, yellow, orange, green, blue, purple, white) so no two colors look alike.
+local GEM_ICONS = { 134129, 134136, 134110, 134105, 134132, 134075, 134095 }
 local GEM_TINT = {
-    { 1, 0.3, 0.3 }, { 1, 0.6, 0.2 }, { 1, 0.9, 0.3 }, { 0.3, 1, 0.4 },
+    { 1, 0.3, 0.3 }, { 1, 0.9, 0.3 }, { 1, 0.55, 0.2 }, { 0.3, 1, 0.4 },
     { 0.35, 0.6, 1 }, { 0.75, 0.4, 1 }, { 0.95, 0.95, 1 },
 }
 local PRISM_TINT = { 1, 1, 1 }
