@@ -242,6 +242,16 @@ end
 
 -- Achievement list page --------------------------------------------------------------
 
+-- Opens the achievements page of `module` and returns to the page that was showing before.
+function Widgets.ShowAchievements(module)
+    module:Pause({})
+    local overlay = module.overlay
+    if overlay.current ~= "achievements" then
+        module.achievementsBack, module.achievementsBackData = overlay.current or "menu", overlay.data
+    end
+    overlay:Show("achievements")
+end
+
 function Widgets.AchievementsPage(overlay, width, gameId, onBack)
     local page = overlay:AddPage("achievements")
     local title = Widgets.PageTitle(page, "ACHIEVEMENTS", -26)

@@ -287,10 +287,15 @@ function Window:CreateFooter()
     self.flightText = Widgets.Text(chrome, 12, "blue")
     self.flightText:SetPoint("LEFT", icon, "RIGHT", 6, 0)
 
-    local options = Widgets.Button(chrome, 140, 26, "OPTIONS", function() ns.Settings:Open() end)
+    local options = Widgets.Button(chrome, 124, 26, "OPTIONS", function() ns.Settings:Open() end)
     options:SetPoint("BOTTOMRIGHT", -INSET_SIDE, 9)
-    local games = Widgets.Button(chrome, 140, 26, "GAMES", function() self:OpenHub() end)
-    games:SetPoint("RIGHT", options, "LEFT", -10, 0)
+    local achievements = Widgets.Button(chrome, 124, 26, "ACHIEVEMENTS", function()
+        if self.activeGame then self.activeGame:ShowAchievements() end
+    end)
+    achievements:SetPoint("RIGHT", options, "LEFT", -10, 0)
+    self.achievementsButton = achievements
+    local games = Widgets.Button(chrome, 124, 26, "GAMES", function() self:OpenHub() end)
+    games:SetPoint("RIGHT", achievements, "LEFT", -10, 0)
     self.gamesButton = games
 end
 
@@ -422,6 +427,7 @@ function Window:OpenHub()
     self.hub:Show()
     self.sidebar:Hide()
     self.gamesButton:Hide()
+    self.achievementsButton:Hide()
     self:RefreshHub()
 end
 
@@ -444,6 +450,7 @@ function Window:OpenGame(id)
     game.container:Show()
     self.activeGame = game
     self.gamesButton:Show()
+    self.achievementsButton:Show()
     game:Enter()
     self:UpdateSidebar()
 end

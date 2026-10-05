@@ -296,7 +296,9 @@ function Module:Build(container)
         shareMessage = ShareMessage,
         onBack = function() self.overlay:Show("menu") end,
     })
-    Widgets.AchievementsPage(self.overlay, W, self.id, function() self.overlay:Show("menu") end)
+    Widgets.AchievementsPage(self.overlay, W, self.id, function()
+        self.overlay:Show(self.achievementsBack or "menu", self.achievementsBackData)
+    end)
     self:ResetRun()
     self.overlay:Show("menu")
 end
@@ -308,8 +310,7 @@ function Module:CreatePages()
     tagline:SetPoint("TOP", title, "BOTTOM", 0, -6)
     local play = Widgets.Button(menu, 200, 26, "NEW_GAME", function() self:NewRun() end)
     local scores = Widgets.Button(menu, 200, 26, "HIGHSCORES", function() self.overlay:Show("scores") end)
-    local achievements = Widgets.Button(menu, 200, 26, "ACHIEVEMENTS", function() self.overlay:Show("achievements") end)
-    Widgets.Stack(menu, { play, scores, achievements }, -190)
+    Widgets.Stack(menu, { play, scores }, -190)
 
     local pause = self.overlay:AddPage("pause")
     local pauseTitle = Widgets.PageTitle(pause, "PAUSED", -100)
@@ -467,6 +468,10 @@ function Module:OnGameEvent(name, data)
 end
 
 -- Arcade hooks ------------------------------------------------------------------------
+
+function Module:ShowAchievements()
+    Widgets.ShowAchievements(self)
+end
 
 function Module:Enter()
     self:UpdateHud()

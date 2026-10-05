@@ -96,7 +96,9 @@ function Module:Build(container)
         shareMessage = ShareMessage,
         onBack = function() self.overlay:Show("menu") end,
     })
-    Widgets.AchievementsPage(self.overlay, Game.WIDTH, self.id, function() self.overlay:Show("menu") end)
+    Widgets.AchievementsPage(self.overlay, Game.WIDTH, self.id, function()
+        self.overlay:Show(self.achievementsBack or "menu", self.achievementsBackData)
+    end)
     self:ShowMenuBoard()
 end
 
@@ -122,8 +124,7 @@ function Module:CreateMenuPage()
     local scores = Widgets.Button(page, 200, 26, "HIGHSCORES", function()
         self.overlay:Show("scores", { bucket = MB.Settings().difficulty })
     end)
-    local achievements = Widgets.Button(page, 200, 26, "ACHIEVEMENTS", function() self.overlay:Show("achievements") end)
-    Widgets.Stack(page, { newGame, continue, scores, achievements }, -196)
+    Widgets.Stack(page, { newGame, continue, scores }, -196)
 
     page.refresh = function()
         diff.label:SetText(DifficultyName(MB.Settings().difficulty))
@@ -292,6 +293,10 @@ function Module:OnGameEvent(name, data)
 end
 
 -- Arcade hooks -------------------------------------------------------------------
+
+function Module:ShowAchievements()
+    Widgets.ShowAchievements(self)
+end
 
 function Module:Enter()
     self:UpdateHud()
