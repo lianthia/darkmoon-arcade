@@ -1,9 +1,9 @@
--- The arcade window: Blizzard's portrait frame, a hub with one tile per game, and a
--- playfield area that hosts whichever game is active.
+-- The arcade window: Blizzard's panel frame crowned by the logo, a hub with one tile per
+-- game, and a playfield plus sidebar for whichever game is active.
 
 local _, ns = ...
 
-local Media, Widgets, Flight, L = ns.Media, ns.Widgets, ns.Flight, ns.L
+local Media, Widgets, Flight, Scores, L = ns.Media, ns.Widgets, ns.Flight, ns.Scores, ns.L
 
 local Arcade = { games = {}, order = {} }
 ns.Arcade = Arcade
@@ -11,13 +11,18 @@ ns.Arcade = Arcade
 local Window = {}
 ns.Window = Window
 
--- Every game draws into a playfield of this size.
+-- Every game draws into a playfield of this size; the sidebar sits to its right.
 Arcade.FIELD_W, Arcade.FIELD_H = 432, 462
+local SIDEBAR_W, GUTTER = 200, 8
+local CONTENT_W = Arcade.FIELD_W + GUTTER + SIDEBAR_W
+local CONTENT_H = Arcade.FIELD_H
 
-local INSET_TOP, INSET_BOTTOM, INSET_LEFT, INSET_RIGHT, INSET_PAD = 60, 30, 4, 6, 3
-local FRAME_W = Arcade.FIELD_W + INSET_LEFT + INSET_RIGHT + INSET_PAD * 2
-local FRAME_H = Arcade.FIELD_H + INSET_TOP + INSET_BOTTOM + INSET_PAD * 2
-local TILE_W, TILE_H = 206, 190
+local INSET_TOP, INSET_BOTTOM, INSET_LEFT, INSET_RIGHT, INSET_PAD = 30, 30, 4, 6, 3
+local FRAME_W = CONTENT_W + INSET_LEFT + INSET_RIGHT + INSET_PAD * 2
+local FRAME_H = CONTENT_H + INSET_TOP + INSET_BOTTOM + INSET_PAD * 2
+local LOGO_W, LOGO_H = 280, 180
+local TILE_W, TILE_H, TILE_GAP = 200, 236, 10
+local SIDEBAR_SCORES = 5
 
 function Arcade.RegisterGame(game)
     Arcade.games[game.id] = game
@@ -39,48 +44,72 @@ function Window:Create()
     f:SetSize(FRAME_W, FRAME_H)
     f:SetToplevel(true)
     f:SetClampedToScreen(true)
+    f:SetClampRectInsets(0, 0, LOGO_H - 30, 0)
     f:SetMovable(true)
     f:EnableMouse(true)
     f:Hide()
     tinsert(UISpecialFrames, "DarkmoonArcadeFrame")
     self.frame = f
 
+    -- Content is parented to the chrome so it always draws above the chrome's background.
     local chrome = CreateFrame("Frame", nil, f, "PortraitFrameTemplateNoCloseButton")
     chrome:SetAllPoints()
-    if not pcall(chrome.SetPortraitToAsset, chrome, Media.Tex("portrait")) and chrome.GetPortrait then
-        chrome:GetPortrait():SetTexture(Media.Tex("portrait"))
-    end
+    if ButtonFrameTemplate_HidePortrait then pcall(ButtonFrameTemplate_HidePortrait, chrome) end
+    if chrome.SetTitle then chrome:SetTitle("") end
     self.chrome = chrome
 
-    local close = CreateFrame("Button", nil, f, "UIPanelCloseButtonNoScripts")
+    local close = CreateFrame("Button", nil, chrome, "UIPanelCloseButtonNoScripts")
     close:SetPoint("TOPRIGHT")
     close:SetScript("OnClick", function() f:Hide() end)
 
-    -- The title bar is the drag handle, like on Blizzard's own panels.
-    local drag = CreateFrame("Frame", nil, f)
-    drag:SetPoint("TOPLEFT", 60, 0)
-    drag:SetPoint("TOPRIGHT", -28, 0)
-    drag:SetHeight(24)
-    drag:EnableMouse(true)
-    drag:RegisterForDrag("LeftButton")
-    drag:SetScript("OnDragStart", function() f:StartMoving() end)
-    drag:SetScript("OnDragStop", function()
+    local function StartMove() f:StartMoving() end
+    local function StopMove()
         f:StopMovingOrSizing()
         local point, _, relPoint, x, y = f:GetPoint()
         ns.db.position = { point, relPoint, x, y }
-    end)
+    end
 
-    local inset = CreateFrame("Frame", nil, f, "InsetFrameTemplate")
+    local titleBar = CreateFrame("Frame", nil, chrome)
+    titleBar:SetPoint("TOPLEFT", 4, 0)
+    titleBar:SetPoint("TOPRIGHT", -28, 0)
+    titleBar:SetHeight(24)
+    titleBar:EnableMouse(true)
+    titleBar:RegisterForDrag("LeftButton")
+    titleBar:SetScript("OnDragStart", StartMove)
+    titleBar:SetScript("OnDragStop", StopMove)
+
+    -- The logo replaces the title text and rises above the frame.
+    local logoFrame = CreateFrame("Frame", nil, chrome)
+    logoFrame:SetSize(LOGO_W, LOGO_H)
+    logoFrame:SetPoint("BOTTOM", f, "TOP", 0, -26)
+    logoFrame:SetFrameLevel(chrome:GetFrameLevel() + 20)
+    logoFrame:EnableMouse(true)
+    logoFrame:RegisterForDrag("LeftButton")
+    logoFrame:SetScript("OnDragStart", StartMove)
+    logoFrame:SetScript("OnDragStop", StopMove)
+    local logo = logoFrame:CreateTexture(nil, "ARTWORK")
+    logo:SetAllPoints()
+    logo:SetTexture(Media.Tex("logo"))
+    logo:SetTexCoord(0, 1, 0, 330 / 512)
+
+    local inset = CreateFrame("Frame", nil, chrome, "InsetFrameTemplate")
     inset:SetPoint("TOPLEFT", INSET_LEFT, -INSET_TOP)
     inset:SetPoint("BOTTOMRIGHT", -INSET_RIGHT, INSET_BOTTOM)
+    inset:SetFrameLevel(chrome:GetFrameLevel() + 2)
 
-    local field = CreateFrame("Frame", nil, inset)
+    local content = CreateFrame("Frame", nil, inset)
+    content:SetSize(CONTENT_W, CONTENT_H)
+    content:SetPoint("TOPLEFT", INSET_PAD, -INSET_PAD)
+    content:SetFrameLevel(inset:GetFrameLevel() + 2)
+    self.content = content
+
+    local field = CreateFrame("Frame", nil, content)
     field:SetSize(Arcade.FIELD_W, Arcade.FIELD_H)
-    field:SetPoint("TOPLEFT", INSET_PAD, -INSET_PAD)
+    field:SetPoint("TOPLEFT")
     field:SetClipsChildren(true)
     self.field = field
 
-    self:CreateHud()
+    self:CreateSidebar()
     self:CreateFooter()
     self:CreateHub()
 
@@ -90,14 +119,20 @@ function Window:Create()
     f:EnableKeyboard(true)
     f:SetScript("OnKeyDown", function(frame, key)
         local game = self.activeGame
-        local handled = game and game.OnKey and game:OnKey(key) or false
+        local handled = false
+        if game and game.OnKey then
+            local ok, result = ns.SafeCall("OnKey", game.OnKey, game, key)
+            handled = ok and result or false
+        end
         if not InCombatLockdown() then frame:SetPropagateKeyboardInput(not handled) end
     end)
     f:SetScript("OnKeyUp", function(_, key)
         local game = self.activeGame
         if game and game.OnKeyUp then game:OnKeyUp(key) end
     end)
-    f:SetScript("OnUpdate", function(_, elapsed) self:OnUpdate(math.min(elapsed, 0.05)) end)
+    f:SetScript("OnUpdate", function(_, elapsed)
+        ns.SafeCall("OnUpdate", self.OnUpdate, self, math.min(elapsed, 0.05))
+    end)
     f:SetScript("OnShow", function()
         PlaySound(SOUNDKIT.IG_CHARACTER_INFO_OPEN)
         self:RefreshHub()
@@ -110,66 +145,130 @@ function Window:Create()
     self:OpenHub()
 end
 
-function Window:CreateHud()
-    local f = self.frame
-    self.hudLeft = Widgets.Text(f, 12, "white")
-    self.hudLeft:SetPoint("LEFT", f, "TOPLEFT", 66, -42)
-    self.hudCenter = Widgets.Text(f, 18, "gold")
-    self.hudCenter:SetPoint("CENTER", f, "TOP", 0, -42)
-    self.hudRight = Widgets.Text(f, 12, "gray")
-    self.hudRight:SetPoint("RIGHT", f, "TOPRIGHT", -12, -42)
+-- Sidebar ----------------------------------------------------------------------
+
+function Window:CreateSidebar()
+    local bar = CreateFrame("Frame", nil, self.content)
+    bar:SetSize(SIDEBAR_W, CONTENT_H)
+    bar:SetPoint("TOPRIGHT")
+    self.sidebar = bar
+
+    local bg = bar:CreateTexture(nil, "BACKGROUND")
+    bg:SetAllPoints()
+    bg:SetTexture(Media.Tex("hub_background"))
+    bg:SetTexCoord(0, SIDEBAR_W / 512, 0, CONTENT_H / 512)
+
+    local divider = bar:CreateTexture(nil, "BORDER")
+    divider:SetColorTexture(0, 0, 0, 0.8)
+    divider:SetPoint("TOPRIGHT", bar, "TOPLEFT", 0, 0)
+    divider:SetPoint("BOTTOMRIGHT", bar, "BOTTOMLEFT", 0, 0)
+    divider:SetWidth(GUTTER)
+
+    local s = {}
+    s.name = Widgets.Text(bar, 16, "gold")
+    s.name:SetPoint("TOP", 0, -14)
+    s.scoreLabel = Widgets.LocalizedText(bar, 11, "gray", "SCORE")
+    s.scoreLabel:SetPoint("TOP", s.name, "BOTTOM", 0, -14)
+    s.score = Widgets.Text(bar, 28, "gold")
+    s.score:SetPoint("TOP", s.scoreLabel, "BOTTOM", 0, -4)
+    s.best = Widgets.Text(bar, 12, "white")
+    s.best:SetPoint("TOP", s.score, "BOTTOM", 0, -6)
+    s.info = Widgets.Text(bar, 12, "blue")
+    s.info:SetPoint("TOP", s.best, "BOTTOM", 0, -10)
+    s.info:SetWidth(SIDEBAR_W - 20)
+
+    s.scoresTitle = Widgets.LocalizedText(bar, 12, "gold", "HIGHSCORES")
+    s.scoresTitle:SetPoint("TOP", 0, -170)
+    s.rows = {}
+    for i = 1, SIDEBAR_SCORES do
+        local y = -192 - (i - 1) * 18
+        local row = {
+            rank = Widgets.Text(bar, 11, "gray"),
+            score = Widgets.Text(bar, 12, "gold"),
+            detail = Widgets.Text(bar, 10, "white"),
+        }
+        row.rank:SetPoint("TOPRIGHT", bar, "TOPLEFT", 30, y)
+        row.score:SetPoint("TOPRIGHT", bar, "TOPLEFT", 110, y)
+        row.detail:SetPoint("TOPLEFT", bar, "TOPLEFT", 120, y)
+        s.rows[i] = row
+    end
+    s.empty = Widgets.LocalizedText(bar, 10, "gray", "NO_SCORES")
+    s.empty:SetPoint("TOP", 0, -196)
+    s.empty:SetWidth(SIDEBAR_W - 24)
+
+    s.help = Widgets.Text(bar, 10, "gray")
+    s.help:SetPoint("BOTTOM", 0, 14)
+    s.help:SetWidth(SIDEBAR_W - 20)
+    s.help:SetJustifyH("CENTER")
+    self.side = s
 end
 
-function Window:SetHud(left, center, right)
-    self.hudLeft:SetText(left or "")
-    self.hudCenter:SetText(center or "")
-    self.hudRight:SetText(right or "")
+function Window:UpdateSidebar()
+    local game = self.activeGame
+    if not game then return end
+    local s, info = self.side, game:Sidebar()
+    s.name:SetText(L[game.nameKey])
+    s.score:SetText(ns.FormatNumber(info.score or 0))
+    s.best:SetText(L.BEST:format(ns.FormatNumber(Scores.Best(game.id, info.bucket))))
+    s.info:SetText(info.info or "")
+    s.help:SetText(L[game.helpKey])
+    local list = Scores.List(game.id, info.bucket)
+    for i, row in ipairs(s.rows) do
+        local entry = list[i]
+        if entry then
+            row.rank:SetText(i .. ".")
+            row.score:SetText(ns.FormatNumber(entry.score))
+            row.detail:SetText(game.ScoreDetail and game:ScoreDetail(entry) or "")
+        end
+        for _, fs in pairs(row) do fs:SetShown(entry ~= nil) end
+    end
+    s.empty:SetShown(#list == 0)
 end
+
+-- Footer -------------------------------------------------------------------------
 
 function Window:CreateFooter()
-    local f = self.frame
-    local icon = f:CreateTexture(nil, "ARTWORK")
+    local chrome = self.chrome
+    local icon = chrome:CreateTexture(nil, "ARTWORK")
     icon:SetTexture("Interface\\TaxiFrame\\UI-Taxi-Icon-Green")
     icon:SetSize(16, 16)
     icon:SetPoint("BOTTOMLEFT", 10, 7)
     self.flightIcon = icon
-    self.flightText = Widgets.Text(f, 11, "blue")
+    self.flightText = Widgets.Text(chrome, 11, "blue")
     self.flightText:SetPoint("LEFT", icon, "RIGHT", 4, 0)
 
-    local options = Widgets.Button(f, 100, 22, "OPTIONS", function() ns.Settings:Open() end)
+    local options = Widgets.Button(chrome, 110, 22, "OPTIONS", function() ns.Settings:Open() end)
     options:SetPoint("BOTTOMRIGHT", -8, 5)
-    local games = Widgets.Button(f, 100, 22, "GAMES", function() self:OpenHub() end)
+    local games = Widgets.Button(chrome, 110, 22, "GAMES", function() self:OpenHub() end)
     games:SetPoint("RIGHT", options, "LEFT", -4, 0)
     self.gamesButton = games
 end
 
--- Hub ------------------------------------------------------------------------
+-- Hub ------------------------------------------------------------------------------
 
 function Window:CreateHub()
-    local hub = CreateFrame("Frame", nil, self.field)
+    local hub = CreateFrame("Frame", nil, self.content)
     hub:SetAllPoints()
+    hub:SetFrameLevel(self.content:GetFrameLevel() + 5)
     self.hub = hub
 
     local bg = hub:CreateTexture(nil, "BACKGROUND")
     bg:SetAllPoints()
     bg:SetTexture(Media.Tex("hub_background"))
-    bg:SetTexCoord(0, Arcade.FIELD_W / 512, 0, Arcade.FIELD_H / 512)
+    bg:SetTexCoord(0, 1, 0, CONTENT_H / 512)
 
-    local logo = hub:CreateTexture(nil, "ARTWORK")
-    logo:SetTexture(Media.Tex("logo"))
-    logo:SetTexCoord(0, 1, 0, 341 / 512)
-    logo:SetSize(354, 236)
-    logo:SetPoint("TOP", 0, -2)
+    local subtitle = Widgets.LocalizedText(hub, 16, "gold", "PICK_GAME")
+    subtitle:SetPoint("TOP", 0, -26)
 
-    local subtitle = Widgets.LocalizedText(hub, 13, "gold", "PICK_GAME")
-    subtitle:SetPoint("TOP", logo, "BOTTOM", 0, -2)
-
+    local columns = math.min(3, #Arcade.order)
+    local rowWidth = columns * TILE_W + (columns - 1) * TILE_GAP
+    local left = (CONTENT_W - rowWidth) / 2
     self.tiles = {}
     for i, id in ipairs(Arcade.order) do
         local tile = self:CreateTile(hub, Arcade.games[id])
-        local column = (i - 1) % 2
-        local row = math.floor((i - 1) / 2)
-        tile:SetPoint("TOPLEFT", hub, "TOPLEFT", 8 + column * (TILE_W + 4), -258 - row * (TILE_H + 6))
+        local column = (i - 1) % 3
+        local row = math.floor((i - 1) / 3)
+        tile:SetPoint("TOPLEFT", hub, "TOPLEFT", left + column * (TILE_W + TILE_GAP), -70 - row * (TILE_H + TILE_GAP))
         self.tiles[#self.tiles + 1] = tile
     end
 end
@@ -185,21 +284,23 @@ function Window:CreateTile(parent, game)
     art:SetPoint("TOPLEFT", 4, -4)
     art:SetPoint("TOPRIGHT", -4, -4)
     art:SetHeight((TILE_W - 8) / 2)
-    tile.art = art
 
-    local name = Widgets.LocalizedText(tile, 15, "gold", game.nameKey)
-    name:SetPoint("TOP", art, "BOTTOM", 0, -6)
-    local desc = Widgets.LocalizedText(tile, 10, "white", game.descKey)
-    desc:SetPoint("TOP", name, "BOTTOM", 0, -4)
-    desc:SetWidth(TILE_W - 16)
+    local name = Widgets.LocalizedText(tile, 16, "gold", game.nameKey)
+    name:SetPoint("TOP", art, "BOTTOM", 0, -8)
+    local desc = Widgets.LocalizedText(tile, 11, "white", game.descKey)
+    desc:SetPoint("TOP", name, "BOTTOM", 0, -6)
+    desc:SetWidth(TILE_W - 18)
     desc:SetJustifyH("CENTER")
-    tile.best = Widgets.Text(tile, 10, "gray")
-    tile.best:SetPoint("BOTTOM", 0, 8)
+    tile.best = Widgets.Text(tile, 11, "gray")
+    tile.best:SetPoint("BOTTOM", 0, 40)
+
+    local play = Widgets.Button(tile, 120, 24, "PLAY", function() self:OpenGame(game.id) end)
+    play:SetPoint("BOTTOM", 0, 10)
 
     local highlight = tile:CreateTexture(nil, "HIGHLIGHT")
     highlight:SetTexture("Interface\\Buttons\\UI-Listbox-Highlight2")
     highlight:SetBlendMode("ADD")
-    highlight:SetVertexColor(1, 0.8, 0.3, 0.35)
+    highlight:SetVertexColor(1, 0.8, 0.3, 0.3)
     highlight:SetPoint("TOPLEFT", 3, -3)
     highlight:SetPoint("BOTTOMRIGHT", -3, 3)
 
@@ -208,7 +309,7 @@ function Window:CreateTile(parent, game)
         self:OpenGame(game.id)
     end)
     tile.game = game
-    if game.DecorateTile then game:DecorateTile(tile, art) end
+    if game.DecorateTile then ns.SafeCall("DecorateTile", game.DecorateTile, game, tile, art) end
     return tile
 end
 
@@ -226,9 +327,8 @@ function Window:OpenHub()
         self.activeGame = nil
     end
     self.hub:Show()
+    self.sidebar:Hide()
     self.gamesButton:Hide()
-    self.chrome:SetTitle(L.TITLE)
-    self:SetHud()
     self:RefreshHub()
 end
 
@@ -244,14 +344,15 @@ function Window:OpenGame(id)
         local container = CreateFrame("Frame", nil, self.field)
         container:SetAllPoints()
         game.container = container
-        game:Build(container)
+        if not ns.SafeCall("Build " .. id, game.Build, game, container) then return end
     end
     self.hub:Hide()
+    self.sidebar:Show()
     game.container:Show()
     self.activeGame = game
     self.gamesButton:Show()
-    self.chrome:SetTitle(L.TITLE .. " – " .. L[game.nameKey])
     game:Enter()
+    self:UpdateSidebar()
 end
 
 -- Shows the window and the game chosen for flights.
@@ -260,7 +361,6 @@ function Window:OpenForFlight()
     if choice == "off" then return end
     self.frame:Show()
     if Arcade.games[choice] then self:OpenGame(choice) end
-    if self.activeGame and self.activeGame.OnFlightStarted then self.activeGame:OnFlightStarted() end
 end
 
 function Window:OnLanded()
@@ -281,7 +381,7 @@ function Window:RestorePosition()
     if pos then
         f:SetPoint(pos[1], UIParent, pos[2], pos[3], pos[4])
     else
-        f:SetPoint("CENTER", UIParent, "CENTER", 0, 40)
+        f:SetPoint("CENTER", UIParent, "CENTER", 0, -40)
     end
 end
 
@@ -289,16 +389,12 @@ function Window:ApplyLanguage()
     ns.SetLanguage(ns.db.language)
     Media.ApplyLanguageFonts()
     Widgets.RefreshAll()
-    if self.activeGame then
-        self.chrome:SetTitle(L.TITLE .. " – " .. L[self.activeGame.nameKey])
-    else
-        self.chrome:SetTitle(L.TITLE)
-    end
     for _, id in ipairs(Arcade.order) do
         local game = Arcade.games[id]
         if game.container and game.RefreshTexts then game:RefreshTexts() end
     end
     self:RefreshHub()
+    self:UpdateSidebar()
 end
 
 function Window:UpdateFlightInfo()

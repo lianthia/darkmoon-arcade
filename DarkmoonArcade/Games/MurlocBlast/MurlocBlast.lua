@@ -14,6 +14,7 @@ local Module = {
     id = "murlocblast",
     nameKey = "MB_NAME",
     descKey = "MB_DESC",
+    helpKey = "MB_HELP",
     tile = "tiles/murlocblast",
     defaults = {
         difficulty = "normal",
@@ -223,12 +224,21 @@ function Module:Resume()
     self.overlay:Hide()
 end
 
-function Module:UpdateHud()
+function Module:Sidebar()
     local game = self.game
-    ns.Window:SetHud(
-        L.LEVEL:format(game.level) .. "  ·  " .. DifficultyName(game.difficulty),
-        ns.FormatNumber(game.score),
-        L.BEST:format(ns.FormatNumber(Scores.Best(self.id, game.difficulty))))
+    return {
+        score = game.score,
+        bucket = game.difficulty,
+        info = L.LEVEL:format(game.level) .. "  ·  " .. DifficultyName(game.difficulty),
+    }
+end
+
+function Module:ScoreDetail(entry)
+    return L.LEVEL:format(entry.level)
+end
+
+function Module:UpdateHud()
+    ns.Window:UpdateSidebar()
 end
 
 function Module:OnGameEvent(name, data)

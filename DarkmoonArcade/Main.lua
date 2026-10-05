@@ -27,6 +27,7 @@ local function InitDB()
     db.games = db.games or {}
     db.flights = db.flights or {}
     db.flightRate = db.flightRate or {}
+    db.errors = nil
     ns.db = db
 end
 
@@ -51,14 +52,17 @@ events:SetScript("OnEvent", function(_, event, arg1)
         InitDB()
         ns.SetLanguage(ns.db.language)
         Media.ApplyLanguageFonts()
-        Window:Create()
-        ns.Minimap:Create()
-        ns.Settings:Register()
-        Flight:Init()
+        ns.SafeCall("Window", Window.Create, Window)
+        ns.SafeCall("Settings", ns.Settings.Register, ns.Settings)
+        ns.SafeCall("Flight", Flight.Init, Flight)
         events:UnregisterEvent("ADDON_LOADED")
     elseif event == "PLAYER_LOGIN" then
+        -- The minimap has its final size only once the UI layout is applied.
+        ns.SafeCall("Minimap", ns.Minimap.Create, ns.Minimap)
         ns.Print(L.LOADED)
         CheckTaxi()
+    elseif event == "PLAYER_ENTERING_WORLD" then
+        ns.Minimap:Update()
     elseif event == "PLAYER_REGEN_DISABLED" then
         if Window.frame:IsShown() then
             Window.frame:Hide()
@@ -71,6 +75,7 @@ events:SetScript("OnEvent", function(_, event, arg1)
 end)
 events:RegisterEvent("ADDON_LOADED")
 events:RegisterEvent("PLAYER_LOGIN")
+events:RegisterEvent("PLAYER_ENTERING_WORLD")
 events:RegisterEvent("PLAYER_REGEN_DISABLED")
 events:RegisterEvent("PLAYER_CONTROL_LOST")
 events:RegisterEvent("PLAYER_CONTROL_GAINED")

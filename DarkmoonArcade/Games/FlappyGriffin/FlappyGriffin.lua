@@ -28,6 +28,7 @@ local Module = {
     id = "flappygriffin",
     nameKey = "FG_NAME",
     descKey = "FG_DESC",
+    helpKey = "FG_HELP",
     tile = "tiles/flappygriffin",
 }
 
@@ -275,7 +276,7 @@ function Module:Build(container)
     self:CreatePages()
     Widgets.ScoresPage(self.overlay, W, {
         gameId = self.id,
-        detail = function(entry) return entry.medal and L["FG_MEDAL_" .. entry.medal] or "" end,
+        detail = function(entry) return self:ScoreDetail(entry) end,
         shareMessage = ShareMessage,
         onBack = function() self.overlay:Show("menu") end,
     })
@@ -376,8 +377,21 @@ function Module:Pause(info)
     end
 end
 
+function Module:Sidebar()
+    local medal = Game.Medal(self.game.score)
+    return {
+        score = self.game.score,
+        bucket = "default",
+        info = medal and L.FG_MEDAL:format(L["FG_MEDAL_" .. medal]) or L.FG_TAGLINE,
+    }
+end
+
+function Module:ScoreDetail(entry)
+    return entry.medal and L["FG_MEDAL_" .. entry.medal] or ""
+end
+
 function Module:UpdateHud()
-    ns.Window:SetHud(nil, ns.FormatNumber(self.game.score), L.BEST:format(ns.FormatNumber(self:BestScore())))
+    ns.Window:UpdateSidebar()
 end
 
 function Module:OnGameEvent(name, data)

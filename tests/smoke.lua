@@ -276,4 +276,9 @@ _G.DarkmoonArcadeMinimapButton._scripts.OnEnter(_G.DarkmoonArcadeMinimapButton)
 _G.DarkmoonArcadeMinimapButton._scripts.OnClick(_G.DarkmoonArcadeMinimapButton, "RightButton")
 Tick(1)
 
+for _, line in ipairs(printed) do
+    if tostring(line):find("error") then error("captured: " .. tostring(line)) end
+end
+assert(not DarkmoonArcadeDB.errors, "errors recorded in SavedVariables")
+
 return results.murloc, results.flappy, results.clicks, results.best

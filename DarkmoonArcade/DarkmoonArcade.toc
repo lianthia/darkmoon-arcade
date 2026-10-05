@@ -1,9 +1,8 @@
 ## Interface: 16001
 ## Title: Darkmoon Arcade
 ## Notes: Mini games for long flights: Murloc Blast, Flappy Griffin and more.
-## Notes-deDE: Minispiele für lange Flüge: Murloc Blast, Flappy Griffin und mehr.
 ## Category: Mini Games
-## Version: 0.3.0
+## Version: 0.4.0
 ## SavedVariables: DarkmoonArcadeDB
 ## IconTexture: Interface\AddOns\DarkmoonArcade\media\icon
 ## AddonCompartmentFunc: DarkmoonArcade_OnAddonCompartmentClick
@@ -11,6 +10,7 @@
 ## AddonCompartmentFuncOnLeave: DarkmoonArcade_OnAddonCompartmentLeave
 
 Locale.lua
+Core\Debug.lua
 Core\Flight.lua
 Core\Scores.lua
 UI\Media.lua
