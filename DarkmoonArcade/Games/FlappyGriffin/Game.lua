@@ -40,6 +40,14 @@ function Game.Medal(score)
     end
 end
 
+-- The next medal above `score`, or nil once the best one is reached.
+function Game.NextMedal(score)
+    for i = #Game.MEDALS, 1, -1 do
+        local medal = Game.MEDALS[i]
+        if score < medal.score then return medal end
+    end
+end
+
 function Game.New(random)
     local g = setmetatable({}, Game)
     g.random = random or math.random

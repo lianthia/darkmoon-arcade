@@ -110,6 +110,13 @@ test("medals by score", function()
     eq(Game.Medal(150), "darkmoon")
 end)
 
+test("next medal goal", function()
+    eq(Game.NextMedal(0).key, "bronze")
+    eq(Game.NextMedal(10).key, "silver")
+    eq(Game.NextMedal(99).key, "darkmoon")
+    eq(Game.NextMedal(100), nil)
+end)
+
 test("pause freezes the run", function()
     local game = Game.New(Rng(7))
     game:Flap()

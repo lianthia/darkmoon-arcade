@@ -1,6 +1,7 @@
 local _, ns = ...
 
 ns.AddStrings("enUS", {
+    FG_NEXT_MEDAL = "Next medal: %s at %d points",
     FG_NAME = "Flappy Griffin",
     FG_DESC = "Steer a gryphon through the rock pillars and grab Darkmoon tickets.",
     FG_TAGLINE = "Hold on to your saddle!",
@@ -16,6 +17,7 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    FG_NEXT_MEDAL = "Nächste Medaille: %s ab %d Punkten",
     FG_DESC = "Steuere einen Greifen durch die Felssäulen und schnapp dir Dunkelmond-Tickets.",
     FG_TAGLINE = "Halt dich am Sattel fest!",
     FG_TAP = "Klicken oder Leertaste zum Flattern",
@@ -28,6 +30,7 @@ ns.AddStrings("deDE", {
 })
 
 ns.AddStrings("frFR", {
+    FG_NEXT_MEDAL = "Prochaine médaille : %s à %d points",
     FG_NAME = "Flappy Griffon",
     FG_DESC = "Guidez un griffon entre les piliers de roche et attrapez les tickets de Sombrelune.",
     FG_TAGLINE = "Accrochez-vous à la selle !",
@@ -43,6 +46,7 @@ ns.AddStrings("frFR", {
 })
 
 ns.AddStrings("esES", {
+    FG_NEXT_MEDAL = "Siguiente medalla: %s con %d puntos",
     FG_NAME = "Flappy Grifo",
     FG_DESC = "Guía a un grifo entre los pilares de roca y atrapa boletos de la Luna Negra.",
     FG_TAGLINE = "¡Agárrate a la silla!",
@@ -58,6 +62,7 @@ ns.AddStrings("esES", {
 })
 
 ns.AddStrings("ruRU", {
+    FG_NEXT_MEDAL = "Следующая медаль: %s за %d очков",
     FG_NAME = "Flappy Griffin",
     FG_DESC = "Проведите грифона между скалами и соберите билеты Ярмарки Новолуния.",
     FG_TAGLINE = "Держитесь крепче!",
@@ -73,6 +78,7 @@ ns.AddStrings("ruRU", {
 })
 
 ns.AddStrings("zhCN", {
+    FG_NEXT_MEDAL = "下一枚奖牌：%s（%d分）",
     FG_NAME = "Flappy Griffin",
     FG_DESC = "驾驭狮鹫穿过岩柱，收集暗月奖券。",
     FG_TAGLINE = "抓紧鞍座！",

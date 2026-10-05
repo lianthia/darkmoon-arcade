@@ -41,7 +41,7 @@ function SettingsPage:Register()
             options[#options + 1] = { id, L[ns.Arcade.games[id].nameKey] }
         end
         return options
-    end)
+    end, function() Window:RefreshHub() end)
     Checkbox(category, db, "flightTime", L.OPT_FLIGHT_TIME, L.OPT_FLIGHT_TIME_TIP, true)
 
     Dropdown(category, "language", L.OPT_LANGUAGE, L.OPT_LANGUAGE_TIP, "auto", function()

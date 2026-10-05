@@ -21,7 +21,7 @@ local VOICES = {
 }
 
 -- Model presentation; tunable in-game with /arcade fg <facing|anim|zoom> <value>.
-local model = { facing = -math.pi / 2, anim = 5, zoom = 0, size = 128 }
+local model = { facing = math.pi / 2, anim = 5, zoom = 0, size = 128 }
 
 local FLAP_KEYS = { SPACE = true, W = true, UP = true }
 
@@ -293,7 +293,6 @@ function Module:CreatePages()
     local play = Widgets.Button(menu, 200, 26, "NEW_GAME", function() self:NewRun() end)
     local scores = Widgets.Button(menu, 200, 26, "HIGHSCORES", function() self.overlay:Show("scores") end)
     Widgets.Stack(menu, { play, scores }, -190)
-    Widgets.HelpText(menu, "FG_HELP", W - 30)
 
     local pause = self.overlay:AddPage("pause")
     local pauseTitle = Widgets.PageTitle(pause, "PAUSED", -100)
@@ -332,13 +331,17 @@ function Module:CreatePages()
     Widgets.Stack(over, { again, overMenu }, -306)
     over.refresh = function(data)
         final:SetText(L.FG_POINTS:format(ns.FormatNumber(data.score)))
+        medalText:ClearAllPoints()
         if data.medal then
+            medalText:SetPoint("TOP", medalIcon, "BOTTOM", 0, -4)
             medalIcon:SetTexture(data.medal == "darkmoon" and Media.Tex("portrait") or Tex("medal_" .. data.medal))
             medalIcon:Show()
             medalText:SetText(L.FG_MEDAL:format(L["FG_MEDAL_" .. data.medal]))
         else
             medalIcon:Hide()
-            medalText:SetText("")
+            medalText:SetPoint("TOP", final, "BOTTOM", 0, -14)
+            local nextMedal = Game.NextMedal(data.score)
+            medalText:SetText(nextMedal and L.FG_NEXT_MEDAL:format(L["FG_MEDAL_" .. nextMedal.key], nextMedal.score) or "")
         end
         record:SetText(data.rank == 1 and L.NEW_RECORD or "")
     end
@@ -379,12 +382,12 @@ function Module:Pause(info)
 end
 
 function Module:Sidebar()
-    local medal = Game.Medal(self.game.score)
-    return {
-        score = self.game.score,
-        bucket = "default",
-        info = medal and L.FG_MEDAL:format(L["FG_MEDAL_" .. medal]) or L.FG_TAGLINE,
-    }
+    local score = self.game.score
+    local medal, nextMedal = Game.Medal(score), Game.NextMedal(score)
+    local lines = {}
+    if medal then lines[#lines + 1] = L.FG_MEDAL:format(L["FG_MEDAL_" .. medal]) end
+    if nextMedal then lines[#lines + 1] = L.FG_NEXT_MEDAL:format(L["FG_MEDAL_" .. nextMedal.key], nextMedal.score) end
+    return { score = score, bucket = "default", info = table.concat(lines, "\n") }
 end
 
 function Module:ScoreDetail(entry)

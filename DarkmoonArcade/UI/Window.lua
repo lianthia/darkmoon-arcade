@@ -17,11 +17,11 @@ local SIDEBAR_W, GUTTER = 200, 8
 local CONTENT_W = Arcade.FIELD_W + GUTTER + SIDEBAR_W
 local CONTENT_H = Arcade.FIELD_H
 
-local INSET_TOP, INSET_BOTTOM, INSET_SIDE, INSET_PAD = 30, 42, 8, 3
+local INSET_TOP, INSET_BOTTOM, INSET_SIDE, INSET_PAD = 10, 42, 8, 3
 local FRAME_W = CONTENT_W + INSET_SIDE * 2 + INSET_PAD * 2
 local FRAME_H = CONTENT_H + INSET_TOP + INSET_BOTTOM + INSET_PAD * 2
 local LOGO_W, LOGO_H = 196, 126
-local LOGO_OVERLAP = 22
+local LOGO_OVERLAP = 8
 local TILE_W, TILE_H, TILE_GAP, TILE_COLUMNS = 300, 150, 20, 2
 
 -- Panel templates without a title bar first; the portrait frame is the known-good fallback.
@@ -90,7 +90,7 @@ function Window:Create()
     local dragArea = CreateFrame("Frame", nil, chrome)
     dragArea:SetPoint("TOPLEFT", 4, 0)
     dragArea:SetPoint("TOPRIGHT", -30, 0)
-    dragArea:SetHeight(INSET_TOP)
+    dragArea:SetHeight(INSET_TOP + 4)
     dragArea:EnableMouse(true)
     dragArea:RegisterForDrag("LeftButton")
     dragArea:SetScript("OnDragStart", StartMove)
@@ -275,15 +275,21 @@ function Window:CreateHub()
     bg:SetTexture(Media.Tex("hub_background"))
     bg:SetTexCoord(0, 1, 0, CONTENT_H / 512)
 
-    local subtitle = Widgets.LocalizedText(hub, 16, "gold", "PICK_GAME")
-    subtitle:SetPoint("TOP", 0, -36)
-
+    -- Title, cards and flight hint form one block, centered in the hub.
     local columns = math.min(TILE_COLUMNS, #Arcade.order)
     local rows = math.ceil(#Arcade.order / TILE_COLUMNS)
     local rowWidth = columns * TILE_W + (columns - 1) * TILE_GAP
     local gridHeight = rows * TILE_H + (rows - 1) * TILE_GAP
+    local blockHeight = 44 + gridHeight + 40
     local left = (CONTENT_W - rowWidth) / 2
-    local top = 60 + math.max(0, (CONTENT_H - 60 - gridHeight) / 2 - 20)
+    local blockTop = math.max(24, (CONTENT_H - blockHeight) / 2)
+    local top = blockTop + 44
+
+    local subtitle = Widgets.LocalizedText(hub, 18, "gold", "PICK_GAME")
+    subtitle:SetPoint("TOP", 0, -blockTop)
+
+    self.hubHint = Widgets.Text(hub, 11, "gray")
+    self.hubHint:SetPoint("TOP", 0, -(top + gridHeight + 18))
     self.tiles = {}
     for i, id in ipairs(Arcade.order) do
         local tile = self:CreateTile(hub, Arcade.games[id])
@@ -365,6 +371,10 @@ function Window:CreateTile(parent, game)
 end
 
 function Window:RefreshHub()
+    local choice = ns.db.flightGame
+    local target = choice == "off" and L.FLIGHT_OFF or choice == "hub" and L.FLIGHT_HUB
+        or (Arcade.games[choice] and L[Arcade.games[choice].nameKey]) or L.FLIGHT_OFF
+    self.hubHint:SetText(L.HUB_FLIGHT_HINT:format(target))
     for _, tile in ipairs(self.tiles) do
         local best = tile.game.BestScore and tile.game:BestScore()
         tile.best:SetText(best and best > 0 and L.BEST:format(ns.FormatNumber(best)) or "")

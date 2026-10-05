@@ -9,6 +9,7 @@ function ns.AddStrings(language, values)
 end
 
 ns.AddStrings("enUS", {
+    HUB_FLIGHT_HINT = "On flights this opens: %s  ·  change it under Options",
     GAME_OVER = "Game Over",
     TITLE = "Darkmoon Arcade",
     GAMES = "Games",
@@ -69,6 +70,7 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    HUB_FLIGHT_HINT = "Bei Flügen öffnet sich: %s  ·  änderbar unter Optionen",
     GAME_OVER = "Game Over",
     GAMES = "Spiele",
     PICK_GAME = "Hereinspaziert – wähle ein Spiel!",
@@ -126,6 +128,7 @@ ns.AddStrings("deDE", {
 })
 
 ns.AddStrings("frFR", {
+    HUB_FLIGHT_HINT = "En vol, ceci s'ouvre : %s  ·  modifiable dans les options",
     GAME_OVER = "Partie terminée",
     GAMES = "Jeux",
     PICK_GAME = "Approchez – choisissez un jeu !",
@@ -184,6 +187,7 @@ ns.AddStrings("frFR", {
 })
 
 ns.AddStrings("esES", {
+    HUB_FLIGHT_HINT = "Al volar se abre: %s  ·  cámbialo en Opciones",
     GAME_OVER = "Fin del juego",
     GAMES = "Juegos",
     PICK_GAME = "¡Pasen y vean, elijan un juego!",
@@ -242,6 +246,7 @@ ns.AddStrings("esES", {
 })
 
 ns.AddStrings("ruRU", {
+    HUB_FLIGHT_HINT = "В полёте открывается: %s  ·  меняется в настройках",
     GAME_OVER = "Игра окончена",
     GAMES = "Игры",
     PICK_GAME = "Подходите – выбирайте игру!",
@@ -301,6 +306,7 @@ ns.AddStrings("ruRU", {
 })
 
 ns.AddStrings("zhCN", {
+    HUB_FLIGHT_HINT = "飞行时打开：%s  ·  可在选项中更改",
     GAME_OVER = "游戏结束",
     GAMES = "游戏",
     PICK_GAME = "快来看看——选一个游戏吧！",
