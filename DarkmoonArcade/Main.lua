@@ -27,6 +27,8 @@ local function InitDB()
     db.games = db.games or {}
     db.flights = db.flights or {}
     db.flightRate = db.flightRate or {}
+    db.achievements = db.achievements or {}
+    db.guild = db.guild or {}
     db.errors = nil
     db.debug = { build = select(4, GetBuildInfo()), locale = GetLocale() }
     ns.db = db
@@ -56,10 +58,12 @@ events:SetScript("OnEvent", function(_, event, arg1)
         ns.SafeCall("Window", Window.Create, Window)
         ns.SafeCall("Settings", ns.Settings.Register, ns.Settings)
         ns.SafeCall("Flight", Flight.Init, Flight)
+        ns.SafeCall("Toast", ns.Toast.Create, ns.Toast)
         events:UnregisterEvent("ADDON_LOADED")
     elseif event == "PLAYER_LOGIN" then
         -- The minimap has its final size only once the UI layout is applied.
         ns.SafeCall("Minimap", ns.Minimap.Create, ns.Minimap)
+        ns.SafeCall("Guild", ns.Guild.Init)
         ns.Print(L.LOADED)
         CheckTaxi()
     elseif event == "PLAYER_ENTERING_WORLD" then

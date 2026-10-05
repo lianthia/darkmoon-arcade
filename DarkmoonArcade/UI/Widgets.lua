@@ -231,11 +231,59 @@ function Widgets.ScoresPage(overlay, width, opts)
                 row.rank:SetText(i .. ".")
                 row.score:SetText(ns.FormatNumber(entry.score))
                 row.detail:SetText(opts.detail and opts.detail(entry) or "")
-                row.date:SetText(date("%d.%m.%y", entry.time))
+                row.date:SetText(date(L.DATE_FORMAT, entry.time))
             end
             for _, fs in pairs(row) do fs:SetShown(entry ~= nil) end
         end
         empty:SetText(#list == 0 and L.NO_SCORES or "")
+    end
+    return page
+end
+
+-- Achievement list page --------------------------------------------------------------
+
+function Widgets.AchievementsPage(overlay, width, gameId, onBack)
+    local page = overlay:AddPage("achievements")
+    local title = Widgets.PageTitle(page, "ACHIEVEMENTS", -26)
+    local count = Widgets.Text(page, 12, "gray")
+    count:SetPoint("TOP", title, "BOTTOM", 0, -4)
+
+    local defs = ns.Achievements.ForGame(gameId)
+    local rowHeight = math.min(44, math.floor(300 / math.max(1, #defs)))
+    local rows = {}
+    for i, def in ipairs(defs) do
+        local y = -84 - (i - 1) * rowHeight
+        local icon = page:CreateTexture(nil, "ARTWORK")
+        icon:SetSize(rowHeight - 8, rowHeight - 8)
+        icon:SetPoint("TOPLEFT", 36, y)
+        icon:SetTexture(def.icon)
+        local name = Widgets.LocalizedText(page, 13, "gold", def.nameKey)
+        name:SetPoint("TOPLEFT", icon, "TOPRIGHT", 10, -1)
+        local desc = Widgets.LocalizedText(page, 10, "white", def.descKey)
+        desc:SetPoint("TOPLEFT", name, "BOTTOMLEFT", 0, -2)
+        desc:SetWidth(width - 140)
+        desc:SetJustifyH("LEFT")
+        local check = page:CreateTexture(nil, "ARTWORK")
+        check:SetSize(20, 20)
+        check:SetPoint("TOPRIGHT", page, "TOPRIGHT", -36, y - (rowHeight - 28) / 2)
+        check:SetTexture("Interface\\RaidFrame\\ReadyCheck-Ready")
+        rows[i] = { def = def, icon = icon, name = name, desc = desc, check = check }
+    end
+
+    local back = Widgets.Button(page, 200, 26, "BACK", onBack)
+    back:SetPoint("BOTTOM", 0, 18)
+
+    page.refresh = function()
+        local done, total = ns.Achievements.Count(gameId)
+        count:SetText(("%d / %d"):format(done, total))
+        for _, row in ipairs(rows) do
+            local unlocked = ns.Achievements.IsDone(row.def.id)
+            row.icon:SetDesaturated(not unlocked)
+            row.icon:SetAlpha(unlocked and 1 or 0.45)
+            row.name:SetAlpha(unlocked and 1 or 0.6)
+            row.desc:SetAlpha(unlocked and 1 or 0.6)
+            row.check:SetShown(unlocked)
+        end
     end
     return page
 end

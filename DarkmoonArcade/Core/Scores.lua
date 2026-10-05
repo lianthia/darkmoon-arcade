@@ -32,6 +32,7 @@ function Scores.Record(gameId, bucket, entry)
     end
     while #list > Scores.MAX do table.remove(list) end
     if rank and rank > Scores.MAX then return nil end
+    if rank == 1 and ns.Guild then ns.Guild.Submit(gameId, bucket, entry.score) end
     return rank
 end
 

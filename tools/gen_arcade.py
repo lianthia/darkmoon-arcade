@@ -190,6 +190,18 @@ def card_glow():
     return to_rgba(np.ones((CARD_H, CARD_W, 3)) * np.array([1.0, 0.75, 0.35]), a)
 
 
+def toast():
+    w, h, r = 512, 128, 26
+    outer = rounded_rect_alpha(w, h, r)
+    inner = rounded_rect_alpha(w, h, r - 5, inset=5)
+    ys = np.linspace(0, 1, h)[:, None] * np.ones((1, w))
+    body = np.array([0.16, 0.08, 0.22]) * (1 - ys[..., None]) + np.array([0.06, 0.03, 0.09]) * ys[..., None]
+    gold = np.array([1.0, 0.84, 0.45]) * (1 - ys[..., None]) + np.array([0.62, 0.38, 0.1]) * ys[..., None]
+    ring = np.clip(outer - inner, 0, 1)[..., None]
+    rgb = body * (1 - ring) + gold * ring
+    return to_rgba(rgb, outer * 0.96)
+
+
 def card_shade():
     ys = np.linspace(0, 1, CARD_H)[:, None] * np.ones((1, CARD_W))
     a = np.clip((ys - 0.45) / 0.55, 0, 1) ** 1.4 * 0.85
@@ -275,6 +287,7 @@ def main():
     ga.save_tga(card_frame(), "card_frame", "")
     ga.save_tga(card_glow(), "card_glow", "")
     ga.save_tga(card_shade(), "card_shade", "")
+    ga.save_tga(toast(), "toast", "")
     ga.save_tga(murloc_tile(), "murlocblast", "tiles")
     ga.save_tga(flappy_tile(), "flappygriffin", "tiles")
     print("Arcade assets generated in", ga.MEDIA)

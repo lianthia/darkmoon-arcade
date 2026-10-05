@@ -3,6 +3,7 @@ local _, ns = ...
 local FG = ns.FlappyGriffin
 local Game = FG.Game
 local Arcade, Widgets, Scores, Media, L = ns.Arcade, ns.Widgets, ns.Scores, ns.Media, ns.L
+local Achievements = ns.Achievements
 
 local W, H = Game.WIDTH, Game.HEIGHT
 local GROUND_TOP = H - Game.GROUND
@@ -31,7 +32,21 @@ local Module = {
     descKey = "FG_DESC",
     helpKey = "FG_HELP",
     tile = "tiles/flappygriffin",
+    defaults = { runs = 0 },
 }
+
+local FLIGHT_ICON = "Interface\\TaxiFrame\\UI-Taxi-Icon-Green"
+
+Achievements.Register("flappygriffin", {
+    { id = "fg_first", nameKey = "FG_ACH_FIRST", descKey = "FG_ACH_FIRST_DESC", icon = FLIGHT_ICON },
+    { id = "fg_tickets", nameKey = "FG_ACH_TICKETS", descKey = "FG_ACH_TICKETS_DESC", icon = 134481 },
+    { id = "fg_bronze", nameKey = "FG_ACH_BRONZE", descKey = "FG_ACH_BRONZE_DESC", icon = Media.Tex("flappy/medal_bronze") },
+    { id = "fg_silver", nameKey = "FG_ACH_SILVER", descKey = "FG_ACH_SILVER_DESC", icon = Media.Tex("flappy/medal_silver") },
+    { id = "fg_gold", nameKey = "FG_ACH_GOLD", descKey = "FG_ACH_GOLD_DESC", icon = Media.Tex("flappy/medal_gold") },
+    { id = "fg_darkmoon", nameKey = "FG_ACH_DARKMOON", descKey = "FG_ACH_DARKMOON_DESC", icon = Media.Tex("portrait") },
+    { id = "fg_runs", nameKey = "FG_ACH_RUNS", descKey = "FG_ACH_RUNS_DESC", icon = FLIGHT_ICON },
+})
+local RUNS_FOR_ACHIEVEMENT, TICKETS_FOR_ACHIEVEMENT = 25, 5
 
 local function Tex(name) return Media.Tex("flappy/" .. name) end
 local function Sound(name) Media.Play("flappy/" .. name) end
@@ -281,6 +296,7 @@ function Module:Build(container)
         shareMessage = ShareMessage,
         onBack = function() self.overlay:Show("menu") end,
     })
+    Widgets.AchievementsPage(self.overlay, W, self.id, function() self.overlay:Show("menu") end)
     self:ResetRun()
     self.overlay:Show("menu")
 end
@@ -292,7 +308,8 @@ function Module:CreatePages()
     tagline:SetPoint("TOP", title, "BOTTOM", 0, -6)
     local play = Widgets.Button(menu, 200, 26, "NEW_GAME", function() self:NewRun() end)
     local scores = Widgets.Button(menu, 200, 26, "HIGHSCORES", function() self.overlay:Show("scores") end)
-    Widgets.Stack(menu, { play, scores }, -190)
+    local achievements = Widgets.Button(menu, 200, 26, "ACHIEVEMENTS", function() self.overlay:Show("achievements") end)
+    Widgets.Stack(menu, { play, scores, achievements }, -190)
 
     local pause = self.overlay:AddPage("pause")
     local pauseTitle = Widgets.PageTitle(pause, "PAUSED", -100)
@@ -391,7 +408,7 @@ function Module:Sidebar()
 end
 
 function Module:ScoreDetail(entry)
-    return entry.medal and L["FG_MEDAL_" .. entry.medal] or ""
+    return entry.medal and L["FG_MEDAL_" .. entry.medal] or date(L.DATE_FORMAT, entry.time)
 end
 
 function Module:UpdateHud()
@@ -401,6 +418,10 @@ end
 function Module:OnGameEvent(name, data)
     if name == "start" then
         Voice("aggro", true)
+        self.runTickets = 0
+        local settings = Arcade.Settings(self)
+        settings.runs = settings.runs + 1
+        if settings.runs >= RUNS_FOR_ACHIEVEMENT then Achievements.Unlock("fg_runs") end
     elseif name == "flap" then
         Sound("flap")
         self:SpawnFeathers(Game.GRIFFIN_X - 18, self.game.y + 6, 3)
@@ -415,11 +436,14 @@ function Module:OnGameEvent(name, data)
     elseif name == "score" then
         Sound("point")
         self:UpdateHud()
+        Achievements.Unlock("fg_first")
         if data.score % 10 == 0 then Voice("attack") end
     elseif name == "ticket" then
         if ns.db.sound then PlaySound(SOUNDKIT.LOOT_WINDOW_COIN_SOUND) end
         self:SpawnFeathers(data.x, data.y, 10, { 1, 0.8, 0.3 })
         self:SpawnText(data.x, data.y - 10, "+" .. Game.TICKET_POINTS, 16, 1, 0.85, 0.3)
+        self.runTickets = (self.runTickets or 0) + 1
+        if self.runTickets >= TICKETS_FOR_ACHIEVEMENT then Achievements.Unlock("fg_tickets") end
         self:UpdateHud()
     elseif name == "hit" then
         Sound("hit")
@@ -429,6 +453,9 @@ function Module:OnGameEvent(name, data)
     elseif name == "over" then
         Voice("death", true)
         self.lastScore = data.score
+        for _, medal in ipairs(Game.MEDALS) do
+            if data.score >= medal.score then Achievements.Unlock("fg_" .. medal.key) end
+        end
         local rank = Scores.Record(self.id, "default", { score = data.score, medal = data.medal })
         self:UpdateHud()
         C_Timer.After(0.9, function()

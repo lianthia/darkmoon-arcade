@@ -9,6 +9,13 @@ function ns.AddStrings(language, values)
 end
 
 ns.AddStrings("enUS", {
+    GUILD_SCORES = "Guild records",
+    NO_GUILD = "Join a guild to compare records.",
+    NO_GUILD_SCORES = "No guild records yet.",
+    ACHIEVEMENTS = "Achievements",
+    ACHIEVEMENTS_COUNT = "Achievements: %d / %d",
+    ACHIEVEMENT_EARNED = "Achievement earned!",
+    DATE_FORMAT = "%m/%d/%y",
     HUB_FLIGHT_HINT = "On flights this opens: %s  ·  change it under Options",
     GAME_OVER = "Game Over",
     TITLE = "Darkmoon Arcade",
@@ -70,6 +77,13 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    GUILD_SCORES = "Gildenrekorde",
+    NO_GUILD = "Tritt einer Gilde bei, um Rekorde zu vergleichen.",
+    NO_GUILD_SCORES = "Noch keine Gildenrekorde.",
+    ACHIEVEMENTS = "Erfolge",
+    ACHIEVEMENTS_COUNT = "Erfolge: %d / %d",
+    ACHIEVEMENT_EARNED = "Erfolg errungen!",
+    DATE_FORMAT = "%d.%m.%y",
     HUB_FLIGHT_HINT = "Bei Flügen öffnet sich: %s  ·  änderbar unter Optionen",
     GAME_OVER = "Game Over",
     GAMES = "Spiele",
@@ -128,6 +142,13 @@ ns.AddStrings("deDE", {
 })
 
 ns.AddStrings("frFR", {
+    GUILD_SCORES = "Records de guilde",
+    NO_GUILD = "Rejoignez une guilde pour comparer les records.",
+    NO_GUILD_SCORES = "Pas encore de records de guilde.",
+    ACHIEVEMENTS = "Hauts faits",
+    ACHIEVEMENTS_COUNT = "Hauts faits : %d / %d",
+    ACHIEVEMENT_EARNED = "Haut fait accompli !",
+    DATE_FORMAT = "%d/%m/%y",
     HUB_FLIGHT_HINT = "En vol, ceci s'ouvre : %s  ·  modifiable dans les options",
     GAME_OVER = "Partie terminée",
     GAMES = "Jeux",
@@ -187,6 +208,13 @@ ns.AddStrings("frFR", {
 })
 
 ns.AddStrings("esES", {
+    GUILD_SCORES = "Récords de hermandad",
+    NO_GUILD = "Únete a una hermandad para comparar récords.",
+    NO_GUILD_SCORES = "Aún no hay récords de hermandad.",
+    ACHIEVEMENTS = "Logros",
+    ACHIEVEMENTS_COUNT = "Logros: %d / %d",
+    ACHIEVEMENT_EARNED = "¡Logro conseguido!",
+    DATE_FORMAT = "%d/%m/%y",
     HUB_FLIGHT_HINT = "Al volar se abre: %s  ·  cámbialo en Opciones",
     GAME_OVER = "Fin del juego",
     GAMES = "Juegos",
@@ -246,6 +274,13 @@ ns.AddStrings("esES", {
 })
 
 ns.AddStrings("ruRU", {
+    GUILD_SCORES = "Рекорды гильдии",
+    NO_GUILD = "Вступите в гильдию, чтобы сравнивать рекорды.",
+    NO_GUILD_SCORES = "Рекордов гильдии пока нет.",
+    ACHIEVEMENTS = "Достижения",
+    ACHIEVEMENTS_COUNT = "Достижения: %d / %d",
+    ACHIEVEMENT_EARNED = "Получено достижение!",
+    DATE_FORMAT = "%d.%m.%y",
     HUB_FLIGHT_HINT = "В полёте открывается: %s  ·  меняется в настройках",
     GAME_OVER = "Игра окончена",
     GAMES = "Игры",
@@ -306,6 +341,13 @@ ns.AddStrings("ruRU", {
 })
 
 ns.AddStrings("zhCN", {
+    GUILD_SCORES = "公会纪录",
+    NO_GUILD = "加入公会即可比较纪录。",
+    NO_GUILD_SCORES = "还没有公会纪录。",
+    ACHIEVEMENTS = "成就",
+    ACHIEVEMENTS_COUNT = "成就：%d / %d",
+    ACHIEVEMENT_EARNED = "获得成就！",
+    DATE_FORMAT = "%y-%m-%d",
     HUB_FLIGHT_HINT = "飞行时打开：%s  ·  可在选项中更改",
     GAME_OVER = "游戏结束",
     GAMES = "游戏",

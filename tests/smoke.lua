@@ -119,7 +119,19 @@ function InCombatLockdown() return false end
 function UnitOnTaxi() return onTaxi end
 function IsInGroup() return true end
 function IsInRaid() return false end
-function IsInGuild() return false end
+function IsInGuild() return true end
+local addonMessages = {}
+C_ChatInfo = {
+    RegisterAddonMessagePrefix = function() return true end,
+    SendAddonMessage = function(prefix, text, channel) addonMessages[#addonMessages + 1] = text end,
+}
+function Ambiguate(name) return (name:gsub("%-.*", "")) end
+function UnitName() return "Berthold" end
+function strsplit(sep, text)
+    local parts = {}
+    for part in (text .. sep):gmatch("(.-)" .. sep) do parts[#parts + 1] = part end
+    return unpack(parts)
+end
 function SendChatMessage(msg, channel) chat[#chat + 1] = channel .. ": " .. msg end
 function PlaySound() end
 function PlaySoundFile() end
@@ -253,6 +265,21 @@ Fire("PLAYER_CONTROL_GAINED")
 Tick(1)
 assert(Window.activeGame.game.state == "PAUSED", "landing should pause")
 assert(DarkmoonArcadeDB.flights["Goldhain > Sturmwind"], "flight duration recorded")
+
+-- Guild leaderboard: a guildmate's record arrives, our own bests were broadcast.
+Tick(16)
+Fire("CHAT_MSG_ADDON", "DMArcade", "S	flappygriffin	default	42", "GUILD", "Guildie-Realm")
+Fire("CHAT_MSG_ADDON", "DMArcade", "R", "GUILD", "Guildie-Realm")
+Tick(6)
+assert(DarkmoonArcadeDB.guild.flappygriffin.default.Guildie.score == 42, "guild record stored")
+assert(#addonMessages > 0, "bests broadcast")
+assert(ns.Guild.Top("flappygriffin", "default", 5)[1].name == "Guildie", "guild top list")
+
+-- Achievements unlock once and show a toast.
+ns.Achievements.Unlock("fg_first")
+ns.Achievements.Unlock("fg_first")
+assert(ns.Achievements.IsDone("fg_first"), "achievement stored")
+Tick(5)
 
 -- Settings callbacks and dropdown contents.
 for variable, entry in pairs(dropdownOptions) do

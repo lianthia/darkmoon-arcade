@@ -2,7 +2,8 @@ local _, ns = ...
 
 local MB = ns.MurlocBlast
 local Game, Board, Levels = MB.Game, MB.Board, MB.Levels
-local Arcade, Widgets, Scores, L = ns.Arcade, ns.Widgets, ns.Scores, ns.L
+local Arcade, Widgets, Scores, Media, L = ns.Arcade, ns.Widgets, ns.Scores, ns.Media, ns.L
+local Achievements = ns.Achievements
 
 local KEY_TURN_SPEED = 1.9
 local AIM_LEFT = { LEFT = true, A = true }
@@ -26,6 +27,20 @@ local Module = {
 function MB.Settings()
     return Arcade.Settings(Module)
 end
+
+local function BubbleIcon(index) return Media.Tex("murlocblast/bubble" .. index) end
+
+Achievements.Register("murlocblast", {
+    { id = "mb_first", nameKey = "MB_ACH_FIRST", descKey = "MB_ACH_FIRST_DESC", icon = BubbleIcon(3) },
+    { id = "mb_combo3", nameKey = "MB_ACH_COMBO3", descKey = "MB_ACH_COMBO3_DESC", icon = BubbleIcon(2) },
+    { id = "mb_combo5", nameKey = "MB_ACH_COMBO5", descKey = "MB_ACH_COMBO5_DESC", icon = BubbleIcon(6) },
+    { id = "mb_bomb", nameKey = "MB_ACH_BOMB", descKey = "MB_ACH_BOMB_DESC", icon = BubbleIcon(10) },
+    { id = "mb_avalanche", nameKey = "MB_ACH_AVALANCHE", descKey = "MB_ACH_AVALANCHE_DESC", icon = BubbleIcon(4) },
+    { id = "mb_stones", nameKey = "MB_ACH_STONES", descKey = "MB_ACH_STONES_DESC", icon = BubbleIcon(9) },
+    { id = "mb_level10", nameKey = "MB_ACH_LEVEL10", descKey = "MB_ACH_LEVEL10_DESC", icon = BubbleIcon(5) },
+    { id = "mb_hard10", nameKey = "MB_ACH_HARD10", descKey = "MB_ACH_HARD10_DESC", icon = BubbleIcon(1) },
+    { id = "mb_score", nameKey = "MB_ACH_SCORE", descKey = "MB_ACH_SCORE_DESC", icon = BubbleIcon(7) },
+})
 
 local function DifficultyName(difficulty)
     return L[difficulty:upper()]
@@ -81,6 +96,7 @@ function Module:Build(container)
         shareMessage = ShareMessage,
         onBack = function() self.overlay:Show("menu") end,
     })
+    Widgets.AchievementsPage(self.overlay, Game.WIDTH, self.id, function() self.overlay:Show("menu") end)
     self:ShowMenuBoard()
 end
 
@@ -106,7 +122,8 @@ function Module:CreateMenuPage()
     local scores = Widgets.Button(page, 200, 26, "HIGHSCORES", function()
         self.overlay:Show("scores", { bucket = MB.Settings().difficulty })
     end)
-    Widgets.Stack(page, { newGame, continue, scores }, -196)
+    local achievements = Widgets.Button(page, 200, 26, "ACHIEVEMENTS", function() self.overlay:Show("achievements") end)
+    Widgets.Stack(page, { newGame, continue, scores, achievements }, -196)
 
     page.refresh = function()
         diff.label:SetText(DifficultyName(MB.Settings().difficulty))
@@ -243,7 +260,23 @@ function Module:OnGameEvent(name, data)
     local game = self.game
     if name == "score" or name == "level" then
         self:UpdateHud()
+        if game.score >= 25000 then Achievements.Unlock("mb_score") end
+    elseif name == "pop" then
+        if data.combo >= 3 then Achievements.Unlock("mb_combo3") end
+        if data.combo >= 5 then Achievements.Unlock("mb_combo5") end
+    elseif name == "explode" then
+        Achievements.Unlock("mb_bomb")
+    elseif name == "drop" then
+        local stones = 0
+        for _, cell in ipairs(data.cells) do
+            if cell.color == Levels.STONE then stones = stones + 1 end
+        end
+        if #data.cells >= 10 then Achievements.Unlock("mb_avalanche") end
+        if stones >= 3 then Achievements.Unlock("mb_stones") end
     elseif name == "clear" then
+        Achievements.Unlock("mb_first")
+        if game.level >= 10 then Achievements.Unlock("mb_level10") end
+        if game.level >= 10 and game.difficulty == "hard" then Achievements.Unlock("mb_hard10") end
         local settings = MB.Settings()
         settings.progress[game.difficulty] = math.max(self:Progress(), game.level + 1)
         C_Timer.After(1.2, function()

@@ -165,6 +165,38 @@ end
 
 -- Sidebar ----------------------------------------------------------------------
 
+local function ScoreRows(bar, top)
+    local rows = {}
+    for i = 1, SIDEBAR_SCORES do
+        local y = top - (i - 1) * 17
+        local row = {
+            rank = Widgets.Text(bar, 11, "gray"),
+            label = Widgets.Text(bar, 11, "white"),
+            score = Widgets.Text(bar, 12, "gold"),
+        }
+        row.rank:SetPoint("TOPRIGHT", bar, "TOPLEFT", 28, y)
+        row.label:SetPoint("TOPLEFT", bar, "TOPLEFT", 34, y)
+        row.label:SetWidth(96)
+        row.label:SetJustifyH("LEFT")
+        row.label:SetWordWrap(false)
+        row.score:SetPoint("TOPRIGHT", bar, "TOPRIGHT", -14, y)
+        rows[i] = row
+    end
+    return rows
+end
+
+local function FillRows(rows, entries, labelFn)
+    for i, row in ipairs(rows) do
+        local entry = entries[i]
+        if entry then
+            row.rank:SetText(i .. ".")
+            row.label:SetText(labelFn(entry))
+            row.score:SetText(ns.FormatNumber(entry.score))
+        end
+        for _, fs in pairs(row) do fs:SetShown(entry ~= nil) end
+    end
+end
+
 function Window:CreateSidebar()
     local bar = CreateFrame("Frame", nil, self.content)
     bar:SetSize(SIDEBAR_W, CONTENT_H)
@@ -184,38 +216,35 @@ function Window:CreateSidebar()
 
     local s = {}
     s.name = Widgets.Text(bar, 16, "gold")
-    s.name:SetPoint("TOP", 0, -14)
+    s.name:SetPoint("TOP", 0, -12)
     s.scoreLabel = Widgets.LocalizedText(bar, 11, "gray", "SCORE")
-    s.scoreLabel:SetPoint("TOP", s.name, "BOTTOM", 0, -14)
+    s.scoreLabel:SetPoint("TOP", s.name, "BOTTOM", 0, -10)
     s.score = Widgets.Text(bar, 28, "gold")
-    s.score:SetPoint("TOP", s.scoreLabel, "BOTTOM", 0, -4)
+    s.score:SetPoint("TOP", s.scoreLabel, "BOTTOM", 0, -2)
     s.best = Widgets.Text(bar, 12, "white")
-    s.best:SetPoint("TOP", s.score, "BOTTOM", 0, -6)
-    s.info = Widgets.Text(bar, 12, "blue")
-    s.info:SetPoint("TOP", s.best, "BOTTOM", 0, -10)
+    s.best:SetPoint("TOP", s.score, "BOTTOM", 0, -4)
+    s.info = Widgets.Text(bar, 11, "blue")
+    s.info:SetPoint("TOP", s.best, "BOTTOM", 0, -6)
     s.info:SetWidth(SIDEBAR_W - 20)
+    s.achievements = Widgets.Text(bar, 11, "gray")
+    s.achievements:SetPoint("TOP", 0, -150)
 
-    s.scoresTitle = Widgets.LocalizedText(bar, 12, "gold", "HIGHSCORES")
-    s.scoresTitle:SetPoint("TOP", 0, -170)
-    s.rows = {}
-    for i = 1, SIDEBAR_SCORES do
-        local y = -192 - (i - 1) * 18
-        local row = {
-            rank = Widgets.Text(bar, 11, "gray"),
-            score = Widgets.Text(bar, 12, "gold"),
-            detail = Widgets.Text(bar, 10, "white"),
-        }
-        row.rank:SetPoint("TOPRIGHT", bar, "TOPLEFT", 30, y)
-        row.score:SetPoint("TOPRIGHT", bar, "TOPLEFT", 110, y)
-        row.detail:SetPoint("TOPLEFT", bar, "TOPLEFT", 120, y)
-        s.rows[i] = row
-    end
-    s.empty = Widgets.LocalizedText(bar, 10, "gray", "NO_SCORES")
-    s.empty:SetPoint("TOP", 0, -196)
-    s.empty:SetWidth(SIDEBAR_W - 24)
+    s.personalTitle = Widgets.LocalizedText(bar, 12, "gold", "HIGHSCORES")
+    s.personalTitle:SetPoint("TOP", 0, -176)
+    s.personal = ScoreRows(bar, -196)
+    s.personalEmpty = Widgets.LocalizedText(bar, 10, "gray", "NO_SCORES")
+    s.personalEmpty:SetPoint("TOP", 0, -198)
+    s.personalEmpty:SetWidth(SIDEBAR_W - 24)
+
+    s.guildTitle = Widgets.LocalizedText(bar, 12, "gold", "GUILD_SCORES")
+    s.guildTitle:SetPoint("TOP", 0, -290)
+    s.guild = ScoreRows(bar, -310)
+    s.guildEmpty = Widgets.Text(bar, 10, "gray")
+    s.guildEmpty:SetPoint("TOP", 0, -312)
+    s.guildEmpty:SetWidth(SIDEBAR_W - 24)
 
     s.help = Widgets.Text(bar, 10, "gray")
-    s.help:SetPoint("BOTTOM", 0, 14)
+    s.help:SetPoint("BOTTOM", 0, 12)
     s.help:SetWidth(SIDEBAR_W - 20)
     s.help:SetJustifyH("CENTER")
     self.side = s
@@ -223,24 +252,27 @@ end
 
 function Window:UpdateSidebar()
     local game = self.activeGame
-    if not game then return end
+    if not game or not self.side then return end
     local s, info = self.side, game:Sidebar()
     s.name:SetText(L[game.nameKey])
     s.score:SetText(ns.FormatNumber(info.score or 0))
     s.best:SetText(L.BEST:format(ns.FormatNumber(Scores.Best(game.id, info.bucket))))
     s.info:SetText(info.info or "")
     s.help:SetText(L[game.helpKey])
+    local done, total = ns.Achievements.Count(game.id)
+    s.achievements:SetText(total > 0 and L.ACHIEVEMENTS_COUNT:format(done, total) or "")
+
     local list = Scores.List(game.id, info.bucket)
-    for i, row in ipairs(s.rows) do
-        local entry = list[i]
-        if entry then
-            row.rank:SetText(i .. ".")
-            row.score:SetText(ns.FormatNumber(entry.score))
-            row.detail:SetText(game.ScoreDetail and game:ScoreDetail(entry) or "")
-        end
-        for _, fs in pairs(row) do fs:SetShown(entry ~= nil) end
-    end
-    s.empty:SetShown(#list == 0)
+    FillRows(s.personal, list, function(entry)
+        return game.ScoreDetail and game:ScoreDetail(entry) or ""
+    end)
+    s.personalEmpty:SetShown(#list == 0)
+
+    local guildList = IsInGuild() and ns.Guild.Top(game.id, info.bucket, SIDEBAR_SCORES) or {}
+    FillRows(s.guild, guildList, function(entry)
+        return entry.own and ("|cffffd100" .. entry.name .. "|r") or entry.name
+    end)
+    s.guildEmpty:SetText(not IsInGuild() and L.NO_GUILD or (#guildList == 0 and L.NO_GUILD_SCORES or ""))
 end
 
 -- Footer -------------------------------------------------------------------------
