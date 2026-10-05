@@ -17,11 +17,12 @@ local SIDEBAR_W, GUTTER = 200, 8
 local CONTENT_W = Arcade.FIELD_W + GUTTER + SIDEBAR_W
 local CONTENT_H = Arcade.FIELD_H
 
-local INSET_TOP, INSET_BOTTOM, INSET_SIDE, INSET_PAD = 10, 42, 8, 3
+local INSET_TOP, INSET_BOTTOM, INSET_SIDE, INSET_PAD = 40, 42, 8, 3
 local FRAME_W = CONTENT_W + INSET_SIDE * 2 + INSET_PAD * 2
 local FRAME_H = CONTENT_H + INSET_TOP + INSET_BOTTOM + INSET_PAD * 2
-local LOGO_W, LOGO_H = 196, 126
-local LOGO_OVERLAP = 8
+local LOGO_W, LOGO_H = 150, 97
+-- Half of the logo sits inside the frame, the content starts just below it.
+local LOGO_OVERLAP = 48
 local TILE_W, TILE_H, TILE_GAP, TILE_COLUMNS = 300, 150, 20, 2
 
 -- Panel templates without a title bar first; the portrait frame is the known-good fallback.
