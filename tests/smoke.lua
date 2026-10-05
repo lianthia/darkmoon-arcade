@@ -39,6 +39,7 @@ local methods = {
     SetChecked = function(self, v) self._checked = v end,
     GetChecked = function(self) return self._checked end,
     SetFont = function() return true end,
+    SetupMenu = function(self, fn) self._menu = fn end,
 }
 
 local function Wrap(o)
@@ -110,7 +111,8 @@ C_Map = {
 function CreateVector2D(x, y) return { x = x, y = y } end
 function GetLocale() return "deDE" end
 function GetBuildInfo() return "1.60.1", "70205", "Oct 1 2026", 16001 end
-C_XMLUtil = { GetTemplateInfo = function(name) if name == "SimplePanelTemplate" then return { type = "Frame" } end end }
+local knownTemplates = { SimplePanelTemplate = true, WowStyle1DropdownTemplate = true }
+C_XMLUtil = { GetTemplateInfo = function(name) if knownTemplates[name] then return { type = "Frame" } end end }
 function GetTime() return now end
 function time() return 1760000000 + math.floor(now) end
 date = os.date
@@ -283,7 +285,7 @@ Tick(5)
 
 -- In-window options: every check box toggles, every selector steps both ways.
 Window:OpenOptions()
-DarkmoonArcadeDB.scale = 1.15
+DarkmoonArcadeDB.scale = 1.1
 for _, row in ipairs(ns.OptionsView.rows) do
     if row.check then
         row.check._checked = not row.check._checked
@@ -293,7 +295,19 @@ for _, row in ipairs(ns.OptionsView.rows) do
         ns.OptionsView:Step(row, -1)
     end
 end
-assert(DarkmoonArcadeDB.scale == 1.15, "scale stepped back")
+assert(math.abs(DarkmoonArcadeDB.scale - 1.1) < 0.001, "scale stepped back")
+for _, row in ipairs(ns.OptionsView.rows) do
+    if row.dropdown then
+        local radios = {}
+        row.dropdown._menu(row.dropdown, { CreateRadio = function(_, text, isSelected, select)
+            radios[#radios + 1] = { isSelected = isSelected, select = select }
+        end })
+        assert(#radios > 1, "dropdown has choices")
+        for _, radio in ipairs(radios) do radio.select(); assert(radio.isSelected(), "radio selected") end
+    end
+end
+DarkmoonArcadeDB.language = "auto"
+Window:ApplyLanguage()
 Window:OpenHub()
 
 -- Settings callbacks and dropdown contents.

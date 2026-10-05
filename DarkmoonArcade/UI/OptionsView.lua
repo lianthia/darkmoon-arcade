@@ -20,6 +20,10 @@ local function Tooltip(region, def)
     region:SetScript("OnLeave", GameTooltip_Hide)
 end
 
+local function TemplateExists(name)
+    return C_XMLUtil and C_XMLUtil.GetTemplateInfo and C_XMLUtil.GetTemplateInfo(name) ~= nil
+end
+
 local function RangeValues(def)
     local values, count = {}, math.floor((def.max - def.min) / def.step + 0.5)
     for i = 0, count do values[#values + 1] = math.floor((def.min + i * def.step) * 100 + 0.5) / 100 end
@@ -33,6 +37,41 @@ local function NearestIndex(values, value)
         if diff < bestDiff then best, bestDiff = i, diff end
     end
     return best
+end
+
+-- { value, label } pairs for a choice or range definition.
+local function Choices(def)
+    if def.kind == "choice" then return def.choices() end
+    local choices = {}
+    for _, value in ipairs(RangeValues(def)) do choices[#choices + 1] = { value, def.format(value) } end
+    return choices
+end
+
+local function IsCurrent(def, value)
+    local current = def.tbl[def.key]
+    if type(value) == "number" then return math.abs((current or 0) - value) < 0.001 end
+    return current == value
+end
+
+function OptionsView:Set(def, value)
+    def.tbl[def.key] = value
+    if def.onChange then def.onChange(value) end
+    self:Refresh()
+end
+
+function OptionsView:CreateDropdown(panel, def, y)
+    local dropdown = CreateFrame("DropdownButton", nil, panel, "WowStyle1DropdownTemplate")
+    dropdown:SetWidth(210)
+    dropdown:SetPoint("TOPRIGHT", -16, y)
+    dropdown:SetupMenu(function(_, root)
+        for _, choice in ipairs(Choices(def)) do
+            root:CreateRadio(choice[2], function() return IsCurrent(def, choice[1]) end, function()
+                self:Set(def, choice[1])
+            end)
+        end
+    end)
+    Tooltip(dropdown, def)
+    return dropdown
 end
 
 function OptionsView:Create(parent)
@@ -82,11 +121,15 @@ function OptionsView:Create(parent)
         else
             local label = Widgets.LocalizedText(panel, 12, "white", def.label)
             label:SetPoint("TOPLEFT", 20, y - 6)
-            local cycler = Widgets.Cycler(panel, 210, function(dir) self:Step(row, dir) end)
-            cycler:SetPoint("TOPRIGHT", -16, y)
-            cycler:EnableMouse(true)
-            Tooltip(cycler, def)
-            row.cycler = cycler
+            if TemplateExists("WowStyle1DropdownTemplate") then
+                row.dropdown = self:CreateDropdown(panel, def, y)
+            else
+                local cycler = Widgets.Cycler(panel, 210, function(dir) self:Step(row, dir) end)
+                cycler:SetPoint("TOPRIGHT", -16, y)
+                cycler:EnableMouse(true)
+                Tooltip(cycler, def)
+                row.cycler = cycler
+            end
             y = y - CHOICE_ROW
         end
         self.rows[#self.rows + 1] = row
@@ -114,6 +157,8 @@ function OptionsView:Refresh()
         local def = row.def
         if row.check then
             row.check:SetChecked(def.tbl[def.key] and true or false)
+        elseif row.dropdown then
+            row.dropdown:GenerateMenu()
         elseif row.cycler then
             local label = row.cycler.label
             if def.kind == "choice" then

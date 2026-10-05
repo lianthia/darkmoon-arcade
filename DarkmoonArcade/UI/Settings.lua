@@ -14,10 +14,26 @@ function SettingsPage.Definitions()
     local db, Window = ns.db, ns.Window
     local defs = {
         { kind = "section", label = "OPT_GENERAL" },
-        { kind = "check", tbl = db, key = "sound", label = "OPT_SOUND", tip = "OPT_SOUND_TIP", default = true },
-        { kind = "check", tbl = db, key = "voices", label = "OPT_VOICES", tip = "OPT_VOICES_TIP", default = true },
+        { kind = "choice", tbl = db, key = "language", label = "OPT_LANGUAGE", tip = "OPT_LANGUAGE_TIP", default = "auto",
+            onChange = function() Window:ApplyLanguage() end,
+            choices = function()
+                local choices = {}
+                for _, code in ipairs(ns.LANGUAGES) do
+                    choices[#choices + 1] = { code, code == "auto" and L.LANG_AUTO or ns.LANGUAGE_NAMES[code] }
+                end
+                return choices
+            end },
+        { kind = "range", tbl = db, key = "scale", label = "OPT_SCALE", tip = "OPT_SCALE_TIP", default = 1.1,
+            min = 0.8, max = 1.6, step = 0.1, onChange = function() Window:ApplyScale() end,
+            format = function(value) return ("%d%%"):format(value * 100 + 0.5) end },
         { kind = "check", tbl = db, key = "minimap", label = "OPT_MINIMAP", tip = "OPT_MINIMAP_TIP", default = true,
             onChange = function() ns.Minimap:Update() end },
+
+        { kind = "section", label = "OPT_SECTION_SOUND" },
+        { kind = "check", tbl = db, key = "sound", label = "OPT_SOUND", tip = "OPT_SOUND_TIP", default = true },
+        { kind = "check", tbl = db, key = "voices", label = "OPT_VOICES", tip = "OPT_VOICES_TIP", default = true },
+
+        { kind = "section", label = "OPT_SECTION_FLIGHTS" },
         { kind = "choice", tbl = db, key = "flightGame", label = "OPT_FLIGHT_GAME", tip = "OPT_FLIGHT_GAME_TIP",
             default = "murlocblast", onChange = function() Window:RefreshHub() end,
             choices = function()
@@ -28,18 +44,6 @@ function SettingsPage.Definitions()
                 return choices
             end },
         { kind = "check", tbl = db, key = "flightTime", label = "OPT_FLIGHT_TIME", tip = "OPT_FLIGHT_TIME_TIP", default = true },
-        { kind = "choice", tbl = db, key = "language", label = "OPT_LANGUAGE", tip = "OPT_LANGUAGE_TIP", default = "auto",
-            onChange = function() Window:ApplyLanguage() end,
-            choices = function()
-                local choices = {}
-                for _, code in ipairs(ns.LANGUAGES) do
-                    choices[#choices + 1] = { code, code == "auto" and L.LANG_AUTO or ns.LANGUAGE_NAMES[code] }
-                end
-                return choices
-            end },
-        { kind = "range", tbl = db, key = "scale", label = "OPT_SCALE", tip = "OPT_SCALE_TIP", default = 1.15,
-            min = 0.8, max = 1.6, step = 0.05, onChange = function() Window:ApplyScale() end,
-            format = function(value) return ("%d%%"):format(value * 100 + 0.5) end },
     }
     for _, id in ipairs(ns.Arcade.order) do
         local game = ns.Arcade.games[id]

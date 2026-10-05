@@ -9,7 +9,7 @@ local DEFAULTS = {
     flightTime = true,
     minimap = true,
     minimapAngle = 225,
-    scale = 1.15,
+    scale = 1.1,
     language = "auto",
 }
 

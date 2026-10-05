@@ -9,6 +9,8 @@ function ns.AddStrings(language, values)
 end
 
 ns.AddStrings("enUS", {
+    OPT_SECTION_SOUND = "Sound",
+    OPT_SECTION_FLIGHTS = "Flights",
     HELP = "Help",
     CONTROLS = "Controls",
     HOW_TO_PLAY = "How to play",
@@ -82,6 +84,8 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    OPT_SECTION_SOUND = "Sound",
+    OPT_SECTION_FLIGHTS = "Flüge",
     HELP = "Hilfe",
     CONTROLS = "Steuerung",
     HOW_TO_PLAY = "So wird gespielt",
@@ -152,6 +156,8 @@ ns.AddStrings("deDE", {
 })
 
 ns.AddStrings("frFR", {
+    OPT_SECTION_SOUND = "Son",
+    OPT_SECTION_FLIGHTS = "Vols",
     HELP = "Aide",
     CONTROLS = "Commandes",
     HOW_TO_PLAY = "Comment jouer",
@@ -223,6 +229,8 @@ ns.AddStrings("frFR", {
 })
 
 ns.AddStrings("esES", {
+    OPT_SECTION_SOUND = "Sonido",
+    OPT_SECTION_FLIGHTS = "Vuelos",
     HELP = "Ayuda",
     CONTROLS = "Controles",
     HOW_TO_PLAY = "Cómo se juega",
@@ -294,6 +302,8 @@ ns.AddStrings("esES", {
 })
 
 ns.AddStrings("ruRU", {
+    OPT_SECTION_SOUND = "Звук",
+    OPT_SECTION_FLIGHTS = "Полёты",
     HELP = "Помощь",
     CONTROLS = "Управление",
     HOW_TO_PLAY = "Как играть",
@@ -366,6 +376,8 @@ ns.AddStrings("ruRU", {
 })
 
 ns.AddStrings("zhCN", {
+    OPT_SECTION_SOUND = "声音",
+    OPT_SECTION_FLIGHTS = "飞行",
     HELP = "帮助",
     CONTROLS = "操作",
     HOW_TO_PLAY = "玩法",
