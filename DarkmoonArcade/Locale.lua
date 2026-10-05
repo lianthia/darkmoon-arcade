@@ -9,6 +9,7 @@ function ns.AddStrings(language, values)
 end
 
 ns.AddStrings("enUS", {
+    MAIN_MENU = "Main Menu",
     GUILD_SCORES = "Guild records",
     NO_GUILD = "Join a guild to compare records.",
     NO_GUILD_SCORES = "No guild records yet.",
@@ -77,6 +78,7 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    MAIN_MENU = "Hauptmenü",
     GUILD_SCORES = "Gildenrekorde",
     NO_GUILD = "Tritt einer Gilde bei, um Rekorde zu vergleichen.",
     NO_GUILD_SCORES = "Noch keine Gildenrekorde.",
@@ -142,6 +144,7 @@ ns.AddStrings("deDE", {
 })
 
 ns.AddStrings("frFR", {
+    MAIN_MENU = "Menu principal",
     GUILD_SCORES = "Records de guilde",
     NO_GUILD = "Rejoignez une guilde pour comparer les records.",
     NO_GUILD_SCORES = "Pas encore de records de guilde.",
@@ -208,6 +211,7 @@ ns.AddStrings("frFR", {
 })
 
 ns.AddStrings("esES", {
+    MAIN_MENU = "Menú principal",
     GUILD_SCORES = "Récords de hermandad",
     NO_GUILD = "Únete a una hermandad para comparar récords.",
     NO_GUILD_SCORES = "Aún no hay récords de hermandad.",
@@ -274,6 +278,7 @@ ns.AddStrings("esES", {
 })
 
 ns.AddStrings("ruRU", {
+    MAIN_MENU = "Главное меню",
     GUILD_SCORES = "Рекорды гильдии",
     NO_GUILD = "Вступите в гильдию, чтобы сравнивать рекорды.",
     NO_GUILD_SCORES = "Рекордов гильдии пока нет.",
@@ -341,6 +346,7 @@ ns.AddStrings("ruRU", {
 })
 
 ns.AddStrings("zhCN", {
+    MAIN_MENU = "主菜单",
     GUILD_SCORES = "公会纪录",
     NO_GUILD = "加入公会即可比较纪录。",
     NO_GUILD_SCORES = "还没有公会纪录。",

@@ -291,7 +291,7 @@ function Window:CreateFooter()
     end)
     achievements:SetPoint("RIGHT", options, "LEFT", -10, 0)
     self.achievementsButton = achievements
-    local games = Widgets.Button(chrome, 124, 26, "GAMES", function() self:OpenHub() end)
+    local games = Widgets.Button(chrome, 124, 26, "MAIN_MENU", function() self:OpenHub() end)
     games:SetPoint("RIGHT", achievements, "LEFT", -10, 0)
     self.gamesButton = games
 end
