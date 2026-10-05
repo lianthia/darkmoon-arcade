@@ -111,7 +111,15 @@ C_Map = {
 function CreateVector2D(x, y) return { x = x, y = y } end
 function GetLocale() return "deDE" end
 function GetBuildInfo() return "1.60.1", "70205", "Oct 1 2026", 16001 end
-local knownTemplates = { SimplePanelTemplate = true, WowStyle1DropdownTemplate = true }
+local knownTemplates = { SimplePanelTemplate = true, WowStyle1DropdownTemplate = true, TabSystemTemplate = true }
+TabSystemMixin = { OnLoad = function() end }
+TabSystemOwnerMixin = {
+    OnLoad = function() end,
+    SetTabSystem = function() end,
+    AddNamedTab = function(self) rawset(self, "_tabs", (rawget(self, "_tabs") or 0) + 1); return rawget(self, "_tabs") end,
+    SetTab = function() end,
+}
+function Mixin(target, source) for k, v in pairs(source) do rawset(target, k, v) end return target end
 C_XMLUtil = { GetTemplateInfo = function(name) if knownTemplates[name] then return { type = "Frame" } end end }
 function GetTime() return now end
 function time() return 1760000000 + math.floor(now) end

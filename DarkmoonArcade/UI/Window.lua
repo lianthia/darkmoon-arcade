@@ -126,8 +126,9 @@ function Window:Create()
 
     -- One continuous surface behind header, content and footer; the panel border draws on top.
     local surface = chrome:CreateTexture(nil, "BACKGROUND", nil, 2)
-    surface:SetPoint("TOPLEFT", 1, -1)
-    surface:SetPoint("BOTTOMRIGHT", -1, 1)
+    -- The panel border is thicker at the top than at the sides.
+    surface:SetPoint("TOPLEFT", 2, -4)
+    surface:SetPoint("BOTTOMRIGHT", -2, 3)
     surface:SetTexture(Media.Tex("hub_background"))
 
     local content = CreateFrame("Frame", nil, chrome)
