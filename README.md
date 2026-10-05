@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/logo.png" alt="Darkmoon Arcade" width="360"></p>
+
 # Darkmoon Arcade
 
 A growing collection of polished mini games for **World of Warcraft: Forever**, built for long flight paths.
