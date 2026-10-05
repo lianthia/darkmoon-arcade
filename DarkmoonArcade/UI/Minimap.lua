@@ -38,7 +38,7 @@ end
 
 local function OnClick(mouseButton)
     if mouseButton == "RightButton" then
-        ns.Settings:Open()
+        ns.Window:OpenOptions()
     else
         ns.Window:Toggle()
     end

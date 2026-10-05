@@ -281,6 +281,21 @@ ns.Achievements.Unlock("fg_first")
 assert(ns.Achievements.IsDone("fg_first"), "achievement stored")
 Tick(5)
 
+-- In-window options: every check box toggles, every selector steps both ways.
+Window:OpenOptions()
+DarkmoonArcadeDB.scale = 1.15
+for _, row in ipairs(ns.OptionsView.rows) do
+    if row.check then
+        row.check._checked = not row.check._checked
+        row.check._scripts.OnClick(row.check)
+    elseif row.cycler then
+        ns.OptionsView:Step(row, 1)
+        ns.OptionsView:Step(row, -1)
+    end
+end
+assert(DarkmoonArcadeDB.scale == 1.15, "scale stepped back")
+Window:OpenHub()
+
 -- Settings callbacks and dropdown contents.
 for variable, entry in pairs(dropdownOptions) do
     local data = entry.options()

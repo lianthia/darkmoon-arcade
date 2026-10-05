@@ -17,6 +17,27 @@ function Widgets.RefreshAll()
     for _, fn in ipairs(refreshers) do fn() end
 end
 
+-- Thin gold rim with a dark outline just outside `region`.
+function Widgets.Rim(parent, region)
+    local function Line(r, g, b, a, offset, thickness)
+        for _, side in ipairs({ "TOP", "BOTTOM", "LEFT", "RIGHT" }) do
+            local t = parent:CreateTexture(nil, "OVERLAY")
+            t:SetColorTexture(r, g, b, a)
+            if side == "TOP" or side == "BOTTOM" then
+                t:SetPoint(side .. "LEFT", region, side .. "LEFT", -offset, side == "TOP" and offset or -offset)
+                t:SetPoint(side .. "RIGHT", region, side .. "RIGHT", offset, side == "TOP" and offset or -offset)
+                t:SetHeight(thickness)
+            else
+                t:SetPoint("TOP" .. side, region, "TOP" .. side, side == "LEFT" and -offset or offset, offset)
+                t:SetPoint("BOTTOM" .. side, region, "BOTTOM" .. side, side == "LEFT" and -offset or offset, -offset)
+                t:SetWidth(thickness)
+            end
+        end
+    end
+    Line(0, 0, 0, 0.85, 3, 1)
+    Line(0.86, 0.66, 0.3, 0.9, 2, 2)
+end
+
 function Widgets.Text(parent, size, color)
     local fs = parent:CreateFontString(nil, "OVERLAY")
     fs:SetFontObject(Media.Font(size, color))

@@ -1,4 +1,4 @@
--- Options live in Blizzard's own settings panel (Esc > Options > AddOns).
+-- Option definitions shared by the in-window options view and Blizzard's settings panel.
 
 local _, ns = ...
 
@@ -9,86 +9,78 @@ ns.Settings = SettingsPage
 
 local PREFIX = "DarkmoonArcade_"
 
-local function Checkbox(category, tbl, key, label, tooltip, default, onChange)
-    local setting = Settings.RegisterAddOnSetting(category, PREFIX .. key, key, tbl, Settings.VarType.Boolean, label, default)
-    Settings.CreateCheckbox(category, setting, tooltip)
-    if onChange then Settings.SetOnValueChangedCallback(PREFIX .. key, function(_, _, value) onChange(value) end) end
-end
-
-local function Dropdown(category, key, label, tooltip, default, options, onChange)
-    local setting = Settings.RegisterAddOnSetting(category, PREFIX .. key, key, ns.db, Settings.VarType.String, label, default)
-    Settings.CreateDropdown(category, setting, function()
-        local container = Settings.CreateControlTextContainer()
-        for _, option in ipairs(options()) do container:Add(option[1], option[2]) end
-        return container:GetData()
-    end, tooltip)
-    if onChange then Settings.SetOnValueChangedCallback(PREFIX .. key, function(_, _, value) onChange(value) end) end
+-- kind: "section", "check", "choice" (choices() -> { {value, label}, ... }) or "range" (min, max, step).
+function SettingsPage.Definitions()
+    local db, Window = ns.db, ns.Window
+    local defs = {
+        { kind = "section", label = "OPT_GENERAL" },
+        { kind = "check", tbl = db, key = "sound", label = "OPT_SOUND", tip = "OPT_SOUND_TIP", default = true },
+        { kind = "check", tbl = db, key = "voices", label = "OPT_VOICES", tip = "OPT_VOICES_TIP", default = true },
+        { kind = "check", tbl = db, key = "minimap", label = "OPT_MINIMAP", tip = "OPT_MINIMAP_TIP", default = true,
+            onChange = function() ns.Minimap:Update() end },
+        { kind = "choice", tbl = db, key = "flightGame", label = "OPT_FLIGHT_GAME", tip = "OPT_FLIGHT_GAME_TIP",
+            default = "murlocblast", onChange = function() Window:RefreshHub() end,
+            choices = function()
+                local choices = { { "off", L.FLIGHT_OFF }, { "hub", L.FLIGHT_HUB } }
+                for _, id in ipairs(ns.Arcade.order) do
+                    choices[#choices + 1] = { id, L[ns.Arcade.games[id].nameKey] }
+                end
+                return choices
+            end },
+        { kind = "check", tbl = db, key = "flightTime", label = "OPT_FLIGHT_TIME", tip = "OPT_FLIGHT_TIME_TIP", default = true },
+        { kind = "choice", tbl = db, key = "language", label = "OPT_LANGUAGE", tip = "OPT_LANGUAGE_TIP", default = "auto",
+            onChange = function() Window:ApplyLanguage() end,
+            choices = function()
+                local choices = {}
+                for _, code in ipairs(ns.LANGUAGES) do
+                    choices[#choices + 1] = { code, code == "auto" and L.LANG_AUTO or ns.LANGUAGE_NAMES[code] }
+                end
+                return choices
+            end },
+        { kind = "range", tbl = db, key = "scale", label = "OPT_SCALE", tip = "OPT_SCALE_TIP", default = 1.15,
+            min = 0.8, max = 1.6, step = 0.05, onChange = function() Window:ApplyScale() end,
+            format = function(value) return ("%d%%"):format(value * 100 + 0.5) end },
+    }
+    for _, id in ipairs(ns.Arcade.order) do
+        local game = ns.Arcade.games[id]
+        if game.Options then
+            defs[#defs + 1] = { kind = "section", label = game.nameKey }
+            for _, def in ipairs(game:Options()) do defs[#defs + 1] = def end
+        end
+    end
+    return defs
 end
 
 function SettingsPage:Register()
     if not (Settings and Settings.RegisterVerticalLayoutCategory) then return end
-    local db, Window = ns.db, ns.Window
     local category, layout = Settings.RegisterVerticalLayoutCategory(L.TITLE)
+    local types = { check = Settings.VarType.Boolean, choice = Settings.VarType.String, range = Settings.VarType.Number }
 
-    layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L.OPT_GENERAL))
-    Checkbox(category, db, "sound", L.OPT_SOUND, L.OPT_SOUND_TIP, true)
-    Checkbox(category, db, "voices", L.OPT_VOICES, L.OPT_VOICES_TIP, true)
-    Checkbox(category, db, "minimap", L.OPT_MINIMAP, L.OPT_MINIMAP_TIP, true, function() ns.Minimap:Update() end)
-
-    Dropdown(category, "flightGame", L.OPT_FLIGHT_GAME, L.OPT_FLIGHT_GAME_TIP, "murlocblast", function()
-        local options = { { "off", L.FLIGHT_OFF }, { "hub", L.FLIGHT_HUB } }
-        for _, id in ipairs(ns.Arcade.order) do
-            options[#options + 1] = { id, L[ns.Arcade.games[id].nameKey] }
-        end
-        return options
-    end, function() Window:RefreshHub() end)
-    Checkbox(category, db, "flightTime", L.OPT_FLIGHT_TIME, L.OPT_FLIGHT_TIME_TIP, true)
-
-    Dropdown(category, "language", L.OPT_LANGUAGE, L.OPT_LANGUAGE_TIP, "auto", function()
-        local options = {}
-        for _, code in ipairs(ns.LANGUAGES) do
-            options[#options + 1] = { code, code == "auto" and L.LANG_AUTO or ns.LANGUAGE_NAMES[code] }
-        end
-        return options
-    end, function() Window:ApplyLanguage() end)
-
-    local scale = Settings.RegisterAddOnSetting(category, PREFIX .. "scale", "scale", db, Settings.VarType.Number, L.OPT_SCALE, 1.15)
-    local sliderOptions = Settings.CreateSliderOptions(0.8, 1.6, 0.05)
-    sliderOptions:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right, function(value)
-        return ("%d%%"):format(value * 100 + 0.5)
-    end)
-    Settings.CreateSlider(category, scale, sliderOptions, L.OPT_SCALE_TIP)
-    Settings.SetOnValueChangedCallback(PREFIX .. "scale", function() Window:ApplyScale() end)
-
-    for _, id in ipairs(ns.Arcade.order) do
-        local game = ns.Arcade.games[id]
-        if game.RegisterSettings then
-            game:RegisterSettings(category, layout, Checkbox)
+    for _, def in ipairs(SettingsPage.Definitions()) do
+        if def.kind == "section" then
+            layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L[def.label]))
+        else
+            local variable = PREFIX .. def.key
+            local setting = Settings.RegisterAddOnSetting(category, variable, def.key, def.tbl, types[def.kind], L[def.label], def.default)
+            if def.kind == "check" then
+                Settings.CreateCheckbox(category, setting, L[def.tip])
+            elseif def.kind == "choice" then
+                Settings.CreateDropdown(category, setting, function()
+                    local container = Settings.CreateControlTextContainer()
+                    for _, choice in ipairs(def.choices()) do container:Add(choice[1], choice[2]) end
+                    return container:GetData()
+                end, L[def.tip])
+            else
+                local options = Settings.CreateSliderOptions(def.min, def.max, def.step)
+                options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right, def.format)
+                Settings.CreateSlider(category, setting, options, L[def.tip])
+            end
+            if def.onChange then
+                Settings.SetOnValueChangedCallback(variable, function(_, _, value) def.onChange(value) end)
+            end
         end
     end
 
     Settings.RegisterAddOnCategory(category)
     self.category = category
-    ns.Debug("settingsCategory", category:GetID())
-end
-
-function SettingsPage:Open()
-    if InCombatLockdown() then
-        ns.Print(L.COMBAT)
-        return
-    end
-    local category = self.category
-    if not category then return end
-    Settings.OpenToCategory(category:GetID())
-    -- Right after login the panel can open on its default page; select ours once it is shown.
-    C_Timer.After(0, function()
-        local panel = SettingsPanel
-        if not (panel and panel.GetCurrentCategory) then return end
-        if panel:GetCurrentCategory() ~= category then
-            if panel.SelectCategory then pcall(panel.SelectCategory, panel, category) end
-            if panel:GetCurrentCategory() ~= category then Settings.OpenToCategory(category:GetID()) end
-        end
-        local current = panel:GetCurrentCategory()
-        ns.Debug("settingsOpened", current and current.GetName and current:GetName() or "?")
-    end)
 end

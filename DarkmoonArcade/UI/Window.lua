@@ -145,6 +145,7 @@ function Window:Create()
     self:CreateSidebar()
     self:CreateFooter()
     self:CreateHub()
+    ns.OptionsView:Create(content)
 
     self:ApplyScale()
     self:RestorePosition()
@@ -179,27 +180,6 @@ function Window:Create()
 end
 
 -- Sidebar ----------------------------------------------------------------------
-
--- Thin gold rim with a dark outline just outside `region`.
-local function Rim(parent, region)
-    local function Line(r, g, b, a, offset, thickness)
-        for _, side in ipairs({ "TOP", "BOTTOM", "LEFT", "RIGHT" }) do
-            local t = parent:CreateTexture(nil, "OVERLAY")
-            t:SetColorTexture(r, g, b, a)
-            if side == "TOP" or side == "BOTTOM" then
-                t:SetPoint(side .. "LEFT", region, side .. "LEFT", -offset, side == "TOP" and offset or -offset)
-                t:SetPoint(side .. "RIGHT", region, side .. "RIGHT", offset, side == "TOP" and offset or -offset)
-                t:SetHeight(thickness)
-            else
-                t:SetPoint("TOP" .. side, region, "TOP" .. side, side == "LEFT" and -offset or offset, offset)
-                t:SetPoint("BOTTOM" .. side, region, "BOTTOM" .. side, side == "LEFT" and -offset or offset, -offset)
-                t:SetWidth(thickness)
-            end
-        end
-    end
-    Line(0, 0, 0, 0.85, 3, 1)
-    Line(RIM_COLOR[1], RIM_COLOR[2], RIM_COLOR[3], RIM_COLOR[4], 2, 2)
-end
 
 local function Separator(bar, y)
     local line = bar:CreateTexture(nil, "ARTWORK")
@@ -256,9 +236,9 @@ function Window:CreateSidebar()
     local fill = bar:CreateTexture(nil, "BACKGROUND")
     fill:SetAllPoints()
     fill:SetColorTexture(0, 0, 0, 0.32)
-    Rim(bar, bar)
+    Widgets.Rim(bar, bar)
     -- Owned by the sidebar so it shows and hides with the game view.
-    Rim(bar, self.field)
+    Widgets.Rim(bar, self.field)
 
     local s = {}
     s.name = Widgets.Text(bar, 16, "gold")
@@ -346,7 +326,7 @@ function Window:CreateFooter()
     self.flightIcon = icon
 
     -- Hub: options on the right. Games: main menu on the left, achievements on the right.
-    local options = Widgets.Button(chrome, 124, 26, "OPTIONS", function() ns.Settings:Open() end)
+    local options = Widgets.Button(chrome, 124, 26, "OPTIONS", function() self:OpenOptions() end)
     options:SetPoint("BOTTOMRIGHT", -INSET_SIDE, 12)
     self.optionsButton = options
     local achievements = Widgets.Button(chrome, 124, 26, "ACHIEVEMENTS", function()
@@ -483,12 +463,17 @@ function Window:RefreshHub()
     end
 end
 
-function Window:OpenHub()
+function Window:LeaveGame()
     if self.activeGame then
         self.activeGame:Leave()
         self.activeGame.container:Hide()
         self.activeGame = nil
     end
+end
+
+function Window:OpenHub()
+    self:LeaveGame()
+    ns.OptionsView:Hide()
     self.hub:Show()
     self.sidebar:Hide()
     self.gamesButton:Hide()
@@ -514,6 +499,7 @@ function Window:OpenGame(id)
         if not ns.SafeCall("Build " .. id, game.Build, game, container) then return end
     end
     self.hub:Hide()
+    ns.OptionsView:Hide()
     self.sidebar:Show()
     game.container:Show()
     self.activeGame = game
@@ -524,6 +510,19 @@ function Window:OpenGame(id)
     self.versionText:Hide()
     game:Enter()
     self:UpdateSidebar()
+end
+
+function Window:OpenOptions()
+    self.frame:Show()
+    self:LeaveGame()
+    self.hub:Hide()
+    self.sidebar:Hide()
+    ns.OptionsView:Show()
+    self.gamesButton:Show()
+    self.achievementsButton:Hide()
+    self.helpButton:Hide()
+    self.optionsButton:Hide()
+    self.versionText:Hide()
 end
 
 -- Shows the window and the game chosen for flights.

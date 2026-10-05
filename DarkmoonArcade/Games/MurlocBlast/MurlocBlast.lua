@@ -404,10 +404,11 @@ function Module:DecorateTile(tile, art)
     pcall(model.SetFacing, model, -0.5)
 end
 
-function Module:RegisterSettings(category, _, checkbox)
-    checkbox(category, MB.Settings(), "symbols", L.MB_OPT_SYMBOLS, L.MB_OPT_SYMBOLS_TIP, true, function()
-        if self.game then Board:SyncBoard() end
-    end)
+function Module:Options()
+    return {
+        { kind = "check", tbl = MB.Settings(), key = "symbols", label = "MB_OPT_SYMBOLS", tip = "MB_OPT_SYMBOLS_TIP",
+            default = true, onChange = function() if self.game then Board:SyncBoard() end end },
+    }
 end
 
 Arcade.RegisterGame(Module)

@@ -97,7 +97,7 @@ SlashCmdList.DARKMOONARCADE = function(input)
             Window:Toggle()
         end
     elseif cmd == "options" or cmd == "config" then
-        ns.Settings:Open()
+        Window:OpenOptions()
     elseif cmd == "minimap" then
         ns.db.minimap = not ns.db.minimap
         ns.Minimap:Update()
