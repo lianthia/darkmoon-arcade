@@ -9,6 +9,10 @@ function ns.AddStrings(language, values)
 end
 
 ns.AddStrings("enUS", {
+    HELP = "Help",
+    CONTROLS = "Controls",
+    HOW_TO_PLAY = "How to play",
+    VERSION = "Version %s",
     MAIN_MENU = "Main Menu",
     GUILD_SCORES = "Guild records",
     NO_GUILD = "Join a guild to compare records.",
@@ -78,6 +82,10 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    HELP = "Hilfe",
+    CONTROLS = "Steuerung",
+    HOW_TO_PLAY = "So wird gespielt",
+    VERSION = "Version %s",
     MAIN_MENU = "Hauptmenü",
     GUILD_SCORES = "Gildenrekorde",
     NO_GUILD = "Tritt einer Gilde bei, um Rekorde zu vergleichen.",
@@ -144,6 +152,10 @@ ns.AddStrings("deDE", {
 })
 
 ns.AddStrings("frFR", {
+    HELP = "Aide",
+    CONTROLS = "Commandes",
+    HOW_TO_PLAY = "Comment jouer",
+    VERSION = "Version %s",
     MAIN_MENU = "Menu principal",
     GUILD_SCORES = "Records de guilde",
     NO_GUILD = "Rejoignez une guilde pour comparer les records.",
@@ -211,6 +223,10 @@ ns.AddStrings("frFR", {
 })
 
 ns.AddStrings("esES", {
+    HELP = "Ayuda",
+    CONTROLS = "Controles",
+    HOW_TO_PLAY = "Cómo se juega",
+    VERSION = "Versión %s",
     MAIN_MENU = "Menú principal",
     GUILD_SCORES = "Récords de hermandad",
     NO_GUILD = "Únete a una hermandad para comparar récords.",
@@ -278,6 +294,10 @@ ns.AddStrings("esES", {
 })
 
 ns.AddStrings("ruRU", {
+    HELP = "Помощь",
+    CONTROLS = "Управление",
+    HOW_TO_PLAY = "Как играть",
+    VERSION = "Версия %s",
     MAIN_MENU = "Главное меню",
     GUILD_SCORES = "Рекорды гильдии",
     NO_GUILD = "Вступите в гильдию, чтобы сравнивать рекорды.",
@@ -346,6 +366,10 @@ ns.AddStrings("ruRU", {
 })
 
 ns.AddStrings("zhCN", {
+    HELP = "帮助",
+    CONTROLS = "操作",
+    HOW_TO_PLAY = "玩法",
+    VERSION = "版本 %s",
     MAIN_MENU = "主菜单",
     GUILD_SCORES = "公会纪录",
     NO_GUILD = "加入公会即可比较纪录。",

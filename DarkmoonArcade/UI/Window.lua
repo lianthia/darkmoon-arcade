@@ -1,7 +1,7 @@
 -- The arcade window: Blizzard's panel frame crowned by the logo, a hub with one tile per
 -- game, and a playfield plus sidebar for whichever game is active.
 
-local _, ns = ...
+local ADDON, ns = ...
 
 local Media, Widgets, Flight, Scores, L = ns.Media, ns.Widgets, ns.Flight, ns.Scores, ns.L
 
@@ -32,7 +32,7 @@ local CHROME_TEMPLATES = { "SimplePanelTemplate", "PortraitFrameTemplateNoCloseB
 local function TemplateExists(name)
     return C_XMLUtil and C_XMLUtil.GetTemplateInfo and C_XMLUtil.GetTemplateInfo(name) ~= nil
 end
-local SIDEBAR_SCORES = 3
+local SIDEBAR_SCORES = 5
 local RIM_COLOR = { 0.86, 0.66, 0.3, 0.9 }
 
 function Arcade.RegisterGame(game)
@@ -126,8 +126,8 @@ function Window:Create()
 
     -- One continuous surface behind header, content and footer; the panel border draws on top.
     local surface = chrome:CreateTexture(nil, "BACKGROUND", nil, 2)
-    surface:SetPoint("TOPLEFT", 4, -4)
-    surface:SetPoint("BOTTOMRIGHT", -4, 4)
+    surface:SetPoint("TOPLEFT", 1, -1)
+    surface:SetPoint("BOTTOMRIGHT", -1, 1)
     surface:SetTexture(Media.Tex("hub_background"))
 
     local content = CreateFrame("Frame", nil, chrome)
@@ -296,19 +296,14 @@ function Window:CreateSidebar()
     s.personalEmpty:SetWidth(SIDEBAR_W - 28)
     s.personalEmpty:SetJustifyH("LEFT")
 
-    Separator(bar, -278)
-    SectionTitle(bar, "GUILD_SCORES", -288)
-    s.guild = ScoreRows(bar, -308)
+    Separator(bar, -316)
+    SectionTitle(bar, "GUILD_SCORES", -326)
+    s.guild = ScoreRows(bar, -346)
     s.guildEmpty = Widgets.Text(bar, 10, "gray")
-    s.guildEmpty:SetPoint("TOPLEFT", 14, -310)
+    s.guildEmpty:SetPoint("TOPLEFT", 14, -348)
     s.guildEmpty:SetWidth(SIDEBAR_W - 28)
     s.guildEmpty:SetJustifyH("LEFT")
 
-    Separator(bar, -366)
-    s.help = Widgets.Text(bar, 10, "gray")
-    s.help:SetPoint("TOPLEFT", 14, -378)
-    s.help:SetWidth(SIDEBAR_W - 28)
-    s.help:SetJustifyH("LEFT")
     self.side = s
 end
 
@@ -320,7 +315,6 @@ function Window:UpdateSidebar()
     s.score:SetText(ns.FormatNumber(info.score or 0))
     s.best:SetText(L.BEST:format(ns.FormatNumber(Scores.Best(game.id, info.bucket))))
     s.info:SetText(info.info or "")
-    s.help:SetText((L[game.helpKey]:gsub("%s+·%s+", "\n")))
     local done, total = ns.Achievements.Count(game.id)
     s.achievements:SetText(("%d / %d"):format(done, total))
     s.progress:SetWidth(math.max(1, s.progressWidth * (total > 0 and done / total or 0)))
@@ -360,6 +354,17 @@ function Window:CreateFooter()
     end)
     achievements:SetPoint("BOTTOMRIGHT", -INSET_SIDE, 12)
     self.achievementsButton = achievements
+    local help = Widgets.Button(chrome, 96, 26, "HELP", function()
+        if self.activeGame then self.activeGame:ShowHelp() end
+    end)
+    help:SetPoint("RIGHT", achievements, "LEFT", -8, 0)
+    self.helpButton = help
+
+    local version = C_AddOns and C_AddOns.GetAddOnMetadata and C_AddOns.GetAddOnMetadata(ADDON, "Version")
+        or GetAddOnMetadata and GetAddOnMetadata(ADDON, "Version") or "?"
+    self.versionText = Widgets.Text(chrome, 10, "gray")
+    self.versionText:SetPoint("BOTTOMLEFT", INSET_SIDE, 19)
+    Widgets.OnRefresh(function() self.versionText:SetText(L.VERSION:format(version)) end)
     local mainMenu = Widgets.Button(chrome, 124, 26, "MAIN_MENU", function() self:OpenHub() end)
     mainMenu:SetPoint("BOTTOMLEFT", INSET_SIDE, 12)
     self.gamesButton = mainMenu
@@ -488,7 +493,9 @@ function Window:OpenHub()
     self.sidebar:Hide()
     self.gamesButton:Hide()
     self.achievementsButton:Hide()
+    self.helpButton:Hide()
     self.optionsButton:Show()
+    self.versionText:Show()
     self:RefreshHub()
 end
 
@@ -512,7 +519,9 @@ function Window:OpenGame(id)
     self.activeGame = game
     self.gamesButton:Show()
     self.achievementsButton:Show()
+    self.helpButton:Show()
     self.optionsButton:Hide()
+    self.versionText:Hide()
     game:Enter()
     self:UpdateSidebar()
 end

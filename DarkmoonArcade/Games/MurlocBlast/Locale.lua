@@ -1,6 +1,7 @@
 local _, ns = ...
 
 ns.AddStrings("enUS", {
+    MB_RULES = "Shoot bubbles at the cluster. Three or more of one color pop, and everything no longer hanging from the ceiling falls for bonus points.\n\nEvery few shots the ceiling drops one row; if a bubble crosses the line at the bottom, the game is over.\n\nStone bubbles never pop, they only fall when cut loose. Every third combo in a row grants a bomb that clears its surroundings, stones included.",
     MB_ACH_LEVEL20 = "Abyssal Explorer",
     MB_ACH_HARD20 = "Lord of the Depths",
     MB_ACH_SCORE100 = "Sunken Treasure",
@@ -54,6 +55,7 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    MB_RULES = "Schieß Blasen in den Haufen. Drei oder mehr gleicher Farbe platzen, und alles, was danach nicht mehr an der Decke hängt, fällt herunter und bringt Bonuspunkte.\n\nAlle paar Schüsse sinkt die Decke um eine Reihe. Überschreitet eine Blase die Linie unten, ist das Spiel vorbei.\n\nSteinblasen platzen nie, sie fallen nur, wenn man sie abschneidet. Jede dritte Combo in Folge bringt eine Bombe, die ihre Umgebung freisprengt, auch Steine.",
     MB_ACH_LEVEL20 = "Abgrundforscher",
     MB_ACH_HARD20 = "Herr der Tiefe",
     MB_ACH_SCORE100 = "Versunkener Schatz",
@@ -103,6 +105,7 @@ ns.AddStrings("deDE", {
 })
 
 ns.AddStrings("frFR", {
+    MB_RULES = "Tirez des bulles sur l'amas. Trois bulles ou plus de la même couleur éclatent, et tout ce qui ne tient plus au plafond tombe et rapporte des points bonus.\n\nToutes les quelques tirs, le plafond descend d'une rangée ; si une bulle franchit la ligne du bas, la partie est perdue.\n\nLes bulles de pierre n'éclatent jamais, elles tombent seulement une fois détachées. Un combo sur trois d'affilée donne une bombe qui dégage les alentours, pierres comprises.",
     MB_ACH_LEVEL20 = "Explorateur des abysses",
     MB_ACH_HARD20 = "Seigneur des profondeurs",
     MB_ACH_SCORE100 = "Trésor englouti",
@@ -153,6 +156,7 @@ ns.AddStrings("frFR", {
 })
 
 ns.AddStrings("esES", {
+    MB_RULES = "Dispara burbujas al grupo. Tres o más del mismo color estallan, y todo lo que deja de colgar del techo cae y da puntos extra.\n\nCada pocos disparos el techo baja una fila; si una burbuja cruza la línea inferior, la partida termina.\n\nLas burbujas de piedra nunca estallan, solo caen al quedar sueltas. Cada tercer combo seguido da una bomba que despeja su entorno, piedras incluidas.",
     MB_ACH_LEVEL20 = "Explorador abisal",
     MB_ACH_HARD20 = "Señor de las profundidades",
     MB_ACH_SCORE100 = "Tesoro hundido",
@@ -203,6 +207,7 @@ ns.AddStrings("esES", {
 })
 
 ns.AddStrings("ruRU", {
+    MB_RULES = "Стреляйте пузырями в скопление. Три и более одного цвета лопаются, а всё, что больше не держится за потолок, падает и приносит бонусные очки.\n\nКаждые несколько выстрелов потолок опускается на ряд; если пузырь пересечёт нижнюю линию, игра окончена.\n\nКаменные пузыри не лопаются, они падают, только если их отрезать. Каждое третье комбо подряд даёт бомбу, которая расчищает всё вокруг, включая камни.",
     MB_ACH_LEVEL20 = "Исследователь бездны",
     MB_ACH_HARD20 = "Владыка глубин",
     MB_ACH_SCORE100 = "Затонувшее сокровище",
@@ -254,6 +259,7 @@ ns.AddStrings("ruRU", {
 })
 
 ns.AddStrings("zhCN", {
+    MB_RULES = "向泡泡群发射泡泡。三个或以上同色泡泡会爆裂，之后不再连着天花板的泡泡会掉落并获得额外分数。\n\n每发射几次，天花板就会下降一行；如果泡泡越过底部的线，游戏结束。\n\n石头泡泡不会爆裂，只有被切断时才会掉落。每连续三次连击会获得一颗炸弹，可炸开周围的泡泡，包括石头。",
     MB_ACH_LEVEL20 = "深渊探索者",
     MB_ACH_HARD20 = "深渊之主",
     MB_ACH_SCORE100 = "沉没的宝藏",

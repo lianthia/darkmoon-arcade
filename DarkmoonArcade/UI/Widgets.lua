@@ -242,14 +242,39 @@ end
 
 -- Achievement list page --------------------------------------------------------------
 
--- Opens the achievements page of `module` and returns to the page that was showing before.
-function Widgets.ShowAchievements(module)
+-- Opens a sub page (achievements, help) of `module`; its back button returns to the page before.
+function Widgets.ShowSubPage(module, name)
     module:Pause({})
     local overlay = module.overlay
-    if overlay.current ~= "achievements" then
-        module.achievementsBack, module.achievementsBackData = overlay.current or "menu", overlay.data
+    if overlay.current ~= "achievements" and overlay.current ~= "help" then
+        module.subPageBack, module.subPageBackData = overlay.current or "menu", overlay.data
     end
-    overlay:Show("achievements")
+    overlay:Show(name)
+end
+
+function Widgets.BackFromSubPage(module)
+    module.overlay:Show(module.subPageBack or "menu", module.subPageBackData)
+end
+
+function Widgets.HelpPage(overlay, width, rulesKey, controlsKey, onBack)
+    local page = overlay:AddPage("help")
+    local title = Widgets.PageTitle(page, "HELP", -22)
+    local rulesTitle = Widgets.LocalizedText(page, 14, "gold", "HOW_TO_PLAY")
+    rulesTitle:SetPoint("TOPLEFT", 30, -76)
+    local rules = Widgets.LocalizedText(page, 12, "white", rulesKey)
+    rules:SetPoint("TOPLEFT", rulesTitle, "BOTTOMLEFT", 0, -8)
+    rules:SetWidth(width - 60)
+    rules:SetJustifyH("LEFT")
+    local controlsTitle = Widgets.LocalizedText(page, 14, "gold", "CONTROLS")
+    controlsTitle:SetPoint("TOPLEFT", rules, "BOTTOMLEFT", 0, -18)
+    local controls = Widgets.Text(page, 12, "white")
+    controls:SetPoint("TOPLEFT", controlsTitle, "BOTTOMLEFT", 0, -8)
+    controls:SetWidth(width - 60)
+    controls:SetJustifyH("LEFT")
+    Widgets.OnRefresh(function() controls:SetText((L[controlsKey]:gsub("%s+·%s+", "\n"))) end)
+    local back = Widgets.Button(page, 200, 26, "BACK", onBack)
+    back:SetPoint("BOTTOM", 0, 18)
+    return page
 end
 
 function Widgets.AchievementsPage(overlay, width, gameId, onBack)

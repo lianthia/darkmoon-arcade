@@ -108,9 +108,8 @@ function Module:Build(container)
         shareMessage = ShareMessage,
         onBack = function() self.overlay:Show("menu") end,
     })
-    Widgets.AchievementsPage(self.overlay, Game.WIDTH, self.id, function()
-        self.overlay:Show(self.achievementsBack or "menu", self.achievementsBackData)
-    end)
+    Widgets.AchievementsPage(self.overlay, Game.WIDTH, self.id, function() Widgets.BackFromSubPage(self) end)
+    Widgets.HelpPage(self.overlay, Game.WIDTH, "MB_RULES", "MB_HELP", function() Widgets.BackFromSubPage(self) end)
     self:ShowMenuBoard()
 end
 
@@ -320,7 +319,11 @@ end
 -- Arcade hooks -------------------------------------------------------------------
 
 function Module:ShowAchievements()
-    Widgets.ShowAchievements(self)
+    Widgets.ShowSubPage(self, "achievements")
+end
+
+function Module:ShowHelp()
+    Widgets.ShowSubPage(self, "help")
 end
 
 function Module:Enter()
