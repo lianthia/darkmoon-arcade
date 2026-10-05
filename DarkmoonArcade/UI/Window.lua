@@ -13,12 +13,12 @@ ns.Window = Window
 
 -- Every game draws into a playfield of this size; the sidebar sits to its right.
 Arcade.FIELD_W, Arcade.FIELD_H = 432, 462
-local SIDEBAR_W, GUTTER = 200, 8
+local SIDEBAR_W, GUTTER = 204, 14
 local CONTENT_W = Arcade.FIELD_W + GUTTER + SIDEBAR_W
 local CONTENT_H = Arcade.FIELD_H
 
--- The playfield runs flush from the inner left edge, between the logo header and the footer.
-local INSET_TOP, INSET_BOTTOM, INSET_SIDE = 48, 42, 4
+-- Playfield and sidebar are framed panels on one grid; the footer buttons align with their edges.
+local INSET_TOP, INSET_BOTTOM, INSET_SIDE = 58, 48, 18
 local FRAME_W = CONTENT_W + INSET_SIDE * 2
 local FRAME_H = CONTENT_H + INSET_TOP + INSET_BOTTOM
 local LOGO_W, LOGO_H = 150, 97
@@ -32,7 +32,8 @@ local CHROME_TEMPLATES = { "SimplePanelTemplate", "PortraitFrameTemplateNoCloseB
 local function TemplateExists(name)
     return C_XMLUtil and C_XMLUtil.GetTemplateInfo and C_XMLUtil.GetTemplateInfo(name) ~= nil
 end
-local SIDEBAR_SCORES = 5
+local SIDEBAR_SCORES = 3
+local RIM_COLOR = { 0.86, 0.66, 0.3, 0.9 }
 
 function Arcade.RegisterGame(game)
     Arcade.games[game.id] = game
@@ -179,6 +180,41 @@ end
 
 -- Sidebar ----------------------------------------------------------------------
 
+-- Thin gold rim with a dark outline just outside `region`.
+local function Rim(parent, region)
+    local function Line(r, g, b, a, offset, thickness)
+        for _, side in ipairs({ "TOP", "BOTTOM", "LEFT", "RIGHT" }) do
+            local t = parent:CreateTexture(nil, "OVERLAY")
+            t:SetColorTexture(r, g, b, a)
+            if side == "TOP" or side == "BOTTOM" then
+                t:SetPoint(side .. "LEFT", region, side .. "LEFT", -offset, side == "TOP" and offset or -offset)
+                t:SetPoint(side .. "RIGHT", region, side .. "RIGHT", offset, side == "TOP" and offset or -offset)
+                t:SetHeight(thickness)
+            else
+                t:SetPoint("TOP" .. side, region, "TOP" .. side, side == "LEFT" and -offset or offset, offset)
+                t:SetPoint("BOTTOM" .. side, region, "BOTTOM" .. side, side == "LEFT" and -offset or offset, -offset)
+                t:SetWidth(thickness)
+            end
+        end
+    end
+    Line(0, 0, 0, 0.85, 3, 1)
+    Line(RIM_COLOR[1], RIM_COLOR[2], RIM_COLOR[3], RIM_COLOR[4], 2, 2)
+end
+
+local function Separator(bar, y)
+    local line = bar:CreateTexture(nil, "ARTWORK")
+    line:SetColorTexture(RIM_COLOR[1], RIM_COLOR[2], RIM_COLOR[3], 0.25)
+    line:SetPoint("TOPLEFT", 14, y)
+    line:SetPoint("TOPRIGHT", -14, y)
+    line:SetHeight(1)
+end
+
+local function SectionTitle(bar, key, y)
+    local fs = Widgets.LocalizedText(bar, 12, "gold", key)
+    fs:SetPoint("TOPLEFT", 14, y)
+    return fs
+end
+
 local function ScoreRows(bar, top)
     local rows = {}
     for i = 1, SIDEBAR_SCORES do
@@ -188,8 +224,8 @@ local function ScoreRows(bar, top)
             label = Widgets.Text(bar, 11, "white"),
             score = Widgets.Text(bar, 12, "gold"),
         }
-        row.rank:SetPoint("TOPRIGHT", bar, "TOPLEFT", 28, y)
-        row.label:SetPoint("TOPLEFT", bar, "TOPLEFT", 34, y)
+        row.rank:SetPoint("TOPRIGHT", bar, "TOPLEFT", 30, y)
+        row.label:SetPoint("TOPLEFT", bar, "TOPLEFT", 36, y)
         row.label:SetWidth(96)
         row.label:SetJustifyH("LEFT")
         row.label:SetWordWrap(false)
@@ -217,45 +253,62 @@ function Window:CreateSidebar()
     bar:SetPoint("TOPRIGHT")
     self.sidebar = bar
 
-    local divider = bar:CreateTexture(nil, "BORDER")
-    divider:SetColorTexture(0.85, 0.65, 0.3, 0.35)
-    divider:SetPoint("TOP", bar, "TOPLEFT", -GUTTER / 2, -12)
-    divider:SetPoint("BOTTOM", bar, "BOTTOMLEFT", -GUTTER / 2, 12)
-    divider:SetWidth(1)
+    local fill = bar:CreateTexture(nil, "BACKGROUND")
+    fill:SetAllPoints()
+    fill:SetColorTexture(0, 0, 0, 0.32)
+    Rim(bar, bar)
+    -- Owned by the sidebar so it shows and hides with the game view.
+    Rim(bar, self.field)
 
     local s = {}
     s.name = Widgets.Text(bar, 16, "gold")
-    s.name:SetPoint("TOP", 0, -12)
-    s.scoreLabel = Widgets.LocalizedText(bar, 11, "gray", "SCORE")
-    s.scoreLabel:SetPoint("TOP", s.name, "BOTTOM", 0, -10)
-    s.score = Widgets.Text(bar, 28, "gold")
-    s.score:SetPoint("TOP", s.scoreLabel, "BOTTOM", 0, -2)
-    s.best = Widgets.Text(bar, 12, "white")
-    s.best:SetPoint("TOP", s.score, "BOTTOM", 0, -4)
+    s.name:SetPoint("TOP", 0, -14)
+    s.scoreLabel = Widgets.LocalizedText(bar, 10, "gray", "SCORE")
+    s.scoreLabel:SetPoint("TOP", 0, -42)
+    s.score = Widgets.Text(bar, 26, "gold")
+    s.score:SetPoint("TOP", 0, -56)
+    s.best = Widgets.Text(bar, 11, "white")
+    s.best:SetPoint("TOP", 0, -88)
     s.info = Widgets.Text(bar, 11, "blue")
-    s.info:SetPoint("TOP", s.best, "BOTTOM", 0, -6)
-    s.info:SetWidth(SIDEBAR_W - 20)
-    s.achievements = Widgets.Text(bar, 11, "gray")
-    s.achievements:SetPoint("TOP", 0, -150)
+    s.info:SetPoint("TOP", 0, -106)
+    s.info:SetWidth(SIDEBAR_W - 24)
 
-    s.personalTitle = Widgets.LocalizedText(bar, 12, "gold", "HIGHSCORES")
-    s.personalTitle:SetPoint("TOP", 0, -176)
-    s.personal = ScoreRows(bar, -196)
+    Separator(bar, -142)
+    SectionTitle(bar, "ACHIEVEMENTS", -152)
+    s.achievements = Widgets.Text(bar, 11, "white")
+    s.achievements:SetPoint("TOPRIGHT", -14, -153)
+    local track = bar:CreateTexture(nil, "ARTWORK")
+    track:SetColorTexture(0, 0, 0, 0.5)
+    track:SetPoint("TOPLEFT", 14, -172)
+    track:SetPoint("TOPRIGHT", -14, -172)
+    track:SetHeight(6)
+    s.progress = bar:CreateTexture(nil, "ARTWORK", nil, 1)
+    s.progress:SetColorTexture(RIM_COLOR[1], RIM_COLOR[2], RIM_COLOR[3], 0.95)
+    s.progress:SetPoint("TOPLEFT", track, "TOPLEFT")
+    s.progress:SetHeight(6)
+    s.progressWidth = SIDEBAR_W - 28
+
+    Separator(bar, -190)
+    SectionTitle(bar, "HIGHSCORES", -200)
+    s.personal = ScoreRows(bar, -220)
     s.personalEmpty = Widgets.LocalizedText(bar, 10, "gray", "NO_SCORES")
-    s.personalEmpty:SetPoint("TOP", 0, -198)
-    s.personalEmpty:SetWidth(SIDEBAR_W - 24)
+    s.personalEmpty:SetPoint("TOPLEFT", 14, -222)
+    s.personalEmpty:SetWidth(SIDEBAR_W - 28)
+    s.personalEmpty:SetJustifyH("LEFT")
 
-    s.guildTitle = Widgets.LocalizedText(bar, 12, "gold", "GUILD_SCORES")
-    s.guildTitle:SetPoint("TOP", 0, -290)
-    s.guild = ScoreRows(bar, -310)
+    Separator(bar, -278)
+    SectionTitle(bar, "GUILD_SCORES", -288)
+    s.guild = ScoreRows(bar, -308)
     s.guildEmpty = Widgets.Text(bar, 10, "gray")
-    s.guildEmpty:SetPoint("TOP", 0, -312)
-    s.guildEmpty:SetWidth(SIDEBAR_W - 24)
+    s.guildEmpty:SetPoint("TOPLEFT", 14, -310)
+    s.guildEmpty:SetWidth(SIDEBAR_W - 28)
+    s.guildEmpty:SetJustifyH("LEFT")
 
+    Separator(bar, -366)
     s.help = Widgets.Text(bar, 10, "gray")
-    s.help:SetPoint("BOTTOM", 0, 12)
-    s.help:SetWidth(SIDEBAR_W - 20)
-    s.help:SetJustifyH("CENTER")
+    s.help:SetPoint("TOPLEFT", 14, -378)
+    s.help:SetWidth(SIDEBAR_W - 28)
+    s.help:SetJustifyH("LEFT")
     self.side = s
 end
 
@@ -267,9 +320,11 @@ function Window:UpdateSidebar()
     s.score:SetText(ns.FormatNumber(info.score or 0))
     s.best:SetText(L.BEST:format(ns.FormatNumber(Scores.Best(game.id, info.bucket))))
     s.info:SetText(info.info or "")
-    s.help:SetText(L[game.helpKey])
+    s.help:SetText((L[game.helpKey]:gsub("%s+·%s+", "\n")))
     local done, total = ns.Achievements.Count(game.id)
-    s.achievements:SetText(total > 0 and L.ACHIEVEMENTS_COUNT:format(done, total) or "")
+    s.achievements:SetText(("%d / %d"):format(done, total))
+    s.progress:SetWidth(math.max(1, s.progressWidth * (total > 0 and done / total or 0)))
+    s.progress:SetShown(done > 0)
 
     local list = Scores.List(game.id, info.bucket)
     FillRows(s.personal, list, function(entry)
@@ -289,7 +344,7 @@ end
 function Window:CreateFooter()
     local chrome = self.chrome
     self.flightText = Widgets.Text(chrome, 12, "blue")
-    self.flightText:SetPoint("BOTTOM", 8, 16)
+    self.flightText:SetPoint("BOTTOM", 8, 19)
     local icon = chrome:CreateTexture(nil, "ARTWORK")
     icon:SetTexture("Interface\\TaxiFrame\\UI-Taxi-Icon-Green")
     icon:SetSize(16, 16)
@@ -298,15 +353,15 @@ function Window:CreateFooter()
 
     -- Hub: options on the right. Games: main menu on the left, achievements on the right.
     local options = Widgets.Button(chrome, 124, 26, "OPTIONS", function() ns.Settings:Open() end)
-    options:SetPoint("BOTTOMRIGHT", -10, 9)
+    options:SetPoint("BOTTOMRIGHT", -INSET_SIDE, 12)
     self.optionsButton = options
     local achievements = Widgets.Button(chrome, 124, 26, "ACHIEVEMENTS", function()
         if self.activeGame then self.activeGame:ShowAchievements() end
     end)
-    achievements:SetPoint("BOTTOMRIGHT", -10, 9)
+    achievements:SetPoint("BOTTOMRIGHT", -INSET_SIDE, 12)
     self.achievementsButton = achievements
     local mainMenu = Widgets.Button(chrome, 124, 26, "MAIN_MENU", function() self:OpenHub() end)
-    mainMenu:SetPoint("BOTTOMLEFT", 10, 9)
+    mainMenu:SetPoint("BOTTOMLEFT", INSET_SIDE, 12)
     self.gamesButton = mainMenu
 end
 
