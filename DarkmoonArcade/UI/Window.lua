@@ -74,8 +74,19 @@ function Window:Create()
         if ButtonFrameTemplate_HidePortrait then pcall(ButtonFrameTemplate_HidePortrait, chrome) end
         if chrome.SetTitle then chrome:SetTitle("") end
     end
+    -- The templates bring their own inner inset and title streaks; the arcade draws its own surface.
+    for _, key in ipairs({ "Inset", "TopTileStreaks", "Bg" }) do
+        local part = chrome[key]
+        if type(part) == "table" and part.Hide then part:Hide() end
+    end
     self.chrome = chrome
     ns.Debug("chrome", template)
+    local parts = {}
+    for key, value in pairs(chrome) do
+        if type(value) == "table" and value.GetObjectType then parts[#parts + 1] = key end
+    end
+    table.sort(parts)
+    ns.Debug("chromeParts", table.concat(parts, ","))
 
     local close = CreateFrame("Button", nil, chrome, "UIPanelCloseButtonNoScripts")
     close:SetPoint("TOPRIGHT", -2, -2)
