@@ -1,8 +1,8 @@
 ## Interface: 16001
 ## Title: Darkmoon Arcade
-## Notes: Mini games for long flights: Murloc Blast, Flappy Griffin and more.
+## Notes: Mini games for long flights: Murloc Blast, Flappy Griffin, Jewels of Uldum and more.
 ## Category: Mini Games
-## Version: 0.9.1
+## Version: 0.10.0
 ## SavedVariables: DarkmoonArcadeDB
 ## IconTexture: Interface\AddOns\DarkmoonArcade\media\icon
 ## AddonCompartmentFunc: DarkmoonArcade_OnAddonCompartmentClick
@@ -33,5 +33,9 @@ Games\MurlocBlast\MurlocBlast.lua
 Games\FlappyGriffin\Locale.lua
 Games\FlappyGriffin\Game.lua
 Games\FlappyGriffin\FlappyGriffin.lua
+
+Games\JewelsOfUldum\Locale.lua
+Games\JewelsOfUldum\Game.lua
+Games\JewelsOfUldum\JewelsOfUldum.lua
 
 Main.lua

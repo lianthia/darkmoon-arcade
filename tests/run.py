@@ -19,6 +19,7 @@ def main() -> int:
         "Games/MurlocBlast/Levels.lua",
         "Games/MurlocBlast/Game.lua",
         "Games/FlappyGriffin/Game.lua",
+        "Games/JewelsOfUldum/Game.lua",
     ):
         loader((ADDON / rel).read_text(encoding="utf-8"), "@" + rel)
 

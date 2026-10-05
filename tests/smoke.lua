@@ -213,11 +213,11 @@ Fire("PLAYER_LOGIN")
 assert(DarkmoonArcadeDB.flightGame == "murlocblast", "defaults")
 
 local Window, Arcade = ns.Window, ns.Arcade
-assert(#Arcade.order == 2, "two games registered")
+assert(#Arcade.order == 3, "three games registered")
 SlashCmdList.DARKMOONARCADE("")
 assert(Window.frame._shown, "window should be shown")
 
-local results = { murloc = 0, flappy = 0, clicks = 0, best = 0 }
+local results = { murloc = 0, flappy = 0, jewels = 0, clicks = 0, best = 0 }
 local seed = 42
 local function rnd(n) seed = (seed * 16807) % 2147483647; return seed % n end
 
@@ -242,6 +242,12 @@ for step = 1, 900 do
         Window.frame._scripts.OnKeyUp(Window.frame, "LEFT")
         Tick(0.5)
         results.murloc = results.murloc + 1
+    elseif game and game.id == "jewelsofuldum" and state == "PLAYING" then
+        local move = game.game:FindMove()
+        if move then game:TrySwap(move[1], move[2], move[3], move[4]) end
+        game.gemLayer._scripts.OnMouseDown(game.gemLayer, "LeftButton")
+        Tick(1.2)
+        results.jewels = results.jewels + 1
     elseif game and game.id == "flappygriffin" and (state == "PLAYING" or (state == "READY" and not game.overlay.current)) then
         if rnd(3) == 0 then game.container._scripts.OnMouseDown(game.container, "LeftButton") end
         if rnd(4) == 0 then Window.frame._scripts.OnKeyDown(Window.frame, "SPACE") end
@@ -253,10 +259,13 @@ for step = 1, 900 do
         results.clicks = results.clicks + ClickVisibleButtons(rnd)
         if not Window.frame._shown then SlashCmdList.DARKMOONARCADE("") end
     end
-    if step % 150 == 0 then SlashCmdList.DARKMOONARCADE(step % 300 == 0 and "flappygriffin" or "murlocblast") end
+    if step % 150 == 0 then
+        local ids = { "murlocblast", "flappygriffin", "jewelsofuldum" }
+        SlashCmdList.DARKMOONARCADE(ids[(step / 150) % 3 + 1])
+    end
     if rnd(60) == 0 then Window.frame._scripts.OnKeyDown(Window.frame, "P") end
 end
-assert(results.murloc > 0 and results.flappy > 0, "both games were played")
+assert(results.murloc > 0 and results.flappy > 0 and results.jewels > 0, "all games were played")
 
 -- Landing pauses and records the flight.
 SlashCmdList.DARKMOONARCADE("flappygriffin")
