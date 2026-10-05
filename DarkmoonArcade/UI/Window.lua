@@ -17,9 +17,10 @@ local SIDEBAR_W, GUTTER = 200, 8
 local CONTENT_W = Arcade.FIELD_W + GUTTER + SIDEBAR_W
 local CONTENT_H = Arcade.FIELD_H
 
-local INSET_TOP, INSET_BOTTOM, INSET_SIDE, INSET_PAD = 40, 42, 8, 3
-local FRAME_W = CONTENT_W + INSET_SIDE * 2 + INSET_PAD * 2
-local FRAME_H = CONTENT_H + INSET_TOP + INSET_BOTTOM + INSET_PAD * 2
+-- The playfield runs flush from the inner left edge, between the logo header and the footer.
+local INSET_TOP, INSET_BOTTOM, INSET_SIDE = 48, 42, 4
+local FRAME_W = CONTENT_W + INSET_SIDE * 2
+local FRAME_H = CONTENT_H + INSET_TOP + INSET_BOTTOM
 local LOGO_W, LOGO_H = 150, 97
 -- Half of the logo sits inside the frame, the content starts just below it.
 local LOGO_OVERLAP = 48
@@ -130,7 +131,7 @@ function Window:Create()
 
     local content = CreateFrame("Frame", nil, chrome)
     content:SetSize(CONTENT_W, CONTENT_H)
-    content:SetPoint("TOPLEFT", INSET_SIDE + INSET_PAD, -(INSET_TOP + INSET_PAD))
+    content:SetPoint("TOPLEFT", INSET_SIDE, -INSET_TOP)
     content:SetFrameLevel(chrome:GetFrameLevel() + 4)
     self.content = content
 
@@ -287,24 +288,26 @@ end
 
 function Window:CreateFooter()
     local chrome = self.chrome
+    self.flightText = Widgets.Text(chrome, 12, "blue")
+    self.flightText:SetPoint("BOTTOM", 8, 16)
     local icon = chrome:CreateTexture(nil, "ARTWORK")
     icon:SetTexture("Interface\\TaxiFrame\\UI-Taxi-Icon-Green")
     icon:SetSize(16, 16)
-    icon:SetPoint("BOTTOMLEFT", INSET_SIDE + 6, 14)
+    icon:SetPoint("RIGHT", self.flightText, "LEFT", -6, 0)
     self.flightIcon = icon
-    self.flightText = Widgets.Text(chrome, 12, "blue")
-    self.flightText:SetPoint("LEFT", icon, "RIGHT", 6, 0)
 
+    -- Hub: options on the right. Games: main menu on the left, achievements on the right.
     local options = Widgets.Button(chrome, 124, 26, "OPTIONS", function() ns.Settings:Open() end)
-    options:SetPoint("BOTTOMRIGHT", -INSET_SIDE, 9)
+    options:SetPoint("BOTTOMRIGHT", -10, 9)
+    self.optionsButton = options
     local achievements = Widgets.Button(chrome, 124, 26, "ACHIEVEMENTS", function()
         if self.activeGame then self.activeGame:ShowAchievements() end
     end)
-    achievements:SetPoint("RIGHT", options, "LEFT", -10, 0)
+    achievements:SetPoint("BOTTOMRIGHT", -10, 9)
     self.achievementsButton = achievements
-    local games = Widgets.Button(chrome, 124, 26, "MAIN_MENU", function() self:OpenHub() end)
-    games:SetPoint("RIGHT", achievements, "LEFT", -10, 0)
-    self.gamesButton = games
+    local mainMenu = Widgets.Button(chrome, 124, 26, "MAIN_MENU", function() self:OpenHub() end)
+    mainMenu:SetPoint("BOTTOMLEFT", 10, 9)
+    self.gamesButton = mainMenu
 end
 
 -- Hub ------------------------------------------------------------------------------
@@ -384,17 +387,16 @@ function Window:CreateTile(parent, game)
     desc:SetPoint("TOP", title, "BOTTOM", 0, -10)
     desc:SetWidth(TILE_W - 40)
     desc:SetJustifyH("CENTER")
-    local play = Widgets.LocalizedText(details, 13, "gold", "PLAY")
-    play:SetPoint("BOTTOM", 0, 16)
+    local play = Widgets.Button(details, 140, 26, "PLAY", function() self:OpenGame(game.id) end)
+    play:SetPoint("BOTTOM", 0, 14)
     local rim = details:CreateTexture(nil, "OVERLAY")
     rim:SetAllPoints()
     rim:SetTexture(Media.Tex("card_glow"))
     rim:SetBlendMode("ADD")
 
-    local target = 0
-    tile:SetScript("OnEnter", function() target = 1 end)
-    tile:SetScript("OnLeave", function() target = 0 end)
+    -- Hover by mouse position, so moving onto the play button keeps the details visible.
     tile:SetScript("OnUpdate", function(_, elapsed)
+        local target = tile:IsMouseOver() and 1 or 0
         local alpha = details:GetAlpha()
         if alpha ~= target then
             local step = elapsed * 6
@@ -431,6 +433,7 @@ function Window:OpenHub()
     self.sidebar:Hide()
     self.gamesButton:Hide()
     self.achievementsButton:Hide()
+    self.optionsButton:Show()
     self:RefreshHub()
 end
 
@@ -454,6 +457,7 @@ function Window:OpenGame(id)
     self.activeGame = game
     self.gamesButton:Show()
     self.achievementsButton:Show()
+    self.optionsButton:Hide()
     game:Enter()
     self:UpdateSidebar()
 end
