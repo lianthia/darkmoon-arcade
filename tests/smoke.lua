@@ -238,11 +238,11 @@ Fire("PLAYER_LOGIN")
 assert(DarkmoonArcadeDB.flightGame == "murlocblast", "defaults")
 
 local Window, Arcade = ns.Window, ns.Arcade
-assert(#Arcade.order == 3, "three games registered")
+assert(#Arcade.order == 4, "four games registered")
 SlashCmdList.DARKMOONARCADE("")
 assert(Window.frame._shown, "window should be shown")
 
-local results = { murloc = 0, flappy = 0, jewels = 0, clicks = 0, best = 0 }
+local results = { murloc = 0, flappy = 0, jewels = 0, slots = 0, clicks = 0, best = 0 }
 local seed = 42
 local function rnd(n) seed = (seed * 16807) % 2147483647; return seed % n end
 
@@ -272,6 +272,19 @@ for step = 1, 900 do
         Window.frame._scripts.OnKeyUp(Window.frame, "LEFT")
         Tick(0.5)
         results.murloc = results.murloc + 1
+    elseif game and game.id == "goblinslots" and game.phase ~= "over" and state ~= "READY" and state ~= "OVER" then
+        if game.phase == "idle" and state == "SPIN" then
+            game.overlay:Hide()
+            Window.frame._scripts.OnKeyDown(Window.frame, "SPACE")
+        elseif game.phase == "offer" then
+            game:Pick(game.game.offer[(step % 4) + 1])
+        elseif game.phase == "rent" then
+            game.overlay:Hide()
+            game.phase = "idle"
+            if step % 3 == 0 and #game.game.inventory > 0 then game.game:Remove(1) end
+        end
+        Tick(1.6)
+        results.slots = results.slots + 1
     elseif game and game.id == "jewelsofuldum" and state == "PLAYING" then
         local move = game.game:FindMove()
         if move then game:TrySwap(move[1], move[2], move[3], move[4]) end
@@ -290,12 +303,13 @@ for step = 1, 900 do
         if not Window.frame._shown then SlashCmdList.DARKMOONARCADE("") end
     end
     if step % 150 == 0 then
-        local ids = { "murlocblast", "flappygriffin", "jewelsofuldum" }
-        SlashCmdList.DARKMOONARCADE(ids[(step / 150) % 3 + 1])
+        local ids = { "murlocblast", "flappygriffin", "jewelsofuldum", "goblinslots" }
+        SlashCmdList.DARKMOONARCADE(ids[(step / 150) % 4 + 1])
+        if Window.activeGame and Window.activeGame.id == "goblinslots" then Window.activeGame:NewGame() end
     end
     if rnd(60) == 0 then Window.frame._scripts.OnKeyDown(Window.frame, "P") end
 end
-assert(results.murloc > 0 and results.flappy > 0 and results.jewels > 0, "all games were played")
+assert(results.murloc > 0 and results.flappy > 0 and results.jewels > 0 and results.slots > 0, ("all games were played: %d %d %d %d"):format(results.murloc, results.flappy, results.jewels, results.slots))
 
 -- Landing pauses and records the flight.
 SlashCmdList.DARKMOONARCADE("flappygriffin")
