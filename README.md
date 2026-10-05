@@ -1,4 +1,4 @@
-<p align="center"><img src="docs/logo.png" alt="Darkmoon Arcade" width="360"></p>
+<p align="center"><img src="art/logo_source.png" alt="Darkmoon Arcade" width="360"></p>
 
 # Darkmoon Arcade
 
