@@ -9,7 +9,7 @@ local chat = {}
 
 local NUMBER_GETTERS = {
     GetLeft = 100, GetTop = 600, GetEffectiveScale = 1, GetScale = 1, GetFrameLevel = 1,
-    GetWidth = 100, GetHeight = 100,
+    GetWidth = 100, GetHeight = 100, GetAlpha = 1,
 }
 
 local methods = {
@@ -109,6 +109,8 @@ C_Map = {
 }
 function CreateVector2D(x, y) return { x = x, y = y } end
 function GetLocale() return "deDE" end
+function GetBuildInfo() return "1.60.1", "70205", "Oct 1 2026", 16001 end
+C_XMLUtil = { GetTemplateInfo = function(name) if name == "SimplePanelTemplate" then return { type = "Frame" } end end }
 function GetTime() return now end
 function time() return 1760000000 + math.floor(now) end
 date = os.date
@@ -280,5 +282,6 @@ for _, line in ipairs(printed) do
     if tostring(line):find("error") then error("captured: " .. tostring(line)) end
 end
 assert(not DarkmoonArcadeDB.errors, "errors recorded in SavedVariables")
+assert(DarkmoonArcadeDB.debug.chrome == "SimplePanelTemplate", "chrome template diagnostics")
 
 return results.murloc, results.flappy, results.clicks, results.best

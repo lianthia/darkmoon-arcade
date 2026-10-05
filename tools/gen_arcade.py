@@ -139,34 +139,65 @@ def medal(colors):
 
 
 def hub_background():
+    """Deep violet backdrop: soft stage light from above, quiet grain, dark edges."""
     w, h = 512, 512
     ys, xs = np.mgrid[0:h, 0:w].astype(float)
-    stripe = (np.floor((xs + ys * 0.0) / 36) % 2)
-    top = np.array([0.16, 0.07, 0.25])
-    bottom = np.array([0.05, 0.02, 0.09])
-    t = np.clip(ys / H, 0, 1)[..., None]
-    rgb = top * (1 - t) + bottom * t
-    rgb = rgb * (0.88 + 0.12 * stripe[..., None])
-    cx, cy = W / 2, 150
-    glow = np.exp(-(((xs - cx) / 200) ** 2 + ((ys - cy) / 140) ** 2))
-    rgb = rgb + glow[..., None] * np.array([0.22, 0.10, 0.28])
-    vignette = np.clip(1 - (((xs - W / 2) / W) ** 2 + ((ys - H / 2) / H) ** 2) * 1.6, 0.35, 1)
+    u, v = xs / w, ys / (H / h * h)
+    base = np.array([0.055, 0.03, 0.085])
+    light = np.array([0.20, 0.10, 0.27])
+    spot = np.exp(-(((u - 0.5) / 0.55) ** 2 + ((v + 0.05) / 0.75) ** 2))
+    rgb = base + (light - base) * spot[..., None]
+    vignette = np.clip(1 - ((u - 0.5) ** 2 * 1.4 + (v - 0.45) ** 2 * 0.9), 0.45, 1)
     rgb = rgb * vignette[..., None]
-    img = to_rgba(rgb)
-    dr = ImageDraw.Draw(img)
     rng = np.random.default_rng(13)
-    for _ in range(70):
-        x, y = rng.integers(0, W), rng.integers(0, H)
-        r = rng.random() * 1.4 + 0.4
-        a = int(80 + rng.random() * 140)
-        dr.ellipse([x - r, y - r, x + r, y + r], fill=(255, 230, 170, a))
-    return img
+    grain = (rng.random((h, w)) - 0.5) * 0.018
+    rgb = rgb + grain[..., None]
+    return to_rgba(rgb)
+
+
+def rounded_rect_alpha(w, h, radius, inset=0.0, ss=4):
+    img = Image.new("L", (w * ss, h * ss), 0)
+    ImageDraw.Draw(img).rounded_rectangle(
+        [inset * ss, inset * ss, (w - inset) * ss - 1, (h - inset) * ss - 1], radius=radius * ss, fill=255)
+    return np.asarray(img.resize((w, h), Image.LANCZOS)).astype(float) / 255
+
+
+CARD_W, CARD_H, CARD_R = 512, 256, 22
+
+
+def card_mask():
+    a = rounded_rect_alpha(CARD_W, CARD_H, CARD_R)
+    return to_rgba(np.ones((CARD_H, CARD_W, 3)), a)
+
+
+def card_frame():
+    outer = rounded_rect_alpha(CARD_W, CARD_H, CARD_R)
+    inner = rounded_rect_alpha(CARD_W, CARD_H, CARD_R - 6, inset=6)
+    ring = np.clip(outer - inner, 0, 1)
+    ys = np.linspace(0, 1, CARD_H)[:, None] * np.ones((1, CARD_W))
+    gold_top, gold_bottom = np.array([1.0, 0.86, 0.48]), np.array([0.62, 0.38, 0.10])
+    rgb = gold_top + (gold_bottom - gold_top) * ys[..., None]
+    edge = rounded_rect_alpha(CARD_W, CARD_H, CARD_R - 3, inset=3)
+    highlight = np.clip(outer - edge, 0, 1) * 0.35
+    rgb = rgb * (0.75 + highlight[..., None])
+    return to_rgba(rgb, ring)
+
+
+def card_glow():
+    inner = rounded_rect_alpha(CARD_W, CARD_H, CARD_R - 6, inset=6)
+    blurred = np.asarray(Image.fromarray(((1 - inner) * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(10))).astype(float) / 255
+    a = np.clip(blurred * inner * 1.6, 0, 1)
+    return to_rgba(np.ones((CARD_H, CARD_W, 3)) * np.array([1.0, 0.75, 0.35]), a)
+
+
+def card_shade():
+    ys = np.linspace(0, 1, CARD_H)[:, None] * np.ones((1, CARD_W))
+    a = np.clip((ys - 0.45) / 0.55, 0, 1) ** 1.4 * 0.85
+    return to_rgba(np.zeros((CARD_H, CARD_W, 3)) + 0.02, a)
 
 
 def tile_canvas(art):
-    canvas = Image.new("RGBA", (256, 256), (0, 0, 0, 255))
-    canvas.paste(art.resize((256, 128), Image.LANCZOS), (0, 0))
-    return canvas
+    return art.resize((CARD_W, CARD_H), Image.LANCZOS)
 
 
 def murloc_tile():
@@ -240,6 +271,10 @@ def main():
     ga.save_tga(medal(((222, 170, 40), (255, 228, 120), (110, 74, 10))), "medal_gold", "flappy")
     sounds()
     ga.save_tga(hub_background(), "hub_background", "")
+    ga.save_tga(card_mask(), "card_mask", "")
+    ga.save_tga(card_frame(), "card_frame", "")
+    ga.save_tga(card_glow(), "card_glow", "")
+    ga.save_tga(card_shade(), "card_shade", "")
     ga.save_tga(murloc_tile(), "murlocblast", "tiles")
     ga.save_tga(flappy_tile(), "flappygriffin", "tiles")
     print("Arcade assets generated in", ga.MEDIA)

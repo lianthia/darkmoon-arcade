@@ -8,7 +8,8 @@ local W, H = Game.WIDTH, Game.HEIGHT
 local GROUND_TOP = H - Game.GROUND
 
 -- Client assets (file data IDs).
-local GRYPHON_MODEL = 124290 -- creature/gryphon/gryphon.m2
+-- Display info binds creature/gryphon/gryphon.m2 to its skin; the bare model renders untextured.
+local GRYPHON_DISPLAY = 1149
 local ROCK_TEXTURE = 187135 -- tileset/elwynn/elwynnrockbase.blp
 local GRASS_TEXTURE = 187126 -- tileset/elwynn/elwynngrassbase.blp
 local TICKET_ICON = 134481 -- interface/icons/inv_misc_ticket_darkmoon_01.blp
@@ -50,7 +51,7 @@ function Module:BestScore()
 end
 
 local function ApplyModel(m)
-    pcall(m.SetModel, m, GRYPHON_MODEL)
+    pcall(m.SetDisplayInfo, m, GRYPHON_DISPLAY)
     pcall(m.SetFacing, m, model.facing)
     pcall(m.SetPortraitZoom, m, model.zoom)
     pcall(m.SetAnimation, m, model.anim)
@@ -501,8 +502,8 @@ end
 
 function Module:DecorateTile(tile, art)
     local m = CreateFrame("PlayerModel", nil, tile)
-    m:SetSize(96, 96)
-    m:SetPoint("CENTER", art, "CENTER", -30, 4)
+    m:SetSize(120, 120)
+    m:SetPoint("CENTER", art, "CENTER", -56, 6)
     ApplyModel(m)
     self.tileModel = m
 end

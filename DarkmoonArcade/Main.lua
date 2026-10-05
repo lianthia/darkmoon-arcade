@@ -28,6 +28,7 @@ local function InitDB()
     db.flights = db.flights or {}
     db.flightRate = db.flightRate or {}
     db.errors = nil
+    db.debug = { build = select(4, GetBuildInfo()), locale = GetLocale() }
     ns.db = db
 end
 

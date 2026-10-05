@@ -69,6 +69,7 @@ function SettingsPage:Register()
 
     Settings.RegisterAddOnCategory(category)
     self.category = category
+    ns.Debug("settingsCategory", category:GetID())
 end
 
 function SettingsPage:Open()
@@ -76,7 +77,18 @@ function SettingsPage:Open()
         ns.Print(L.COMBAT)
         return
     end
-    if self.category then
-        Settings.OpenToCategory(self.category:GetID())
-    end
+    local category = self.category
+    if not category then return end
+    Settings.OpenToCategory(category:GetID())
+    -- Right after login the panel can open on its default page; select ours once it is shown.
+    C_Timer.After(0, function()
+        local panel = SettingsPanel
+        if not (panel and panel.GetCurrentCategory) then return end
+        if panel:GetCurrentCategory() ~= category then
+            if panel.SelectCategory then pcall(panel.SelectCategory, panel, category) end
+            if panel:GetCurrentCategory() ~= category then Settings.OpenToCategory(category:GetID()) end
+        end
+        local current = panel:GetCurrentCategory()
+        ns.Debug("settingsOpened", current and current.GetName and current:GetName() or "?")
+    end)
 end

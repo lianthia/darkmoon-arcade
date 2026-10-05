@@ -17,11 +17,19 @@ local SIDEBAR_W, GUTTER = 200, 8
 local CONTENT_W = Arcade.FIELD_W + GUTTER + SIDEBAR_W
 local CONTENT_H = Arcade.FIELD_H
 
-local INSET_TOP, INSET_BOTTOM, INSET_LEFT, INSET_RIGHT, INSET_PAD = 30, 30, 4, 6, 3
-local FRAME_W = CONTENT_W + INSET_LEFT + INSET_RIGHT + INSET_PAD * 2
+local INSET_TOP, INSET_BOTTOM, INSET_SIDE, INSET_PAD = 30, 42, 8, 3
+local FRAME_W = CONTENT_W + INSET_SIDE * 2 + INSET_PAD * 2
 local FRAME_H = CONTENT_H + INSET_TOP + INSET_BOTTOM + INSET_PAD * 2
-local LOGO_W, LOGO_H = 280, 180
-local TILE_W, TILE_H, TILE_GAP = 200, 236, 10
+local LOGO_W, LOGO_H = 196, 126
+local LOGO_OVERLAP = 22
+local TILE_W, TILE_H, TILE_GAP, TILE_COLUMNS = 300, 150, 20, 2
+
+-- Panel templates without a title bar first; the portrait frame is the known-good fallback.
+local CHROME_TEMPLATES = { "SimplePanelTemplate", "PortraitFrameTemplateNoCloseButton" }
+
+local function TemplateExists(name)
+    return C_XMLUtil and C_XMLUtil.GetTemplateInfo and C_XMLUtil.GetTemplateInfo(name) ~= nil
+end
 local SIDEBAR_SCORES = 5
 
 function Arcade.RegisterGame(game)
@@ -44,7 +52,7 @@ function Window:Create()
     f:SetSize(FRAME_W, FRAME_H)
     f:SetToplevel(true)
     f:SetClampedToScreen(true)
-    f:SetClampRectInsets(0, 0, LOGO_H - 30, 0)
+    f:SetClampRectInsets(0, 0, LOGO_H - LOGO_OVERLAP, 0)
     f:SetMovable(true)
     f:EnableMouse(true)
     f:Hide()
@@ -52,14 +60,24 @@ function Window:Create()
     self.frame = f
 
     -- Content is parented to the chrome so it always draws above the chrome's background.
-    local chrome = CreateFrame("Frame", nil, f, "PortraitFrameTemplateNoCloseButton")
+    local template = CHROME_TEMPLATES[#CHROME_TEMPLATES]
+    for _, name in ipairs(CHROME_TEMPLATES) do
+        if TemplateExists(name) then
+            template = name
+            break
+        end
+    end
+    local chrome = CreateFrame("Frame", nil, f, template)
     chrome:SetAllPoints()
-    if ButtonFrameTemplate_HidePortrait then pcall(ButtonFrameTemplate_HidePortrait, chrome) end
-    if chrome.SetTitle then chrome:SetTitle("") end
+    if template:find("^Portrait") then
+        if ButtonFrameTemplate_HidePortrait then pcall(ButtonFrameTemplate_HidePortrait, chrome) end
+        if chrome.SetTitle then chrome:SetTitle("") end
+    end
     self.chrome = chrome
+    ns.Debug("chrome", template)
 
     local close = CreateFrame("Button", nil, chrome, "UIPanelCloseButtonNoScripts")
-    close:SetPoint("TOPRIGHT")
+    close:SetPoint("TOPRIGHT", -2, -2)
     close:SetScript("OnClick", function() f:Hide() end)
 
     local function StartMove() f:StartMoving() end
@@ -69,20 +87,20 @@ function Window:Create()
         ns.db.position = { point, relPoint, x, y }
     end
 
-    local titleBar = CreateFrame("Frame", nil, chrome)
-    titleBar:SetPoint("TOPLEFT", 4, 0)
-    titleBar:SetPoint("TOPRIGHT", -28, 0)
-    titleBar:SetHeight(24)
-    titleBar:EnableMouse(true)
-    titleBar:RegisterForDrag("LeftButton")
-    titleBar:SetScript("OnDragStart", StartMove)
-    titleBar:SetScript("OnDragStop", StopMove)
+    local dragArea = CreateFrame("Frame", nil, chrome)
+    dragArea:SetPoint("TOPLEFT", 4, 0)
+    dragArea:SetPoint("TOPRIGHT", -30, 0)
+    dragArea:SetHeight(INSET_TOP)
+    dragArea:EnableMouse(true)
+    dragArea:RegisterForDrag("LeftButton")
+    dragArea:SetScript("OnDragStart", StartMove)
+    dragArea:SetScript("OnDragStop", StopMove)
 
-    -- The logo replaces the title text and rises above the frame.
-    local logoFrame = CreateFrame("Frame", nil, chrome)
+    -- The logo crowns the frame; its own high frame level keeps it above the panel border.
+    local logoFrame = CreateFrame("Frame", nil, f)
     logoFrame:SetSize(LOGO_W, LOGO_H)
-    logoFrame:SetPoint("BOTTOM", f, "TOP", 0, -26)
-    logoFrame:SetFrameLevel(chrome:GetFrameLevel() + 20)
+    logoFrame:SetPoint("BOTTOM", f, "TOP", 0, -LOGO_OVERLAP)
+    logoFrame:SetFrameLevel(f:GetFrameLevel() + 1000)
     logoFrame:EnableMouse(true)
     logoFrame:RegisterForDrag("LeftButton")
     logoFrame:SetScript("OnDragStart", StartMove)
@@ -93,8 +111,8 @@ function Window:Create()
     logo:SetTexCoord(0, 1, 0, 330 / 512)
 
     local inset = CreateFrame("Frame", nil, chrome, "InsetFrameTemplate")
-    inset:SetPoint("TOPLEFT", INSET_LEFT, -INSET_TOP)
-    inset:SetPoint("BOTTOMRIGHT", -INSET_RIGHT, INSET_BOTTOM)
+    inset:SetPoint("TOPLEFT", INSET_SIDE, -INSET_TOP)
+    inset:SetPoint("BOTTOMRIGHT", -INSET_SIDE, INSET_BOTTOM)
     inset:SetFrameLevel(chrome:GetFrameLevel() + 2)
 
     local content = CreateFrame("Frame", nil, inset)
@@ -232,15 +250,15 @@ function Window:CreateFooter()
     local icon = chrome:CreateTexture(nil, "ARTWORK")
     icon:SetTexture("Interface\\TaxiFrame\\UI-Taxi-Icon-Green")
     icon:SetSize(16, 16)
-    icon:SetPoint("BOTTOMLEFT", 10, 7)
+    icon:SetPoint("BOTTOMLEFT", INSET_SIDE + 6, 14)
     self.flightIcon = icon
-    self.flightText = Widgets.Text(chrome, 11, "blue")
-    self.flightText:SetPoint("LEFT", icon, "RIGHT", 4, 0)
+    self.flightText = Widgets.Text(chrome, 12, "blue")
+    self.flightText:SetPoint("LEFT", icon, "RIGHT", 6, 0)
 
-    local options = Widgets.Button(chrome, 110, 22, "OPTIONS", function() ns.Settings:Open() end)
-    options:SetPoint("BOTTOMRIGHT", -8, 5)
-    local games = Widgets.Button(chrome, 110, 22, "GAMES", function() self:OpenHub() end)
-    games:SetPoint("RIGHT", options, "LEFT", -4, 0)
+    local options = Widgets.Button(chrome, 140, 26, "OPTIONS", function() ns.Settings:Open() end)
+    options:SetPoint("BOTTOMRIGHT", -INSET_SIDE, 9)
+    local games = Widgets.Button(chrome, 140, 26, "GAMES", function() self:OpenHub() end)
+    games:SetPoint("RIGHT", options, "LEFT", -10, 0)
     self.gamesButton = games
 end
 
@@ -258,52 +276,85 @@ function Window:CreateHub()
     bg:SetTexCoord(0, 1, 0, CONTENT_H / 512)
 
     local subtitle = Widgets.LocalizedText(hub, 16, "gold", "PICK_GAME")
-    subtitle:SetPoint("TOP", 0, -26)
+    subtitle:SetPoint("TOP", 0, -36)
 
-    local columns = math.min(3, #Arcade.order)
+    local columns = math.min(TILE_COLUMNS, #Arcade.order)
+    local rows = math.ceil(#Arcade.order / TILE_COLUMNS)
     local rowWidth = columns * TILE_W + (columns - 1) * TILE_GAP
+    local gridHeight = rows * TILE_H + (rows - 1) * TILE_GAP
     local left = (CONTENT_W - rowWidth) / 2
+    local top = 60 + math.max(0, (CONTENT_H - 60 - gridHeight) / 2 - 20)
     self.tiles = {}
     for i, id in ipairs(Arcade.order) do
         local tile = self:CreateTile(hub, Arcade.games[id])
-        local column = (i - 1) % 3
-        local row = math.floor((i - 1) / 3)
-        tile:SetPoint("TOPLEFT", hub, "TOPLEFT", left + column * (TILE_W + TILE_GAP), -70 - row * (TILE_H + TILE_GAP))
+        local column = (i - 1) % TILE_COLUMNS
+        local row = math.floor((i - 1) / TILE_COLUMNS)
+        tile:SetPoint("TOPLEFT", hub, "TOPLEFT", left + column * (TILE_W + TILE_GAP), -top - row * (TILE_H + TILE_GAP))
         self.tiles[#self.tiles + 1] = tile
     end
 end
 
+-- A game card: artwork with rounded corners and a gold rim; details fade in on hover.
 function Window:CreateTile(parent, game)
-    local tile = CreateFrame("Button", nil, parent, "InsetFrameTemplate")
+    local tile = CreateFrame("Button", nil, parent)
     tile:SetSize(TILE_W, TILE_H)
     tile:RegisterForClicks("LeftButtonUp")
 
-    local art = tile:CreateTexture(nil, "ARTWORK")
+    local mask = tile:CreateMaskTexture()
+    mask:SetTexture(Media.Tex("card_mask"), "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
+    mask:SetAllPoints()
+
+    local art = tile:CreateTexture(nil, "ARTWORK", nil, 0)
+    art:SetAllPoints()
     art:SetTexture(Media.Tex(game.tile))
-    art:SetTexCoord(0, 1, 0, 0.5)
-    art:SetPoint("TOPLEFT", 4, -4)
-    art:SetPoint("TOPRIGHT", -4, -4)
-    art:SetHeight((TILE_W - 8) / 2)
+    art:AddMaskTexture(mask)
 
-    local name = Widgets.LocalizedText(tile, 16, "gold", game.nameKey)
-    name:SetPoint("TOP", art, "BOTTOM", 0, -8)
-    local desc = Widgets.LocalizedText(tile, 11, "white", game.descKey)
-    desc:SetPoint("TOP", name, "BOTTOM", 0, -6)
-    desc:SetWidth(TILE_W - 18)
+    local shade = tile:CreateTexture(nil, "ARTWORK", nil, 1)
+    shade:SetAllPoints()
+    shade:SetTexture(Media.Tex("card_shade"))
+    shade:AddMaskTexture(mask)
+
+    local name = Widgets.LocalizedText(tile, 18, "gold", game.nameKey)
+    name:SetPoint("BOTTOMLEFT", 14, 12)
+    tile.best = Widgets.Text(tile, 11, "white")
+    tile.best:SetPoint("TOPRIGHT", -14, -12)
+
+    local frameArt = tile:CreateTexture(nil, "OVERLAY")
+    frameArt:SetAllPoints()
+    frameArt:SetTexture(Media.Tex("card_frame"))
+
+    -- Details sit on their own frame so they draw above decorative 3D models.
+    local details = CreateFrame("Frame", nil, tile)
+    details:SetAllPoints()
+    details:SetFrameLevel(tile:GetFrameLevel() + 10)
+    details:SetAlpha(0)
+    local veil = details:CreateTexture(nil, "BACKGROUND")
+    veil:SetAllPoints()
+    veil:SetTexture(Media.Tex("card_mask"))
+    veil:SetVertexColor(0.03, 0.01, 0.06, 0.8)
+    local title = Widgets.LocalizedText(details, 18, "gold", game.nameKey)
+    title:SetPoint("TOP", 0, -18)
+    local desc = Widgets.LocalizedText(details, 12, "white", game.descKey)
+    desc:SetPoint("TOP", title, "BOTTOM", 0, -10)
+    desc:SetWidth(TILE_W - 40)
     desc:SetJustifyH("CENTER")
-    tile.best = Widgets.Text(tile, 11, "gray")
-    tile.best:SetPoint("BOTTOM", 0, 40)
+    local play = Widgets.LocalizedText(details, 13, "gold", "PLAY")
+    play:SetPoint("BOTTOM", 0, 16)
+    local rim = details:CreateTexture(nil, "OVERLAY")
+    rim:SetAllPoints()
+    rim:SetTexture(Media.Tex("card_glow"))
+    rim:SetBlendMode("ADD")
 
-    local play = Widgets.Button(tile, 120, 24, "PLAY", function() self:OpenGame(game.id) end)
-    play:SetPoint("BOTTOM", 0, 10)
-
-    local highlight = tile:CreateTexture(nil, "HIGHLIGHT")
-    highlight:SetTexture("Interface\\Buttons\\UI-Listbox-Highlight2")
-    highlight:SetBlendMode("ADD")
-    highlight:SetVertexColor(1, 0.8, 0.3, 0.3)
-    highlight:SetPoint("TOPLEFT", 3, -3)
-    highlight:SetPoint("BOTTOMRIGHT", -3, 3)
-
+    local target = 0
+    tile:SetScript("OnEnter", function() target = 1 end)
+    tile:SetScript("OnLeave", function() target = 0 end)
+    tile:SetScript("OnUpdate", function(_, elapsed)
+        local alpha = details:GetAlpha()
+        if alpha ~= target then
+            local step = elapsed * 6
+            details:SetAlpha(target > alpha and math.min(target, alpha + step) or math.max(target, alpha - step))
+        end
+    end)
     tile:SetScript("OnClick", function()
         PlaySound(SOUNDKIT.IG_MAINMENU_OPTION)
         self:OpenGame(game.id)

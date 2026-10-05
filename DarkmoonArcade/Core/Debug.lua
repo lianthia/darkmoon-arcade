@@ -30,3 +30,10 @@ function ns.SafeCall(label, fn, ...)
     end, ...)
     return ok, result
 end
+
+-- Diagnostics written to DarkmoonArcadeDB.debug on every load (client facts that tests cannot know).
+function ns.Debug(key, value)
+    if not ns.db then return end
+    ns.db.debug = ns.db.debug or {}
+    ns.db.debug[key] = value
+end

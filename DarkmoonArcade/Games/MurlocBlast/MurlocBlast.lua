@@ -334,8 +334,8 @@ end
 
 function Module:DecorateTile(tile, art)
     local model = CreateFrame("PlayerModel", nil, tile)
-    model:SetSize(84, 84)
-    model:SetPoint("BOTTOMRIGHT", art, "BOTTOMRIGHT", 6, -4)
+    model:SetSize(112, 112)
+    model:SetPoint("RIGHT", art, "RIGHT", -2, 4)
     pcall(model.SetCreature, model, 46)
     pcall(model.SetFacing, model, -0.5)
 end
