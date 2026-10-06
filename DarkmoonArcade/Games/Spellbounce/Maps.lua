@@ -1,5 +1,7 @@
--- Spellbounce: peg layouts of the ten maps (pure logic, no WoW API).
+-- Spellbounce: peg layouts of the maps (pure logic, no WoW API).
 -- Every map is a list of peg positions; which pegs become targets is decided per run.
+-- Pegs with `motion` move over time: orbit (rotate around a center), slide (sway sideways)
+-- or swing (hang from a pivot like a pendulum).
 
 local _, ns = ...
 
@@ -16,16 +18,44 @@ Maps.MIN_DIST = 24
 
 local function Builder()
     local pegs = {}
-    local function Add(x, y, bumper)
+    local function Add(x, y, bumper, motion)
         if x < MIN_X or x > MAX_X or y < MIN_Y or y > MAX_Y then return end
         local min = bumper and Maps.MIN_DIST + 6 or Maps.MIN_DIST
         for _, p in ipairs(pegs) do
             local limit = (p.bumper or bumper) and Maps.MIN_DIST + 6 or min
             if (p.x - x) ^ 2 + (p.y - y) ^ 2 < limit * limit then return end
         end
-        pegs[#pegs + 1] = { x = math.floor(x + 0.5), y = math.floor(y + 0.5), bumper = bumper or nil }
+        local peg = { x = math.floor(x + 0.5), y = math.floor(y + 0.5), bumper = bumper or nil, motion = motion }
+        if motion then peg.bx, peg.by = x, y end
+        pegs[#pegs + 1] = peg
     end
     return pegs, Add
+end
+
+-- Position of a moving peg at time `t`.
+function Maps.Position(peg, t)
+    local m = peg.motion
+    if m.kind == "orbit" then
+        local a = m.a + m.spin * t
+        return m.cx + math.cos(a) * m.r, m.cy + math.sin(a) * m.r
+    elseif m.kind == "slide" then
+        return peg.bx + m.amp * math.sin(t * m.speed + m.phase), peg.by
+    elseif m.kind == "swing" then
+        local angle = m.amp * math.sin(t * m.speed)
+        return m.px + math.sin(angle) * m.len, m.py + math.cos(angle) * m.len
+    end
+    return peg.x, peg.y
+end
+
+local function Orbit(Add, cx, cy, r, count, spin)
+    for i = 0, count - 1 do
+        local a = i / count * math.pi * 2
+        Add(cx + math.cos(a) * r, cy + math.sin(a) * r, nil, { kind = "orbit", cx = cx, cy = cy, r = r, a = a, spin = spin })
+    end
+end
+
+local function SlidingRow(Add, y, phase)
+    for x = 54, 378, 46 do Add(x, y, nil, { kind = "slide", amp = 30, speed = 0.8, phase = phase }) end
 end
 
 local function Ring(Add, cx, cy, r, count, from, to)
@@ -179,6 +209,60 @@ Maps.LIST = {
             end
             Add(232, 252)
             Ring(Add, 232, 252, 30, 5, -math.pi / 2, math.pi * 1.5)
+        end,
+    },
+    { -- Darkmoon Carousel: two rings turning against each other
+        key = "carousel", background = 1,
+        build = function(Add)
+            Add(216, 262, true)
+            Orbit(Add, 216, 262, 66, 12, 0.5)
+            Orbit(Add, 216, 262, 128, 22, -0.35)
+        end,
+    },
+    { -- Shifting Tides: rows sliding back and forth
+        key = "tides", background = 3,
+        build = function(Add)
+            for row = 0, 4 do SlidingRow(Add, 150 + row * 52, row * math.pi) end
+        end,
+    },
+    { -- Ferris Wheel: a turning rim with spokes
+        key = "wheel", background = 2,
+        build = function(Add)
+            Add(216, 262, true)
+            Orbit(Add, 216, 262, 140, 28, 0.25)
+            for spoke = 0, 3 do
+                local a = spoke * math.pi / 2 + math.pi / 4
+                for _, r in ipairs({ 44, 74, 104 }) do
+                    Add(216 + math.cos(a) * r, 262 + math.sin(a) * r, nil,
+                        { kind = "orbit", cx = 216, cy = 262, r = r, a = a, spin = 0.25 })
+                end
+            end
+        end,
+    },
+    { -- Swinging Lanterns: chains swaying together above a row of benches
+        key = "pendulum", background = 4,
+        build = function(Add)
+            for i = 0, 5 do
+                local px = 66 + i * 60
+                for k = 1, 4 do
+                    Add(px, 108 + k * 30, nil, { kind = "swing", px = px, py = 108, len = k * 30, amp = 0.22, speed = 1.1 })
+                end
+            end
+            for x = 42, 390, 48 do Add(x, 320) end
+            Add(120, 384, true)
+            Add(312, 384, true)
+            for x = 216 - 48, 216 + 48, 48 do Add(x, 394) end
+        end,
+    },
+    { -- Grand Carnival: a spinning center, still arcs and a sliding floor
+        key = "carnival", background = 1,
+        build = function(Add)
+            Add(216, 236, true)
+            Orbit(Add, 216, 236, 58, 10, 0.6)
+            Ring(Add, 216, 236, 150, 9, math.pi * 0.95, math.pi * 1.45)
+            Ring(Add, 216, 236, 150, 9, -math.pi * 0.45, math.pi * 0.05)
+            SlidingRow(Add, 384, 0)
+            for x = 70, 362, 73 do Add(x, 330) end
         end,
     },
 }

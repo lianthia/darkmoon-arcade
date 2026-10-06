@@ -338,6 +338,7 @@ for step = 1, 900 do
         local ids = { "murlocblast", "flappygriffin", "jewelsofuldum", "goblinslots", "spellbounce" }
         SlashCmdList.DARKMOONARCADE(ids[(step / 150) % 5 + 1])
         if Window.activeGame and Window.activeGame.id == "goblinslots" then Window.activeGame:NewGame() end
+        if Window.activeGame and Window.activeGame.id == "jewelsofuldum" then Window.activeGame:NewGame() end
     end
     if rnd(60) == 0 then Window.frame._scripts.OnKeyDown(Window.frame, "P") end
 end
@@ -366,6 +367,16 @@ Tick(4)
 assert(sb.overlay.current == "clear", "clear page shown")
 sb:NextMap()
 assert(sb.game.level == 2 and sb.game.state == "PLAYING", "next map")
+
+-- A moving map: pegs travel and the guide follows them.
+sb:StartGame(12)
+assert(sb.game.moving, "map 12 moves")
+Tick(1)
+sb.overlay:Show("menu")
+local settings = ns.Arcade.Settings(sb)
+settings.reached = 13
+sb.overlay:Refresh()
+assert(sb:StartMap() >= 1 and sb:StartMap() <= 13, "start map in range")
 
 -- Shared scores carry the addon name; whispers go to the target.
 ns.Widgets.Share("WHISPER", "test")

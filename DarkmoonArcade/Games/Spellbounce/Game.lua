@@ -107,6 +107,10 @@ function Game:LoadLevel(level)
         end
     end
     self.targetsTotal, self.targetsHit = targets, 0
+    self.moving = false
+    for _, peg in ipairs(self.pegs) do
+        if peg.motion then self.moving = true end
+    end
     self:RefreshLive()
     self.orbs = Game.ORBS
     self.balls = {}
@@ -114,6 +118,12 @@ function Game:LoadLevel(level)
     self.time = 0
     self.state = "PLAYING"
     self:Emit("level", { level = level })
+end
+
+function Game:MovePegs()
+    for _, peg in ipairs(self.live) do
+        if peg.motion then peg.x, peg.y = Maps.Position(peg, self.time) end
+    end
 end
 
 -- Pegs still on the field; physics only looks at these.
@@ -425,6 +435,7 @@ function Game:Update(dt)
     if self.state ~= "PLAYING" then return end
     dt = math.min(dt, 0.05)
     self.time = self.time + dt
+    if self.moving then self:MovePegs() end
     if #self.balls == 0 then return end
     local steps = math.ceil(dt / STEP)
     local h = dt / steps

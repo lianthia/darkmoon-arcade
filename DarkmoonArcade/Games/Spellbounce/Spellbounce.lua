@@ -295,23 +295,37 @@ function Module:ClassPicker(page, top)
     end
 end
 
+function Module:StartMap()
+    local settings = Settings()
+    return math.max(1, math.min(settings.startMap or settings.reached, settings.reached))
+end
+
 function Module:CreateMenuPage()
     local page = self.overlay:AddPage("menu")
     local title = Widgets.PageTitle(page, "SB_NAME", -40)
     local tagline = Widgets.LocalizedText(page, 14, "blue", "SB_TAGLINE")
     tagline:SetPoint("TOP", title, "BOTTOM", 0, -6)
-    local refreshClass = self:ClassPicker(page, -112)
-    local newGame = Widgets.Button(page, 200, 26, "NEW_GAME", function() self:StartGame(1) end)
-    local continue = Widgets.Button(page, 200, 26, nil, function() self:StartGame(Settings().reached) end)
+    local refreshClass = self:ClassPicker(page, -104)
+    -- Any map reached so far can be the start of a run.
+    local mapLabel = Widgets.LocalizedText(page, 11, "gray", "SB_START_MAP")
+    mapLabel:SetPoint("TOP", 0, -214)
+    local mapCycler = Widgets.Cycler(page, 260, function(dir)
+        local maps = {}
+        for level = 1, Settings().reached do maps[level] = level end
+        Settings().startMap = Widgets.Cycle(maps, self:StartMap(), dir)
+        page.refresh()
+    end)
+    mapCycler:SetPoint("TOP", mapLabel, "BOTTOM", 0, -2)
+    local newGame = Widgets.Button(page, 200, 26, "NEW_GAME", function() self:StartGame(self:StartMap()) end)
     local scores = Widgets.Button(page, 200, 26, "HIGHSCORES", function() self.overlay:Show("scores") end)
-    Widgets.Stack(page, { newGame, continue, scores }, -224)
+    Widgets.Stack(page, { newGame, scores }, -270)
     local nextClass = Widgets.Text(page, 11, "gray")
-    nextClass:SetPoint("TOP", 0, -330)
+    nextClass:SetPoint("TOP", 0, -342)
     page.refresh = function()
         refreshClass()
         local progress = Settings().reached
-        continue:SetText(L.SB_CONTINUE:format(progress))
-        continue:SetEnabled(progress > 1)
+        local start = self:StartMap()
+        mapCycler.label:SetText(L.SB_MAP_TITLE:format(start, MapName(start)))
         local locked = NextLockedClass(progress)
         nextClass:SetText(locked and L.SB_NEXT_CLASS:format(Game.UNLOCK[locked], ClassName(locked)) or L.SB_ALL_CLASSES)
     end
@@ -717,6 +731,8 @@ function Module:OnClear(data)
     local settings = Settings()
     local before = settings.reached
     settings.reached = math.max(settings.reached, data.level + 1)
+    -- Newly reached maps become the default start, an older choice is kept.
+    if (settings.startMap or before) >= before then settings.startMap = settings.reached end
     settings.classesCleared[game.class] = true
     ns.Stats.Bump(self.id, "maps")
     ns.Stats.Bump(self.id, "class_" .. game.class)
@@ -936,6 +952,21 @@ function Module:UpdateAim(dt)
     for i = index, #self.dots do self.dots[i]:Hide() end
 end
 
+function Module:MovePegVisuals(dt)
+    for _, v in pairs(self.pegVisuals) do
+        local peg = v.peg
+        if peg.motion then
+            Place(v.tex, peg.x, peg.y)
+            if peg.lit then Place(v.glow, peg.x, peg.y) end
+        end
+    end
+    self.traceTimer = (self.traceTimer or 0) - dt
+    if self.traceTimer <= 0 then
+        self.traceTimer = 0.1
+        self.traceDirty = true
+    end
+end
+
 function Module:DrawBalls()
     local game = self.game
     local color = CLASS_INFO[game.class].color
@@ -987,6 +1018,7 @@ function Module:OnUpdate(dt)
     self.hitSounds = 0
     self:UpdateAim(dt)
     game:Update(dt * scale)
+    if game.moving and game.state ~= "READY" then self:MovePegVisuals(dt) end
     self:DrawBalls()
     for i = #self.effects, 1, -1 do
         local e = self.effects[i]
@@ -1011,6 +1043,7 @@ end
 function Module:ResetProgress()
     local settings = Settings()
     settings.reached = 1
+    settings.startMap = nil
     settings.classesCleared = {}
 end
 

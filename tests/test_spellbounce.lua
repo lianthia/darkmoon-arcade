@@ -53,7 +53,10 @@ end
 test("every map has valid, well spaced pegs", function()
     for i = 1, Maps.COUNT do
         local pegs = Maps.Build(i)
-        assert(#pegs >= 40, ("map %d has only %d pegs"):format(i, #pegs))
+        -- Moving maps are harder to hit, so they may have fewer pegs.
+        local minimum = 40
+        for _, p in ipairs(pegs) do if p.motion then minimum = 34 end end
+        assert(#pegs >= minimum, ("map %d has only %d pegs"):format(i, #pegs))
         for a = 1, #pegs do
             local p = pegs[a]
             assert(p.x >= 24 and p.x <= 408 and p.y >= 104 and p.y <= 408, ("map %d peg out of bounds"):format(i))
@@ -64,6 +67,42 @@ test("every map has valid, well spaced pegs", function()
             end
         end
     end
+end)
+
+test("moving pegs keep their distance and stay on the field", function()
+    for i = 1, Maps.COUNT do
+        local pegs = Maps.Build(i)
+        local moving = false
+        for _, p in ipairs(pegs) do if p.motion then moving = true end end
+        if moving then
+            for t = 0, 30, 0.37 do
+                local pos = {}
+                for k, p in ipairs(pegs) do
+                    local x, y = p.x, p.y
+                    if p.motion then x, y = Maps.Position(p, t) end
+                    assert(x >= 20 and x <= 412 and y >= 100 and y <= 412, ("map %d peg leaves the field at t=%.2f"):format(i, t))
+                    pos[k] = { x, y }
+                end
+                for a = 1, #pos do
+                    for b = a + 1, #pos do
+                        local d = math.sqrt((pos[a][1] - pos[b][1]) ^ 2 + (pos[a][2] - pos[b][2]) ^ 2)
+                        assert(d >= Maps.MIN_DIST - 1, ("map %d pegs too close at t=%.2f: %.1f"):format(i, t, d))
+                    end
+                end
+            end
+        end
+    end
+end)
+
+test("moving maps move their pegs while playing", function()
+    local g = NewGame()
+    g:LoadLevel(11)
+    assert(g.moving, "map 11 moves")
+    local peg
+    for _, p in ipairs(g.pegs) do if p.motion then peg = p break end end
+    local x0, y0 = peg.x, peg.y
+    g:Update(0.5)
+    assert(peg.x ~= x0 or peg.y ~= y0, "peg moved")
 end)
 
 test("levels assign targets, powers and one gold peg", function()
