@@ -180,21 +180,29 @@ function OptionsView:CreateTabButtons(view)
             self.tabIDs[i] = view:AddNamedTab(L[key], self.panels[i])
         end
         self.tabSystem = view
-        -- Tab texts are set once by the template; re-apply and re-measure them on language changes.
-        Widgets.OnRefresh(function()
+        -- The template sizes a tab once from its text's current width, which truncates longer or
+        -- translated labels. Give each label its full width, then let the tab measure itself again.
+        local function FitTabs()
             for i, id in ipairs(self.tabIDs) do
                 local button = tabs:GetTabButton(id)
-                if button then
+                local label = button and (button.Text or (button.GetFontString and button:GetFontString()))
+                if label then
                     local text = L[keys[i]]
-                    if button.SetText then button:SetText(text) end
-                    local label = button.Text or (button.GetFontString and button:GetFontString())
-                    if label then label:SetText(text) end
-                    local width = label and label:GetStringWidth() or 80
-                    button:SetWidth(math.max(110, width + 48))
+                    button.tabText = text
+                    label:SetText(text)
+                    local width = label.GetUnboundedStringWidth and label:GetUnboundedStringWidth() or label:GetStringWidth()
+                    label:SetWidth(math.ceil(width) + 4)
+                    if button.UpdateTabWidth then
+                        button:UpdateTabWidth()
+                    else
+                        button:SetWidth(math.max(110, width + 48))
+                    end
                 end
             end
             if tabs.MarkDirty then tabs:MarkDirty() end
-        end)
+        end
+        Widgets.OnRefresh(FitTabs)
+        FitTabs()
         return
     end
     -- Fallback: plain buttons that switch the panels.
