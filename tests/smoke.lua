@@ -321,7 +321,7 @@ for step = 1, 900 do
         local indexes = game.game:BestPlay()
         for _, i in ipairs(indexes) do game:ToggleCard(game.game.hand[i]) end
         if rnd(4) == 0 and game.game.discards > 0 then game:Discard() else Window.frame._scripts.OnKeyDown(Window.frame, "SPACE") end
-        Tick(1.8)
+        Tick(3)
         results.deck = results.deck + 1
     elseif game and game.id == "darkmoondeck" and state == "SHOP" and game.overlay.current == "shop" then
         game.game.gold = game.game.gold + 10
@@ -349,6 +349,7 @@ for step = 1, 900 do
         local ids = { "murlocblast", "flappygriffin", "jewelsofuldum", "goblinslots", "spellbounce", "darkmoondeck" }
         SlashCmdList.DARKMOONARCADE(ids[(step / 150) % 6 + 1])
         if Window.activeGame and Window.activeGame.id == "darkmoondeck" then Window.activeGame:NewRun() end
+        if Window.activeGame and Window.activeGame.id == "flappygriffin" then Window.activeGame:NewRun() end
         if Window.activeGame and Window.activeGame.id == "goblinslots" then Window.activeGame:NewGame() end
         if Window.activeGame and Window.activeGame.id == "jewelsofuldum" then Window.activeGame:NewGame() end
     end
@@ -364,7 +365,7 @@ deck:NewRun()
 deck.game.goal = 1
 deck:ToggleCard(deck.game.hand[1])
 deck:Play()
-Tick(2)
+Tick(4)
 assert(deck.overlay.current == "shop", "shop after a won attraction")
 deck.game.gold = 50
 deck.shop.offers[1].buy._scripts.OnClick(deck.shop.offers[1].buy)
@@ -376,7 +377,7 @@ for _ = 1, 8 do
     if deck.game.state ~= "PLAYING" then break end
     deck:ToggleCard(deck.game.hand[1])
     deck:Play()
-    Tick(2)
+    Tick(4)
 end
 assert(deck.overlay.current == "over", "game over page: " .. tostring(deck.overlay.current))
 

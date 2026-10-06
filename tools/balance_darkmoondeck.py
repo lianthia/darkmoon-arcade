@@ -29,6 +29,9 @@ for _ = 1, runs do
                 local offer = g.offers[slot]
                 if offer and g.gold >= offer.price then g:Buy(slot) end
             end
+            for slot = 1, 2 do
+                if g.fortunes[slot] and g.gold >= Game.FORTUNE_PRICE then g:BuyFortune(slot) end
+            end
             g:NextRound()
         else
             local indexes, value = g:BestPlay()

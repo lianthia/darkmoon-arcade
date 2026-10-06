@@ -143,8 +143,8 @@ end)
 test("bosses bend the rules", function()
     local g = NewGame()
     g.roundIndex = 3
-    for _, boss in ipairs(Game.BOSSES) do
-        g.random = function() return ({ silas = 1, sayge = 2, fozlebub = 3, paleo = 4 })[boss] end
+    for index, boss in ipairs(Game.BOSSES) do
+        g.random = function(n) return math.min(index, n) end
         g:StartRound()
         eq(g.boss, boss)
         if boss == "silas" then eq(g.discards, 0) end
@@ -170,6 +170,67 @@ test("best play finds four of a kind", function()
     local cards = {}
     for i, idx in ipairs(indexes) do cards[i] = g.hand[idx] end
     eq((Game.Evaluate(cards)), "four")
+end)
+
+test("fortunes level up hands", function()
+    local g = NewGame()
+    g.goal = 1
+    g:Play({ 1 })
+    g.gold = 10
+    local key = g.fortunes[1]
+    assert(g:BuyFortune(1), "bought")
+    eq(g:Level(key), 2)
+    eq(g.gold, 10 - Game.FORTUNE_PRICE)
+    g.levels.pair = 3
+    local result = g:Score(Cards("7b 7e"))
+    eq(result.points, 10 + 15 * 2 + 14)
+    eq(result.mult, 2 + 1 * 2)
+end)
+
+test("four winds allows four-card straights and flushes", function()
+    eq((Game.Evaluate(Cards("2b 3e 4p 5w 8b"), true)), "straight")
+    eq((Game.Evaluate(Cards("2b 4b 6b 8b 3e"), true)), "flush")
+    eq((Game.Evaluate(Cards("5p 6p 7p 8p 2b"), true)), "straightflush")
+    eq((Game.Evaluate(Cards("2b 3e 4p 5w 8b"))), "high", "not without the trinket")
+    eq((Game.Evaluate(Cards("3b 3e 3p 7w 7b"), true)), "fullhouse", "stronger hands stay")
+end)
+
+test("new bosses void hands", function()
+    local g = NewGame()
+    g.boss = "kerri"
+    eq(g:Score(Cards("7b 7e")).total, 0, "kerri: pairs score nothing")
+    assert(g:Score(Cards("7b 7e 3p 3w")).total > 0, "kerri: two pair scores")
+    g.boss, g.playsMade = "burth", 0
+    eq(g:Score(Cards("7b 7e")).total, 0, "burth: first hand")
+    g.playsMade = 1
+    assert(g:Score(Cards("7b 7e")).total > 0, "burth: later hands")
+    g.boss = "flik"
+    eq(g:Score(Cards("7b 7e")).total, 0, "flik: only five cards")
+    g.boss, g.gold, g.discards = "selina", 1, 3
+    assert(not g:CanDiscard(), "selina: discards cost gold")
+end)
+
+test("multiplying trinkets stack", function()
+    local g = NewGame()
+    g.trinkets = { { id = "storms" }, { id = "perfectionist" }, { id = "gambler" } }
+    g.gamble = true
+    local result = g:Score(Cards("2b 3e 4p 5w 6b"))
+    eq(result.mult, 4 * 2 * 1.5 * 3)
+    eq(result.total, math.floor(result.points * result.mult))
+end)
+
+test("the faire goes on after the eighth ante", function()
+    local g = NewGame()
+    g.ante, g.roundIndex = Game.ANTES, 3
+    g:StartRound()
+    g.goal = 1
+    g:Play({ 1 })
+    eq(g.state, "WON")
+    assert(g:ContinueEndless(), "continued")
+    eq(g.state, "SHOP")
+    g:NextRound()
+    eq(g.ante, Game.ANTES + 1)
+    assert(g.goal > Game.Goal(Game.ANTES, "small"), "higher goal")
 end)
 
 test("winning the last boss wins the run", function()

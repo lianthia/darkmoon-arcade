@@ -7,14 +7,14 @@ from PIL import Image, ImageDraw, ImageFilter
 import gen_assets as ga
 import gen_arcade as arc
 
-W, H = 432, 462
+W, H = 620, 462
 FOLDER = "deck"
 CARD_W, CARD_H = 60, 86  # on-screen card size; textures are square and get stretched to it
 
 
 def table():
-    """Purple felt of a fortune teller's table with a gold trim."""
-    w = h = 512
+    """Purple felt of a fortune teller's table; 1024 wide for the wide playfield."""
+    w, h = 1024, 512
     rng = np.random.default_rng(31)
     yy, xx = np.mgrid[0:h, 0:w].astype(float)
     felt = ga.fbm(h, w, rng, ((64, 0.4), (16, 0.3), (4, 0.3)))
@@ -159,7 +159,7 @@ def suit_symbol(suit, size=64):
 
 
 def tile():
-    art = table().crop((0, 60, 432, 276)).resize((512, 256), Image.LANCZOS)
+    art = table().crop((94, 60, 526, 276)).resize((512, 256), Image.LANCZOS)
     front, back = card_front(), card_back()
     colors = [(110, 210, 90), (255, 150, 60), (190, 120, 255), (255, 90, 90)]
     for i, angle in enumerate([-18, -6, 6, 18]):

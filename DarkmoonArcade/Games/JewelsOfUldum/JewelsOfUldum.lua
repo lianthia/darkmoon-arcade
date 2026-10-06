@@ -21,7 +21,7 @@ local PRISM_TINT = { 1, 1, 1 }
 
 local Module = {
     id = "jewelsofuldum",
-    rank = 3,
+    rank = 4,
     nameKey = "JU_NAME",
     descKey = "JU_DESC",
     helpKey = "JU_HELP",
