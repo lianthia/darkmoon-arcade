@@ -12,8 +12,8 @@ The arcade opens automatically when you take off, shows the remaining flight tim
 | **Spellbounce** | Peg shooter | All nine classic classes with their own powers and talent trees, 15 maps with moving runes, fireworks finale |
 | **Darkmoon Deck** | Poker roguelite | 32-card Darkmoon deck, 31 Darkmoon cards, Sayge's fortunes, eight faire folk as bosses, endless mode |
 | **Murloc Blast** | Bubble shooter | Three difficulties, stone bubbles, bombs, endless procedural levels |
-| **Flappy Griffin** | One-button flyer | Gryphon over Elwynn or wind rider over the desert, Darkmoon tickets, four medals |
 | **Jewels of Uldum** | Match three | Flame, star and prism gems, special combos, Classic, Blitz and Zen modes |
+| **Flappy Griffin** | One-button flyer | Gryphon over Elwynn or wind rider over the desert, Darkmoon tickets, four medals |
 | **Goblin Slot Machine** | Deck-building slot machine | 17 symbols with neighbor synergies, rising rent to the goblin banker |
 
 Every game comes with:
