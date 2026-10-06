@@ -1,0 +1,12 @@
+# CurseForge packaging: only the addon folder goes into the package.
+package-as: DarkmoonArcade
+
+move-folders:
+  DarkmoonArcade/DarkmoonArcade: DarkmoonArcade
+
+ignore:
+  - art
+  - docs
+  - tests
+  - tools
+  - README.md

@@ -2,7 +2,7 @@
 ## Title: Darkmoon Arcade
 ## Notes: A growing collection of mini games for long flights.
 ## Category: Mini Games
-## Version: 1.2.0
+## Version: @project-version@
 ## SavedVariables: DarkmoonArcadeDB
 ## IconTexture: Interface\AddOns\DarkmoonArcade\media\icon
 ## AddonCompartmentFunc: DarkmoonArcade_OnAddonCompartmentClick

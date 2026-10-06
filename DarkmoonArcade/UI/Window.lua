@@ -354,6 +354,8 @@ function Window:CreateFooter()
 
     local version = C_AddOns and C_AddOns.GetAddOnMetadata and C_AddOns.GetAddOnMetadata(ADDON, "Version")
         or GetAddOnMetadata and GetAddOnMetadata(ADDON, "Version") or "?"
+    -- The packager fills in the version; an unpackaged copy still shows its placeholder.
+    if version:find("@") then version = "dev" end
     self.versionText = Widgets.Text(chrome, 10, "gray")
     self.versionText:SetPoint("BOTTOMLEFT", INSET_SIDE, 19)
     Widgets.OnRefresh(function() self.versionText:SetText(L.VERSION:format(version)) end)
