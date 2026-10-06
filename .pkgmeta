@@ -1,0 +1,12 @@
+# The addon lives in a subfolder; only that folder goes into the CurseForge package.
+package-as: DarkmoonArcade
+
+move-folders:
+  DarkmoonArcade/DarkmoonArcade: DarkmoonArcade
+
+ignore:
+  - art
+  - docs
+  - tests
+  - tools
+  - README.md
