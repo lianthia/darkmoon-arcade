@@ -444,6 +444,16 @@ ns.Widgets.Share("SAY", "test")
 assert(chat[#chat - 1] == "WHISPER: [Darkmoon Arcade] test > Target-Realm", "whisper: " .. tostring(chat[#chat - 1]))
 assert(chat[#chat] == "SAY: [Darkmoon Arcade] test", "prefix")
 
+-- Flappy Griffin as the Horde: desert scenery and the wind rider.
+SlashCmdList.DARKMOONARCADE("flappygriffin")
+ns.Arcade.Settings(Window.activeGame).faction = "horde"
+Window.activeGame:ApplyTheme()
+Window.activeGame:NewRun()
+Window.activeGame.game:Flap()
+Tick(1)
+ns.Arcade.Settings(Window.activeGame).faction = "alliance"
+Window.activeGame:ApplyTheme()
+
 -- Landing pauses and records the flight.
 SlashCmdList.DARKMOONARCADE("flappygriffin")
 Window.activeGame:NewRun()

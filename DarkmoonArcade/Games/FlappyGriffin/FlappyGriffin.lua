@@ -11,8 +11,10 @@ local GROUND_TOP = H - Game.GROUND
 -- Client assets (file data IDs).
 -- Display info binds creature/gryphon/gryphon.m2 to its skin; the bare model renders untextured.
 local GRYPHON_DISPLAY = 1149
-local ROCK_TEXTURE = 187135 -- tileset/elwynn/elwynnrockbase.blp
-local GRASS_TEXTURE = 187126 -- tileset/elwynn/elwynngrassbase.blp
+-- Wind rider displays to try in turn; the first that loads creature/wyvern is kept.
+local WIND_RIDER_DISPLAYS = { 18712, 24044, 24045 }
+local WIND_RIDER_MODELS = { [126532] = true, [126530] = true } -- wyvern_armored.m2, wyvern.m2
+-- Elwynn ground and rock come from the client (tileset/elwynn/elwynngrassbase.blp, elwynnrockbase.blp).
 local TICKET_ICON = 134481 -- interface/icons/inv_misc_ticket_darkmoon_01.blp
 local VOICES = {
     aggro = { 551348, 551350 },
@@ -35,6 +37,19 @@ local Module = {
     tile = "tiles/flappygriffin",
     defaults = { runs = 0, pillars = 0 },
 }
+
+-- Alliance flies a gryphon over Elwynn Forest, the Horde a wind rider over the Barrens.
+local THEMES = {
+    alliance = {
+        sky = "sky", clouds = "clouds", mountains = "mountains", lip = "ground_lip", cap = "pillar_cap",
+        ground = 187126, groundTint = { 0.85, 0.95, 0.75 }, rock = 187135, rockTint = { 0.92, 0.86, 0.78 },
+    },
+    horde = {
+        sky = "sky_desert", clouds = "clouds_desert", mountains = "mountains_desert", lip = "ground_lip_desert",
+        cap = "pillar_cap_horde", ground = "sand", groundTint = { 1, 1, 1 }, rock = "rock_desert", rockTint = { 1, 1, 1 },
+    },
+}
+local FACTIONS = { "alliance", "horde" }
 
 local FLIGHT_ICON = "Interface\\TaxiFrame\\UI-Taxi-Icon-Green"
 
@@ -59,7 +74,22 @@ local GOALS = { runs = 100, tickets = 15, streak = 10, purist = 30, pillars = 25
 
 local function Tex(name) return Media.Tex("flappy/" .. name) end
 local function Sound(name) Media.Play("flappy/" .. name) end
-local function Voice(kind, force) Media.Voice(VOICES[kind], force) end
+local function Faction()
+    local settings = Arcade.Settings(Module)
+    if not settings.faction then
+        settings.faction = (UnitFactionGroup and UnitFactionGroup("player") == "Horde") and "horde" or "alliance"
+    end
+    return settings.faction
+end
+
+-- The gryphon voices only fit the gryphon.
+local function Voice(kind, force)
+    if Faction() == "alliance" then Media.Voice(VOICES[kind], force) end
+end
+
+local function ThemeTexture(value)
+    return type(value) == "string" and Tex(value) or value
+end
 
 local function Place(region, x, y)
     region:ClearAllPoints()
@@ -74,8 +104,42 @@ function Module:BestScore()
     return Scores.Best(self.id, "default")
 end
 
-local function ApplyModel(m)
-    pcall(m.SetDisplayInfo, m, GRYPHON_DISPLAY)
+local function WindRiderDisplay()
+    return ns.db.windRiderDisplay or WIND_RIDER_DISPLAYS[1]
+end
+
+-- Checks a little later whether the wind rider display really loaded the wyvern; if not,
+-- the next candidate is tried and the working one remembered.
+local function VerifyWindRider(m, index)
+    C_Timer.After(0.4, function()
+        -- Without a way to ask, the first candidate stays.
+        if Faction() ~= "horde" or not m.GetModelFileID then return end
+        local ok, file = pcall(m.GetModelFileID, m)
+        if ok and WIND_RIDER_MODELS[file] then
+            ns.db.windRiderDisplay = WIND_RIDER_DISPLAYS[index]
+            ns.Debug("windRider", WIND_RIDER_DISPLAYS[index])
+            return
+        end
+        local nextIndex = index + 1
+        if not WIND_RIDER_DISPLAYS[nextIndex] then
+            -- No wind rider in this client: fall back to the gryphon.
+            ns.Debug("windRider", "missing")
+            pcall(m.SetDisplayInfo, m, GRYPHON_DISPLAY)
+            return
+        end
+        pcall(m.SetDisplayInfo, m, WIND_RIDER_DISPLAYS[nextIndex])
+        VerifyWindRider(m, nextIndex)
+    end)
+end
+
+local function ApplyModel(m, faction)
+    if faction == "horde" then
+        local display = WindRiderDisplay()
+        pcall(m.SetDisplayInfo, m, display)
+        if not ns.db.windRiderDisplay then VerifyWindRider(m, 1) end
+    else
+        pcall(m.SetDisplayInfo, m, GRYPHON_DISPLAY)
+    end
     pcall(m.SetFacing, m, model.facing)
     pcall(m.SetPortraitZoom, m, model.zoom)
     pcall(m.SetAnimation, m, model.anim)
@@ -86,33 +150,52 @@ end
 function Module:BuildScenery(world)
     local sky = world:CreateTexture(nil, "BACKGROUND", nil, 0)
     sky:SetAllPoints(self.container)
-    sky:SetTexture(Tex("sky"))
     sky:SetTexCoord(0, W / 512, 0, H / 512)
+    self.sky = sky
 
     local clouds = world:CreateTexture(nil, "BACKGROUND", nil, 1)
-    clouds:SetTexture(Tex("clouds"), "REPEAT", "CLAMP")
+
     clouds:SetPoint("TOPLEFT", self.container, "TOPLEFT", 0, -10)
     clouds:SetSize(W, 170)
     self.clouds = clouds
 
     local mountains = world:CreateTexture(nil, "BACKGROUND", nil, 2)
-    mountains:SetTexture(Tex("mountains"), "REPEAT", "CLAMP")
+
     mountains:SetPoint("BOTTOMLEFT", self.container, "TOPLEFT", 0, -GROUND_TOP - 4)
     mountains:SetSize(W, 190)
     self.mountains = mountains
 
     local ground = world:CreateTexture(nil, "ARTWORK", nil, 5)
-    ground:SetTexture(GRASS_TEXTURE, "REPEAT", "REPEAT")
     ground:SetPoint("TOPLEFT", self.container, "TOPLEFT", 0, -GROUND_TOP)
     ground:SetSize(W, Game.GROUND)
-    ground:SetVertexColor(0.85, 0.95, 0.75)
     self.ground = ground
 
     local lip = world:CreateTexture(nil, "ARTWORK", nil, 6)
-    lip:SetTexture(Tex("ground_lip"), "REPEAT", "CLAMP")
+
     lip:SetPoint("TOPLEFT", ground, "TOPLEFT", 0, 10)
     lip:SetSize(W, 28)
     self.lip = lip
+end
+
+function Module:SkinSegment(seg)
+    local theme = THEMES[Faction()]
+    seg.body:SetTexture(ThemeTexture(theme.rock), "REPEAT", "REPEAT")
+    seg.body:SetVertexColor(theme.rockTint[1], theme.rockTint[2], theme.rockTint[3])
+    seg.cap:SetTexture(Tex(theme.cap))
+end
+
+-- Dresses the scenery, the pillars and the mount for the chosen faction.
+function Module:ApplyTheme()
+    local faction = Faction()
+    local theme = THEMES[faction]
+    self.sky:SetTexture(Tex(theme.sky))
+    self.clouds:SetTexture(Tex(theme.clouds), "REPEAT", "CLAMP")
+    self.mountains:SetTexture(Tex(theme.mountains), "REPEAT", "CLAMP")
+    self.ground:SetTexture(ThemeTexture(theme.ground), "REPEAT", "REPEAT")
+    self.ground:SetVertexColor(theme.groundTint[1], theme.groundTint[2], theme.groundTint[3])
+    self.lip:SetTexture(Tex(theme.lip), "REPEAT", "CLAMP")
+    for _, seg in ipairs(self.segments) do self:SkinSegment(seg) end
+    if self.griffin then ApplyModel(self.griffin, faction) end
 end
 
 function Module:CreatePillarVisual()
@@ -120,14 +203,14 @@ function Module:CreatePillarVisual()
     local v = {}
     local function Segment()
         local body = layer:CreateTexture(nil, "ARTWORK", nil, 0)
-        body:SetTexture(ROCK_TEXTURE, "REPEAT", "REPEAT")
-        body:SetVertexColor(0.92, 0.86, 0.78)
         local shade = layer:CreateTexture(nil, "ARTWORK", nil, 1)
         shade:SetTexture(Tex("pillar_shade"))
         shade:SetBlendMode("MOD")
         local cap = layer:CreateTexture(nil, "ARTWORK", nil, 2)
-        cap:SetTexture(Tex("pillar_cap"))
-        return { body = body, shade = shade, cap = cap }
+        local seg = { body = body, shade = shade, cap = cap }
+        self:SkinSegment(seg)
+        self.segments[#self.segments + 1] = seg
+        return seg
     end
     v.top, v.bottom = Segment(), Segment()
     v.glow = layer:CreateTexture(nil, "ARTWORK", nil, 3)
@@ -257,6 +340,7 @@ function Module:Build(container)
     self.container = container
     self.effects = {}
     self.visuals = {}
+    self.segments = {}
 
     local world = CreateFrame("Frame", nil, container)
     world:SetSize(W, H)
@@ -273,8 +357,8 @@ function Module:Build(container)
     local griffin = CreateFrame("PlayerModel", nil, world)
     griffin:SetSize(model.size, model.size)
     griffin:SetFrameLevel(world:GetFrameLevel() + 4)
-    ApplyModel(griffin)
     self.griffin = griffin
+    self:ApplyTheme()
 
     local fx = CreateFrame("Frame", nil, world)
     fx:SetAllPoints()
@@ -320,9 +404,23 @@ function Module:CreatePages()
     local title = Widgets.PageTitle(menu, "FG_NAME", -60)
     local tagline = Widgets.LocalizedText(menu, 14, "blue", "FG_TAGLINE")
     tagline:SetPoint("TOP", title, "BOTTOM", 0, -6)
+    local factionLabel = Widgets.LocalizedText(menu, 11, "gray", "FG_FACTION")
+    factionLabel:SetPoint("TOP", 0, -134)
+    local faction = Widgets.Cycler(menu, 200, function(dir)
+        local settings = Arcade.Settings(self)
+        settings.faction = Widgets.Cycle(FACTIONS, Faction(), dir)
+        self:ApplyTheme()
+        menu.refresh()
+    end)
+    faction:SetPoint("TOP", factionLabel, "BOTTOM", 0, -2)
     local play = Widgets.Button(menu, 200, 26, "NEW_GAME", function() self:NewRun() end)
     local scores = Widgets.Button(menu, 200, 26, "HIGHSCORES", function() self.overlay:Show("scores") end)
-    Widgets.Stack(menu, { play, scores }, -190)
+    Widgets.Stack(menu, { play, scores }, -196)
+    menu.refresh = function()
+        local horde = Faction() == "horde"
+        faction.label:SetText(horde and L.FG_HORDE or L.FG_ALLIANCE)
+        if horde then faction.label:SetTextColor(1, 0.3, 0.25) else faction.label:SetTextColor(0.35, 0.6, 1) end
+    end
 
     local pause = self.overlay:AddPage("pause")
     local pauseTitle = Widgets.PageTitle(pause, "PAUSED", -100)
@@ -575,7 +673,7 @@ function Module:DecorateTile(tile, art)
     local m = CreateFrame("PlayerModel", nil, tile)
     m:SetSize(120, 120)
     m:SetPoint("CENTER", art, "CENTER", -56, 6)
-    ApplyModel(m)
+    ApplyModel(m, "alliance")
     self.tileModel = m
 end
 
@@ -585,9 +683,9 @@ function Module:Debug(key, value)
     model[key] = value
     if self.griffin then
         self.griffin:SetSize(model.size, model.size)
-        ApplyModel(self.griffin)
+        ApplyModel(self.griffin, Faction())
     end
-    if self.tileModel then ApplyModel(self.tileModel) end
+    if self.tileModel then ApplyModel(self.tileModel, "alliance") end
     ns.Print(("gryphon %s = %s"):format(key, tostring(value)))
     return true
 end
