@@ -511,6 +511,24 @@ function Window:CreateTile(parent, game)
     return tile
 end
 
+-- Games may ask for a wider playfield (`fieldWidth`); the window grows around its center.
+function Window:SetFieldWidth(width)
+    width = width or Arcade.FIELD_W
+    if self.fieldWidth == width then return end
+    local extra = width - Arcade.FIELD_W
+    local f = self.frame
+    local cx, cy = f:GetCenter()
+    f:SetWidth(FRAME_W + extra)
+    self.content:SetWidth(CONTENT_W + extra)
+    self.field:SetWidth(width)
+    self.fieldWidth = width
+    if cx and self.fieldWidthSet then
+        f:ClearAllPoints()
+        f:SetPoint("CENTER", UIParent, "BOTTOMLEFT", cx, cy)
+    end
+    self.fieldWidthSet = true
+end
+
 function Window:RefreshHub()
     local choice = ns.db.flightGame
     local target = choice == "off" and L.FLIGHT_OFF or choice == "hub" and L.FLIGHT_HUB
@@ -532,6 +550,7 @@ end
 
 function Window:OpenHub()
     self:LeaveGame()
+    self:SetFieldWidth()
     ns.OptionsView:Hide()
     ns.StatsView:Hide()
     self.hub:Show()
@@ -553,6 +572,7 @@ function Window:OpenGame(id)
         self.activeGame:Leave()
         self.activeGame.container:Hide()
     end
+    self:SetFieldWidth(game.fieldWidth)
     if not game.container then
         local container = CreateFrame("Frame", nil, self.field)
         container:SetAllPoints()
@@ -578,6 +598,7 @@ end
 function Window:OpenOptions()
     self.frame:Show()
     self:LeaveGame()
+    self:SetFieldWidth()
     self.hub:Hide()
     self.sidebar:Hide()
     ns.StatsView:Hide()
@@ -593,6 +614,7 @@ end
 function Window:OpenStats()
     self.frame:Show()
     self:LeaveGame()
+    self:SetFieldWidth()
     self.hub:Hide()
     self.sidebar:Hide()
     ns.OptionsView:Hide()

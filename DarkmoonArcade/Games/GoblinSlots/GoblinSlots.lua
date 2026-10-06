@@ -25,7 +25,7 @@ local NOT_READY = "Interface\\RaidFrame\\ReadyCheck-NotReady"
 
 local Module = {
     id = "goblinslots",
-    rank = 5,
+    rank = 6,
     nameKey = "GS_NAME",
     descKey = "GS_DESC",
     helpKey = "GS_HELP",

@@ -13,7 +13,7 @@ local SWAP = { DOWN = true, S = true, TAB = true }
 
 local Module = {
     id = "murlocblast",
-    rank = 2,
+    rank = 3,
     nameKey = "MB_NAME",
     descKey = "MB_DESC",
     helpKey = "MB_HELP",
