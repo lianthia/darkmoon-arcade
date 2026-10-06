@@ -159,7 +159,25 @@ function strsplit(sep, text)
     for part in (text .. sep):gmatch("(.-)" .. sep) do parts[#parts + 1] = part end
     return unpack(parts)
 end
-function SendChatMessage(msg, channel) chat[#chat + 1] = channel .. ": " .. msg end
+function SendChatMessage(msg, channel, _, target)
+    chat[#chat + 1] = channel .. ": " .. msg .. (target and (" > " .. target) or "")
+end
+StaticPopupDialogs = {}
+local popupText
+-- Shows the dialog like Blizzard's StaticPopup and accepts it with whatever name was typed.
+function StaticPopup_Show(which, _, _, data)
+    local dialog = StaticPopupDialogs[which]
+    local box = Wrap({})
+    box.SetText = function(self, text) popupText = text end
+    box.GetText = function() return popupText ~= "" and popupText or "Guildie" end
+    local popup = Wrap({ editBox = box, data = data })
+    box._parent = popup
+    dialog.OnShow(popup)
+    dialog.EditBoxOnEnterPressed(box)
+end
+function UnitIsPlayer() return true end
+function UnitIsUnit() return false end
+function GetUnitName() return "Target-Realm" end
 function PlaySound() end
 function PlaySoundFile() end
 function strtrim(s) return (s:gsub("^%s+", ""):gsub("%s+$", "")) end
@@ -310,6 +328,12 @@ for step = 1, 900 do
     if rnd(60) == 0 then Window.frame._scripts.OnKeyDown(Window.frame, "P") end
 end
 assert(results.murloc > 0 and results.flappy > 0 and results.jewels > 0 and results.slots > 0, ("all games were played: %d %d %d %d"):format(results.murloc, results.flappy, results.jewels, results.slots))
+
+-- Shared scores carry the addon name; whispers go to the target.
+ns.Widgets.Share("WHISPER", "test")
+ns.Widgets.Share("SAY", "test")
+assert(chat[#chat - 1] == "WHISPER: [Darkmoon Arcade] test > Target-Realm", "whisper: " .. tostring(chat[#chat - 1]))
+assert(chat[#chat] == "SAY: [Darkmoon Arcade] test", "prefix")
 
 -- Landing pauses and records the flight.
 SlashCmdList.DARKMOONARCADE("flappygriffin")

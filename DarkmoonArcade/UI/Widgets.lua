@@ -160,9 +160,49 @@ end
 
 -- Sharing ---------------------------------------------------------------------
 
+-- Posts carry the addon's name, so other players know where the score comes from.
+local SHARE_PREFIX = "[Darkmoon Arcade] "
+
+local function Whisper(message)
+    StaticPopupDialogs.DARKMOONARCADE_WHISPER = StaticPopupDialogs.DARKMOONARCADE_WHISPER or {
+        button1 = SEND_LABEL or ACCEPT,
+        button2 = CANCEL,
+        hasEditBox = true,
+        timeout = 0,
+        whileDead = true,
+        hideOnEscape = true,
+        OnShow = function(self)
+            local box = self.GetEditBox and self:GetEditBox() or self.editBox or self.EditBox
+            local target = UnitIsPlayer("target") and not UnitIsUnit("target", "player") and GetUnitName("target", true)
+            if box then
+                box:SetText(target or "")
+                box:SetFocus()
+            end
+        end,
+        OnAccept = function(self, data)
+            local box = self.GetEditBox and self:GetEditBox() or self.editBox or self.EditBox
+            local name = box and strtrim(box:GetText() or "")
+            if name and name ~= "" then SendChatMessage(data, "WHISPER", nil, name) end
+        end,
+        EditBoxOnEnterPressed = function(box)
+            local popup = box:GetParent()
+            local dialog = StaticPopupDialogs.DARKMOONARCADE_WHISPER
+            dialog.OnAccept(popup, popup.data)
+            popup:Hide()
+        end,
+        EditBoxOnEscapePressed = function(box) box:GetParent():Hide() end,
+    }
+    StaticPopupDialogs.DARKMOONARCADE_WHISPER.text = L.WHISPER_PROMPT
+    StaticPopup_Show("DARKMOONARCADE_WHISPER", nil, nil, message)
+end
+
 function Widgets.Share(channel, message)
     if not message then return end
-    if channel == "PARTY" then
+    message = SHARE_PREFIX .. message
+    if channel == "WHISPER" then
+        Whisper(message)
+        return
+    elseif channel == "PARTY" then
         if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) then
             channel = "INSTANCE_CHAT"
         elseif IsInRaid() then
@@ -181,12 +221,12 @@ end
 -- `getMessage` returns the chat line to post, or nil when there is nothing to share.
 function Widgets.ShareRow(parent, getMessage)
     local row = CreateFrame("Frame", nil, parent)
-    row:SetSize(330, 24)
+    row:SetSize(372, 24)
     local label = Widgets.LocalizedText(row, 12, "white", "SHARE")
     label:SetPoint("LEFT")
     local last
-    for _, channel in ipairs({ "SAY", "PARTY", "GUILD" }) do
-        local b = Widgets.Button(row, 78, 22, channel, function()
+    for _, channel in ipairs({ "SAY", "PARTY", "GUILD", "WHISPER" }) do
+        local b = Widgets.Button(row, 72, 22, channel, function()
             Widgets.Share(channel, getMessage())
         end)
         if last then b:SetPoint("LEFT", last, "RIGHT", 4, 0) else b:SetPoint("LEFT", label, "RIGHT", 8, 0) end
