@@ -9,7 +9,7 @@ The arcade opens automatically when you take off, shows the remaining flight tim
 
 | Game | Genre | Highlights |
 |---|---|---|
-| **Spellbounce** | Peg shooter | Six classes with their own powers, ten maps, fireworks finale |
+| **Spellbounce** | Peg shooter | All nine classic classes with their own powers, ten maps, fireworks finale |
 | **Murloc Blast** | Bubble shooter | Three difficulties, stone bubbles, bombs, endless procedural levels |
 | **Flappy Griffin** | One-button flyer | The client's own gryphon, Darkmoon tickets, four medals |
 | **Jewels of Uldum** | Match three | Flame gems and prisms, cascades, Classic and Blitz modes |
