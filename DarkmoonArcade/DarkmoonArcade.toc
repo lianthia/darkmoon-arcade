@@ -2,7 +2,7 @@
 ## Title: Darkmoon Arcade
 ## Notes: A growing collection of mini games for long flights.
 ## Category: Mini Games
-## Version: 1.0.0
+## Version: 1.1.0
 ## SavedVariables: DarkmoonArcadeDB
 ## IconTexture: Interface\AddOns\DarkmoonArcade\media\icon
 ## AddonCompartmentFunc: DarkmoonArcade_OnAddonCompartmentClick
@@ -41,5 +41,10 @@ Games\JewelsOfUldum\JewelsOfUldum.lua
 Games\GoblinSlots\Locale.lua
 Games\GoblinSlots\Game.lua
 Games\GoblinSlots\GoblinSlots.lua
+
+Games\Spellbounce\Locale.lua
+Games\Spellbounce\Maps.lua
+Games\Spellbounce\Game.lua
+Games\Spellbounce\Spellbounce.lua
 
 Main.lua

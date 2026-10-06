@@ -25,6 +25,7 @@ local LOGO_W, LOGO_H = 150, 97
 -- Half of the logo sits inside the frame, the content starts just below it.
 local LOGO_OVERLAP = 48
 local TILE_W, TILE_H, TILE_GAP, TILE_COLUMNS = 300, 150, 20, 2
+local HUB_TITLE_Y, HUB_TOP, HUB_BOTTOM, HUB_PAD, HUB_SCROLL_STEP = 18, 50, 34, 6, 85
 
 -- Panel templates without a title bar first; the portrait frame is the known-good fallback.
 local CHROME_TEMPLATES = { "SimplePanelTemplate", "PortraitFrameTemplateNoCloseButton" }
@@ -35,9 +36,13 @@ end
 local SIDEBAR_SCORES = 5
 local RIM_COLOR = { 0.86, 0.66, 0.3, 0.9 }
 
+-- Games are listed by `rank`, the most popular first.
 function Arcade.RegisterGame(game)
     Arcade.games[game.id] = game
     Arcade.order[#Arcade.order + 1] = game.id
+    table.sort(Arcade.order, function(a, b)
+        return (Arcade.games[a].rank or 99) < (Arcade.games[b].rank or 99)
+    end)
 end
 
 -- Per-game saved settings, created with the game's defaults on first use.
@@ -353,27 +358,74 @@ function Window:CreateHub()
     hub:SetFrameLevel(self.content:GetFrameLevel() + 5)
     self.hub = hub
 
-    -- Title, cards and flight hint form one block, centered in the hub.
+    local subtitle = Widgets.LocalizedText(hub, 18, "gold", "PICK_GAME")
+    subtitle:SetPoint("TOP", 0, -HUB_TITLE_Y)
+    self.hubHint = Widgets.Text(hub, 11, "gray")
+    self.hubHint:SetPoint("BOTTOM", 0, 12)
+
+    -- The cards scroll between title and hint; a cut-off row shows that more games follow.
     local columns = math.min(TILE_COLUMNS, #Arcade.order)
     local rows = math.ceil(#Arcade.order / TILE_COLUMNS)
     local rowWidth = columns * TILE_W + (columns - 1) * TILE_GAP
-    local gridHeight = rows * TILE_H + (rows - 1) * TILE_GAP
-    local blockHeight = 44 + gridHeight + 40
+    local gridHeight = rows * TILE_H + (rows - 1) * TILE_GAP + HUB_PAD * 2
+    local viewHeight = CONTENT_H - HUB_TOP - HUB_BOTTOM
     local left = (CONTENT_W - rowWidth) / 2
-    local blockTop = math.max(24, (CONTENT_H - blockHeight) / 2)
-    local top = blockTop + 44
 
-    local subtitle = Widgets.LocalizedText(hub, 18, "gold", "PICK_GAME")
-    subtitle:SetPoint("TOP", 0, -blockTop)
+    local scroll = CreateFrame("ScrollFrame", nil, hub)
+    scroll:SetPoint("TOPLEFT", 0, -HUB_TOP)
+    scroll:SetPoint("BOTTOMRIGHT", 0, HUB_BOTTOM)
+    local child = CreateFrame("Frame", nil, scroll)
+    child:SetSize(CONTENT_W, math.max(gridHeight, viewHeight))
+    scroll:SetScrollChild(child)
+    self.hubScroll = { frame = scroll, offset = 0, target = 0, max = math.max(0, gridHeight - viewHeight) }
 
-    self.hubHint = Widgets.Text(hub, 11, "gray")
-    self.hubHint:SetPoint("TOP", 0, -(top + gridHeight + 18))
+    local track = hub:CreateTexture(nil, "ARTWORK")
+    track:SetColorTexture(0, 0, 0, 0.35)
+    track:SetWidth(4)
+    track:SetPoint("TOPRIGHT", scroll, "TOPRIGHT", -4, -HUB_PAD)
+    track:SetPoint("BOTTOMRIGHT", scroll, "BOTTOMRIGHT", -4, HUB_PAD)
+    local thumb = hub:CreateTexture(nil, "ARTWORK", nil, 1)
+    thumb:SetColorTexture(RIM_COLOR[1], RIM_COLOR[2], RIM_COLOR[3], 0.8)
+    thumb:SetWidth(4)
+    local trackHeight = viewHeight - HUB_PAD * 2
+    local thumbHeight = trackHeight * viewHeight / math.max(gridHeight, viewHeight)
+    thumb:SetHeight(thumbHeight)
+    track:SetShown(self.hubScroll.max > 0)
+    thumb:SetShown(self.hubScroll.max > 0)
+
+    local state = self.hubScroll
+    local function Apply()
+        scroll:SetVerticalScroll(state.offset)
+        local share = state.max > 0 and state.offset / state.max or 0
+        thumb:ClearAllPoints()
+        thumb:SetPoint("TOP", track, "TOP", 0, -(trackHeight - thumbHeight) * share)
+    end
+    scroll:EnableMouseWheel(true)
+    scroll:SetScript("OnMouseWheel", function(_, delta)
+        state.target = math.max(0, math.min(state.max, state.target - delta * HUB_SCROLL_STEP))
+    end)
+    scroll:SetScript("OnUpdate", function(_, elapsed)
+        if math.abs(state.target - state.offset) < 0.5 then
+            if state.offset ~= state.target then
+                state.offset = state.target
+                Apply()
+            end
+            return
+        end
+        state.offset = state.offset + (state.target - state.offset) * math.min(1, elapsed * 14)
+        Apply()
+    end)
+    Apply()
+
     self.tiles = {}
     for i, id in ipairs(Arcade.order) do
-        local tile = self:CreateTile(hub, Arcade.games[id])
+        local tile = self:CreateTile(child, Arcade.games[id])
         local column = (i - 1) % TILE_COLUMNS
         local row = math.floor((i - 1) / TILE_COLUMNS)
-        tile:SetPoint("TOPLEFT", hub, "TOPLEFT", left + column * (TILE_W + TILE_GAP), -top - row * (TILE_H + TILE_GAP))
+        local x = left + column * (TILE_W + TILE_GAP)
+        -- A lone card in the last row sits in the middle.
+        if i == #Arcade.order and column == 0 and columns > 1 then x = (CONTENT_W - TILE_W) / 2 end
+        tile:SetPoint("TOPLEFT", child, "TOPLEFT", x, -HUB_PAD - row * (TILE_H + TILE_GAP))
         self.tiles[#self.tiles + 1] = tile
     end
 end

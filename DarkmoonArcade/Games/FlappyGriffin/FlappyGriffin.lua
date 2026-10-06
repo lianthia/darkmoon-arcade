@@ -28,6 +28,7 @@ local FLAP_KEYS = { SPACE = true, W = true, UP = true }
 
 local Module = {
     id = "flappygriffin",
+    rank = 4,
     nameKey = "FG_NAME",
     descKey = "FG_DESC",
     helpKey = "FG_HELP",

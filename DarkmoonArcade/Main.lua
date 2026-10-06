@@ -104,7 +104,10 @@ SlashCmdList.DARKMOONARCADE = function(input)
     elseif cmd == "reset" then
         ns.Scores.Reset()
         for _, settings in pairs(ns.db.games) do
-            if settings.progress then wipe(settings.progress) end
+            if type(settings.progress) == "table" then wipe(settings.progress) end
+        end
+        for _, game in pairs(ns.Arcade.games) do
+            if game.ResetProgress then game:ResetProgress() end
         end
         Window:OpenHub()
         ns.Print(L.RESET_DONE)

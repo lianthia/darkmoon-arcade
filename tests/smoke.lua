@@ -256,11 +256,12 @@ Fire("PLAYER_LOGIN")
 assert(DarkmoonArcadeDB.flightGame == "murlocblast", "defaults")
 
 local Window, Arcade = ns.Window, ns.Arcade
-assert(#Arcade.order == 4, "four games registered")
+assert(#Arcade.order == 5, "five games registered")
+assert(Arcade.order[1] == "spellbounce", "most popular game first")
 SlashCmdList.DARKMOONARCADE("")
 assert(Window.frame._shown, "window should be shown")
 
-local results = { murloc = 0, flappy = 0, jewels = 0, slots = 0, clicks = 0, best = 0 }
+local results = { murloc = 0, flappy = 0, jewels = 0, slots = 0, spell = 0, clicks = 0, best = 0 }
 local seed = 42
 local function rnd(n) seed = (seed * 16807) % 2147483647; return seed % n end
 
@@ -303,6 +304,19 @@ for step = 1, 900 do
         end
         Tick(1.6)
         results.slots = results.slots + 1
+    elseif game and game.id == "spellbounce" and state == "PLAYING" then
+        cursorX, cursorY = 100 + rnd(432), 600 - rnd(400)
+        Tick(0.05)
+        if rnd(2) == 0 then
+            game.field._scripts.OnMouseDown(game.field, "LeftButton")
+        else
+            Window.frame._scripts.OnKeyDown(Window.frame, "RIGHT")
+            Tick(0.1)
+            Window.frame._scripts.OnKeyUp(Window.frame, "RIGHT")
+            Window.frame._scripts.OnKeyDown(Window.frame, "SPACE")
+        end
+        Tick(2.5)
+        results.spell = results.spell + 1
     elseif game and game.id == "jewelsofuldum" and state == "PLAYING" then
         local move = game.game:FindMove()
         if move then game:TrySwap(move[1], move[2], move[3], move[4]) end
@@ -321,13 +335,37 @@ for step = 1, 900 do
         if not Window.frame._shown then SlashCmdList.DARKMOONARCADE("") end
     end
     if step % 150 == 0 then
-        local ids = { "murlocblast", "flappygriffin", "jewelsofuldum", "goblinslots" }
-        SlashCmdList.DARKMOONARCADE(ids[(step / 150) % 4 + 1])
+        local ids = { "murlocblast", "flappygriffin", "jewelsofuldum", "goblinslots", "spellbounce" }
+        SlashCmdList.DARKMOONARCADE(ids[(step / 150) % 5 + 1])
         if Window.activeGame and Window.activeGame.id == "goblinslots" then Window.activeGame:NewGame() end
     end
     if rnd(60) == 0 then Window.frame._scripts.OnKeyDown(Window.frame, "P") end
 end
-assert(results.murloc > 0 and results.flappy > 0 and results.jewels > 0 and results.slots > 0, ("all games were played: %d %d %d %d"):format(results.murloc, results.flappy, results.jewels, results.slots))
+assert(results.murloc > 0 and results.flappy > 0 and results.jewels > 0 and results.slots > 0 and results.spell > 0,
+    ("all games were played: %d %d %d %d %d"):format(results.murloc, results.flappy, results.jewels, results.slots, results.spell))
+
+-- Spellbounce: play a whole map to its fireworks and continue on the next one.
+SlashCmdList.DARKMOONARCADE("spellbounce")
+local sb = Window.activeGame
+sb:StartGame(1)
+for _, peg in ipairs(sb.game.pegs) do
+    if peg.kind == "target" then peg.lit = true end
+end
+sb.game.targetsHit = sb.game.targetsTotal - 1
+local lastTarget
+for _, peg in ipairs(sb.game.pegs) do
+    if peg.kind == "target" and not lastTarget then lastTarget = peg; peg.lit = false end
+end
+sb.game:SetAim(math.atan2(lastTarget.y - 34, lastTarget.x - 216))
+sb.game.balls = {}
+sb.game:Shoot()
+sb.game.balls[1].x, sb.game.balls[1].y, sb.game.balls[1].vx, sb.game.balls[1].vy = lastTarget.x, lastTarget.y - 20, 0, 50
+Tick(12)
+assert(sb.game.state == "CLEAR", "spellbounce map cleared: " .. sb.game.state)
+Tick(4)
+assert(sb.overlay.current == "clear", "clear page shown")
+sb:NextMap()
+assert(sb.game.level == 2 and sb.game.state == "PLAYING", "next map")
 
 -- Shared scores carry the addon name; whispers go to the target.
 ns.Widgets.Share("WHISPER", "test")
