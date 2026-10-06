@@ -22,6 +22,7 @@ def main() -> int:
         "Games/JewelsOfUldum/Game.lua",
         "Games/GoblinSlots/Game.lua",
         "Games/Spellbounce/Maps.lua",
+        "Games/Spellbounce/Talents.lua",
         "Games/Spellbounce/Game.lua",
         "Games/DarkmoonDeck/Game.lua",
     ):

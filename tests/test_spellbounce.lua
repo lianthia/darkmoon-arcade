@@ -335,6 +335,71 @@ test("lighting many pegs in one shot earns an orb", function()
     assert(last.bonusOrb, "flagged")
 end)
 
+test("talent tiers and requirements", function()
+    local Talents = SB.Talents
+    local alloc = {}
+    assert(Talents.CanAdd(alloc, "focus", 21), "tier 1 open")
+    assert(not Talents.CanAdd(alloc, "power1", 21), "tier 2 needs five points")
+    alloc.focus = 5
+    assert(Talents.CanAdd(alloc, "power1", 21), "tier 2 open")
+    assert(not Talents.CanAdd(alloc, "focus", 21), "focus is maxed")
+    assert(not Talents.CanAdd(alloc, "focus", 5), "no points left")
+    alloc.well, alloc.power1 = 5, 2
+    assert(not Talents.CanAdd(alloc, "runes", 21), "runes need power1 maxed")
+    alloc.power1 = 3
+    assert(Talents.CanAdd(alloc, "runes", 21), "runes open")
+    alloc.runes = 1
+    assert(not Talents.CanRemove(alloc, "power1"), "runes depend on power1")
+    assert(Talents.CanRemove(alloc, "runes"), "the top talent can go")
+end)
+
+test("a full tree reaches the capstone with 21 points", function()
+    local Talents = SB.Talents
+    local alloc = {}
+    local order = { "focus", "focus", "focus", "focus", "focus", "well", "well", "well", "well", "well",
+        "power1", "power1", "power1", "secondwind", "secondwind", "runes", "power2", "power2", "pockets", "pockets", "gilded" }
+    for _, id in ipairs(order) do
+        assert(Talents.CanAdd(alloc, id, Talents.MAX_POINTS), "can add " .. id)
+        alloc[id] = (alloc[id] or 0) + 1
+    end
+    eq(Talents.Points(alloc), Talents.MAX_POINTS)
+    assert(Talents.Valid(alloc))
+end)
+
+test("talents change the game", function()
+    local g = Game.New(Rng(5))
+    g:SetTalents({ focus = 5, well = 5, power1 = 3, runes = 1, power2 = 2, pockets = 2, gilded = 1, ricochet = 2 })
+    g:StartRun(1, "mage")
+    eq(g.orbs, Game.ORBS + 2, "deep pockets")
+    local powers = 0
+    for _, peg in ipairs(g.pegs) do if peg.kind == "power" then powers = powers + 1 end end
+    eq(powers, 3, "one more green rune")
+    assert(g:WellWidth() > Game.WELL_W, "wider moonwell")
+    assert(Game.PowerValue("shaman", 5) > Game.PowerValue("shaman", 0), "stronger power")
+    -- Gilded: the gold rune triggers the class power.
+    local gold = Solo(g, "gold")
+    local near = { id = 1, x = gold.x + 30, y = gold.y + 20, kind = "blue" }
+    g.pegs[#g.pegs + 1] = near
+    g.shot = { points = 0, hits = 0, targets = 0, shields = 0, powers = 0 }
+    g:Light(gold, "ball")
+    assert(near.lit, "gold rune exploded")
+end)
+
+test("hunter talents add more orbs", function()
+    local g = Game.New(Rng(5))
+    g:SetTalents({ power1 = 3, power2 = 2 })
+    g:StartRun(1, "hunter")
+    local events = {}
+    g.onEvent = function(name) events[#events + 1] = name end
+    Solo(g, "power")
+    g:Shoot()
+    for _ = 1, 120 do
+        g:Update(1 / 60)
+        if #g.balls > 1 then break end
+    end
+    eq(#g.balls, 1 + Game.PowerValue("hunter", 5))
+end)
+
 test("classes unlock with progress", function()
     assert(Game.IsUnlocked("mage", 1))
     assert(not Game.IsUnlocked("shaman", 2))

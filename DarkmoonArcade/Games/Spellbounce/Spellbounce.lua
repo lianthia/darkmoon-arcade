@@ -44,7 +44,7 @@ local Module = {
     descKey = "SB_DESC",
     helpKey = "SB_HELP",
     tile = "tiles/spellbounce",
-    defaults = { class = "mage", reached = 1, guide = true, pegs = 0, classesCleared = {} },
+    defaults = { class = "mage", reached = 1, guide = true, pegs = 0, classesCleared = {}, talents = {} },
 }
 
 local function Tex(name) return Media.Tex("spellbounce/" .. name) end
@@ -66,6 +66,7 @@ Achievements.Register("spellbounce", {
     { id = "sb_score", nameKey = "SB_ACH_SCORE", descKey = "SB_ACH_SCORE_DESC", icon = "Interface\\Icons\\INV_Misc_Coin_01" },
     { id = "sb_lap2", nameKey = "SB_ACH_LAP2", descKey = "SB_ACH_LAP2_DESC", icon = Tex("bumper") },
     { id = "sb_pegs", nameKey = "SB_ACH_PEGS", descKey = "SB_ACH_PEGS_DESC", icon = Tex("peg") },
+    { id = "sb_talents", nameKey = "SB_ACH_TALENTS", descKey = "SB_ACH_TALENTS_DESC", icon = "Interface\\Icons\\Spell_Holy_SealOfWisdom" },
     { id = "sb_flight", nameKey = "SB_ACH_FLIGHT", descKey = "SB_ACH_FLIGHT_DESC", icon = "Interface\\TaxiFrame\\UI-Taxi-Icon-Green" },
 })
 local GOALS = { ricochet = 15, surge = 2000, overload = 5000, saver = 5, score = 100000, pegs = 10000 }
@@ -179,6 +180,7 @@ function Module:Build(container)
     self.well = self.ballLayer:CreateTexture(nil, "ARTWORK", nil, -1)
     self.well:SetTexture(Tex("well"))
     self.well:SetSize(Game.WELL_W + 8, 23)
+    self.wellTex = self.well
     self.shield = self.ballLayer:CreateTexture(nil, "ARTWORK", nil, -2)
     self.shield:SetTexture(Media.Tex("glow"))
     self.shield:SetBlendMode("ADD")
@@ -215,6 +217,7 @@ function Module:Build(container)
     self:CreatePausePage()
     self:CreateClearPage()
     self:CreateOverPage()
+    self:CreateTalentPage()
     Widgets.ScoresPage(self.overlay, W, {
         gameId = self.id,
         detail = function(entry) return self:ScoreDetail(entry) end,
@@ -317,10 +320,11 @@ function Module:CreateMenuPage()
     end)
     mapCycler:SetPoint("TOP", mapLabel, "BOTTOM", 0, -2)
     local newGame = Widgets.Button(page, 200, 26, "NEW_GAME", function() self:StartGame(self:StartMap()) end)
+    local talents = Widgets.Button(page, 200, 26, "SB_TALENTS", function() self:ShowTalents("menu") end)
     local scores = Widgets.Button(page, 200, 26, "HIGHSCORES", function() self.overlay:Show("scores") end)
-    Widgets.Stack(page, { newGame, scores }, -270)
+    Widgets.Stack(page, { newGame, talents, scores }, -266)
     local nextClass = Widgets.Text(page, 11, "gray")
-    nextClass:SetPoint("TOP", 0, -342)
+    nextClass:SetPoint("TOP", 0, -366)
     page.refresh = function()
         refreshClass()
         local progress = Settings().reached
@@ -356,7 +360,8 @@ function Module:CreateClearPage()
     local refreshClass = self:ClassPicker(page, -190)
     local nextMap = Widgets.Button(page, 200, 26, "SB_NEXT_MAP", function() self:NextMap() end)
     local menu = Widgets.Button(page, 200, 26, "MENU", function() self:AbandonRun() end)
-    Widgets.Stack(page, { nextMap, menu }, -300)
+    local talents = Widgets.Button(page, 200, 26, "SB_TALENTS", function() self:ShowTalents("clear", page.data) end)
+    Widgets.Stack(page, { nextMap, talents, menu }, -296)
     page.refresh = function(data)
         page.data = data
         refreshClass()
@@ -645,6 +650,10 @@ function Module:OnGameEvent(name, data)
         self:UpdateHud()
     elseif name == "lost" then
         Sound("lost")
+    elseif name == "refund" then
+        Sound("catch")
+        self:Popup(data.x, H - 40, L.SB_FREE_ORB, 16, { 0.6, 0.9, 1 }, 1.2)
+        self:UpdateHud()
     elseif name == "shield" then
         Sound("shield")
         self:Ring(data.x, H - 8, { 1, 0.95, 0.6 }, 30, 140, 0.4)
@@ -777,6 +786,7 @@ end
 function Module:StartGame(level)
     self.runStart = level
     self.finished = false
+    self.game:SetTalents(self:TalentAlloc(CurrentClass()))
     self.game:StartRun(level, CurrentClass())
     self.overlay:Hide()
     self:UpdateHud()
@@ -784,6 +794,7 @@ end
 
 function Module:NextMap()
     self.game.class = CurrentClass()
+    self.game:SetTalents(self:TalentAlloc(self.game.class))
     self.game:LoadLevel(self.game.level + 1)
     self.overlay:Hide()
 end
@@ -1003,6 +1014,7 @@ function Module:DrawBalls()
     end
     local inPlay = game.state ~= "READY"
     Place(self.well, game:WellX(), Game.WELL_Y + 6)
+    self.well:SetWidth(game:WellWidth() + 8)
     self.well:SetShown(inPlay)
     self.shield:SetShown(game.shot ~= nil and game.shot.shields > 0)
     if game.shot and game.shot.shields > 0 then self.shield:SetAlpha(0.6 + 0.3 * math.sin(GetTime() * 8)) end
@@ -1040,11 +1052,263 @@ function Module:DecorateTile(tile, art)
     end
 end
 
+-- Talents ----------------------------------------------------------------------------------
+-- The window mirrors the classic talent frame: the class's own background, four columns,
+-- rank counters and arrows to the talents that unlock others.
+
+local Talents = SB.Talents
+local TREE_W, TREE_H = 300, 331
+local TALENT_BACKGROUNDS = {
+    mage = "MageArcane", hunter = "HunterBeastMastery", priest = "PriestHoly", warrior = "WarriorArms",
+    shaman = "ShamanElementalCombat", paladin = "PaladinHoly", warlock = "WarlockDestruction",
+    druid = "DruidBalance", rogue = "RogueAssassination",
+}
+local TALENT_ICONS = {
+    focus = "Interface\\Icons\\Ability_Marksmanship",
+    well = "Interface\\Icons\\Spell_Frost_SummonWaterElemental",
+    secondwind = "Interface\\Icons\\Spell_Holy_Resurrection",
+    runes = "Interface\\Icons\\Spell_Nature_ProtectionformNature",
+    ricochet = "Interface\\Icons\\Spell_Arcane_Blink",
+    pockets = "Interface\\Icons\\INV_Misc_Bag_08",
+    gilded = "Interface\\Icons\\Spell_Holy_SealOfWisdom",
+}
+
+local function TalentPoints(class)
+    return math.min(Talents.MAX_POINTS, ns.Stats.Get("spellbounce", "class_" .. class))
+end
+
+function Module:TalentAlloc(class)
+    local all = Settings().talents
+    all[class] = all[class] or {}
+    return all[class]
+end
+
+local function TalentIcon(class, id)
+    if id == "power1" or id == "power2" then return CLASS_INFO[class].icon end
+    return TALENT_ICONS[id]
+end
+
+local function TalentName(class, id)
+    local text = L["SB_TAL_" .. id]
+    if id == "power1" or id == "power2" or id == "gilded" then return text:format(L["SB_POWER_" .. class]) end
+    return text
+end
+
+-- Description of a talent at `rank`; the power talents show the power's total strength.
+local function TalentText(class, id, rank, alloc)
+    if id == "focus" then return L.SB_TALD_focus:format(math.floor(rank * Talents.FOCUS * 100 + 0.5)) end
+    if id == "well" then return L.SB_TALD_well:format(math.floor(rank * Talents.WELL * 100 + 0.5)) end
+    if id == "secondwind" then return L.SB_TALD_secondwind:format(rank * Talents.SECOND_WIND) end
+    if id == "runes" then return L.SB_TALD_runes end
+    if id == "ricochet" then return L.SB_TALD_ricochet:format(rank * 2) end
+    if id == "pockets" then return L.SB_TALD_pockets:format(rank) end
+    if id == "gilded" then return L.SB_TALD_gilded:format(L["SB_POWER_" .. class]) end
+    local other = id == "power1" and (alloc.power2 or 0) or (alloc.power1 or 0)
+    local total = other + rank
+    local value = Game.PowerValue(class, total)
+    if class == "mage" then return L.SB_TPOW_mage:format(math.floor(total * 12 + 0.5)) end
+    if class == "warrior" or class == "druid" or class == "rogue" then
+        return L["SB_TPOW_" .. class]:format(("%.1f"):format(value))
+    end
+    return L["SB_TPOW_" .. class]:format(value)
+end
+
+function Module:CreateTalentPage()
+    local page = self.overlay:AddPage("talents")
+    local title = Widgets.Text(page, 18, "gold")
+    title:SetPoint("TOP", 0, -10)
+    local cycler = Widgets.Cycler(page, 200, function(dir)
+        self.talentClass = Widgets.Cycle(UnlockedClasses(), self.talentClass or CurrentClass(), dir)
+        page.refresh()
+    end)
+    cycler:SetPoint("TOP", 0, -34)
+    local points = Widgets.Text(page, 12, "white")
+    points:SetPoint("TOP", 0, -64)
+
+    local tree = CreateFrame("Frame", nil, page)
+    tree:SetSize(TREE_W, TREE_H)
+    tree:SetPoint("TOP", 0, -82)
+    -- Classic talent backgrounds come in four pieces.
+    local pieces = {
+        { "TopLeft", 0, 0, 256, 256, 0, 1, 0, 1 },
+        { "TopRight", 256, 0, 44, 256, 0, 0.6875, 0, 1 },
+        { "BottomLeft", 0, 256, 256, 75, 0, 1, 0, 0.5859375 },
+        { "BottomRight", 256, 256, 44, 75, 0, 0.6875, 0, 0.5859375 },
+    }
+    tree.pieces = {}
+    for _, piece in ipairs(pieces) do
+        local tex = tree:CreateTexture(nil, "BACKGROUND")
+        tex:SetPoint("TOPLEFT", piece[2], -piece[3])
+        tex:SetSize(piece[4], piece[5])
+        tex:SetTexCoord(piece[6], piece[7], piece[8], piece[9])
+        tree.pieces[piece[1]] = tex
+    end
+    local shade = tree:CreateTexture(nil, "BACKGROUND", nil, 1)
+    shade:SetAllPoints()
+    shade:SetColorTexture(0, 0, 0, 0.35)
+    Widgets.Rim(tree, tree)
+
+    local function Center(t) return 37.5 + (t.col - 1) * 75, 36 + (t.tier - 1) * 64 end
+    -- Arrows from a required talent down to the one it unlocks.
+    tree.arrows = {}
+    for _, t in ipairs(Talents.TREE) do
+        if t.req then
+            local fromX, fromY = Center(Talents.BY_ID[t.req])
+            local toX, toY = Center(t)
+            local parts = {}
+            local vertical = tree:CreateTexture(nil, "ARTWORK")
+            vertical:SetPoint("TOP", tree, "TOPLEFT", toX, -(fromY + (fromX == toX and 22 or 0)))
+            vertical:SetSize(4, toY - 22 - fromY - (fromX == toX and 22 or 0))
+            parts[#parts + 1] = vertical
+            if fromX ~= toX then
+                local horizontal = tree:CreateTexture(nil, "ARTWORK")
+                horizontal:SetPoint("LEFT", tree, "TOPLEFT", math.min(fromX, toX) + (fromX < toX and 22 or 0), -fromY)
+                horizontal:SetSize(math.abs(toX - fromX) - 22 + 2, 4)
+                parts[#parts + 1] = horizontal
+            end
+            tree.arrows[t.id] = parts
+        end
+    end
+
+    tree.buttons = {}
+    for _, t in ipairs(Talents.TREE) do
+        local b = CreateFrame("Button", nil, tree)
+        b:SetSize(38, 38)
+        local x, y = Center(t)
+        b:SetPoint("CENTER", tree, "TOPLEFT", x, -y)
+        b:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+        b.icon = b:CreateTexture(nil, "ARTWORK")
+        b.icon:SetAllPoints()
+        b.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+        b.border = b:CreateTexture(nil, "OVERLAY")
+        b.border:SetTexture("Interface\\Buttons\\UI-Quickslot2")
+        b.border:SetPoint("CENTER")
+        b.border:SetSize(64, 64)
+        local box = CreateFrame("Frame", nil, b)
+        box:SetSize(28, 15)
+        box:SetPoint("CENTER", b, "BOTTOMRIGHT", 0, 2)
+        box:SetFrameLevel(b:GetFrameLevel() + 2)
+        local boxFill = box:CreateTexture(nil, "BACKGROUND")
+        boxFill:SetAllPoints()
+        boxFill:SetColorTexture(0, 0, 0, 0.85)
+        b.rank = Widgets.Text(box, 10, "white")
+        b.rank:SetPoint("CENTER")
+        b.talent = t
+        b:SetScript("OnClick", function(button, mouse) self:ClickTalent(button.talent.id, mouse) end)
+        b:SetScript("OnEnter", function(button) self:ShowTalentTooltip(button) end)
+        b:SetScript("OnLeave", GameTooltip_Hide)
+        tree.buttons[t.id] = b
+    end
+
+    local hint = Widgets.Text(page, 10, "gray")
+    hint:SetPoint("TOP", tree, "BOTTOM", 0, -2)
+    local reset = Widgets.Button(page, 120, 22, "SB_TALENT_RESET", function()
+        wipe(self:TalentAlloc(self.talentClass))
+        Sound("lost")
+        page.refresh()
+    end)
+    reset:SetPoint("BOTTOMLEFT", 14, 8)
+    local back = Widgets.Button(page, 120, 22, "BACK", function()
+        self.overlay:Show(self.talentBack or "menu", self.talentBackData)
+    end)
+    back:SetPoint("BOTTOMRIGHT", -14, 8)
+
+    self.talentPage = { tree = tree }
+    page.refresh = function()
+        local class = self.talentClass or CurrentClass()
+        self.talentClass = class
+        local alloc = self:TalentAlloc(class)
+        local available = TalentPoints(class)
+        local c = CLASS_INFO[class].color
+        title:SetText(L.SB_TALENT_TITLE:format(ClassName(class)))
+        cycler.label:SetText(ClassName(class))
+        cycler.label:SetTextColor(c[1], c[2], c[3])
+        points:SetText(L.SB_TALENT_POINTS:format(available - Talents.Points(alloc), available))
+        hint:SetText(available < Talents.MAX_POINTS and L.SB_TALENT_HINT:format(Talents.MAX_POINTS) or L.SB_TALENT_CONTROLS)
+        local bg = TALENT_BACKGROUNDS[class]
+        for name, tex in pairs(tree.pieces) do tex:SetTexture("Interface\\TalentFrame\\" .. bg .. "-" .. name) end
+        for id, b in pairs(tree.buttons) do
+            local t = b.talent
+            local rank = alloc[id] or 0
+            b.icon:SetTexture(TalentIcon(class, id))
+            local open = rank > 0 or Talents.CanAdd(alloc, id, math.huge)
+            b.icon:SetDesaturated(not open)
+            b.rank:SetText(rank .. "/" .. t.max)
+            if rank >= t.max then
+                b.rank:SetTextColor(1, 0.82, 0)
+                b.border:SetVertexColor(1, 0.82, 0)
+            elseif open then
+                b.rank:SetTextColor(0.25, 1, 0.25)
+                b.border:SetVertexColor(0.25, 1, 0.25)
+            else
+                b.rank:SetTextColor(0.6, 0.6, 0.6)
+                b.border:SetVertexColor(0.5, 0.5, 0.5)
+            end
+        end
+        for id, parts in pairs(tree.arrows) do
+            local req = Talents.BY_ID[id].req
+            local met = (alloc[req] or 0) >= Talents.BY_ID[req].max
+            for _, part in ipairs(parts) do
+                if met then part:SetColorTexture(1, 0.82, 0, 0.9) else part:SetColorTexture(0.5, 0.5, 0.5, 0.7) end
+            end
+        end
+        local spent = Talents.Points(alloc)
+        if spent >= Talents.MAX_POINTS then Achievements.Unlock("sb_talents") end
+    end
+end
+
+function Module:ShowTalents(back, data)
+    self.talentBack, self.talentBackData = back, data
+    self.talentClass = CurrentClass()
+    self.overlay:Show("talents")
+end
+
+function Module:ClickTalent(id, mouse)
+    local class = self.talentClass
+    local alloc = self:TalentAlloc(class)
+    if mouse == "RightButton" then
+        if not Talents.CanRemove(alloc, id) then return end
+        alloc[id] = alloc[id] - 1
+        if alloc[id] == 0 then alloc[id] = nil end
+        Sound("lost")
+    else
+        if not Talents.CanAdd(alloc, id, TalentPoints(class)) then return end
+        alloc[id] = (alloc[id] or 0) + 1
+        Sound("power")
+    end
+    self.overlay:Refresh()
+    local button = self.talentPage.tree.buttons[id]
+    if button and button:IsMouseOver() then self:ShowTalentTooltip(button) end
+end
+
+function Module:ShowTalentTooltip(button)
+    local class, t = self.talentClass, button.talent
+    local alloc = self:TalentAlloc(class)
+    local rank = alloc[t.id] or 0
+    GameTooltip:SetOwner(button, "ANCHOR_RIGHT")
+    GameTooltip:SetText(TalentName(class, t.id), 1, 1, 1)
+    GameTooltip:AddLine(L.SB_TALENT_RANK:format(rank, t.max), 1, 1, 1)
+    local below = (t.tier - 1) * Talents.POINTS_PER_TIER
+    if below > 0 and not Talents.CanAdd(alloc, t.id, math.huge) and rank == 0 then
+        GameTooltip:AddLine(L.SB_TALENT_REQ_TIER:format(below), 1, 0.2, 0.2)
+    end
+    if t.req and (alloc[t.req] or 0) < Talents.BY_ID[t.req].max then
+        GameTooltip:AddLine(L.SB_TALENT_REQ:format(Talents.BY_ID[t.req].max, TalentName(class, t.req)), 1, 0.2, 0.2)
+    end
+    if rank > 0 then GameTooltip:AddLine(TalentText(class, t.id, rank, alloc), 1, 0.82, 0, true) end
+    if rank < t.max then
+        if rank > 0 then GameTooltip:AddLine(" ") ; GameTooltip:AddLine(L.SB_TALENT_NEXT, 1, 1, 1) end
+        GameTooltip:AddLine(TalentText(class, t.id, rank + 1, alloc), 1, 0.82, 0, true)
+    end
+    GameTooltip:Show()
+end
+
 function Module:ResetProgress()
     local settings = Settings()
     settings.reached = 1
     settings.startMap = nil
     settings.classesCleared = {}
+    settings.talents = {}
 end
 
 function Module:Options()

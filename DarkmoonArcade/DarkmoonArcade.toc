@@ -46,6 +46,7 @@ Games\GoblinSlots\GoblinSlots.lua
 
 Games\Spellbounce\Locale.lua
 Games\Spellbounce\Maps.lua
+Games\Spellbounce\Talents.lua
 Games\Spellbounce\Game.lua
 Games\Spellbounce\Spellbounce.lua
 

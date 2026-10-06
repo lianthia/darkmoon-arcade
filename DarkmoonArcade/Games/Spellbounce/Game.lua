@@ -7,7 +7,7 @@ local _, ns = ...
 local SB = ns.Spellbounce or {}
 ns.Spellbounce = SB
 
-local Maps = SB.Maps
+local Maps, Talents = SB.Maps, SB.Talents
 
 local Game = {}
 Game.__index = Game
@@ -45,6 +45,20 @@ local EXORCISM_TARGETS = 2
 local HURRICANE_TIME, HURRICANE_PULL, HURRICANE_MAX_SPEED = 3, 950, 540
 local STUCK_SPEED, STUCK_TIME, MAX_FLIGHT, MAX_PEG_HITS = 40, 0.8, 14, 14
 
+-- Strength of a class power with `rank` points in its talents.
+function Game.PowerValue(class, rank)
+    rank = rank or 0
+    if class == "mage" then return ARCANE_RADIUS * (1 + 0.12 * rank) end
+    if class == "hunter" then return 2 + math.floor(rank / 2) end
+    if class == "priest" then return 1 + math.floor(rank / 2) end
+    if class == "shaman" then return CHAIN_JUMPS + rank end
+    if class == "warlock" then return FIRE_BOLTS + rank end
+    if class == "rogue" then return VANISH_TIME + 0.4 * rank end
+    if class == "warrior" then return WHIRL_TIME + 0.3 * rank, WHIRL_REACH + 3 * rank end
+    if class == "paladin" then return EXORCISM_TARGETS + math.floor(rank / 2) end
+    if class == "druid" then return HURRICANE_TIME + 0.5 * rank end
+end
+
 function Game.IsUnlocked(class, progress)
     return (Game.UNLOCK[class] or math.huge) <= (progress or 1)
 end
@@ -63,7 +77,16 @@ function Game.New(random)
     g.balls = {}
     g.orbs = Game.ORBS
     g.targetsTotal, g.targetsHit = 0, 0
+    g.mods = Talents.Modifiers()
     return g
+end
+
+function Game:SetTalents(alloc)
+    self.mods = Talents.Modifiers(alloc)
+end
+
+function Game:WellWidth()
+    return Game.WELL_W * (1 + self.mods.well)
 end
 
 function Game:Emit(name, data)
@@ -100,9 +123,9 @@ function Game:LoadLevel(level)
     for i, peg in ipairs(free) do
         if i <= targets then
             peg.kind = "target"
-        elseif i <= targets + 2 then
+        elseif i <= targets + 2 + self.mods.powerRunes then
             peg.kind = "power"
-        elseif i == targets + 3 then
+        elseif i == targets + 3 + self.mods.powerRunes then
             peg.kind = "gold"
         end
     end
@@ -112,7 +135,7 @@ function Game:LoadLevel(level)
         if peg.motion then self.moving = true end
     end
     self:RefreshLive()
-    self.orbs = Game.ORBS
+    self.orbs = Game.ORBS + self.mods.orbs
     self.balls = {}
     self.shot = nil
     self.time = 0
@@ -162,7 +185,7 @@ function Game:TargetsLeft()
 end
 
 function Game:WellX()
-    local travel = Game.WIDTH / 2 - Game.WELL_W / 2 - 6
+    local travel = Game.WIDTH / 2 - self:WellWidth() / 2 - 6
     return Game.WIDTH / 2 + math.sin(self.time * 0.9) * travel
 end
 
@@ -235,6 +258,7 @@ end
 function Game:Light(peg, source)
     if peg.lit or peg.gone or peg.bumper then return false end
     local points = Game.POINTS[peg.kind] * self:Multiplier()
+    if peg.kind == "target" then points = math.floor(points * (1 + self.mods.focus) + 0.5) end
     peg.lit = true
     if peg.kind == "target" then
         self.targetsHit = self.targetsHit + 1
@@ -247,7 +271,7 @@ function Game:Light(peg, source)
     if self.targetsHit == self.targetsTotal and peg.kind == "target" then
         self:Emit("lastTarget", { peg = peg })
     end
-    if peg.kind == "power" then self:TriggerPower(peg) end
+    if peg.kind == "power" or (peg.kind == "gold" and self.mods.gilded) then self:TriggerPower(peg) end
     return true
 end
 
@@ -261,15 +285,16 @@ end
 
 function Game:TriggerPower(origin)
     local class, affected = self.class, {}
+    local strength, reach = Game.PowerValue(class, self.mods.power)
     local ball = self.currentBall
     self.shot.powers = self.shot.powers + 1
     if class == "mage" then
         for _, peg in ipairs(self:Unlit(origin)) do
-            if (peg.x - origin.x) ^ 2 + (peg.y - origin.y) ^ 2 <= ARCANE_RADIUS ^ 2 then affected[#affected + 1] = peg end
+            if (peg.x - origin.x) ^ 2 + (peg.y - origin.y) ^ 2 <= strength ^ 2 then affected[#affected + 1] = peg end
         end
     elseif class == "shaman" then
         local current = origin
-        for _ = 1, CHAIN_JUMPS do
+        for _ = 1, strength do
             local best, bestDist
             for _, peg in ipairs(self:Unlit(origin)) do
                 local d = (peg.x - current.x) ^ 2 + (peg.y - current.y) ^ 2
@@ -284,19 +309,23 @@ function Game:TriggerPower(origin)
     elseif class == "warlock" then
         local pool = self:Unlit(origin)
         Shuffle(pool, self.random)
-        for i = 1, math.min(FIRE_BOLTS, #pool) do affected[i] = pool[i] end
+        for i = 1, math.min(strength, #pool) do affected[i] = pool[i] end
     elseif class == "hunter" and ball then
         local speed = math.max(260, math.sqrt(ball.vx ^ 2 + ball.vy ^ 2))
         local angle = math.atan2(ball.vy, ball.vx)
-        for _, offset in ipairs({ -0.45, 0.45 }) do
+        -- The extra orbs fan out evenly to both sides.
+        for k = 1, strength do
+            local side = k % 2 == 1 and -1 or 1
+            local offset = side * 0.45 * math.ceil(k / 2) / math.ceil(strength / 2)
             self.balls[#self.balls + 1] = NewBall(ball.x, ball.y, math.cos(angle + offset) * speed, math.sin(angle + offset) * speed)
         end
     elseif class == "priest" then
-        self.shot.shields = self.shot.shields + 1
+        self.shot.shields = self.shot.shields + strength
     elseif class == "rogue" and ball then
-        ball.ghost = VANISH_TIME
+        ball.ghost = strength
     elseif class == "warrior" and ball then
-        ball.whirl = WHIRL_TIME
+        ball.whirl = strength
+        ball.reach = reach
     elseif class == "paladin" then
         local targets = {}
         for _, peg in ipairs(self:Unlit(origin)) do
@@ -305,9 +334,9 @@ function Game:TriggerPower(origin)
         table.sort(targets, function(a, b)
             return (a.x - origin.x) ^ 2 + (a.y - origin.y) ^ 2 < (b.x - origin.x) ^ 2 + (b.y - origin.y) ^ 2
         end)
-        for i = 1, math.min(EXORCISM_TARGETS, #targets) do affected[i] = targets[i] end
+        for i = 1, math.min(strength, #targets) do affected[i] = targets[i] end
     elseif class == "druid" and ball then
-        ball.steer = HURRICANE_TIME
+        ball.steer = strength
     end
     self:Emit("power", { class = class, x = origin.x, y = origin.y, pegs = affected, ball = ball })
     for _, peg in ipairs(affected) do self:Light(peg, class) end
@@ -320,7 +349,7 @@ function Game:Collide(ball, peg)
     local dx, dy = ball.x - peg.x, ball.y - peg.y
     local rr = Game.BALL_R + radius
     if ball.whirl > 0 and not peg.lit and not peg.bumper then
-        local reach = rr + WHIRL_REACH
+        local reach = rr + (ball.reach or WHIRL_REACH)
         if dx * dx + dy * dy < reach * reach then self:Light(peg, "whirl") end
     end
     if dx > rr or dx < -rr or dy > rr or dy < -rr then return end
@@ -419,7 +448,7 @@ function Game:StepBall(ball, dt)
     if ball.slow > STUCK_TIME or ball.age > MAX_FLIGHT then self:Unstick() end
 
     if ball.vy > 0 and ball.y >= Game.WELL_Y and ball.y - ball.vy * dt < Game.WELL_Y
-        and math.abs(ball.x - self:WellX()) <= Game.WELL_W / 2 - 4 then
+        and math.abs(ball.x - self:WellX()) <= self:WellWidth() / 2 - 4 then
         return "caught"
     end
     if ball.y > Game.HEIGHT - R - 2 and self.shot.shields > 0 then
@@ -453,6 +482,12 @@ function Game:Update(dt)
             elseif result == "lost" then
                 table.remove(self.balls, i)
                 self:Emit("lost", { x = ball.x })
+                -- Second Wind: a lost orb may come back (once per shot).
+                if self.mods.refund > 0 and not self.shot.refunded and self.random(100) <= self.mods.refund then
+                    self.shot.refunded = true
+                    self.orbs = self.orbs + 1
+                    self:Emit("refund", { x = ball.x })
+                end
             end
         end
         if #self.balls == 0 then break end
@@ -471,7 +506,7 @@ function Game:EndShot()
     end
     self:RefreshLive()
     self.shot = nil
-    local bonus = shot.hits >= Game.BONUS_HITS and self.targetsHit < self.targetsTotal
+    local bonus = shot.hits >= Game.BONUS_HITS - self.mods.bonusHits and self.targetsHit < self.targetsTotal
     if bonus then self.orbs = self.orbs + 1 end
     self:Emit("shotEnd", {
         pegs = removed, points = shot.points, hits = shot.hits, caught = shot.caught, powers = shot.powers, bonusOrb = bonus,

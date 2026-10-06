@@ -277,6 +277,7 @@ local _, remaining, _, isEstimate = ns.Flight:Status()
 assert(isEstimate and remaining > 0, "live flight estimate")
 assert(Window.activeGame and Window.activeGame.id == "murlocblast", "flight opens murloc blast")
 assert(Window.flightText._text and Window.flightText._text:find("Sturmwind"), "flight text")
+Window.activeGame:StartGame(1)
 
 for step = 1, 900 do
     local game = Window.activeGame
@@ -350,6 +351,8 @@ for step = 1, 900 do
         SlashCmdList.DARKMOONARCADE(ids[(step / 150) % 6 + 1])
         if Window.activeGame and Window.activeGame.id == "darkmoondeck" then Window.activeGame:NewRun() end
         if Window.activeGame and Window.activeGame.id == "flappygriffin" then Window.activeGame:NewRun() end
+        if Window.activeGame and Window.activeGame.id == "murlocblast" then Window.activeGame:StartGame(1) end
+        if Window.activeGame and Window.activeGame.id == "spellbounce" then Window.activeGame:StartGame(1) end
         if Window.activeGame and Window.activeGame.id == "goblinslots" then Window.activeGame:NewGame() end
         if Window.activeGame and Window.activeGame.id == "jewelsofuldum" then Window.activeGame:NewGame() end
     end
@@ -403,6 +406,27 @@ Tick(4)
 assert(sb.overlay.current == "clear", "clear page shown")
 sb:NextMap()
 assert(sb.game.level == 2 and sb.game.state == "PLAYING", "next map")
+
+-- Talents: earn points, learn along the tree, unlearn, and the run uses them.
+DarkmoonArcadeDB.stats.counters.spellbounce = DarkmoonArcadeDB.stats.counters.spellbounce or {}
+DarkmoonArcadeDB.stats.counters.spellbounce.class_mage = 30
+ns.Arcade.Settings(sb).class = "mage"
+wipe(sb:TalentAlloc("mage"))
+sb:ShowTalents("menu")
+assert(sb.overlay.current == "talents", "talent page")
+local order = { "focus", "focus", "focus", "focus", "focus", "well", "well", "well", "well", "well",
+    "power1", "power1", "power1", "secondwind", "secondwind", "runes", "power2", "power2", "pockets", "pockets", "gilded" }
+local buttons = sb.talentPage.tree.buttons
+for _, id in ipairs(order) do buttons[id]._scripts.OnClick(buttons[id], "LeftButton") end
+assert(sb:TalentAlloc("mage").gilded == 1, "capstone learned")
+buttons.focus._scripts.OnClick(buttons.focus, "RightButton")
+assert(sb:TalentAlloc("mage").focus == 5, "cannot unlearn below a deeper talent")
+buttons.gilded._scripts.OnClick(buttons.gilded, "RightButton")
+assert(not sb:TalentAlloc("mage").gilded, "capstone unlearned")
+buttons.focus._scripts.OnEnter(buttons.focus)
+ns.Arcade.Settings(sb).class = "mage"
+sb:StartGame(1)
+assert(sb.game.orbs == 12, "deep pockets applied: " .. sb.game.orbs)
 
 -- A moving map: pegs travel and the guide follows them.
 sb:StartGame(12)
