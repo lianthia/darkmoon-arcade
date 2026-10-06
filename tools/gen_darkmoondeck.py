@@ -85,6 +85,79 @@ def card_glow():
     return img.resize((128, 128), Image.LANCZOS)
 
 
+SUIT_COLORS = {
+    "beasts": (70, 165, 55),
+    "elementals": (235, 110, 30),
+    "portals": (140, 80, 220),
+    "warlords": (200, 40, 40),
+}
+OUTLINE = (40, 24, 16, 255)
+
+
+def suit_symbol(suit, size=64):
+    """Bold, clearly different shapes per suit: paw, flame, portal and shield."""
+    s = 8
+    n = size * s
+    img = Image.new("RGBA", (n, n), (0, 0, 0, 0))
+    dr = ImageDraw.Draw(img)
+    col = SUIT_COLORS[suit] + (255,)
+    o = 3 * s
+
+    def shape(points=None, ellipse=None, width=None):
+        # Outline first, slightly larger, then the colored fill on top.
+        if ellipse:
+            x0, y0, x1, y1 = ellipse
+            dr.ellipse([x0 - o, y0 - o, x1 + o, y1 + o], fill=OUTLINE)
+        if points:
+            dr.polygon(points, fill=OUTLINE)
+            dr.line(points + [points[0]], fill=OUTLINE, width=o * 2, joint="curve")
+
+    if suit == "beasts":
+        pad = [n * 0.27, n * 0.46, n * 0.73, n * 0.86]
+        toes = [[n * 0.12, n * 0.30, n * 0.30, n * 0.52], [n * 0.30, n * 0.10, n * 0.48, n * 0.36],
+                [n * 0.52, n * 0.10, n * 0.70, n * 0.36], [n * 0.70, n * 0.30, n * 0.88, n * 0.52]]
+        for e in [pad] + toes:
+            shape(ellipse=e)
+        for e in [pad] + toes:
+            dr.ellipse(e, fill=col)
+    elif suit == "elementals":
+        def flame(scale, dy):
+            # Round belly at the bottom, sides sweeping up into a curled tip.
+            cx, cy, r = n / 2, n * 0.64 + dy, n * 0.26 * scale
+            pts = [(cx + math.cos(t) * r, cy + math.sin(t) * r) for t in [i / 30 * math.pi for i in range(31)]]
+            tip = (cx + n * 0.08 * scale, cy - n * 0.56 * scale)
+            left = [(cx - r + (tip[0] - cx + r) * k ** 1.6, cy + (tip[1] - cy) * k) for k in [i / 12 for i in range(1, 12)]]
+            right = [(tip[0] + (cx + r - tip[0]) * (1 - k) ** 0.8, tip[1] + (cy - tip[1]) * (1 - k)) for k in [i / 12 for i in range(1, 12)]]
+            return pts + left + [tip] + right
+        outer = flame(1.0, 0)
+        shape(points=outer)
+        dr.polygon(outer, fill=col)
+        dr.polygon(flame(0.5, n * 0.1), fill=(255, 210, 90, 255))
+    elif suit == "portals":
+        box = [n * 0.12, n * 0.12, n * 0.88, n * 0.88]
+        shape(ellipse=box)
+        dr.ellipse(box, fill=col)
+        dr.ellipse([n * 0.28, n * 0.28, n * 0.72, n * 0.72], fill=(60, 25, 100, 255))
+        for k in range(3):
+            a0 = k * 120
+            dr.arc([n * 0.2, n * 0.2, n * 0.8, n * 0.8], a0, a0 + 70, fill=(220, 190, 255, 255), width=4 * s)
+        dr.ellipse([n * 0.42, n * 0.42, n * 0.58, n * 0.58], fill=(230, 210, 255, 255))
+    elif suit == "warlords":
+        # A heater shield with a pale cross.
+        pts = [(n * 0.18, n * 0.14), (n * 0.82, n * 0.14)]
+        for i in range(1, 21):
+            t = i / 20
+            pts.append((n * 0.82 - n * 0.32 * t ** 2, n * 0.14 + n * 0.74 * t))
+        for i in range(19, 0, -1):
+            t = i / 20
+            pts.append((n * 0.18 + n * 0.32 * t ** 2, n * 0.14 + n * 0.74 * t))
+        shape(points=pts)
+        dr.polygon(pts, fill=col)
+        dr.rectangle([n * 0.45, n * 0.2, n * 0.55, n * 0.74], fill=(245, 220, 160, 255))
+        dr.rectangle([n * 0.26, n * 0.34, n * 0.74, n * 0.44], fill=(245, 220, 160, 255))
+    return img.resize((size, size), Image.LANCZOS)
+
+
 def tile():
     art = table().crop((0, 60, 432, 276)).resize((512, 256), Image.LANCZOS)
     front, back = card_front(), card_back()
@@ -120,6 +193,8 @@ def main():
     ga.save_tga(card_front(), "front", FOLDER)
     ga.save_tga(card_back(), "back", FOLDER)
     ga.save_tga(card_glow(), "glow", FOLDER)
+    for suit in SUIT_COLORS:
+        ga.save_tga(suit_symbol(suit), "suit_" + suit, FOLDER)
     ga.save_tga(tile(), "darkmoondeck", "tiles")
     sounds()
     print("Darkmoon Deck assets generated")

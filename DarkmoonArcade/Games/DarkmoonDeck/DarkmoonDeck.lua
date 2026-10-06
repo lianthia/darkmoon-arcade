@@ -114,12 +114,14 @@ function Module:CreateCardVisual()
     b.face:SetAllPoints()
     b.face:SetTexture(Tex("front"))
     b.icon = b:CreateTexture(nil, "ARTWORK", nil, 1)
-    b.icon:SetSize(30, 30)
-    b.icon:SetPoint("CENTER", 0, -6)
-    b.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+    b.icon:SetSize(34, 34)
+    b.icon:SetPoint("CENTER", 0, -4)
+    b.pip = b:CreateTexture(nil, "ARTWORK", nil, 1)
+    b.pip:SetSize(14, 14)
     b.rank = b:CreateFontString(nil, "OVERLAY")
     b.rank:SetFont(Media.FontFile(), 18, "")
     b.rank:SetPoint("TOPLEFT", 6, -5)
+    b.pip:SetPoint("LEFT", b.rank, "RIGHT", 1, 0)
     b.corner = b:CreateFontString(nil, "OVERLAY")
     b.corner:SetFont(Media.FontFile(), 11, "")
     b.corner:SetPoint("BOTTOMRIGHT", -6, 5)
@@ -129,7 +131,9 @@ end
 
 function Module:SetCardVisual(v, card)
     v.card = card
-    v.icon:SetTexture(SUIT_ICONS[card.suit])
+    -- Own suit symbols: the client's tarot icons look too much alike at card size.
+    v.icon:SetTexture(Tex("suit_" .. card.suit))
+    v.pip:SetTexture(Tex("suit_" .. card.suit))
     local c = SUIT_COLORS[card.suit]
     v.rank:SetText(RANK_TEXT[card.rank])
     v.corner:SetText(RANK_TEXT[card.rank])
@@ -137,6 +141,7 @@ function Module:SetCardVisual(v, card)
     v.corner:SetTextColor(c[1], c[2], c[3])
     local cursed = card.suit == self.game.cursedSuit
     v.icon:SetDesaturated(cursed)
+    v.pip:SetDesaturated(cursed)
     v.face:SetVertexColor(cursed and 0.6 or 1, cursed and 0.6 or 1, cursed and 0.6 or 1)
     v.alpha, v.scale = 1, 1
     v:SetAlpha(1)
@@ -938,8 +943,7 @@ end
 function Module:DecorateTile(tile, art)
     for i, suit in ipairs(Game.SUITS) do
         local icon = tile:CreateTexture(nil, "OVERLAY")
-        icon:SetTexture(SUIT_ICONS[suit])
-        icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+        icon:SetTexture(Tex("suit_" .. suit))
         icon:SetSize(24, 24)
         icon:SetPoint("TOPLEFT", art, "TOPLEFT", 14 + (i - 1) * 28, -14)
     end
