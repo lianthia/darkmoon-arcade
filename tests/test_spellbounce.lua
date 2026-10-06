@@ -231,6 +231,45 @@ test("rogue vanish passes through pegs while lighting them", function()
     assert(power.gone and below.gone, "both lit")
 end)
 
+test("warrior whirlwind lights runes the orb passes close by", function()
+    local g = NewGame("warrior")
+    local power = Solo(g, "power", 216, 150)
+    local beside = { id = 1, x = 216 + 36, y = 260, kind = "blue" }
+    g.pegs[#g.pegs + 1] = beside
+    g.shot = { points = 0, hits = 0, targets = 0, shields = 0, powers = 0 }
+    local ball = { x = 216, y = 140, vx = 0, vy = 0, age = 0, slow = 0, ghost = 0, whirl = 0, steer = 0 }
+    g.currentBall = ball
+    g:Light(power, "ball")
+    assert(ball.whirl > 0, "whirlwind active")
+    ball.x, ball.y = 216, 255
+    g:Collide(ball, beside)
+    assert(beside.lit, "peg beside the path lit")
+end)
+
+test("paladin exorcism strikes the two nearest targets", function()
+    local g = NewGame("paladin")
+    local power = Solo(g, "power", 216, 200)
+    local near1 = { id = 1, x = 240, y = 220, kind = "target" }
+    local near2 = { id = 2, x = 190, y = 230, kind = "target" }
+    local far = { id = 3, x = 30, y = 400, kind = "target" }
+    local blue = { id = 4, x = 220, y = 210, kind = "blue" }
+    for _, p in ipairs({ near1, near2, far, blue }) do g.pegs[#g.pegs + 1] = p end
+    g.targetsTotal = 3
+    g.shot = { points = 0, hits = 0, targets = 0, shields = 0, powers = 0 }
+    g:Light(power, "ball")
+    assert(near1.lit and near2.lit and not far.lit and not blue.lit, "two nearest targets")
+end)
+
+test("druid hurricane pulls the orb toward a target", function()
+    local g = NewGame("druid")
+    for _, peg in ipairs(g.pegs) do peg.gone = true end
+    local target = { id = 1, x = 380, y = 300, kind = "target" }
+    g.pegs[#g.pegs + 1] = target
+    local ball = { x = 216, y = 200, vx = 0, vy = 0, age = 0, slow = 0, ghost = 0, whirl = 0, steer = 1 }
+    g:Steer(ball, 0.1)
+    assert(ball.vx > 0 and ball.vy > 0, "pulled toward the target")
+end)
+
 test("a resting orb is freed", function()
     local g, events = NewGame()
     for _, peg in ipairs(g.pegs) do peg.gone = true end
@@ -261,8 +300,11 @@ test("classes unlock with progress", function()
     assert(Game.IsUnlocked("mage", 1))
     assert(not Game.IsUnlocked("shaman", 2))
     assert(Game.IsUnlocked("shaman", 3))
-    assert(not Game.IsUnlocked("rogue", 7))
-    assert(Game.IsUnlocked("rogue", 8))
+    assert(not Game.IsUnlocked("warrior", 1))
+    assert(Game.IsUnlocked("warrior", 2))
+    assert(not Game.IsUnlocked("rogue", 6))
+    assert(Game.IsUnlocked("rogue", 7))
+    eq(#Game.CLASSES, 9, "all classic classes")
 end)
 
 test("trace ends at the first peg", function()

@@ -29,8 +29,8 @@ Game.MULTIPLIERS = { 1, 2, 3, 5 }
 Game.BONUS_HITS = 10
 
 -- Classes in menu order and the map you must have reached to unlock them.
-Game.CLASSES = { "mage", "hunter", "priest", "shaman", "warlock", "rogue" }
-Game.UNLOCK = { mage = 1, hunter = 1, priest = 1, shaman = 3, warlock = 5, rogue = 8 }
+Game.CLASSES = { "mage", "hunter", "priest", "warrior", "shaman", "paladin", "warlock", "druid", "rogue" }
+Game.UNLOCK = { mage = 1, hunter = 1, priest = 1, warrior = 2, shaman = 3, paladin = 4, warlock = 5, druid = 6, rogue = 7 }
 
 local STEP = 1 / 240
 local REST, WALL_REST = 0.72, 0.9
@@ -40,6 +40,9 @@ local CHAIN_JUMPS, CHAIN_RANGE = 5, 150
 local FIRE_BOLTS = 5
 local VANISH_TIME = 2.4
 local SHIELD_SPEED = 430
+local WHIRL_TIME, WHIRL_REACH = 2.6, 34
+local EXORCISM_TARGETS = 2
+local HURRICANE_TIME, HURRICANE_PULL, HURRICANE_MAX_SPEED = 3, 950, 540
 local STUCK_SPEED, STUCK_TIME, MAX_FLIGHT, MAX_PEG_HITS = 40, 0.8, 14, 14
 
 function Game.IsUnlocked(class, progress)
@@ -104,12 +107,22 @@ function Game:LoadLevel(level)
         end
     end
     self.targetsTotal, self.targetsHit = targets, 0
+    self:RefreshLive()
     self.orbs = Game.ORBS
     self.balls = {}
     self.shot = nil
     self.time = 0
     self.state = "PLAYING"
     self:Emit("level", { level = level })
+end
+
+-- Pegs still on the field; physics only looks at these.
+function Game:RefreshLive()
+    local live = {}
+    for _, peg in ipairs(self.pegs) do
+        if not peg.gone then live[#live + 1] = peg end
+    end
+    self.live = live
 end
 
 function Game:StartRun(level, class)
@@ -160,12 +173,13 @@ function Game:CanShoot()
 end
 
 local function NewBall(x, y, vx, vy)
-    return { x = x, y = y, vx = vx, vy = vy, age = 0, slow = 0, ghost = 0 }
+    return { x = x, y = y, vx = vx, vy = vy, age = 0, slow = 0, ghost = 0, whirl = 0, steer = 0 }
 end
 
 function Game:Shoot()
     if not self:CanShoot() then return false end
     self.orbs = self.orbs - 1
+    self:RefreshLive()
     local vx, vy = math.cos(self.angle) * Game.SPEED, math.sin(self.angle) * Game.SPEED
     self.balls[1] = NewBall(Game.LAUNCH_X, Game.LAUNCH_Y, vx, vy)
     self.shot = { points = 0, hits = 0, targets = 0, caught = false, shields = 0, powers = 0 }
@@ -271,6 +285,19 @@ function Game:TriggerPower(origin)
         self.shot.shields = self.shot.shields + 1
     elseif class == "rogue" and ball then
         ball.ghost = VANISH_TIME
+    elseif class == "warrior" and ball then
+        ball.whirl = WHIRL_TIME
+    elseif class == "paladin" then
+        local targets = {}
+        for _, peg in ipairs(self:Unlit(origin)) do
+            if peg.kind == "target" then targets[#targets + 1] = peg end
+        end
+        table.sort(targets, function(a, b)
+            return (a.x - origin.x) ^ 2 + (a.y - origin.y) ^ 2 < (b.x - origin.x) ^ 2 + (b.y - origin.y) ^ 2
+        end)
+        for i = 1, math.min(EXORCISM_TARGETS, #targets) do affected[i] = targets[i] end
+    elseif class == "druid" and ball then
+        ball.steer = HURRICANE_TIME
     end
     self:Emit("power", { class = class, x = origin.x, y = origin.y, pegs = affected, ball = ball })
     for _, peg in ipairs(affected) do self:Light(peg, class) end
@@ -282,6 +309,10 @@ function Game:Collide(ball, peg)
     local radius = peg.bumper and Game.BUMPER_R or Game.PEG_R
     local dx, dy = ball.x - peg.x, ball.y - peg.y
     local rr = Game.BALL_R + radius
+    if ball.whirl > 0 and not peg.lit and not peg.bumper then
+        local reach = rr + WHIRL_REACH
+        if dx * dx + dy * dy < reach * reach then self:Light(peg, "whirl") end
+    end
     if dx > rr or dx < -rr or dy > rr or dy < -rr then return end
     local d2 = dx * dx + dy * dy
     if d2 >= rr * rr then return end
@@ -325,7 +356,27 @@ function Game:Unstick()
         end
     end
     for _, ball in ipairs(self.balls) do ball.slow, ball.age = 0, 0 end
+    self:RefreshLive()
     if #removed > 0 then self:Emit("unstick", { pegs = removed }) end
+end
+
+-- Hurricane: a pull toward the nearest unlit target.
+function Game:Steer(ball, dt)
+    local best, bestDist
+    for _, peg in ipairs(self.pegs) do
+        if peg.kind == "target" and not peg.lit and not peg.gone then
+            local d = (peg.x - ball.x) ^ 2 + (peg.y - ball.y) ^ 2
+            if not bestDist or d < bestDist then best, bestDist = peg, d end
+        end
+    end
+    if not best or bestDist < 1 then return end
+    local d = math.sqrt(bestDist)
+    ball.vx = ball.vx + (best.x - ball.x) / d * HURRICANE_PULL * dt
+    ball.vy = ball.vy + (best.y - ball.y) / d * HURRICANE_PULL * dt
+    local speed = math.sqrt(ball.vx ^ 2 + ball.vy ^ 2)
+    if speed > HURRICANE_MAX_SPEED then
+        ball.vx, ball.vy = ball.vx / speed * HURRICANE_MAX_SPEED, ball.vy / speed * HURRICANE_MAX_SPEED
+    end
 end
 
 function Game:StepBall(ball, dt)
@@ -334,6 +385,11 @@ function Game:StepBall(ball, dt)
     ball.x, ball.y = ball.x + ball.vx * dt, ball.y + ball.vy * dt
     ball.age = ball.age + dt
     if ball.ghost > 0 then ball.ghost = ball.ghost - dt end
+    if ball.whirl > 0 then ball.whirl = ball.whirl - dt end
+    if ball.steer > 0 then
+        ball.steer = ball.steer - dt
+        self:Steer(ball, dt)
+    end
     if ball.x < R then
         ball.x, ball.vx = R, math.abs(ball.vx) * WALL_REST
     elseif ball.x > W - R then
@@ -341,7 +397,9 @@ function Game:StepBall(ball, dt)
     end
     if ball.y < R then ball.y, ball.vy = R, math.abs(ball.vy) * WALL_REST end
     self.currentBall = ball
-    for _, peg in ipairs(self.pegs) do
+    local live = self.live
+    for i = 1, #live do
+        local peg = live[i]
         if not peg.gone then self:Collide(ball, peg) end
     end
     self.currentBall = nil
@@ -400,6 +458,7 @@ function Game:EndShot()
             removed[#removed + 1] = peg
         end
     end
+    self:RefreshLive()
     self.shot = nil
     local bonus = shot.hits >= Game.BONUS_HITS and self.targetsHit < self.targetsTotal
     if bonus then self.orbs = self.orbs + 1 end

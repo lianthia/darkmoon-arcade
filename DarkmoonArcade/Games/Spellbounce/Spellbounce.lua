@@ -30,7 +30,13 @@ local CLASS_INFO = {
     shaman = { color = { 0.2, 0.55, 1 }, icon = "Interface\\Icons\\Spell_Nature_ChainLightning" },
     warlock = { color = { 0.58, 0.51, 0.79 }, icon = "Interface\\Icons\\Spell_Shadow_RainOfFire" },
     rogue = { color = { 1, 0.96, 0.41 }, icon = "Interface\\Icons\\Ability_Vanish" },
+    warrior = { color = { 0.78, 0.61, 0.43 }, icon = "Interface\\Icons\\Ability_Whirlwind" },
+    paladin = { color = { 0.96, 0.55, 0.73 }, icon = "Interface\\Icons\\Spell_Holy_Excorcism_02" },
+    druid = { color = { 1, 0.49, 0.04 }, icon = "Interface\\Icons\\Spell_Nature_Cyclone" },
 }
+-- Hits lit by a power arrive in bursts; only this many play a sound per frame.
+local MAX_HIT_SOUNDS = 2
+local SIDEBAR_INTERVAL = 0.3
 
 local Module = {
     id = "spellbounce",
@@ -107,7 +113,7 @@ end
 function Module:Build(container)
     self.container = container
     self.pegVisuals, self.effects, self.ballVisuals, self.keysHeld = {}, {}, {}, {}
-    self.slowmo = 0
+    self.slowmo, self.hitSounds = 0, 0
 
     local field = CreateFrame("Frame", nil, container)
     field:SetSize(W, H)
@@ -151,10 +157,14 @@ function Module:Build(container)
         v.glow:SetSize(44, 44)
         v.tex:SetTexture(Tex("orb"))
         v.tex:SetSize(22, 22)
+        v.aura = self.ballLayer:CreateTexture(nil, "ARTWORK", nil, 2)
+        v.aura:SetTexture(Media.Tex("ring"))
+        v.aura:SetBlendMode("ADD")
         return v
     end, function(v)
         v.tex:Hide()
         v.glow:Hide()
+        v.aura:Hide()
     end)
     self.fxPool = Media.Pool(function() return self.fxLayer:CreateTexture(nil, "OVERLAY") end, function(t)
         t:Hide()
@@ -434,14 +444,13 @@ function Module:Burst(x, y, color, count, speed, size, gravity)
         local px, py = x, y
         local vx, vy = math.cos(angle) * v, math.sin(angle) * v
         local life = 0.5 + math.random() * 0.4
+        tex:SetSize(size or 14, size or 14)
         self:AddEffect(function(e, dt)
             local p = e.t / life
             if p >= 1 then return false end
             vy = vy + (gravity or 0) * dt
             px, py = px + vx * dt, py + vy * dt
             Place(tex, px, py)
-            local s = (size or 14) * (1 - p * 0.5)
-            tex:SetSize(s, s)
             tex:SetAlpha(1 - p)
             return true
         end, function() self.fxPool.Release(tex) end)
@@ -483,11 +492,12 @@ function Module:Bolt(x1, y1, x2, y2, color, delay)
 end
 
 -- A falling flame from above the field onto a peg.
-function Module:Meteor(x, y, delay)
+function Module:Meteor(x, y, delay, color)
+    color = color or { 1, 0.5, 0.15 }
     local tex = self.fxPool.Acquire()
     tex:SetTexture(Media.Tex("glow"))
     tex:SetBlendMode("ADD")
-    tex:SetVertexColor(1, 0.5, 0.15)
+    tex:SetVertexColor(color[1], color[2], color[3])
     tex:SetSize(26, 26)
     tex:Hide()
     local startX = x - 60
@@ -495,7 +505,7 @@ function Module:Meteor(x, y, delay)
         if e.t < delay then return true end
         local p = (e.t - delay) / 0.3
         if p >= 1 then
-            self:Burst(x, y, { 1, 0.55, 0.2 }, 6, 90, 14)
+            self:Burst(x, y, color, 5, 90, 14)
             return false
         end
         Place(tex, startX + 60 * p, -20 + (y + 20) * p)
@@ -559,7 +569,7 @@ function Module:Rocket(x, apex, color, delay)
             Sound("rocket")
         end
         if p >= 1 then
-            self:Burst(x, apex, color, 26, 150, 16, 90)
+            self:Burst(x, apex, color, 18, 150, 16, 90)
             self:Ring(x, apex, color, 20, 180, 0.5)
             Sound("firework")
             return false
@@ -590,10 +600,13 @@ function Module:OnGameEvent(name, data)
         local peg = data.peg
         local v = self.pegVisuals[peg.id]
         if v then self:DrawPeg(v) end
-        Sound("hit" .. math.min(data.chain, 12))
-        if peg.kind == "target" then Sound("target") end
+        if self.hitSounds < MAX_HIT_SOUNDS then
+            self.hitSounds = self.hitSounds + 1
+            Sound("hit" .. math.min(data.chain, 12))
+            if peg.kind == "target" then Sound("target") end
+        end
         local color = KIND_COLORS[peg.kind]
-        self:Burst(peg.x, peg.y, color, 3, 80, 10)
+        self:Burst(peg.x, peg.y, color, 2, 80, 10)
         if peg.kind ~= "blue" then
             self:Popup(peg.x, peg.y - 12, "+" .. ns.FormatNumber(data.points), 13, color, 0.8)
         end
@@ -657,6 +670,11 @@ function Module:OnPower(data)
         end
     elseif class == "warlock" then
         for i, peg in ipairs(data.pegs) do self:Meteor(peg.x, peg.y, (i - 1) * 0.07) end
+    elseif class == "paladin" then
+        for i, peg in ipairs(data.pegs) do
+            self:Meteor(peg.x, peg.y, (i - 1) * 0.12, { 1, 0.9, 0.55 })
+            self:Ring(peg.x, peg.y, { 1, 0.9, 0.55 }, 20, 80, 0.5)
+        end
     end
     self.traceDirty = true
 end
@@ -688,7 +706,7 @@ function Module:OnClear(data)
             self.pegVisuals[peg.id] = nil
             self:AddEffect(function(e)
                 if e.t < delay then return true end
-                self:Burst(peg.x, peg.y, FIREWORK_COLORS[math.random(#FIREWORK_COLORS)], 8, 130, 12, 60)
+                self:Burst(peg.x, peg.y, FIREWORK_COLORS[math.random(#FIREWORK_COLORS)], 5, 130, 12, 60)
                 return false
             end, function() self.pegPool.Release(v) end)
         end
@@ -800,6 +818,7 @@ function Module:ScoreDetail(entry)
     return text
 end
 
+-- Field counters update at once; the sidebar with its score lists at most every SIDEBAR_INTERVAL.
 function Module:UpdateHud()
     local game = self.game
     local playing = game.state ~= "READY"
@@ -810,7 +829,16 @@ function Module:UpdateHud()
     local info = CLASS_INFO[game.class]
     self.classIcon:SetTexture(info.icon)
     self.orbIcon:SetVertexColor(info.color[1], info.color[2], info.color[3])
-    ns.Window:UpdateSidebar()
+    self.sidebarDirty = true
+end
+
+function Module:FlushSidebar(dt)
+    self.sidebarTimer = (self.sidebarTimer or 0) - dt
+    if self.sidebarDirty and self.sidebarTimer <= 0 then
+        self.sidebarDirty = false
+        self.sidebarTimer = SIDEBAR_INTERVAL
+        ns.Window:UpdateSidebar()
+    end
 end
 
 function Module:ShowAchievements()
@@ -823,6 +851,7 @@ end
 
 function Module:Enter()
     self:UpdateHud()
+    ns.Window:UpdateSidebar()
     self.overlay:Refresh()
 end
 
@@ -935,6 +964,17 @@ function Module:DrawBalls()
         Place(v.glow, ball.x, ball.y)
         v.tex:Show()
         v.glow:Show()
+        -- Whirlwind shows its reach, Hurricane a smaller swirl.
+        if ball.whirl > 0 or ball.steer > 0 then
+            local size = ball.whirl > 0 and 98 or 54
+            v.aura:SetSize(size, size)
+            v.aura:SetVertexColor(color[1], color[2], color[3])
+            v.aura:SetAlpha(0.35 + 0.25 * math.sin(GetTime() * 12))
+            Place(v.aura, ball.x, ball.y)
+            v.aura:Show()
+        else
+            v.aura:Hide()
+        end
     end
     for i = #self.ballVisuals, #game.balls + 1, -1 do
         self.ballPool.Release(self.ballVisuals[i])
@@ -954,8 +994,10 @@ function Module:OnUpdate(dt)
         self.slowmo = self.slowmo - dt
         scale = SLOWMO_SCALE
     end
+    self.hitSounds = 0
     self:UpdateAim(dt)
     game:Update(dt * scale)
+    self:FlushSidebar(dt)
     self:DrawBalls()
     for i = #self.effects, 1, -1 do
         local e = self.effects[i]
@@ -972,8 +1014,8 @@ function Module:DecorateTile(tile, art)
         local icon = tile:CreateTexture(nil, "OVERLAY")
         icon:SetTexture(CLASS_INFO[class].icon)
         icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
-        icon:SetSize(24, 24)
-        icon:SetPoint("TOPLEFT", art, "TOPLEFT", 14 + (i - 1) * 28, -14)
+        icon:SetSize(22, 22)
+        icon:SetPoint("TOPLEFT", art, "TOPLEFT", 14 + (i - 1) * 26, -14)
     end
 end
 
