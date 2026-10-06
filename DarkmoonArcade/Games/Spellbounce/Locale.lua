@@ -1,6 +1,9 @@
 local _, ns = ...
 
 ns.AddStrings("enUS", {
+    SB_STAT_RUNES = "Runes lit",
+    SB_STAT_MAPS = "Maps cleared",
+    SB_STAT_CLASS = "Favorite class",
     SB_NAME = "Spellbounce",
     SB_DESC = "Launch spell orbs through glowing runes, light up every red one and crown each map with fireworks.",
     SB_TAGLINE = "Pick your class, aim, and let the runes sing.",
@@ -98,6 +101,9 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    SB_STAT_RUNES = "Entzündete Runen",
+    SB_STAT_MAPS = "Geschaffte Karten",
+    SB_STAT_CLASS = "Lieblingsklasse",
     SB_DESC = "Schieße Zauberkugeln durch leuchtende Runen, entzünde alle roten und kröne jede Karte mit einem Feuerwerk.",
     SB_TAGLINE = "Wähle deine Klasse, ziele und lass die Runen klingen.",
     SB_CLASS = "Klasse",
@@ -194,6 +200,9 @@ ns.AddStrings("deDE", {
 })
 
 ns.AddStrings("frFR", {
+    SB_STAT_RUNES = "Runes allumées",
+    SB_STAT_MAPS = "Cartes terminées",
+    SB_STAT_CLASS = "Classe préférée",
     SB_DESC = "Lancez des orbes de sort à travers des runes lumineuses, allumez toutes les rouges et couronnez chaque carte d'un feu d'artifice.",
     SB_TAGLINE = "Choisissez votre classe, visez et faites chanter les runes.",
     SB_CLASS = "Classe",
@@ -290,6 +299,9 @@ ns.AddStrings("frFR", {
 })
 
 ns.AddStrings("esES", {
+    SB_STAT_RUNES = "Runas encendidas",
+    SB_STAT_MAPS = "Mapas superados",
+    SB_STAT_CLASS = "Clase favorita",
     SB_DESC = "Lanza orbes de hechizo entre runas brillantes, enciende todas las rojas y corona cada mapa con fuegos artificiales.",
     SB_TAGLINE = "Elige tu clase, apunta y haz cantar las runas.",
     SB_CLASS = "Clase",
@@ -386,6 +398,9 @@ ns.AddStrings("esES", {
 })
 
 ns.AddStrings("ruRU", {
+    SB_STAT_RUNES = "Зажжено рун",
+    SB_STAT_MAPS = "Пройдено карт",
+    SB_STAT_CLASS = "Любимый класс",
     SB_DESC = "Запускайте магические сферы сквозь светящиеся руны, зажгите все красные и завершите каждую карту фейерверком.",
     SB_TAGLINE = "Выберите класс, прицельтесь – и пусть руны поют.",
     SB_CLASS = "Класс",
@@ -482,6 +497,9 @@ ns.AddStrings("ruRU", {
 })
 
 ns.AddStrings("zhCN", {
+    SB_STAT_RUNES = "点亮的符文",
+    SB_STAT_MAPS = "完成的地图",
+    SB_STAT_CLASS = "最爱的职业",
     SB_DESC = "发射法术宝珠穿过闪耀的符文，点亮所有红色符文，再用烟花为每张地图收尾。",
     SB_TAGLINE = "选择职业，瞄准，让符文歌唱。",
     SB_CLASS = "职业",

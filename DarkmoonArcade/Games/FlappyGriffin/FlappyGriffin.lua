@@ -582,4 +582,8 @@ function Module:Debug(key, value)
 end
 
 FG.Module = Module
+function Module:StatLines()
+    return { { L.FG_STAT_PILLARS, ns.FormatNumber(Arcade.Settings(self).pillars or 0) } }
+end
+
 Arcade.RegisterGame(Module)

@@ -9,6 +9,17 @@ function ns.AddStrings(language, values)
 end
 
 ns.AddStrings("enUS", {
+    STATISTICS = "Statistics",
+    STATS_ARCADE = "Arcade",
+    STATS_TOTAL_TIME = "Total time played",
+    STATS_FLIGHT_TIME = "Played during flights",
+    STATS_RUNS = "Games played",
+    STATS_FLIGHTS = "Flights with the arcade",
+    STATS_FAVORITE = "Favorite game",
+    STATS_SINCE = "Playing since",
+    STATS_NONE = "Not played yet",
+    STATS_TIME = "Time played",
+    STATS_BEST = "Best score",
     FLIGHT_MEASURING = "measuring…",
     FLIGHT_LEFT = "%s left",
     OPT_TAB_GENERAL = "General",
@@ -90,6 +101,17 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    STATISTICS = "Statistiken",
+    STATS_ARCADE = "Spielhalle",
+    STATS_TOTAL_TIME = "Gesamte Spielzeit",
+    STATS_FLIGHT_TIME = "Gespielt während Flügen",
+    STATS_RUNS = "Gespielte Runden",
+    STATS_FLIGHTS = "Flüge mit der Spielhalle",
+    STATS_FAVORITE = "Lieblingsspiel",
+    STATS_SINCE = "Dabei seit",
+    STATS_NONE = "Noch nicht gespielt",
+    STATS_TIME = "Spielzeit",
+    STATS_BEST = "Bestwert",
     FLIGHT_MEASURING = "wird gemessen…",
     FLIGHT_LEFT = "noch %s",
     OPT_TAB_GENERAL = "Allgemein",
@@ -168,6 +190,17 @@ ns.AddStrings("deDE", {
 })
 
 ns.AddStrings("frFR", {
+    STATISTICS = "Statistiques",
+    STATS_ARCADE = "Salle d'arcade",
+    STATS_TOTAL_TIME = "Temps de jeu total",
+    STATS_FLIGHT_TIME = "Joué pendant les vols",
+    STATS_RUNS = "Parties jouées",
+    STATS_FLIGHTS = "Vols avec l'arcade",
+    STATS_FAVORITE = "Jeu préféré",
+    STATS_SINCE = "Joueur depuis",
+    STATS_NONE = "Pas encore joué",
+    STATS_TIME = "Temps de jeu",
+    STATS_BEST = "Meilleur score",
     FLIGHT_MEASURING = "mesure…",
     FLIGHT_LEFT = "encore %s",
     OPT_TAB_GENERAL = "Général",
@@ -247,6 +280,17 @@ ns.AddStrings("frFR", {
 })
 
 ns.AddStrings("esES", {
+    STATISTICS = "Estadísticas",
+    STATS_ARCADE = "Sala recreativa",
+    STATS_TOTAL_TIME = "Tiempo total de juego",
+    STATS_FLIGHT_TIME = "Jugado durante vuelos",
+    STATS_RUNS = "Partidas jugadas",
+    STATS_FLIGHTS = "Vuelos con la sala",
+    STATS_FAVORITE = "Juego favorito",
+    STATS_SINCE = "Jugando desde",
+    STATS_NONE = "Aún sin jugar",
+    STATS_TIME = "Tiempo de juego",
+    STATS_BEST = "Mejor puntuación",
     FLIGHT_MEASURING = "midiendo…",
     FLIGHT_LEFT = "quedan %s",
     OPT_TAB_GENERAL = "General",
@@ -326,6 +370,17 @@ ns.AddStrings("esES", {
 })
 
 ns.AddStrings("ruRU", {
+    STATISTICS = "Статистика",
+    STATS_ARCADE = "Аркада",
+    STATS_TOTAL_TIME = "Всего в игре",
+    STATS_FLIGHT_TIME = "Сыграно в полётах",
+    STATS_RUNS = "Сыграно партий",
+    STATS_FLIGHTS = "Полётов с аркадой",
+    STATS_FAVORITE = "Любимая игра",
+    STATS_SINCE = "Играет с",
+    STATS_NONE = "Ещё не сыграно",
+    STATS_TIME = "Время в игре",
+    STATS_BEST = "Лучший результат",
     FLIGHT_MEASURING = "измерение…",
     FLIGHT_LEFT = "осталось %s",
     OPT_TAB_GENERAL = "Общие",
@@ -406,6 +461,17 @@ ns.AddStrings("ruRU", {
 })
 
 ns.AddStrings("zhCN", {
+    STATISTICS = "统计",
+    STATS_ARCADE = "游乐厅",
+    STATS_TOTAL_TIME = "总游戏时间",
+    STATS_FLIGHT_TIME = "飞行途中游戏时间",
+    STATS_RUNS = "已玩局数",
+    STATS_FLIGHTS = "开着游乐厅的飞行",
+    STATS_FAVORITE = "最爱的游戏",
+    STATS_SINCE = "开始游玩于",
+    STATS_NONE = "尚未游玩",
+    STATS_TIME = "游戏时间",
+    STATS_BEST = "最高分",
     FLIGHT_MEASURING = "测量中…",
     FLIGHT_LEFT = "剩余 %s",
     OPT_TAB_GENERAL = "常规",

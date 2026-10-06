@@ -34,6 +34,7 @@ local function TemplateExists(name)
     return C_XMLUtil and C_XMLUtil.GetTemplateInfo and C_XMLUtil.GetTemplateInfo(name) ~= nil
 end
 local SIDEBAR_SCORES = 5
+local SIDEBAR_INTERVAL = 0.25
 local RIM_COLOR = { 0.86, 0.66, 0.3, 0.9 }
 
 -- Games are listed by `rank`, the most popular first.
@@ -152,6 +153,7 @@ function Window:Create()
     self:CreateFooter()
     self:CreateHub()
     ns.OptionsView:Create(content)
+    ns.StatsView:Create(content)
 
     self:ApplyScale()
     self:RestorePosition()
@@ -293,7 +295,14 @@ function Window:CreateSidebar()
     self.side = s
 end
 
-function Window:UpdateSidebar()
+-- Rebuilding the score lists is costly; games ask often, so refreshes run at most every SIDEBAR_INTERVAL.
+function Window:UpdateSidebar(now)
+    if not now then
+        self.sidebarDirty = true
+        return
+    end
+    self.sidebarDirty = false
+    self.sidebarTimer = SIDEBAR_INTERVAL
     local game = self.activeGame
     if not game or not self.side then return end
     local s, info = self.side, game:Sidebar()
@@ -329,6 +338,9 @@ function Window:CreateFooter()
     local options = Widgets.Button(chrome, 124, 26, "OPTIONS", function() self:OpenOptions() end)
     options:SetPoint("BOTTOMRIGHT", -INSET_SIDE, 12)
     self.optionsButton = options
+    local stats = Widgets.Button(chrome, 124, 26, "STATISTICS", function() self:OpenStats() end)
+    stats:SetPoint("RIGHT", options, "LEFT", -8, 0)
+    self.statsButton = stats
     local achievements = Widgets.Button(chrome, 124, 26, "ACHIEVEMENTS", function()
         if self.activeGame then self.activeGame:ShowAchievements() end
     end)
@@ -521,12 +533,14 @@ end
 function Window:OpenHub()
     self:LeaveGame()
     ns.OptionsView:Hide()
+    ns.StatsView:Hide()
     self.hub:Show()
     self.sidebar:Hide()
     self.gamesButton:Hide()
     self.achievementsButton:Hide()
     self.helpButton:Hide()
     self.optionsButton:Show()
+    self.statsButton:Show()
     self.versionText:Show()
     self:RefreshHub()
 end
@@ -547,6 +561,7 @@ function Window:OpenGame(id)
     end
     self.hub:Hide()
     ns.OptionsView:Hide()
+    ns.StatsView:Hide()
     self.sidebar:Show()
     game.container:Show()
     self.activeGame = game
@@ -554,9 +569,10 @@ function Window:OpenGame(id)
     self.achievementsButton:Show()
     self.helpButton:Show()
     self.optionsButton:Hide()
+    self.statsButton:Hide()
     self.versionText:Hide()
     game:Enter()
-    self:UpdateSidebar()
+    self:UpdateSidebar(true)
 end
 
 function Window:OpenOptions()
@@ -564,11 +580,28 @@ function Window:OpenOptions()
     self:LeaveGame()
     self.hub:Hide()
     self.sidebar:Hide()
+    ns.StatsView:Hide()
     ns.OptionsView:Show()
     self.gamesButton:Show()
     self.achievementsButton:Hide()
     self.helpButton:Hide()
     self.optionsButton:Hide()
+    self.statsButton:Hide()
+    self.versionText:Hide()
+end
+
+function Window:OpenStats()
+    self.frame:Show()
+    self:LeaveGame()
+    self.hub:Hide()
+    self.sidebar:Hide()
+    ns.OptionsView:Hide()
+    ns.StatsView:Show()
+    self.gamesButton:Show()
+    self.achievementsButton:Hide()
+    self.helpButton:Hide()
+    self.optionsButton:Hide()
+    self.statsButton:Hide()
     self.versionText:Hide()
 end
 
@@ -652,7 +685,21 @@ function Window:UpdateFlightInfo()
 end
 
 function Window:OnUpdate(dt)
-    if self.activeGame then self.activeGame:OnUpdate(dt) end
+    local game = self.activeGame
+    if game then
+        game:OnUpdate(dt)
+        -- Only time with the game in front counts, not menus or pause screens.
+        if not (game.overlay and game.overlay.current) then ns.Stats.AddTime(game.id, dt, Flight.current ~= nil) end
+    end
+    local flight = Flight.current
+    if flight and not flight.counted then
+        flight.counted = true
+        ns.Stats.AddFlight()
+    end
+    if self.sidebarDirty then
+        self.sidebarTimer = (self.sidebarTimer or 0) - dt
+        if self.sidebarTimer <= 0 then self:UpdateSidebar(true) end
+    end
     self.infoTimer = (self.infoTimer or 0) - dt
     if self.infoTimer <= 0 then
         self.infoTimer = 0.25

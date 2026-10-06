@@ -20,6 +20,7 @@ end
 -- Inserts `entry` ({ score, ... }) and returns its rank, or nil if it did not make the list.
 function Scores.Record(gameId, bucket, entry)
     if not entry.score or entry.score <= 0 then return nil end
+    if ns.Stats then ns.Stats.AddRun(gameId) end
     entry.time = entry.time or time()
     local list = Scores.List(gameId, bucket)
     local rank

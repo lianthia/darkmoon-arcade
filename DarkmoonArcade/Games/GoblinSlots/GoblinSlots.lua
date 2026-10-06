@@ -494,6 +494,7 @@ end
 
 function Module:CheckSpinAchievements(result)
     local e = result.events
+    ns.Stats.Bump(self.id, "spins")
     if result.total >= 50 then Achievements.Unlock("gs_spin50") end
     if result.total >= 200 then Achievements.Unlock("gs_spin200") end
     if (e.murlocs or 0) >= 6 then Achievements.Unlock("gs_murlocs") end
@@ -513,6 +514,7 @@ function Module:Pick(id)
     self.total:Hide()
     if outcome == "paid" then
         Sound("goblin/register")
+        ns.Stats.Bump(self.id, "rents")
         Achievements.Unlock("gs_rent1")
         if game.rentsPaid >= 5 then Achievements.Unlock("gs_rent5") end
         if game.rentsPaid >= 10 then Achievements.Unlock("gs_rent10") end
@@ -600,6 +602,13 @@ function Module:DecorateTile(tile, art)
         icon:SetSize(36, 36)
         icon:SetPoint("CENTER", art, "TOPLEFT", 94 + (i - 1) * 54, -75)
     end
+end
+
+function Module:StatLines()
+    return {
+        { L.GS_STAT_SPINS, ns.FormatNumber(ns.Stats.Get(self.id, "spins")) },
+        { L.GS_STAT_RENTS, ns.FormatNumber(ns.Stats.Get(self.id, "rents")) },
+    }
 end
 
 GS.Module = Module

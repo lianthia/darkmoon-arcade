@@ -822,5 +822,9 @@ function Module:Options()
     }
 end
 
+function Module:StatLines()
+    return { { L.JU_STAT_GEMS, ns.FormatNumber(Settings().gems or 0) } }
+end
+
 JU.Module = Module
 Arcade.RegisterGame(Module)

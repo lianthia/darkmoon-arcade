@@ -1,6 +1,7 @@
 local _, ns = ...
 
 ns.AddStrings("enUS", {
+    JU_STAT_GEMS = "Gems cleared",
     JU_NAME = "Jewels of Uldum",
     JU_DESC = "Swap the treasures of the Titans: three in a row shine, more forge flame gems and prisms.",
     JU_TAGLINE = "The vaults of the Titans await.",
@@ -49,6 +50,7 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    JU_STAT_GEMS = "Abgeräumte Steine",
     JU_DESC = "Tausche die Schätze der Titanen: drei in einer Reihe glänzen, mehr schmieden Flammensteine und Prismen.",
     JU_TAGLINE = "Die Gewölbe der Titanen warten.",
     JU_CLASSIC = "Klassisch",
@@ -96,6 +98,7 @@ ns.AddStrings("deDE", {
 })
 
 ns.AddStrings("frFR", {
+    JU_STAT_GEMS = "Gemmes effacées",
     JU_DESC = "Échangez les trésors des Titans : trois d'affilée brillent, plus forgent gemmes de flamme et prismes.",
     JU_TAGLINE = "Les chambres fortes des Titans vous attendent.",
     JU_CLASSIC = "Classique",
@@ -143,6 +146,7 @@ ns.AddStrings("frFR", {
 })
 
 ns.AddStrings("esES", {
+    JU_STAT_GEMS = "Gemas eliminadas",
     JU_DESC = "Intercambia los tesoros de los titanes: tres en línea brillan, más forjan gemas de llamas y prismas.",
     JU_TAGLINE = "Las cámaras de los titanes te esperan.",
     JU_CLASSIC = "Clásico",
@@ -190,6 +194,7 @@ ns.AddStrings("esES", {
 })
 
 ns.AddStrings("ruRU", {
+    JU_STAT_GEMS = "Убрано камней",
     JU_DESC = "Меняйте местами сокровища титанов: три в ряд сияют, больше – куют огненные камни и призмы.",
     JU_TAGLINE = "Хранилища титанов ждут.",
     JU_CLASSIC = "Классика",
@@ -237,6 +242,7 @@ ns.AddStrings("ruRU", {
 })
 
 ns.AddStrings("zhCN", {
+    JU_STAT_GEMS = "已消除宝石",
     JU_DESC = "交换泰坦的宝石：三颗连成一线即可消除，更多则能锻造烈焰宝石和棱镜。",
     JU_TAGLINE = "泰坦的宝库正等着你。",
     JU_CLASSIC = "经典",

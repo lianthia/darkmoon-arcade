@@ -412,4 +412,8 @@ function Module:Options()
     }
 end
 
+function Module:StatLines()
+    return { { L.MB_STAT_POPPED, ns.FormatNumber(MB.Settings().popped or 0) } }
+end
+
 Arcade.RegisterGame(Module)

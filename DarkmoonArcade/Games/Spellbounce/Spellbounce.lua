@@ -36,7 +36,6 @@ local CLASS_INFO = {
 }
 -- Hits lit by a power arrive in bursts; only this many play a sound per frame.
 local MAX_HIT_SOUNDS = 2
-local SIDEBAR_INTERVAL = 0.3
 
 local Module = {
     id = "spellbounce",
@@ -719,6 +718,8 @@ function Module:OnClear(data)
     local before = settings.reached
     settings.reached = math.max(settings.reached, data.level + 1)
     settings.classesCleared[game.class] = true
+    ns.Stats.Bump(self.id, "maps")
+    ns.Stats.Bump(self.id, "class_" .. game.class)
     local unlocked
     for _, class in ipairs(Game.CLASSES) do
         if not Game.IsUnlocked(class, before) and Game.IsUnlocked(class, settings.reached) then unlocked = class end
@@ -818,7 +819,6 @@ function Module:ScoreDetail(entry)
     return text
 end
 
--- Field counters update at once; the sidebar with its score lists at most every SIDEBAR_INTERVAL.
 function Module:UpdateHud()
     local game = self.game
     local playing = game.state ~= "READY"
@@ -829,16 +829,7 @@ function Module:UpdateHud()
     local info = CLASS_INFO[game.class]
     self.classIcon:SetTexture(info.icon)
     self.orbIcon:SetVertexColor(info.color[1], info.color[2], info.color[3])
-    self.sidebarDirty = true
-end
-
-function Module:FlushSidebar(dt)
-    self.sidebarTimer = (self.sidebarTimer or 0) - dt
-    if self.sidebarDirty and self.sidebarTimer <= 0 then
-        self.sidebarDirty = false
-        self.sidebarTimer = SIDEBAR_INTERVAL
-        ns.Window:UpdateSidebar()
-    end
+    ns.Window:UpdateSidebar()
 end
 
 function Module:ShowAchievements()
@@ -851,7 +842,6 @@ end
 
 function Module:Enter()
     self:UpdateHud()
-    ns.Window:UpdateSidebar()
     self.overlay:Refresh()
 end
 
@@ -997,7 +987,6 @@ function Module:OnUpdate(dt)
     self.hitSounds = 0
     self:UpdateAim(dt)
     game:Update(dt * scale)
-    self:FlushSidebar(dt)
     self:DrawBalls()
     for i = #self.effects, 1, -1 do
         local e = self.effects[i]
@@ -1028,6 +1017,19 @@ end
 function Module:Options()
     return {
         { kind = "check", tbl = Settings(), key = "guide", label = "SB_OPT_GUIDE", tip = "SB_OPT_GUIDE_TIP", default = true },
+    }
+end
+
+function Module:StatLines()
+    local favorite, most = nil, 0
+    for _, class in ipairs(Game.CLASSES) do
+        local maps = ns.Stats.Get(self.id, "class_" .. class)
+        if maps > most then favorite, most = class, maps end
+    end
+    return {
+        { L.SB_STAT_RUNES, ns.FormatNumber(Settings().pegs or 0) },
+        { L.SB_STAT_MAPS, ns.FormatNumber(ns.Stats.Get(self.id, "maps")) },
+        { L.SB_STAT_CLASS, favorite and ClassName(favorite) or "–" },
     }
 end
 

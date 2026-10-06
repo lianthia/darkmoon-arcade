@@ -103,6 +103,7 @@ SlashCmdList.DARKMOONARCADE = function(input)
         ns.Minimap:Update()
     elseif cmd == "reset" then
         ns.Scores.Reset()
+        ns.Stats.Reset()
         for _, settings in pairs(ns.db.games) do
             if type(settings.progress) == "table" then wipe(settings.progress) end
         end

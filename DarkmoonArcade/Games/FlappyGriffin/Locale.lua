@@ -1,6 +1,7 @@
 local _, ns = ...
 
 ns.AddStrings("enUS", {
+    FG_STAT_PILLARS = "Pillars passed",
     FG_RULES = "Keep your gryphon in the air and fly through the gaps between the rock pillars. Every pillar is worth one point.\n\nDarkmoon tickets in the gaps are worth 2 extra points. The more points you have, the faster you fly and the narrower the gaps get.\n\nMedals: bronze at 10, silver at 25, gold at 50 and Darkmoon at 100 points.",
     FG_ACH_SCORE150 = "Immortal Gryphon",
     FG_ACH_TICKETS15 = "Prize Hoarder",
@@ -46,6 +47,7 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    FG_STAT_PILLARS = "Passierte Säulen",
     FG_RULES = "Halte deinen Greifen in der Luft und fliege durch die Lücken zwischen den Felssäulen. Jede Säule bringt einen Punkt.\n\nDunkelmond-Tickets in den Lücken bringen 2 Extrapunkte. Je mehr Punkte du hast, desto schneller fliegst du und desto enger werden die Lücken.\n\nMedaillen: Bronze ab 10, Silber ab 25, Gold ab 50 und Dunkelmond ab 100 Punkten.",
     FG_ACH_SCORE150 = "Unsterblicher Greif",
     FG_ACH_TICKETS15 = "Preishamster",
@@ -88,6 +90,7 @@ ns.AddStrings("deDE", {
 })
 
 ns.AddStrings("frFR", {
+    FG_STAT_PILLARS = "Piliers franchis",
     FG_RULES = "Gardez votre griffon en l'air et passez entre les piliers de roche. Chaque pilier vaut un point.\n\nLes tickets de Sombrelune valent 2 points de plus. Plus vous marquez, plus vous volez vite et plus les passages se resserrent.\n\nMédailles : bronze à 10, argent à 25, or à 50 et Sombrelune à 100 points.",
     FG_ACH_SCORE150 = "Griffon immortel",
     FG_ACH_TICKETS15 = "Collectionneur compulsif",
@@ -133,6 +136,7 @@ ns.AddStrings("frFR", {
 })
 
 ns.AddStrings("esES", {
+    FG_STAT_PILLARS = "Pilares superados",
     FG_RULES = "Mantén tu grifo en el aire y vuela por los huecos entre los pilares de roca. Cada pilar da un punto.\n\nLos boletos de la Luna Negra dan 2 puntos extra. Cuantos más puntos tengas, más rápido vuelas y más estrechos son los huecos.\n\nMedallas: bronce con 10, plata con 25, oro con 50 y Luna Negra con 100 puntos.",
     FG_ACH_SCORE150 = "Grifo inmortal",
     FG_ACH_TICKETS15 = "Acaparador de premios",
@@ -178,6 +182,7 @@ ns.AddStrings("esES", {
 })
 
 ns.AddStrings("ruRU", {
+    FG_STAT_PILLARS = "Пройдено колонн",
     FG_RULES = "Держите грифона в воздухе и пролетайте между скальными колоннами. Каждая колонна – одно очко.\n\nБилеты Ярмарки дают 2 дополнительных очка. Чем больше очков, тем быстрее полёт и тем уже проходы.\n\nМедали: бронза за 10, серебро за 25, золото за 50 и Новолуние за 100 очков.",
     FG_ACH_SCORE150 = "Бессмертный грифон",
     FG_ACH_TICKETS15 = "Скопидом",
@@ -223,6 +228,7 @@ ns.AddStrings("ruRU", {
 })
 
 ns.AddStrings("zhCN", {
+    FG_STAT_PILLARS = "穿过的柱子",
     FG_RULES = "让狮鹫保持飞行，穿过岩柱之间的空隙。每根石柱得1分。\n\n空隙中的暗月奖券额外得2分。分数越高，飞得越快，空隙也越窄。\n\n奖牌：10分铜牌，25分银牌，50分金牌，100分暗月奖牌。",
     FG_ACH_SCORE150 = "不朽狮鹫",
     FG_ACH_TICKETS15 = "奖品囤积者",

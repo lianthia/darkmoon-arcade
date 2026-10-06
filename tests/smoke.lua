@@ -425,6 +425,16 @@ DarkmoonArcadeDB.language = "auto"
 Window:ApplyLanguage()
 Window:OpenHub()
 
+-- Statistics: play time, runs and flights were counted; every game has a block.
+Window:OpenStats()
+assert(ns.StatsView.view._shown, "statistics shown")
+assert(ns.Stats.TotalTime() > 0 and ns.Stats.TotalRuns() > 0, "play time and runs counted")
+assert(DarkmoonArcadeDB.stats.flights >= 1, "flight with the arcade counted")
+for _, id in ipairs(Arcade.order) do
+    if Arcade.games[id].StatLines then assert(#Arcade.games[id]:StatLines() > 0, id .. " stat lines") end
+end
+Window:OpenHub()
+
 -- Settings callbacks and dropdown contents.
 for variable, entry in pairs(dropdownOptions) do
     local data = entry.options()

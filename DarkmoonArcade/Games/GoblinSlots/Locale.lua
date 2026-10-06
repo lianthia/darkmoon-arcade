@@ -128,6 +128,8 @@ for language, symbols in pairs(SYMBOLS) do
 end
 
 ns.AddStrings("enUS", {
+    GS_STAT_SPINS = "Spins",
+    GS_STAT_RENTS = "Rents paid",
     GS_NAME = "Goblin Slot Machine",
     GS_DESC = "Collect symbols that pay off together and keep the goblin banker's rent coming.",
     GS_TAGLINE = "Time is money, friend!",
@@ -188,6 +190,8 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    GS_STAT_SPINS = "Drehungen",
+    GS_STAT_RENTS = "Bezahlte Mieten",
     GS_DESC = "Sammle Symbole, die sich gegenseitig verstärken, und zahl dem Goblin-Bankier seine Miete.",
     GS_TAGLINE = "Zeit ist Geld, Freund!",
     GS_SPIN = "Drehen!",
@@ -247,6 +251,8 @@ ns.AddStrings("deDE", {
 })
 
 ns.AddStrings("frFR", {
+    GS_STAT_SPINS = "Tours de rouleaux",
+    GS_STAT_RENTS = "Loyers payés",
     GS_DESC = "Collectionnez des symboles qui se renforcent et payez le loyer du banquier gobelin.",
     GS_TAGLINE = "Le temps, c'est de l'argent, l'ami !",
     GS_SPIN = "Tourner !",
@@ -306,6 +312,8 @@ ns.AddStrings("frFR", {
 })
 
 ns.AddStrings("esES", {
+    GS_STAT_SPINS = "Tiradas",
+    GS_STAT_RENTS = "Alquileres pagados",
     GS_DESC = "Reúne símbolos que se potencian entre sí y págale el alquiler al banquero goblin.",
     GS_TAGLINE = "¡El tiempo es oro, amigo!",
     GS_SPIN = "¡Girar!",
@@ -365,6 +373,8 @@ ns.AddStrings("esES", {
 })
 
 ns.AddStrings("ruRU", {
+    GS_STAT_SPINS = "Вращений",
+    GS_STAT_RENTS = "Оплачено аренд",
     GS_DESC = "Собирайте символы, усиливающие друг друга, и платите ренту гоблину-банкиру.",
     GS_TAGLINE = "Время – деньги, дружище!",
     GS_SPIN = "Крутить!",
@@ -424,6 +434,8 @@ ns.AddStrings("ruRU", {
 })
 
 ns.AddStrings("zhCN", {
+    GS_STAT_SPINS = "转动次数",
+    GS_STAT_RENTS = "已付租金",
     GS_DESC = "收集能相互增益的符号，按时付给地精银行家租金。",
     GS_TAGLINE = "时间就是金钱，朋友！",
     GS_SPIN = "转动！",
