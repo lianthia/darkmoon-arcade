@@ -155,23 +155,27 @@ local function DrawSegment(seg, x, top, bottom, capAtBottom)
     local h = bottom - top
     if h <= 0 then
         seg.body:Hide(); seg.shade:Hide(); seg.cap:Hide()
+        seg.h = nil
         return
     end
-    for _, tex in ipairs({ seg.body, seg.shade }) do
-        tex:ClearAllPoints()
-        tex:SetPoint("TOPLEFT", tex:GetParent(), "TOPLEFT", x - w / 2, -top)
-        tex:SetSize(w, h)
-        tex:Show()
+    -- Size and texture only change with a new gap; while the pillar slides, only its position does.
+    if seg.h ~= h or seg.capAtBottom ~= capAtBottom then
+        seg.h, seg.capAtBottom = h, capAtBottom
+        seg.body:SetSize(w, h)
+        seg.shade:SetSize(w, h)
+        -- Anchor the rock pattern to the gap edge so it does not crawl while the pillar moves.
+        local v1 = capAtBottom and -h / 128 or 0
+        seg.body:SetTexCoord(0, w / 128, v1, v1 + h / 128)
+        seg.cap:SetSize(w + 14, 24)
+        if capAtBottom then seg.cap:SetTexCoord(0, 1, 1, 0) else seg.cap:SetTexCoord(0, 1, 0, 1) end
     end
-    -- Anchor the rock pattern to the gap edge so it does not crawl while the pillar moves.
-    local v1 = capAtBottom and -h / 128 or 0
-    seg.body:SetTexCoord(0, w / 128, v1, v1 + h / 128)
-    seg.cap:ClearAllPoints()
-    seg.cap:SetSize(w + 14, 24)
+    seg.body:Show()
+    seg.shade:Show()
+    seg.cap:Show()
+    seg.body:SetPoint("TOPLEFT", seg.body:GetParent(), "TOPLEFT", x - w / 2, -top)
+    seg.shade:SetPoint("TOPLEFT", seg.shade:GetParent(), "TOPLEFT", x - w / 2, -top)
     local capY = capAtBottom and (bottom - 10) or (top + 10)
     seg.cap:SetPoint("CENTER", seg.cap:GetParent(), "TOPLEFT", x, -capY)
-    if capAtBottom then seg.cap:SetTexCoord(0, 1, 1, 0) else seg.cap:SetTexCoord(0, 1, 0, 1) end
-    seg.cap:Show()
 end
 
 function Module:DrawPillar(pillar)
@@ -547,10 +551,17 @@ function Module:OnUpdate(dt)
         self.shakeTime = self.shakeTime - dt
         ox, oy = (math.random() - 0.5) * 8, (math.random() - 0.5) * 8
     end
-    self.world:ClearAllPoints()
-    self.world:SetPoint("TOPLEFT", self.container, "TOPLEFT", ox, oy)
+    if ox ~= 0 or oy ~= 0 or self.worldShaken then
+        self.world:ClearAllPoints()
+        self.world:SetPoint("TOPLEFT", self.container, "TOPLEFT", ox, oy)
+        self.worldShaken = ox ~= 0 or oy ~= 0
+    end
 
-    self.bigScore:SetText((game.state == "PLAYING" or game.state == "DYING") and game.score or "")
+    local scoreText = (game.state == "PLAYING" or game.state == "DYING") and game.score or ""
+    if scoreText ~= self.shownScore then
+        self.shownScore = scoreText
+        self.bigScore:SetText(scoreText)
+    end
     self.hint:SetShown(game.state == "READY" and not self.overlay.current)
 
     for i = #self.effects, 1, -1 do

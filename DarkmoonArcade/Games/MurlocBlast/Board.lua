@@ -587,8 +587,12 @@ function Board:Update(dt)
     if game.state == "PLAYING" and game.shotsUntilDrop and game.shotsUntilDrop <= 1 then
         wobble = math.sin(GetTime() * 40) * 1.2
     end
-    self.boardLayer:ClearAllPoints()
-    self.boardLayer:SetPoint("TOPLEFT", self.field, "TOPLEFT", ox + wobble, -(self.displayCeil) + oy)
+    local x, y = ox + wobble, -(self.displayCeil) + oy
+    if x ~= self.layerX or y ~= self.layerY then
+        self.layerX, self.layerY = x, y
+        self.boardLayer:ClearAllPoints()
+        self.boardLayer:SetPoint("TOPLEFT", self.field, "TOPLEFT", x, y)
+    end
 
     if game.shot and self.shotBall then
         ShowBall(self.shotBall, game.shot.color, game.shot.x, game.shot.y + self.displayCeil - game:CeilingY(), D)

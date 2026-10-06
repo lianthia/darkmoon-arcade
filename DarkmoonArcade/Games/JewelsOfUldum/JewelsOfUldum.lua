@@ -106,9 +106,12 @@ function Module:SetGem(v, gem)
     v.glow:SetVertexColor(tint[1], tint[2], tint[3])
     v.glow:SetShown(gem.special ~= nil)
     v.icon:Show()
+    v.dirty = true
 end
 
 function Module:DrawVisual(v)
+    if not v.dirty and not (v.gem and v.gem.special) then return end
+    v.dirty = false
     local scale = v.scale or 1
     v.icon:SetSize(GEM_SIZE * scale, GEM_SIZE * scale)
     v.icon:SetAlpha(v.alpha or 1)
@@ -173,6 +176,7 @@ function Module:UpdateTweens(dt)
             local p = math.min(1, tw.t / tw.duration)
             local e = tw.ease == "in" and p * p or (tw.ease == "out" and 1 - (1 - p) ^ 2 or p)
             local v = tw.v
+            v.dirty = true
             v.x = tw.x0 + (tw.x1 - tw.x0) * e
             v.y = tw.y0 + (tw.y1 - tw.y0) * e
             if tw.scale1 then v.scale = tw.scale0 + (tw.scale1 - tw.scale0) * p end
