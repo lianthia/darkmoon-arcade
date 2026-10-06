@@ -102,6 +102,20 @@ test("tickets add points", function()
     eq(game.score, Game.TICKET_POINTS)
 end)
 
+test("missed tickets report the score", function()
+    local game = Game.New(Rng(8))
+    local missed
+    game.onEvent = function(name, data) if name == "ticketMissed" then missed = data end end
+    game:Flap()
+    Run(game, 40, function(g)
+        Autopilot(g)
+        for _, pillar in ipairs(g.pillars) do
+            if pillar.ticket then pillar.ticket.y = -1000 end
+        end
+    end)
+    assert(missed and missed.score, "ticketMissed carries the score")
+end)
+
 test("medals by score", function()
     eq(Game.Medal(5), nil)
     eq(Game.Medal(10), "bronze")
