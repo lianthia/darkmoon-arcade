@@ -444,6 +444,24 @@ ns.Widgets.Share("SAY", "test")
 assert(chat[#chat - 1] == "WHISPER: [Darkmoon Arcade] test > Target-Realm", "whisper: " .. tostring(chat[#chat - 1]))
 assert(chat[#chat] == "SAY: [Darkmoon Arcade] test", "prefix")
 
+-- Jewels of Uldum: a special combo and a few Zen moves.
+SlashCmdList.DARKMOONARCADE("jewelsofuldum")
+local ju = Window.activeGame
+ns.Arcade.Settings(ju).mode = "zen"
+ju:NewGame()
+ju.game.board[4][4] = { color = 1, special = "star" }
+ju.game.board[4][5] = { color = 2, special = "power" }
+ju:RebuildBoard()
+ju:TrySwap(4, 4, 4, 5)
+Tick(4)
+for _ = 1, 5 do
+    local move = ju.game:FindMove()
+    ju:TrySwap(move[1], move[2], move[3], move[4])
+    Tick(3)
+end
+assert(ju.game.state == "PLAYING", "zen keeps going")
+ns.Arcade.Settings(ju).mode = "classic"
+
 -- Flappy Griffin as the Horde: desert scenery and the wind rider.
 SlashCmdList.DARKMOONARCADE("flappygriffin")
 ns.Arcade.Settings(Window.activeGame).faction = "horde"

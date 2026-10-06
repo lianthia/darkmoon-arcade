@@ -167,4 +167,70 @@ test("bot plays 40 games without errors", function()
     end
 end)
 
+test("crossing runs forge a star gem that clears row and column", function()
+    local game = Game.New(Rng(21))
+    game:Start("classic")
+    -- A pattern without runs, then ones that form an L once (4,1) moves right.
+    for r = 1, Game.SIZE do
+        for c = 1, Game.SIZE do game.board[r][c] = { color = (r * 3 + c) % 6 + 2 } end
+    end
+    for _, cell in ipairs({ { 2, 2 }, { 3, 2 }, { 4, 3 }, { 4, 4 }, { 4, 1 } }) do game.board[cell[1]][cell[2]] = { color = 1 } end
+    -- Moving the 1 at (4,1) right completes a row and a column of ones crossing at (4,2).
+    local steps = game:Swap(4, 1, 4, 2)
+    local star = false
+    for _, step in ipairs(steps) do
+        if step.type == "clear" then
+            for _, spec in ipairs(step.created) do if spec.special == "star" then star = true end end
+        end
+    end
+    assert(star, "star gem created")
+end)
+
+test("a star gem clears its row and column", function()
+    local game = Game.New(Rng(22))
+    game:Start("classic")
+    game.board[4][4] = { color = 1, special = "star" }
+    local clear, explosions = {}, {}
+    clear[4 * 16 + 4] = { r = 4, c = 4, gem = game.board[4][4] }
+    game:Explode(clear, explosions)
+    local count = 0
+    for _ in pairs(clear) do count = count + 1 end
+    eq(count, Game.SIZE * 2 - 1, "row and column")
+end)
+
+test("two special gems swapped together combine", function()
+    local game = Game.New(Rng(23))
+    game:Start("classic")
+    game.board[4][4] = { color = 1, special = "power" }
+    game.board[4][5] = { color = 2, special = "power" }
+    local steps = game:Swap(4, 4, 4, 5)
+    assert(steps.combo, "combo swap")
+    local clear = steps[2]
+    eq(clear.kind, "combo")
+    assert(#clear.cells >= 25, "5x5 blast: " .. #clear.cells)
+end)
+
+test("time gems add seconds in blitz", function()
+    local game = Game.New(Rng(24))
+    game:Start("blitz")
+    game.timeLeft = 10
+    local clear = { [1 * 16 + 1] = { r = 1, c = 1, gem = { color = 1, time = Game.TIME_GEM_SECONDS } } }
+    game:ApplyClear(clear, {}, 1, 50, 0, {}, "match")
+    eq(game.timeLeft, 10 + Game.TIME_GEM_SECONDS)
+    eq(game.timeGained, Game.TIME_GEM_SECONDS)
+end)
+
+test("zen never ends", function()
+    local game = Game.New(Rng(25))
+    game:Start("zen")
+    game:Update(500)
+    eq(game.state, "PLAYING")
+    for _ = 1, 60 do
+        local move = game:FindMove()
+        assert(move, "always a move in zen")
+        game:Swap(move[1], move[2], move[3], move[4])
+    end
+    eq(game.state, "PLAYING")
+end)
+
 return passed, failed

@@ -14,7 +14,9 @@ Game.SIZE = 8
 Game.COLORS = 7
 Game.PRISM = 0
 Game.BLITZ_TIME = 90
-Game.MODES = { "classic", "blitz" }
+Game.MODES = { "classic", "blitz", "zen" }
+-- In Blitz some new gems carry extra seconds.
+Game.TIME_GEM_CHANCE, Game.TIME_GEM_SECONDS = 4, 5
 
 local RUN_POINTS = { [3] = 50, [4] = 100 }
 local LONG_RUN_POINTS = 250
@@ -46,8 +48,10 @@ function Game:At(r, c)
     return row and row[c]
 end
 
-function Game:RandomGem()
-    return { color = self.random(Game.COLORS) }
+function Game:RandomGem(plain)
+    local gem = { color = self.random(Game.COLORS) }
+    if not plain and self.mode == "blitz" and self.random(100) <= Game.TIME_GEM_CHANCE then gem.time = Game.TIME_GEM_SECONDS end
+    return gem
 end
 
 local function SameColor(a, b)
@@ -95,7 +99,7 @@ function Game:Fill()
             for c = 1, Game.SIZE do
                 local gem
                 repeat
-                    gem = self:RandomGem()
+                    gem = self:RandomGem(true)
                     local left = c > 2 and SameColor(gem, self.board[r][c - 1]) and SameColor(gem, self.board[r][c - 2])
                     local up = r > 2 and SameColor(gem, self.board[r - 1][c]) and SameColor(gem, self.board[r - 2][c])
                 until not left and not up
@@ -111,6 +115,7 @@ function Game:Start(mode)
     self.level = 1
     self.levelPoints = 0
     self.timeLeft = Game.BLITZ_TIME
+    self.timeGained = 0
     self.state = "PLAYING"
     self:Fill()
     self:Emit("start", { mode = self.mode })
@@ -134,6 +139,7 @@ function Game:FindMove()
                 if r2 <= n and c2 <= n then
                     local a, b = self.board[r][c], self.board[r2][c2]
                     if a.color == Game.PRISM or b.color == Game.PRISM then return { r, c, r2, c2 } end
+                    if a.special and b.special then return { r, c, r2, c2 } end
                     SwapCells(self.board, r, c, r2, c2)
                     local found = #self:FindRuns() > 0
                     SwapCells(self.board, r, c, r2, c2)
@@ -148,26 +154,37 @@ function Game:Multiplier(cascade)
     return cascade * (self.mode == "classic" and self.level or 1)
 end
 
--- Adds every gem caught by exploding power gems to `clear` (chains through other power gems).
+local DETONATES = { power = true, star = true }
+
+-- Adds every gem caught by detonating special gems to `clear`: flame gems blast their 3x3
+-- surroundings, star gems their whole row and column. Detonations chain.
 function Game:Explode(clear, explosions)
     local queue = {}
-    for key, cell in pairs(clear) do
-        if cell.gem.special == "power" then queue[#queue + 1] = cell end
+    for _, cell in pairs(clear) do
+        if DETONATES[cell.gem.special] and not cell.keep then queue[#queue + 1] = cell end
     end
     local extra = 0
+    local function Take(r, c)
+        local gem = self:At(r, c)
+        if gem and not clear[Key(r, c)] then
+            local entry = { r = r, c = c, gem = gem }
+            clear[Key(r, c)] = entry
+            extra = extra + 1
+            if DETONATES[gem.special] then queue[#queue + 1] = entry end
+        end
+    end
     while #queue > 0 do
         local cell = table.remove(queue)
-        explosions[#explosions + 1] = { cell.r, cell.c }
-        for dr = -1, 1 do
-            for dc = -1, 1 do
-                local r, c = cell.r + dr, cell.c + dc
-                local gem = self:At(r, c)
-                if gem and not clear[Key(r, c)] then
-                    local entry = { r = r, c = c, gem = gem }
-                    clear[Key(r, c)] = entry
-                    extra = extra + 1
-                    if gem.special == "power" then queue[#queue + 1] = entry end
-                end
+        local kind = cell.gem.special
+        explosions[#explosions + 1] = { cell.r, cell.c, kind = kind }
+        if kind == "star" then
+            for i = 1, Game.SIZE do
+                Take(cell.r, i)
+                Take(i, cell.c)
+            end
+        else
+            for dr = -1, 1 do
+                for dc = -1, 1 do Take(cell.r + dr, cell.c + dc) end
             end
         end
     end
@@ -175,10 +192,15 @@ function Game:Explode(clear, explosions)
 end
 
 function Game:ApplyClear(clear, created, cascade, basePoints, extra, explosions, kind)
-    local cells = {}
+    local cells, time = {}, 0
     for _, cell in pairs(clear) do
-        cells[#cells + 1] = { r = cell.r, c = cell.c, color = cell.gem.color, special = cell.gem.special }
+        cells[#cells + 1] = { r = cell.r, c = cell.c, color = cell.gem.color, special = cell.gem.special, time = cell.gem.time }
+        time = time + (cell.gem.time or 0)
         self.board[cell.r][cell.c] = nil
+    end
+    if time > 0 and self.mode == "blitz" then
+        self.timeLeft = self.timeLeft + time
+        self.timeGained = self.timeGained + time
     end
     table.sort(cells, function(a, b) return a.r * 16 + a.c < b.r * 16 + b.c end)
     for _, spec in ipairs(created) do
@@ -187,7 +209,7 @@ function Game:ApplyClear(clear, created, cascade, basePoints, extra, explosions,
     local points = (basePoints + extra * EXTRA_GEM_POINTS) * self:Multiplier(cascade)
     self:AddPoints(points)
     return { type = "clear", kind = kind, cells = cells, created = created, cascade = cascade,
-        points = points, explosions = explosions }
+        points = points, explosions = explosions, time = time }
 end
 
 function Game:AddPoints(points)
@@ -261,12 +283,21 @@ function Game:Cascade(steps, focus, cascade)
                 Create(run, "power", run.color)
             end
         end
-        -- Crossing runs (L and T shapes) also forge a power gem.
+        -- Crossing runs (L and T shapes) forge a star gem.
         for key, n in pairs(count) do
-            if n > 1 and not reserved[key] then
+            if n > 1 then
                 local cell = clear[key]
-                reserved[key] = true
-                created[#created + 1] = { r = cell.r, c = cell.c, color = cell.gem.color, special = "power" }
+                local replaced = false
+                for _, spec in ipairs(created) do
+                    if spec.r == cell.r and spec.c == cell.c then
+                        if spec.special == "power" then spec.special = "star" end
+                        replaced = true
+                    end
+                end
+                if not replaced and not reserved[key] then
+                    reserved[key] = true
+                    created[#created + 1] = { r = cell.r, c = cell.c, color = cell.gem.color, special = "star" }
+                end
             end
         end
         local explosions = {}
@@ -289,6 +320,30 @@ end
 function Game:PrismSwap(steps, r1, c1, r2, c2)
     local a, b = self.board[r1][c1], self.board[r2][c2]
     local clear = {}
+    local other = a.color == Game.PRISM and b or a
+    if a.color ~= Game.PRISM or b.color ~= Game.PRISM then
+        if DETONATES[other.special] then
+            -- Prism and special gem: every gem of that color turns special and goes off.
+            for r = 1, Game.SIZE do
+                for c = 1, Game.SIZE do
+                    local gem = self.board[r][c]
+                    if gem.color == other.color then
+                        gem.special = other.special
+                        clear[Key(r, c)] = { r = r, c = c, gem = gem }
+                    end
+                end
+            end
+            clear[Key(r1, c1)] = { r = r1, c = c1, gem = a }
+            clear[Key(r2, c2)] = { r = r2, c = c2, gem = b }
+            local explosions = {}
+            self:Explode(clear, explosions)
+            local total = 0
+            for _ in pairs(clear) do total = total + 1 end
+            steps[#steps + 1] = self:ApplyClear(clear, {}, 1, 0, total, explosions, "supernova")
+            steps[#steps + 1] = self:Gravity()
+            return
+        end
+    end
     if a.color == Game.PRISM and b.color == Game.PRISM then
         for r = 1, Game.SIZE do
             for c = 1, Game.SIZE do clear[Key(r, c)] = { r = r, c = c, gem = self.board[r][c] } end
@@ -311,6 +366,39 @@ function Game:PrismSwap(steps, r1, c1, r2, c2)
     steps[#steps + 1] = self:Gravity()
 end
 
+-- Two special gems swapped into each other: flame + flame blasts 5x5, anything with a star
+-- clears three rows and three columns around the target.
+function Game:ComboSwap(steps, r1, c1, r2, c2)
+    local a, b = self.board[r1][c1], self.board[r2][c2]
+    local clear = {}
+    local function Take(r, c)
+        local gem = self:At(r, c)
+        if gem then clear[Key(r, c)] = { r = r, c = c, gem = gem } end
+    end
+    local explosions = { { r1, c1, kind = "combo" } }
+    if a.special == "power" and b.special == "power" then
+        for dr = -2, 2 do
+            for dc = -2, 2 do Take(r1 + dr, c1 + dc) end
+        end
+    else
+        for d = -1, 1 do
+            for i = 1, Game.SIZE do
+                Take(r1 + d, i)
+                Take(i, c1 + d)
+            end
+        end
+        explosions[1].kind = "cross"
+    end
+    -- The two combined gems are used up; others caught in the blast still go off.
+    clear[Key(r1, c1)].keep, clear[Key(r2, c2)].keep = true, true
+    self:Explode(clear, explosions)
+    clear[Key(r1, c1)].keep, clear[Key(r2, c2)].keep = nil, nil
+    local total = 0
+    for _ in pairs(clear) do total = total + 1 end
+    steps[#steps + 1] = self:ApplyClear(clear, {}, 1, 0, total, explosions, "combo")
+    steps[#steps + 1] = self:Gravity()
+end
+
 -- Tries to swap two cells. Returns the steps to animate, or nil when the move is not allowed.
 function Game:Swap(r1, c1, r2, c2)
     if self.state ~= "PLAYING" or not Adjacent(r1, c1, r2, c2) then return nil end
@@ -322,6 +410,10 @@ function Game:Swap(r1, c1, r2, c2)
     if a.color == Game.PRISM or b.color == Game.PRISM then
         self:PrismSwap(steps, r2, c2, r1, c1)
         cascade = self:Cascade(steps, nil, 1)
+    elseif a.special and b.special then
+        steps.combo = true
+        self:ComboSwap(steps, r2, c2, r1, c1)
+        cascade = self:Cascade(steps, nil, 1)
     else
         if #self:FindRuns() == 0 then
             SwapCells(self.board, r1, c1, r2, c2)
@@ -331,6 +423,7 @@ function Game:Swap(r1, c1, r2, c2)
     end
     steps.cascade = cascade
 
+    if self.mode == "zen" and self.pendingLevelUp then self.pendingLevelUp = false end
     if not self:FindMove() then
         if self.mode == "classic" then
             self.state = "OVER"

@@ -43,9 +43,13 @@ Achievements.Register("jewelsofuldum", {
     { id = "ju_classic", nameKey = "JU_ACH_CLASSIC", descKey = "JU_ACH_CLASSIC_DESC", icon = GEM_ICONS[1] },
     { id = "ju_blitz2", nameKey = "JU_ACH_BLITZ2", descKey = "JU_ACH_BLITZ2_DESC", icon = GEM_ICONS[2] },
     { id = "ju_gems", nameKey = "JU_ACH_GEMS", descKey = "JU_ACH_GEMS_DESC", icon = GEM_ICONS[5] },
+    { id = "ju_star", nameKey = "JU_ACH_STAR", descKey = "JU_ACH_STAR_DESC", icon = GEM_ICONS[7] },
+    { id = "ju_combo", nameKey = "JU_ACH_COMBO", descKey = "JU_ACH_COMBO_DESC", icon = GEM_ICONS[1] },
+    { id = "ju_time", nameKey = "JU_ACH_TIME", descKey = "JU_ACH_TIME_DESC", icon = GEM_ICONS[3] },
+    { id = "ju_zen", nameKey = "JU_ACH_ZEN", descKey = "JU_ACH_ZEN_DESC", icon = GEM_ICONS[4] },
     { id = "ju_flight", nameKey = "JU_ACH_FLIGHT", descKey = "JU_ACH_FLIGHT_DESC", icon = "Interface\\TaxiFrame\\UI-Taxi-Icon-Green" },
 })
-local GOALS = { gems = 10000, classic = 100000, blitz = 15000, blitz2 = 35000, prismUse = 10 }
+local GOALS = { gems = 10000, classic = 100000, blitz = 15000, blitz2 = 35000, prismUse = 10, time = 30, zen = 50000 }
 
 local function Tex(name) return Media.Tex("uldum/" .. name) end
 local function Sound(name) Media.Play(name) end
@@ -53,7 +57,9 @@ local function Sound(name) Media.Play(name) end
 local function Settings() return Arcade.Settings(Module) end
 
 local function ModeName(mode)
-    return mode == "blitz" and L.JU_BLITZ or L.JU_CLASSIC
+    if mode == "blitz" then return L.JU_BLITZ end
+    if mode == "zen" then return L.JU_ZEN end
+    return L.JU_CLASSIC
 end
 
 local function CellCenter(r, c)
@@ -84,12 +90,21 @@ function Module:CreateVisual()
     v.glow:SetTexture(Media.Tex("glow"))
     v.glow:SetBlendMode("ADD")
     v.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+    -- Star gems carry a turning four-pointed spark, time gems their bonus seconds.
+    v.star = layer:CreateTexture(nil, "ARTWORK", nil, 2)
+    v.star:SetTexture(Media.Tex("spark"))
+    v.star:SetBlendMode("ADD")
+    v.time = layer:CreateFontString(nil, "OVERLAY")
+    v.time:SetFont(Media.FontFile(), 12, "OUTLINE")
+    v.time:SetTextColor(0.6, 1, 1)
     return v
 end
 
 local function HideVisual(v)
     v.icon:Hide()
     v.glow:Hide()
+    v.star:Hide()
+    v.time:Hide()
     v.icon:SetRotation(0)
 end
 
@@ -105,12 +120,15 @@ function Module:SetGem(v, gem)
     local tint = GEM_TINT[gem.color] or PRISM_TINT
     v.glow:SetVertexColor(tint[1], tint[2], tint[3])
     v.glow:SetShown(gem.special ~= nil)
+    v.star:SetShown(gem.special == "star")
+    v.time:SetShown(gem.time ~= nil)
+    v.time:SetText(gem.time and ("+" .. gem.time) or "")
     v.icon:Show()
     v.dirty = true
 end
 
 function Module:DrawVisual(v)
-    if not v.dirty and not (v.gem and v.gem.special) then return end
+    if not v.dirty and not (v.gem and (v.gem.special or v.gem.time)) then return end
     v.dirty = false
     local scale = v.scale or 1
     v.icon:SetSize(GEM_SIZE * scale, GEM_SIZE * scale)
@@ -122,6 +140,16 @@ function Module:DrawVisual(v)
         v.glow:SetAlpha(pulse * (v.alpha or 1))
         Place(v.glow, v.x, v.y)
         if v.gem.color == Game.PRISM then v.icon:SetRotation(GetTime() * 1.5) end
+        if v.gem.special == "star" then
+            v.star:SetSize(62 * scale, 62 * scale)
+            v.star:SetAlpha(0.8 * (v.alpha or 1))
+            v.star:SetRotation(GetTime() * 2)
+            Place(v.star, v.x, v.y)
+        end
+    end
+    if v.gem and v.gem.time then
+        v.time:SetAlpha((0.6 + 0.4 * math.sin(GetTime() * 6)) * (v.alpha or 1))
+        Place(v.time, v.x + 12, v.y + 14)
     end
 end
 
@@ -240,6 +268,33 @@ function Module:Ring(x, y, tint, from, to, duration)
     end)
 end
 
+-- A beam of light along a row or column, fading out.
+function Module:Beam(r, c, horizontal, tint)
+    local tex = self.fxPool.Acquire()
+    tex:SetTexture(Media.Tex("glow"))
+    tex:SetBlendMode("ADD")
+    tex:SetVertexColor(tint[1], tint[2], tint[3])
+    local x, y = CellCenter(r, c)
+    local length = SIZE * CELL + 30
+    tex:Show()
+    self:AddEffect(function(e)
+        local p = e.t / 0.45
+        if p >= 1 then
+            self.fxPool.Release(tex)
+            return false
+        end
+        if horizontal then
+            tex:SetSize(length, 46 * (1 - p * 0.6))
+            Place(tex, SIZE * CELL / 2, y)
+        else
+            tex:SetSize(46 * (1 - p * 0.6), length)
+            Place(tex, x, SIZE * CELL / 2)
+        end
+        tex:SetAlpha(1 - p)
+        return true
+    end)
+end
+
 function Module:Popup(x, y, text, size, r, g, b)
     local fs = self.textPool.Acquire()
     fs:SetFont(Media.FontFile(), size, "OUTLINE")
@@ -322,8 +377,28 @@ function Module:Step_clear(step)
     end
     for _, spot in ipairs(step.explosions) do
         local x, y = CellCenter(spot[1], spot[2])
-        self:Ring(x, y, { 1, 0.6, 0.2 }, 40, 190, 0.5)
-        self:Burst(x, y, { 1, 0.6, 0.2 }, 14, "spark", 18)
+        if spot.kind == "star" then
+            self:Beam(spot[1], spot[2], true, { 0.7, 0.85, 1 })
+            self:Beam(spot[1], spot[2], false, { 0.7, 0.85, 1 })
+            self:Burst(x, y, { 0.8, 0.9, 1 }, 10, "spark", 16)
+        elseif spot.kind == "cross" then
+            for d = -1, 1 do
+                self:Beam(spot[1] + d, spot[2], true, { 1, 0.85, 0.5 })
+                self:Beam(spot[1], spot[2] + d, false, { 1, 0.85, 0.5 })
+            end
+        elseif spot.kind == "combo" then
+            self:Ring(x, y, { 1, 0.5, 0.15 }, 60, 320, 0.7)
+            self:Burst(x, y, { 1, 0.6, 0.2 }, 30, "spark", 20)
+        else
+            self:Ring(x, y, { 1, 0.6, 0.2 }, 40, 190, 0.5)
+            self:Burst(x, y, { 1, 0.6, 0.2 }, 14, "spark", 18)
+        end
+    end
+    if step.kind == "supernova" or step.kind == "combo" then
+        self:Popup(SIZE * CELL / 2, SIZE * CELL * 0.4, L.JU_COMBO, 26, 1, 0.7, 0.25)
+    end
+    if (step.time or 0) > 0 then
+        self:Popup(SIZE * CELL / 2, SIZE * CELL * 0.6, L.JU_TIME_BONUS:format(step.time), 20, 0.6, 1, 1)
     end
     local n = math.max(1, #step.cells)
     self:Popup(sx / n, sy / n, "+" .. ns.FormatNumber(step.points), 16, 1, 0.9, 0.4)
@@ -391,8 +466,14 @@ function Module:OnClearStep(step)
     if step.cascade >= 4 then Achievements.Unlock("ju_cascade4") end
     if step.cascade >= 6 then Achievements.Unlock("ju_cascade6") end
     for _, spec in ipairs(step.created) do
-        Achievements.Unlock(spec.special == "prism" and "ju_prism" or "ju_power")
+        if spec.special == "star" then
+            Achievements.Unlock("ju_star")
+        else
+            Achievements.Unlock(spec.special == "prism" and "ju_prism" or "ju_power")
+        end
     end
+    if step.kind == "combo" or step.kind == "supernova" then Achievements.Unlock("ju_combo") end
+    if self.game.mode == "blitz" and (self.game.timeGained or 0) >= GOALS.time then Achievements.Unlock("ju_time") end
     if step.kind == "prism" and #step.cells >= GOALS.prismUse then Achievements.Unlock("ju_prism_use") end
     local settings = Settings()
     settings.gems = settings.gems + #step.cells
@@ -401,6 +482,7 @@ function Module:OnClearStep(step)
     if self.game.mode == "classic" and score >= GOALS.classic then Achievements.Unlock("ju_classic") end
     if self.game.mode == "blitz" and score >= GOALS.blitz then Achievements.Unlock("ju_blitz") end
     if self.game.mode == "blitz" and score >= GOALS.blitz2 then Achievements.Unlock("ju_blitz2") end
+    if self.game.mode == "zen" and score >= GOALS.zen then Achievements.Unlock("ju_zen") end
     self:UpdateHud()
 end
 
@@ -685,6 +767,8 @@ function Module:Sidebar()
     local info
     if game.mode == "blitz" then
         info = L.JU_BLITZ .. "  ·  " .. L.JU_TIME:format(ns.FormatTime(game.timeLeft or Game.BLITZ_TIME))
+    elseif game.mode == "zen" then
+        info = L.JU_ZEN
     else
         local progress = math.floor(100 * game.levelPoints / Game.LevelTarget(game.level))
         info = L.JU_CLASSIC .. "  ·  " .. L.LEVEL:format(game.level) .. ("  ·  %d%%"):format(progress)
@@ -735,8 +819,11 @@ function Module:UpdateBar()
     local game = self.game
     local fraction, label
     if game.mode == "blitz" then
-        fraction = (game.timeLeft or Game.BLITZ_TIME) / Game.BLITZ_TIME
+        fraction = math.min(1, (game.timeLeft or Game.BLITZ_TIME) / Game.BLITZ_TIME)
         label = L.JU_TIME:format(ns.FormatTime(game.timeLeft or Game.BLITZ_TIME))
+    elseif game.mode == "zen" then
+        fraction = (GetTime() % 8) / 8
+        label = L.JU_ZEN
     else
         fraction = game.levelPoints / Game.LevelTarget(game.level)
         label = L.LEVEL:format(game.level)
