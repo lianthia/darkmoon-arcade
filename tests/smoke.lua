@@ -256,12 +256,12 @@ Fire("PLAYER_LOGIN")
 assert(DarkmoonArcadeDB.flightGame == "murlocblast", "defaults")
 
 local Window, Arcade = ns.Window, ns.Arcade
-assert(#Arcade.order == 5, "five games registered")
+assert(#Arcade.order == 6, "six games registered")
 assert(Arcade.order[1] == "spellbounce", "most popular game first")
 SlashCmdList.DARKMOONARCADE("")
 assert(Window.frame._shown, "window should be shown")
 
-local results = { murloc = 0, flappy = 0, jewels = 0, slots = 0, spell = 0, clicks = 0, best = 0 }
+local results = { murloc = 0, flappy = 0, jewels = 0, slots = 0, spell = 0, deck = 0, clicks = 0, best = 0 }
 local seed = 42
 local function rnd(n) seed = (seed * 16807) % 2147483647; return seed % n end
 
@@ -317,6 +317,17 @@ for step = 1, 900 do
         end
         Tick(2.5)
         results.spell = results.spell + 1
+    elseif game and game.id == "darkmoondeck" and state == "PLAYING" and game.busy <= 0 then
+        local indexes = game.game:BestPlay()
+        for _, i in ipairs(indexes) do game:ToggleCard(game.game.hand[i]) end
+        if rnd(4) == 0 and game.game.discards > 0 then game:Discard() else Window.frame._scripts.OnKeyDown(Window.frame, "SPACE") end
+        Tick(1.8)
+        results.deck = results.deck + 1
+    elseif game and game.id == "darkmoondeck" and state == "SHOP" and game.overlay.current == "shop" then
+        game.game.gold = game.game.gold + 10
+        game.shop.offers[1].buy._scripts.OnClick(game.shop.offers[1].buy)
+        game:NextRound()
+        Tick(0.5)
     elseif game and game.id == "jewelsofuldum" and state == "PLAYING" then
         local move = game.game:FindMove()
         if move then game:TrySwap(move[1], move[2], move[3], move[4]) end
@@ -335,15 +346,39 @@ for step = 1, 900 do
         if not Window.frame._shown then SlashCmdList.DARKMOONARCADE("") end
     end
     if step % 150 == 0 then
-        local ids = { "murlocblast", "flappygriffin", "jewelsofuldum", "goblinslots", "spellbounce" }
-        SlashCmdList.DARKMOONARCADE(ids[(step / 150) % 5 + 1])
+        local ids = { "murlocblast", "flappygriffin", "jewelsofuldum", "goblinslots", "spellbounce", "darkmoondeck" }
+        SlashCmdList.DARKMOONARCADE(ids[(step / 150) % 6 + 1])
+        if Window.activeGame and Window.activeGame.id == "darkmoondeck" then Window.activeGame:NewRun() end
         if Window.activeGame and Window.activeGame.id == "goblinslots" then Window.activeGame:NewGame() end
         if Window.activeGame and Window.activeGame.id == "jewelsofuldum" then Window.activeGame:NewGame() end
     end
     if rnd(60) == 0 then Window.frame._scripts.OnKeyDown(Window.frame, "P") end
 end
-assert(results.murloc > 0 and results.flappy > 0 and results.jewels > 0 and results.slots > 0 and results.spell > 0,
-    ("all games were played: %d %d %d %d %d"):format(results.murloc, results.flappy, results.jewels, results.slots, results.spell))
+assert(results.murloc > 0 and results.flappy > 0 and results.jewels > 0 and results.slots > 0 and results.spell > 0 and results.deck > 0,
+    ("all games were played: %d %d %d %d %d %d"):format(results.murloc, results.flappy, results.jewels, results.slots, results.spell, results.deck))
+
+-- Darkmoon Deck: win an attraction, shop, then run out of plays.
+SlashCmdList.DARKMOONARCADE("darkmoondeck")
+local deck = Window.activeGame
+deck:NewRun()
+deck.game.goal = 1
+deck:ToggleCard(deck.game.hand[1])
+deck:Play()
+Tick(2)
+assert(deck.overlay.current == "shop", "shop after a won attraction")
+deck.game.gold = 50
+deck.shop.offers[1].buy._scripts.OnClick(deck.shop.offers[1].buy)
+assert(#deck.game.trinkets == 1, "bought a Darkmoon card")
+deck.shop.slots[1].sell._scripts.OnClick(deck.shop.slots[1].sell)
+deck:NextRound()
+deck.game.goal = 10 ^ 9
+for _ = 1, 8 do
+    if deck.game.state ~= "PLAYING" then break end
+    deck:ToggleCard(deck.game.hand[1])
+    deck:Play()
+    Tick(2)
+end
+assert(deck.overlay.current == "over", "game over page: " .. tostring(deck.overlay.current))
 
 -- Spellbounce: play a whole map to its fireworks and continue on the next one.
 SlashCmdList.DARKMOONARCADE("spellbounce")

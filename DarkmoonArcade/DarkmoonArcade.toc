@@ -49,4 +49,8 @@ Games\Spellbounce\Maps.lua
 Games\Spellbounce\Game.lua
 Games\Spellbounce\Spellbounce.lua
 
+Games\DarkmoonDeck\Locale.lua
+Games\DarkmoonDeck\Game.lua
+Games\DarkmoonDeck\DarkmoonDeck.lua
+
 Main.lua
