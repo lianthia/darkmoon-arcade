@@ -33,8 +33,8 @@ MC.Zones = {
         { "plainstrider", "bristleback_quilboar", "palemane_tanner", "venture_laborer", "prairie_wolf" },
         { "prairie_wolf", "plainstrider", "prairie_wolf" }, { "magatha", "cairne", "hamuul" }, "hamuul", "magatha"),
     zephras = Z("zephras", "zephras", 1, 12, "lorthuna",
-        { "nightsaber", "webwood_spider", "timberling", "grellkin", "gnarlpine_ursa" },
-        { "timberling", "grellkin", "nightsaber" }, { "jaina", "tyrande", "shandris" }, "shandris", "jaina"),
+        { "shadowgale_shrieker", "shadowgale_shriekling", "shadowgale_ursera", "shadowgale_manticore", "drowned_skyborne" },
+        { "shadowgale_ursera", "drowned_skyborne", "shadowgale_manticore" }, { "jaina", "tyrande", "shandris" }, "shandris", "jaina"),
     westfall = Z("westfall", "ek", 10, 20, "vancleef",
         { "defias_pillager", "defias_trapper", "harvest_golem", "riverpaw_gnoll", "fleshripper" },
         { "defias_blackguard", "defias_pillager", "defias_trapper" }, { "renzik", "eitrigg", "bolvar" }, "renzik", "bolvar"),
@@ -82,12 +82,12 @@ MC.ZONE_ORDER = {
 -- Tuned with tools/balance_mercenaries.py --tune (--heroic).
 local POWER = {
     elwynn = -0.20, dunmorogh = 0.02, tirisfal = 0.11, teldrassil = 0.01, durotar = 0.24, mulgore = -0.03,
-    zephras = 0.02, westfall = 0.03, lochmodan = 0.43, silverpine = 0.22, darkshore = 0.25, barrens = 0.24,
+    zephras = 0.18, westfall = 0.03, lochmodan = 0.43, silverpine = 0.22, darkshore = 0.25, barrens = 0.24,
     redridge = 0.09, stonetalon = 0.61, ashenvale = 0.18, duskwood = 0.13, wetlands = 0.00, hillsbrad = 0.47,
 }
 local HEROIC_POWER = {
     elwynn = -0.02, dunmorogh = 0.30, tirisfal = 0.11, teldrassil = 0.30, durotar = 0.12, mulgore = 0.14,
-    zephras = 0.19, westfall = 0.08, lochmodan = 0.20, silverpine = -0.09, darkshore = 0.16, barrens = 0.06,
+    zephras = 0.09, westfall = 0.08, lochmodan = 0.20, silverpine = -0.09, darkshore = 0.16, barrens = 0.06,
     redridge = 0.09, stonetalon = 0.40, ashenvale = 0.09, duskwood = 0.03, wetlands = -0.08, hillsbrad = 0.20,
 }
 for id, zone in pairs(MC.Zones) do

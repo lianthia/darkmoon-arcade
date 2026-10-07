@@ -209,6 +209,13 @@
   "info": "Dragonmaw Shadowwarder is a level 28 - 29 NPC. The location of this NPC is unknown.",
   "name": "Dragonmaw Shadowwarder"
  },
+ "Drowned Skyborne": {
+  "de": "Drowned Skyborne",
+  "display": 146360,
+  "id": 270192,
+  "info": "The location of this NPC is unknown.",
+  "name": "Drowned Skyborne"
+ },
  "Durotar Tiger": {
   "de": "Durotar-Tiger",
   "display": 598,
@@ -721,6 +728,34 @@
   "id": 3853,
   "info": "Shadowfang Moonwalker is a level 19 - 20 Elite NPC. The location of this NPC is unknown.",
   "name": "Shadowfang Moonwalker"
+ },
+ "Shadowgale Manticore": {
+  "de": "Shadowgale Manticore",
+  "display": 136598,
+  "id": 251247,
+  "info": "The location of this NPC is unknown.",
+  "name": "Shadowgale Manticore"
+ },
+ "Shadowgale Shrieker": {
+  "de": "Schattenwindkreischer",
+  "display": 139498,
+  "id": 256108,
+  "info": "Shadowgale Shrieker is a level 10 NPC. The location of this NPC is unknown.",
+  "name": "Shadowgale Shrieker"
+ },
+ "Shadowgale Shriekling": {
+  "de": "Schattenwindkreischling",
+  "display": 142400,
+  "id": 256092,
+  "info": "Shadowgale Shriekling is a level 10 - 11 NPC. The location of this NPC is unknown.",
+  "name": "Shadowgale Shriekling"
+ },
+ "Shadowgale Ursera": {
+  "de": "Schattenwindursera",
+  "display": 136605,
+  "id": 250927,
+  "info": "Shadowgale Ursera is a level 10 - 11 NPC. The location of this NPC is unknown.",
+  "name": "Shadowgale Ursera"
  },
  "Shadowhide Brute": {
   "de": "Schläger der Schattenfelle",

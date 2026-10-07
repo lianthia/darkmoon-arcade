@@ -16,7 +16,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 ADDON = ROOT / "DarkmoonArcade"
 FILES = ["Combat", "Abilities", "Mercs", "Treasures", "Enemies", "Zones", "Bounty"]
 
-args = [a for a in sys.argv[1:] if not a.startswith("--")]
+args = [a for a in sys.argv[1:] if a.isdigit()]
 RUNS = int(args[0]) if args else 200
 PROGRESS = "--progress" in sys.argv
 SWEEP = "--sweep" in sys.argv
@@ -146,7 +146,10 @@ if TUNE:
     # Heroic is the endgame: the bot plays without ranks or gear, so it should lose more often.
     if heroic:
         TARGET = 0.4
+    only = sys.argv[sys.argv.index("--zone") + 1] if "--zone" in sys.argv else None
     for zid in order:
+        if only and zid != only:
+            continue
         zone = MC.Zones[zid]
         level = 59 if heroic else bounty.BossLevel(zone, False) - 1
         key = "heroicPower" if heroic else "power"

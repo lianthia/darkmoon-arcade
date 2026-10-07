@@ -256,7 +256,7 @@ Fire("PLAYER_LOGIN")
 assert(DarkmoonArcadeDB.flightGame == "murlocblast", "defaults")
 
 local Window, Arcade = ns.Window, ns.Arcade
-assert(#Arcade.order == 6, "six games registered")
+assert(#Arcade.order == 7, "seven games registered")
 assert(Arcade.order[1] == "spellbounce", "most popular game first")
 SlashCmdList.DARKMOONARCADE("")
 assert(Window.frame._shown, "window should be shown")
@@ -281,7 +281,7 @@ Window.activeGame:StartGame(1)
 
 for step = 1, 900 do
     local game = Window.activeGame
-    local state = game and game.game.state
+    local state = game and game.game and game.game.state
     if game and game.id == "murlocblast" and state == "PLAYING" then
         cursorX, cursorY = 100 + rnd(432), 600 - rnd(380)
         Tick(0.05)
@@ -347,8 +347,8 @@ for step = 1, 900 do
         if not Window.frame._shown then SlashCmdList.DARKMOONARCADE("") end
     end
     if step % 150 == 0 then
-        local ids = { "murlocblast", "flappygriffin", "jewelsofuldum", "goblinslots", "spellbounce", "darkmoondeck" }
-        SlashCmdList.DARKMOONARCADE(ids[(step / 150) % 6 + 1])
+        local ids = { "murlocblast", "flappygriffin", "jewelsofuldum", "goblinslots", "spellbounce", "darkmoondeck", "mercenaries" }
+        SlashCmdList.DARKMOONARCADE(ids[(step / 150) % 7 + 1])
         if Window.activeGame and Window.activeGame.id == "darkmoondeck" then Window.activeGame:NewRun() end
         if Window.activeGame and Window.activeGame.id == "flappygriffin" then Window.activeGame:NewRun() end
         if Window.activeGame and Window.activeGame.id == "murlocblast" then Window.activeGame:StartGame(1) end
@@ -383,6 +383,88 @@ for _ = 1, 8 do
     Tick(4)
 end
 assert(deck.overlay.current == "over", "game over page: " .. tostring(deck.overlay.current))
+
+-- Mercenaries: the camp, the collection, then a whole bounty fought through the board.
+SlashCmdList.DARKMOONARCADE("mercenaries")
+local mc = Window.activeGame
+local MC = ns.Mercenaries
+local store = mc:Store()
+if store.run then mc:AbandonRun(); mc.resultClose._scripts.OnClick(mc.resultClose) end
+assert(mc.view == "camp", "mercenaries open in the camp: " .. tostring(mc.view))
+mc:ShowView("collection")
+local collection = mc.views.collection
+collection.slots[2]._scripts.OnClick(collection.slots[2])
+store.mercs.jaina = store.mercs.jaina or MC.Bounty.NewEntry(false)
+store.mercs.jaina.coins = 200
+collection.grid[13]._scripts.OnClick(collection.grid[13])
+collection.detail.recruit._scripts.OnClick(collection.detail.recruit)
+assert(store.mercs.jaina.owned, "jaina recruited")
+collection.detail.abilities[1].up._scripts.OnClick(collection.detail.abilities[1].up)
+collection.detail.abilities[1]._scripts.OnEnter(collection.detail.abilities[1])
+collection.detail.gear[3]._scripts.OnEnter(collection.detail.gear[3])
+collection.slots[1]._scripts.OnClick(collection.slots[1])
+collection.grid[13]._scripts.OnClick(collection.grid[13])
+assert(store.party[1] == "jaina", "jaina joined the party")
+mc:ShowView("travel")
+mc.views.travel.tabs.kal._scripts.OnClick(mc.views.travel.tabs.kal)
+for _, id in ipairs(store.party) do store.mercs[id].level = 14 end
+mc.views.travel.tabs.ek._scripts.OnClick(mc.views.travel.tabs.ek)
+mc.views.travel.cards[1].normal._scripts.OnClick(mc.views.travel.cards[1].normal)
+assert(store.run and mc.view == "map", "bounty started on the map")
+local fights = 0
+for _ = 1, 600 do
+    local run = store.run
+    if not run or mc.overlay.current == "result" then break end
+    local current = mc.overlay.current
+    if current == "treasure" then
+        mc.treasureButtons[1]._scripts.OnClick(mc.treasureButtons[1])
+    elseif current == "healer" then
+        local b = mc.healerButtons[1]
+        if b._shown then b._scripts.OnClick(b) else mc.healerSkip._scripts.OnClick(mc.healerSkip) end
+    elseif current == "stranger" then
+        mc.strangerButtons[1]._scripts.OnClick(mc.strangerButtons[1])
+    elseif run.phase == "map" then
+        local choice = MC.Bounty.Choices(run)[1]
+        mc.mapNodes[1]._scripts.OnEnter(mc.mapNodes[1])
+        mc:SelectNode(choice.layer, choice.index, true)
+        mc.travelButton._scripts.OnClick(mc.travelButton)
+    elseif run.phase == "battle" then
+        local b = run.battle
+        if b.phase == "deploy" or b.phase == "replace" then
+            local token = mc.tokens[b.bench.ally[1]]
+            token._scripts.OnClick(token, "LeftButton")
+            token._scripts.OnEnter(token)
+        elseif b.phase == "command" and not mc.playing then
+            fights = fights + 1
+            mc:PickAbility(1)
+            local enemy = mc.tokens[b.board.enemy[1]]
+            if enemy then enemy._scripts.OnClick(enemy, "LeftButton") end
+            mc.cards[1]._scripts.OnEnter(mc.cards[1])
+            Window.frame._scripts.OnKeyDown(Window.frame, "A")
+            Window.frame._scripts.OnKeyDown(Window.frame, "SPACE")
+        end
+        Tick(1.5)
+    else
+        Tick(0.5)
+    end
+end
+assert(fights > 0, "mercenaries fought")
+if mc.overlay.current ~= "result" then
+    local run = store.run
+    local errs = DarkmoonArcadeDB.errors and table.concat((function() local t = {} for k, v in pairs(DarkmoonArcadeDB.errors) do t[#t + 1] = tostring(k) .. "=" .. tostring(type(v) == "table" and (v.message or v[1]) or v) end return t end)(), " | ") or "none"
+    error(("bounty did not end: overlay %s, run %s, battle %s, playing %s, view %s, errors %s"):format(
+        tostring(mc.overlay.current), tostring(run and run.phase), tostring(run and run.battle and run.battle.phase),
+        tostring(mc.playing), tostring(mc.view), errs))
+end
+mc.resultClose._scripts.OnClick(mc.resultClose)
+assert(not store.run and mc.view == "camp", "back in camp")
+-- A run survives a reload of the view: start one and route back into it.
+mc:StartBounty("dunmorogh", false)
+mc:Route()
+assert(mc.view == "map", "saved run resumes on the map")
+mc.overlay:Show("confirm")
+mc:AbandonRun()
+mc.resultClose._scripts.OnClick(mc.resultClose)
 
 -- Spellbounce: play a whole map to its fireworks and continue on the next one.
 SlashCmdList.DARKMOONARCADE("spellbounce")

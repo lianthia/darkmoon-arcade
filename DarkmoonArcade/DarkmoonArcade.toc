@@ -54,4 +54,20 @@ Games\DarkmoonDeck\Locale.lua
 Games\DarkmoonDeck\Game.lua
 Games\DarkmoonDeck\DarkmoonDeck.lua
 
+Games\Mercenaries\Locale.lua
+Games\Mercenaries\EnemyNames.lua
+Games\Mercenaries\Combat.lua
+Games\Mercenaries\Abilities.lua
+Games\Mercenaries\Mercs.lua
+Games\Mercenaries\Treasures.lua
+Games\Mercenaries\Enemies.lua
+Games\Mercenaries\Zones.lua
+Games\Mercenaries\Bounty.lua
+Games\Mercenaries\Describe.lua
+Games\Mercenaries\Mercenaries.lua
+Games\Mercenaries\Visuals.lua
+Games\Mercenaries\Camp.lua
+Games\Mercenaries\Map.lua
+Games\Mercenaries\Battle.lua
+
 Main.lua
