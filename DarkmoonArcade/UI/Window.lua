@@ -26,6 +26,8 @@ local LOGO_W, LOGO_H = 150, 97
 local LOGO_OVERLAP = 48
 local TILE_W, TILE_H, TILE_GAP, TILE_COLUMNS = 300, 150, 20, 2
 local HUB_TITLE_Y, HUB_TOP, HUB_BOTTOM, HUB_PAD, HUB_SCROLL_STEP = 18, 50, 34, 6, 85
+-- Room the window needs beyond its frame: the logo above, the flight plate below, a margin all around.
+local LOGO_EXTRA, FLIGHT_EXTRA, SCREEN_MARGIN = LOGO_H - LOGO_OVERLAP, 36, 8
 
 -- Panel templates without a title bar first; the portrait frame is the known-good fallback.
 local CHROME_TEMPLATES = { "SimplePanelTemplate", "PortraitFrameTemplateNoCloseButton" }
@@ -157,6 +159,12 @@ function Window:Create()
 
     self:ApplyScale()
     self:RestorePosition()
+
+    -- A new resolution or UI scale may leave the window too large for the screen.
+    local events = CreateFrame("Frame", nil, f)
+    events:RegisterEvent("DISPLAY_SIZE_CHANGED")
+    events:RegisterEvent("UI_SCALE_CHANGED")
+    events:SetScript("OnEvent", function() self:ApplyScale() end)
 
     f:EnableKeyboard(true)
     f:SetScript("OnKeyDown", function(frame, key)
@@ -513,22 +521,38 @@ function Window:CreateTile(parent, game)
     return tile
 end
 
--- Games may ask for a wider playfield (`fieldWidth`); the window grows around its center.
-function Window:SetFieldWidth(width)
-    width = width or Arcade.FIELD_W
-    if self.fieldWidth == width then return end
-    local extra = width - Arcade.FIELD_W
+-- Games may ask for a larger playfield (`fieldWidth`, `fieldHeight`); the window grows around its
+-- center and shrinks its scale whenever it would no longer fit on the screen.
+function Window:SetFieldSize(width, height)
+    width, height = width or Arcade.FIELD_W, height or Arcade.FIELD_H
+    if self.fieldWidth == width and self.fieldHeight == height then return end
+    local extraW, extraH = width - Arcade.FIELD_W, height - Arcade.FIELD_H
     local f = self.frame
     local cx, cy = f:GetCenter()
-    f:SetWidth(FRAME_W + extra)
-    self.content:SetWidth(CONTENT_W + extra)
-    self.field:SetWidth(width)
-    self.fieldWidth = width
-    if cx and self.fieldWidthSet then
+    local oldScale = f:GetScale()
+    f:SetSize(FRAME_W + extraW, FRAME_H + extraH)
+    self.content:SetSize(CONTENT_W + extraW, CONTENT_H + extraH)
+    self.field:SetSize(width, height)
+    self.sidebar:SetHeight(CONTENT_H + extraH)
+    self.fieldWidth, self.fieldHeight = width, height
+    self:ApplyScale()
+    if cx and self.fieldSizeSet then
+        -- Keep the center where it was on screen, whatever the new scale.
+        local ratio = oldScale / f:GetScale()
         f:ClearAllPoints()
-        f:SetPoint("CENTER", UIParent, "BOTTOMLEFT", cx, cy)
+        f:SetPoint("CENTER", UIParent, "BOTTOMLEFT", cx * ratio, cy * ratio)
     end
-    self.fieldWidthSet = true
+    self.fieldSizeSet = true
+end
+
+-- The window never grows past the screen: the chosen scale gives way where it would.
+function Window:FitScale()
+    local f = self.frame
+    local screenW, screenH = UIParent:GetWidth(), UIParent:GetHeight()
+    if not screenW or screenW <= 0 or not screenH or screenH <= 0 then return 1 end
+    local needW = f:GetWidth() + SCREEN_MARGIN * 2
+    local needH = f:GetHeight() + LOGO_EXTRA + FLIGHT_EXTRA + SCREEN_MARGIN * 2
+    return math.min(screenW / needW, screenH / needH)
 end
 
 function Window:RefreshHub()
@@ -552,7 +576,7 @@ end
 
 function Window:OpenHub()
     self:LeaveGame()
-    self:SetFieldWidth()
+    self:SetFieldSize()
     ns.OptionsView:Hide()
     ns.StatsView:Hide()
     self.hub:Show()
@@ -574,7 +598,7 @@ function Window:OpenGame(id)
         self.activeGame:Leave()
         self.activeGame.container:Hide()
     end
-    self:SetFieldWidth(game.fieldWidth)
+    self:SetFieldSize(game.fieldWidth, game.fieldHeight)
     if not game.container then
         local container = CreateFrame("Frame", nil, self.field)
         container:SetAllPoints()
@@ -600,7 +624,7 @@ end
 function Window:OpenOptions()
     self.frame:Show()
     self:LeaveGame()
-    self:SetFieldWidth()
+    self:SetFieldSize()
     self.hub:Hide()
     self.sidebar:Hide()
     ns.StatsView:Hide()
@@ -616,7 +640,7 @@ end
 function Window:OpenStats()
     self.frame:Show()
     self:LeaveGame()
-    self:SetFieldWidth()
+    self:SetFieldSize()
     self.hub:Hide()
     self.sidebar:Hide()
     ns.OptionsView:Hide()
@@ -646,7 +670,7 @@ function Window:Toggle()
 end
 
 function Window:ApplyScale()
-    self.frame:SetScale(ns.db.scale)
+    self.frame:SetScale(math.min(ns.db.scale, self:FitScale()))
 end
 
 function Window:RestorePosition()

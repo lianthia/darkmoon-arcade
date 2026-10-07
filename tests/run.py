@@ -25,6 +25,13 @@ def main() -> int:
         "Games/Spellbounce/Talents.lua",
         "Games/Spellbounce/Game.lua",
         "Games/DarkmoonDeck/Game.lua",
+        "Games/Mercenaries/Combat.lua",
+        "Games/Mercenaries/Abilities.lua",
+        "Games/Mercenaries/Mercs.lua",
+        "Games/Mercenaries/Treasures.lua",
+        "Games/Mercenaries/Enemies.lua",
+        "Games/Mercenaries/Zones.lua",
+        "Games/Mercenaries/Bounty.lua",
     ):
         loader((ADDON / rel).read_text(encoding="utf-8"), "@" + rel)
 
