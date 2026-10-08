@@ -393,34 +393,45 @@ if store.run then mc:AbandonRun(); mc.resultClose._scripts.OnClick(mc.resultClos
 assert(mc.view == "camp", "mercenaries open in the camp: " .. tostring(mc.view))
 mc:ShowView("collection")
 local collection = mc.views.collection
-collection.cards[1]._scripts.OnEnter(collection.cards[1])
+collection.next._scripts.OnClick(collection.next)
+collection.prev._scripts.OnClick(collection.prev)
+collection.tabs.caster._scripts.OnClick(collection.tabs.caster)
 store.mercs.jaina = store.mercs.jaina or MC.Bounty.NewEntry(false)
 store.mercs.jaina.coins = 200
 mc:CollectionClicked("jaina")
-assert(mc.overlay.current == "merc", "mercenary page")
-local mercPage = mc.overlay.pages.merc
-mercPage.recruit._scripts.OnClick(mercPage.recruit)
+assert(mc.view == "merc", "mercenary page")
+local mercView = mc.views.merc
+mercView.recruit._scripts.OnClick(mercView.recruit)
 assert(store.mercs.jaina.owned, "jaina recruited")
-mercPage.ups[1]._scripts.OnClick(mercPage.ups[1])
-mercPage.cards[1]._scripts.OnEnter(mercPage.cards[1])
-mercPage.gear[3]._scripts.OnEnter(mercPage.gear[3])
-mercPage.gear[1]._scripts.OnClick(mercPage.gear[1])
-mc.overlay:Hide()
+mercView.ups[1]._scripts.OnClick(mercView.ups[1])
+mercView.gear[1]._scripts.OnClick(mercView.gear[1])
+mc:GearTooltip(mercView.gear[3], "jaina", 3)
+mc:ShowView("collection")
 collection.slots[1]._scripts.OnClick(collection.slots[1])
 mc:CollectionClicked("jaina")
 assert(store.party[1] == "jaina", "jaina joined the party")
 mc:ShowView("camp")
 mc.views.camp.travel._scripts.OnClick(mc.views.camp.travel)
-assert(mc.view == "travel", "travel board")
+assert(mc.view == "travel", "travel point")
 local travel = mc.views.travel
 travel.tabs.kal._scripts.OnClick(travel.tabs.kal)
 travel.tabs.zephras._scripts.OnClick(travel.tabs.zephras)
 for _, id in ipairs(store.party) do store.mercs[id].level = 14 end
 travel.tabs.ek._scripts.OnClick(travel.tabs.ek)
-travel.pins[1]._scripts.OnEnter(travel.pins[1])
-travel.pins[1]._scripts.OnClick(travel.pins[1])
+travel.regions[1]._scripts.OnClick(travel.regions[1])
+Tick(1)
+travel.overview._scripts.OnClick(travel.overview)
+Tick(1)
+local elwynnPin
+for _, pin in ipairs(travel.pins) do
+    if pin.zone == "elwynn" then elwynnPin = pin end
+end
+elwynnPin._scripts.OnClick(elwynnPin)
+Tick(1)
 assert(mc.travelZone == "elwynn", "elwynn picked on the map")
-travel.poster.normal._scripts.OnClick(travel.poster.normal)
+travel.boss.heroic._scripts.OnClick(travel.boss.heroic)
+travel.boss.normal._scripts.OnClick(travel.boss.normal)
+travel.boss.choose._scripts.OnClick(travel.boss.choose)
 assert(store.run and mc.view == "map", "bounty started on the map")
 local fights = 0
 for _ = 1, 600 do
@@ -436,7 +447,6 @@ for _ = 1, 600 do
         mc.strangerButtons[1]._scripts.OnClick(mc.strangerButtons[1])
     elseif run.phase == "map" then
         local choice = MC.Bounty.Choices(run)[1]
-        mc.mapNodes[1]._scripts.OnEnter(mc.mapNodes[1])
         mc:SelectNode(choice.layer, choice.index, true)
         mc.travelButton._scripts.OnClick(mc.travelButton)
     elseif run.phase == "battle" then
@@ -450,7 +460,6 @@ for _ = 1, 600 do
             mc:PickAbility(1)
             local enemy = mc.tokens[b.board.enemy[1]]
             if enemy then enemy._scripts.OnClick(enemy, "LeftButton") end
-            mc.cards[1]._scripts.OnEnter(mc.cards[1])
             Window.frame._scripts.OnKeyDown(Window.frame, "A")
             Window.frame._scripts.OnKeyDown(Window.frame, "SPACE")
         end

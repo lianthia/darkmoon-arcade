@@ -5,12 +5,12 @@ local MC = ns.Mercenaries
 local Combat, Describe = MC.Combat, MC.Describe
 local Widgets, Media, L = ns.Widgets, ns.Media, ns.L
 
--- Token texture is 128x160; on screen it is scaled to TOKEN_W x TOKEN_H.
-MC.TOKEN_W, MC.TOKEN_H = 104, 130
+-- The oval token texture is 192x224; on screen it is scaled to TOKEN_W x TOKEN_H.
+MC.TOKEN_W, MC.TOKEN_H = 110, 128
 local TW, TH = MC.TOKEN_W, MC.TOKEN_H
-local SCALE = TW / 128
--- The portrait window inside the token texture.
-local OVAL_X, OVAL_Y, OVAL_W, OVAL_H = 20 * SCALE, 14 * SCALE, 88 * SCALE, 112 * SCALE
+local SCALE = TW / 192
+-- The portrait window inside the token texture (cx 96, cy 100, rx 74, ry 90).
+local OVAL_X, OVAL_Y, OVAL_W, OVAL_H = 22 * SCALE, 10 * SCALE, 148 * SCALE, 180 * SCALE
 
 local function Badge(parent, kind, size, fontSize)
     local f = CreateFrame("Frame", nil, parent)
@@ -174,7 +174,7 @@ function MC.CreateToken(parent)
     f.uid, f.unitKey, f.data = false, false, false
 
     f.glow = f:CreateTexture(nil, "BACKGROUND", nil, 0)
-    f.glow:SetTexture(MC.Tex("token_glow"))
+    f.glow:SetTexture(MC.Tex("otoken_glow"))
     f.glow:SetPoint("CENTER")
     f.glow:SetSize(TW * 1.25, TH * 1.25)
     f.glow:SetBlendMode("ADD")
@@ -185,7 +185,7 @@ function MC.CreateToken(parent)
     f.taunt:SetSize(TW * 1.2, TH * 1.18)
     f.taunt:Hide()
     f.back = f:CreateTexture(nil, "BACKGROUND", nil, 2)
-    f.back:SetTexture(MC.Tex("token_back"))
+    f.back:SetTexture(MC.Tex("otoken_back"))
     f.back:SetAllPoints()
 
     f.model = MC.Model(f, 0.62)
@@ -210,17 +210,19 @@ function MC.CreateToken(parent)
     f.divine:SetBlendMode("ADD")
     f.divine:Hide()
     f.select = top:CreateTexture(nil, "OVERLAY", nil, 0)
-    f.select:SetTexture(MC.Tex("token_glow"))
+    f.select:SetTexture(MC.Tex("otoken_glow"))
     f.select:SetPoint("CENTER")
     f.select:SetSize(TW * 1.15, TH * 1.15)
     f.select:SetBlendMode("ADD")
     f.select:SetVertexColor(0.4, 1, 0.4)
     f.select:Hide()
 
-    f.attack = Badge(top, "attack", 32, 15)
-    f.attack:SetPoint("CENTER", top, "BOTTOMLEFT", 15, 17)
-    f.health = Badge(top, "health", 32, 15)
-    f.health:SetPoint("CENTER", top, "BOTTOMRIGHT", -15, 17)
+    f.attack = Badge(top, "attack", 40, 18)
+    f.attack:SetPoint("CENTER", top, "BOTTOMLEFT", 16, 22)
+    f.health = Badge(top, "health", 40, 18)
+    f.health:SetPoint("CENTER", top, "BOTTOMRIGHT", -16, 22)
+    f.attack.text:SetPoint("CENTER", 0, 3)
+    f.health.text:SetPoint("CENTER", 0, -3)
     f.level = Badge(top, "level", 24, 10)
     f.level:SetPoint("CENTER", top, "TOP", 0, -4)
     f.absorb = top:CreateFontString(nil, "OVERLAY")
@@ -275,7 +277,11 @@ function Token:SetData(data, reference)
     self.unitKey = data.kind .. data.id
     self.data = data
     local boss = data.kind == "boss"
-    self.frame:SetTexture(MC.Tex(boss and "token_boss" or ("token_" .. (data.role or "neutral"))))
+    local role = data.role or "neutral"
+    self.frame:SetTexture(MC.Tex("otoken_" .. role))
+    self.frame:SetVertexColor(boss and 1 or 1, boss and 0.86 or 1, boss and 0.45 or 1)
+    self.attack.tex:SetTexture(MC.Tex("hs_attack_" .. role))
+    self.health.tex:SetTexture(MC.Tex("hs_health_" .. role))
     if first then
         local display = DisplayFor(data.kind, data.id)
         self.missing:SetShown(display == 0)

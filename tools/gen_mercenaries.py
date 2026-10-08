@@ -383,6 +383,201 @@ def menu_card():
     return arc.to_rgba(wood * (1 - ring) + gold * ring, outer)
 
 
+# Hearthstone-style pieces ---------------------------------------------------------------------------
+# Role colours of the cards (face, light edge, dark edge).
+CARD_COLORS = {
+    "protector": ((0.62, 0.16, 0.10), (0.92, 0.42, 0.25), (0.30, 0.06, 0.04)),
+    "fighter": ((0.20, 0.50, 0.16), (0.50, 0.86, 0.36), (0.08, 0.24, 0.06)),
+    "caster": ((0.16, 0.30, 0.66), (0.42, 0.62, 1.00), (0.06, 0.12, 0.34)),
+    "neutral": ((0.40, 0.40, 0.42), (0.70, 0.70, 0.72), (0.18, 0.18, 0.20)),
+}
+CW, CH = 256, 352
+C_OVAL = (128, 122, 82, 102)  # cx, cy, rx, ry of the portrait window
+
+
+def metal(h, w, light=(0.92, 0.92, 0.95), dark=(0.38, 0.40, 0.46)):
+    """Brushed silver: a vertical gradient with fine streaks."""
+    rng = np.random.default_rng(2)
+    base = vertical(h, w, light, dark)
+    streak = ga.fbm(h, w, rng, ((64, 0.2), (2, 0.8)))
+    return base * (0.88 + 0.22 * streak)[..., None]
+
+
+def soft_box(h, w, x0, y0, x1, y1, blur=2):
+    m = np.zeros((h, w))
+    m[y0:y1, x0:x1] = 1
+    return np.asarray(Image.fromarray((m * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(blur))).astype(float) / 255
+
+
+def merc_card(role):
+    """A mercenary card: role-coloured frame, a silver ring round an oval portrait window,
+    small wings at the ring's foot and a dark plate below for level and experience."""
+    face, light, dark = (np.array(c) for c in CARD_COLORS[role])
+    cx, cy, rx, ry = C_OVAL
+    rng = np.random.default_rng(7)
+    body = arc.rounded_rect_alpha(CW, CH, 26, inset=18)
+    grain = ga.fbm(CH, CW, rng, ((32, 0.5), (8, 0.3), (2, 0.2)))
+    rgb = vertical(CH, CW, light, dark) * 0.55 + face * 0.45
+    rgb = rgb * (0.82 + 0.3 * grain)[..., None]
+    rim = np.clip(body - arc.rounded_rect_alpha(CW, CH, 22, inset=24), 0, 1)[..., None]
+    rgb = rgb * (1 - rim) + metal(CH, CW) * rim
+    plate = soft_box(CH, CW, 40, 250, 216, 322)[..., None]
+    stone = vertical(CH, CW, (0.22, 0.22, 0.25), (0.10, 0.10, 0.12)) * (0.85 + 0.25 * grain)[..., None]
+    rgb = rgb * (1 - plate) + stone * plate
+    ring_out = ellipse_mask(CW, CH, cx, cy, rx + 14, ry + 14)
+    ring_in = ellipse_mask(CW, CH, cx, cy, rx, ry)
+    ring = np.clip(ring_out - ring_in, 0, 1)
+    yy, xx = np.mgrid[0:CH, 0:CW].astype(float)
+    shine = 0.75 + 0.35 * np.cos(np.arctan2(yy - cy, xx - cx) + 2.2)
+    rgb = rgb * (1 - ring[..., None]) + (metal(CH, CW) * shine[..., None]) * ring[..., None]
+    lip = np.clip(ellipse_mask(CW, CH, cx, cy, rx + 3, ry + 3) - ring_in, 0, 1)[..., None]
+    rgb = rgb * (1 - lip) + np.array([0.95, 0.78, 0.36]) * lip
+    alpha = np.clip(np.maximum(body, ring_out) - ring_in, 0, 1)
+    img = arc.to_rgba(rgb, alpha)
+
+    def wings(dr, s):
+        for side in (-1, 1):
+            x0 = cx + side * (rx + 4)
+            x0 = cx + side * (rx + 8)
+            # Three small feathers fanning out from the ring's foot.
+            for k, (dx, dy) in enumerate(((22, 56), (26, 70), (20, 82))):
+                pts = [(x0, cy + 52 + k * 10), (x0 + side * dx, cy + dy - 6), (x0 + side * (dx - 4), cy + dy + 4),
+                       (x0 - side * 2, cy + 60 + k * 10)]
+                shade = 214 - k * 30
+                dr.polygon([(x * s, y * s) for x, y in pts], fill=(shade, shade + 2, shade + 10, 255), outline=(60, 62, 70, 255))
+    return Image.alpha_composite(img, supersampled(CW, CH, wings))
+
+
+TW_, TH_ = 192, 224
+T_OVAL = (96, 100, 74, 90)
+
+
+def hs_token(role):
+    """Battle token: a silver oval ring with a role-coloured crescent at its foot."""
+    face, light, dark = (np.array(c) for c in CARD_COLORS[role])
+    cx, cy, rx, ry = T_OVAL
+    window = ellipse_mask(TW_, TH_, cx, cy, rx, ry)
+    ring_out = ellipse_mask(TW_, TH_, cx, cy, rx + 12, ry + 12)
+    base = ellipse_mask(TW_, TH_, cx, cy + 22, rx + 14, ry + 6)
+    crescent = np.clip(base - ring_out, 0, 1)
+    yy, xx = np.mgrid[0:TH_, 0:TW_].astype(float)
+    crescent = crescent * (yy > cy).astype(float)
+    shine = 0.75 + 0.35 * np.cos(np.arctan2(yy - cy, xx - cx) + 2.2)
+    rgb = metal(TH_, TW_) * shine[..., None]
+    color = vertical(TH_, TW_, light, dark)
+    rgb = rgb * (1 - crescent[..., None]) + color * crescent[..., None]
+    lip = np.clip(ellipse_mask(TW_, TH_, cx, cy, rx + 3, ry + 3) - window, 0, 1)[..., None]
+    rgb = rgb * (1 - lip) + np.array([0.95, 0.78, 0.36]) * lip
+    alpha = np.clip(np.maximum(ring_out, crescent) - window, 0, 1)
+    return arc.to_rgba(rgb, alpha)
+
+
+def hs_token_back():
+    cx, cy, rx, ry = T_OVAL
+    window = ellipse_mask(TW_, TH_, cx, cy, rx + 1, ry + 1)
+    yy, xx = np.mgrid[0:TH_, 0:TW_].astype(float)
+    d = np.sqrt(((xx - cx) / rx) ** 2 + ((yy - cy + 24) / ry) ** 2)
+    rgb = np.array([0.30, 0.32, 0.40]) * (1.15 - 0.65 * np.clip(d, 0, 1))[..., None]
+    return arc.to_rgba(rgb, window)
+
+
+def hs_token_glow():
+    cx, cy, rx, ry = T_OVAL
+    m = ellipse_mask(TW_, TH_, cx, cy, rx + 22, ry + 22)
+    blurred = np.asarray(Image.fromarray((m * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(10))).astype(float) / 255
+    inner = ellipse_mask(TW_, TH_, cx, cy, rx + 6, ry + 6)
+    return arc.to_rgba(np.ones((TH_, TW_, 3)), np.clip(blurred * (1 - inner * 0.8) * 1.6, 0, 1))
+
+
+def badge_shape(kind, grow):
+    """Polygon of an attack shield or a health drop, `grow` pixels larger for the rim."""
+    if kind == "attack":
+        return [(14 - grow, 14 - grow), (82 + grow, 14 - grow), (80 + grow, 52), (48, 86 + grow), (16 - grow, 52)]
+    pts = []
+    for i in range(72):
+        a = i / 72 * 2 * math.pi
+        r = 30 + grow
+        x, y = 48 + r * math.sin(a), 58 + r * math.cos(a)
+        if math.cos(a) < -0.2:
+            t = (-math.cos(a) - 0.2) / 0.8
+            x = 48 + (x - 48) * (1 - t * 0.95)
+            y = 58 - (r + 20 * t) * (-math.cos(a))
+        pts.append((x, y))
+    return pts
+
+
+def hs_badge(kind, role):
+    """Attack shield or health drop in the role's colour with a silver rim."""
+    size = 96
+    _, light, dark = CARD_COLORS[role]
+
+    def mask(grow):
+        def draw(dr, s):
+            dr.polygon([(x * s, y * s) for x, y in badge_shape(kind, grow)], fill=255)
+        return np.asarray(supersampled(size, size, draw, "L")).astype(float) / 255
+    outer, inner = mask(5), mask(0)
+    rgb = metal(size, size) * (1 - inner[..., None]) + vertical(size, size, light, dark) * inner[..., None]
+    yy, xx = np.mgrid[0:size, 0:size].astype(float)
+    highlight = np.exp(-(((xx - 36) / 18) ** 2 + ((yy - 36) / 14) ** 2)) * inner
+    return arc.to_rgba(np.clip(rgb + 0.35 * highlight[..., None], 0, 1), outer)
+
+
+def hs_ability_card(role):
+    """Ability card: role-coloured border, a round window for the icon and a parchment field."""
+    face, light, dark = (np.array(c) for c in CARD_COLORS[role])
+    rng = np.random.default_rng(9)
+    body = arc.rounded_rect_alpha(CW, CH, 22, inset=14)
+    grain = ga.fbm(CH, CW, rng, ((32, 0.5), (8, 0.3), (2, 0.2)))
+    rgb = (vertical(CH, CW, light, dark) * 0.5 + face * 0.5) * (0.84 + 0.28 * grain)[..., None]
+    rim = np.clip(body - arc.rounded_rect_alpha(CW, CH, 18, inset=20), 0, 1)[..., None]
+    rgb = rgb * (1 - rim) + metal(CH, CW) * rim
+    field = soft_box(CH, CW, 34, 196, 222, 318)[..., None]
+    paper = np.array([0.88, 0.80, 0.62]) * (0.86 + 0.2 * ga.fbm(CH, CW, rng, ((24, 0.6), (4, 0.4))))[..., None]
+    rgb = rgb * (1 - field) + paper * field
+    cx, cy, r = 128, 104, 66
+    window = ellipse_mask(CW, CH, cx, cy, r, r)
+    outer = ellipse_mask(CW, CH, cx, cy, r + 12, r + 12)
+    ring = np.clip(outer - window, 0, 1)[..., None]
+    rgb = rgb * (1 - ring) + vertical(CH, CW, (1.0, 0.86, 0.5), (0.55, 0.34, 0.1)) * ring
+    return arc.to_rgba(rgb, np.clip(np.maximum(body, outer) - window, 0, 1))
+
+
+def hs_button():
+    """Parchment button with a gold rim and dark metal caps."""
+    w, h = 256, 64
+
+    def draw(dr, s):
+        dr.rounded_rectangle([10 * s, 8 * s, (w - 10) * s, (h - 8) * s], radius=10 * s, fill=(60, 44, 28, 255))
+        dr.rounded_rectangle([14 * s, 11 * s, (w - 14) * s, (h - 11) * s], radius=8 * s, fill=(214, 176, 92, 255))
+        dr.rounded_rectangle([18 * s, 14 * s, (w - 18) * s, (h - 14) * s], radius=6 * s, fill=(236, 222, 186, 255))
+        for x in (8, w - 8):
+            dr.ellipse([(x - 10) * s, (h / 2 - 14) * s, (x + 10) * s, (h / 2 + 14) * s], fill=(70, 72, 80, 255))
+            dr.ellipse([(x - 6) * s, (h / 2 - 9) * s, (x + 6) * s, (h / 2 + 9) * s], fill=(150, 152, 162, 255))
+    arr = np.array(supersampled(w, h, draw)).astype(float)
+    arr[..., :3] *= np.linspace(1.08, 0.85, h)[:, None, None]
+    return Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8), "RGBA")
+
+
+def swirl():
+    """Blue swirling energy for the big round button; it turns in game."""
+    size = 256
+    yy, xx = np.mgrid[0:size, 0:size].astype(float)
+    dx, dy = (xx - size / 2) / (size / 2), (yy - size / 2) / (size / 2)
+    r = np.sqrt(dx * dx + dy * dy)
+    a = np.arctan2(dy, dx)
+    noise = ga.fbm(size, size, np.random.default_rng(3), ((32, 0.6), (8, 0.4)))
+    arms = 0.5 + 0.5 * np.sin(a * 3 + r * 9 + noise * 3)
+    glow = np.clip(1 - r, 0, 1)
+    rgb = np.dstack([0.15 + 0.5 * arms * glow, 0.45 + 0.45 * arms * glow, 0.6 + 0.4 * glow])
+    return arc.to_rgba(np.clip(rgb, 0, 1), np.clip((1 - r) * 3, 0, 1))
+
+
+def dash():
+    def draw(dr, s):
+        dr.rounded_rectangle([2 * s, 4 * s, 30 * s, 12 * s], radius=4 * s, fill=(255, 255, 255, 255))
+    return supersampled(32, 16, draw)
+
+
 def sounds():
     rng = np.random.default_rng(9)
     hit = ga.mix(ga.noise(0.12, rng, 0.25) * ga.env(int(ga.RATE * 0.12), 0.002, 0.04), ga.tone(110, 0.15, 0.05) * 0.8)
@@ -428,6 +623,17 @@ def main():
     ga.save_tga(plate(), "plate", FOLDER)
     ga.save_tga(ribbon(), "ribbon", FOLDER)
     ga.save_tga(menu_card(), "menu_card", FOLDER)
+    for role in CARD_COLORS:
+        ga.save_tga(merc_card(role), "card_" + role, FOLDER)
+        ga.save_tga(hs_ability_card(role), "acard_" + role, FOLDER)
+        ga.save_tga(hs_token(role), "otoken_" + role, FOLDER)
+        for kind in ("attack", "health"):
+            ga.save_tga(hs_badge(kind, role), f"hs_{kind}_{role}", FOLDER)
+    ga.save_tga(hs_button(), "button", FOLDER)
+    ga.save_tga(hs_token_back(), "otoken_back", FOLDER)
+    ga.save_tga(hs_token_glow(), "otoken_glow", FOLDER)
+    ga.save_tga(swirl(), "swirl", FOLDER)
+    ga.save_tga(dash(), "dash", FOLDER)
     sounds()
     print("Mercenaries assets generated")
 

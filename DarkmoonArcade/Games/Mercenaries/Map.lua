@@ -1,48 +1,53 @@
--- The bounty map: the path from the camp at the bottom to the boss at the top, the party on the
--- left and the chosen stop's details on the right.
+-- The bounty map: coins on the zone's own map from the start at the bottom to the boss at the top,
+-- joined by dashed paths. The party waits on the left, the chosen encounter on the right.
 
 local _, ns = ...
 local MC = ns.Mercenaries
-local Bounty, Describe = MC.Bounty, MC.Describe
-local Widgets, Media, L = ns.Widgets, ns.Media, ns.L
+local Bounty, Describe, Kit = MC.Bounty, MC.Describe, MC.Kit
+local Widgets, L = ns.Widgets, ns.L
 local Module = MC.Module
 local W, H = MC.W, MC.H
 
-local MAP_LEFT, MAP_RIGHT = 210, 630
+local MAP_LEFT, MAP_RIGHT = 206, 634
 local MAP_CX = (MAP_LEFT + MAP_RIGHT) / 2
-local MAP_TOP, MAP_BOTTOM = 70, H - 60
-local NODE, BOSS_NODE, NODE_GAP = 40, 58, 104
+local MAP_TOP, MAP_BOTTOM = 84, H - 48
+local NODE, ELITE_NODE, BOSS_NODE, NODE_GAP = 48, 56, 76, 108
 local MAX_NODES = 32
+local DASH_GAP = 13
 
 local NODE_ICON = {
     fight = "Interface\\Icons\\Ability_DualWield",
     elite = "Interface\\Icons\\INV_Misc_Head_Dragon_01",
-    boss = "Interface\\Icons\\INV_Misc_Bone_HumanSkull_01",
     healer = "Interface\\Icons\\Spell_Holy_Resurrection",
     mystery = "Interface\\Icons\\INV_Misc_QuestionMark",
 }
+local MYSTERY_ICON = {
+    stranger = "Interface\\Icons\\INV_Misc_Head_Human_01", sabotage = "Interface\\Icons\\INV_Misc_Bomb_04",
+    portal = "Interface\\Icons\\Spell_Arcane_PortalIronForge", cursed = "Interface\\Icons\\Spell_Shadow_CurseOfSargeras",
+    bonus = "Interface\\Icons\\INV_Misc_Coin_02",
+}
+local NODE_METAL = { boss = "gold", elite = "gold", fight = "bronze", healer = "silver", boon = "silver", mystery = "silver" }
 
-local function Place(region, x, y)
-    region:ClearAllPoints()
-    region:SetPoint("CENTER", region:GetParent(), "TOPLEFT", x, -y)
-end
-
-local function Panel(parent, x, y, w, h)
+local function DarkPanel(parent, x, y, w, h)
     local p = CreateFrame("Frame", nil, parent)
     p:SetSize(w, h)
     p:SetPoint("TOPLEFT", x, -y)
-    local fill = p:CreateTexture(nil, "BACKGROUND")
+    local fill = p:CreateTexture(nil, "BACKGROUND", nil, 2)
     fill:SetAllPoints()
-    fill:SetColorTexture(0.05, 0.03, 0.02, 0.78)
+    fill:SetColorTexture(0.08, 0.05, 0.03, 0.78)
     Widgets.Rim(p, p)
     return p
 end
 
 function Module:BuildMap()
     local view = self:AddView("map", CreateFrame("Frame", nil, self.container))
-    -- The zone's own map under the path.
-    local art = MC.CreateMapCanvas(view, MAP_RIGHT - MAP_LEFT + 20, H)
-    art:SetPoint("TOPLEFT", MAP_LEFT - 10, 0)
+    local wood = Kit.Wood(view, W, H, true)
+    wood:SetPoint("TOPLEFT")
+
+    -- The zone's own map under the path, in a gold rim.
+    local art = MC.CreateMapCanvas(view, MAP_RIGHT - MAP_LEFT, H - 20)
+    art:SetPoint("TOPLEFT", MAP_LEFT, -10)
+    Widgets.Rim(view, art)
     view.art = art
     local edge = CreateFrame("Frame", nil, art)
     edge:SetAllPoints()
@@ -50,108 +55,113 @@ function Module:BuildMap()
     local vignette = edge:CreateTexture(nil, "ARTWORK")
     vignette:SetAllPoints()
     vignette:SetTexture(MC.Tex("vignette"))
-    vignette:SetAlpha(0.7)
+    vignette:SetAlpha(0.65)
 
-    -- Heading on a ribbon, above the map art.
-    local top = CreateFrame("Frame", nil, view)
-    top:SetAllPoints()
-    top:SetFrameLevel(art:GetFrameLevel() + 12)
-    local ribbon = MC.CreateRibbon(top, 360, nil, 16)
-    ribbon:SetPoint("TOP", view, "TOPLEFT", MAP_CX, -2)
-    view.title = ribbon.text
-    view.event = Widgets.Text(top, 13, "white")
-    view.event:SetPoint("TOP", ribbon, "BOTTOM", 0, -2)
-    view.event:SetWidth(MAP_RIGHT - MAP_LEFT - 20)
+    local dashes = CreateFrame("Frame", nil, view)
+    dashes:SetAllPoints()
+    dashes:SetFrameLevel(art:GetFrameLevel() + 4)
+    self.dashLayer, self.dashes = dashes, {}
 
-    local lines = CreateFrame("Frame", nil, view)
-    lines:SetAllPoints()
-    lines:SetFrameLevel(art:GetFrameLevel() + 4)
-    self.mapLines = {}
-    self.lineLayer = lines
-
+    local nodes = CreateFrame("Frame", nil, view)
+    nodes:SetAllPoints()
+    nodes:SetFrameLevel(dashes:GetFrameLevel() + 2)
+    self.nodeLayer = nodes
     self.mapNodes = {}
     for i = 1, MAX_NODES do
-        local b = CreateFrame("Button", nil, view)
-        b:SetFrameLevel(lines:GetFrameLevel() + 2)
-        b.glow = b:CreateTexture(nil, "BACKGROUND")
-        b.glow:SetTexture(MC.Tex("node_glow"))
-        b.glow:SetPoint("CENTER")
-        b.glow:SetBlendMode("ADD")
-        b.icon = b:CreateTexture(nil, "ARTWORK")
-        b.icon:SetPoint("CENTER")
-        local mask = b:CreateMaskTexture()
-        mask:SetTexture(MC.Tex("circle_mask"), "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
-        mask:SetAllPoints(b.icon)
-        b.icon:AddMaskTexture(mask)
-        b.ring = b:CreateTexture(nil, "OVERLAY")
-        b.ring:SetTexture(MC.Tex("node_ring"))
-        b.ring:SetPoint("CENTER")
-        b.check = b:CreateTexture(nil, "OVERLAY", nil, 1)
+        local b = Kit.Coin(nodes, NODE)
+        b.check = b:CreateTexture(nil, "OVERLAY", nil, 3)
         b.check:SetTexture("Interface\\RaidFrame\\ReadyCheck-Ready")
         b.check:SetSize(18, 18)
-        b.check:SetPoint("BOTTOMRIGHT", 4, -4)
+        b.check:SetPoint("BOTTOMRIGHT", 2, -2)
+        b.here = b:CreateTexture(nil, "OVERLAY", nil, 4)
+        b.here:SetSize(26, 26)
+        b.here:SetPoint("BOTTOM", b, "TOP", 0, -6)
+        b.here:SetTexture("Interface\\Minimap\\MiniMap-QuestArrow")
+        b.here:SetRotation(math.pi)
         b:SetScript("OnClick", function() self:SelectNode(b.layer, b.index, true) end)
-        b:SetScript("OnDoubleClick", function() self:SelectNode(b.layer, b.index, true) self:TravelSelected() end)
-        b:SetScript("OnEnter", function() self:ShowNodeInfo(b.layer, b.index) end)
-        b:SetScript("OnLeave", function() self:ShowNodeInfo() end)
+        b:SetScript("OnDoubleClick", function()
+            self:SelectNode(b.layer, b.index, true)
+            self:TravelSelected()
+        end)
+        b:HookScript("OnEnter", function() self:ShowNodeInfo(b.layer, b.index) end)
+        b:HookScript("OnLeave", function() self:ShowNodeInfo() end)
+        Kit.Hover(b, { grow = 1.14, sound = false })
         b:Hide()
         self.mapNodes[i] = b
     end
 
+    local top = CreateFrame("Frame", nil, view)
+    top:SetAllPoints()
+    top:SetFrameLevel(nodes:GetFrameLevel() + 10)
+    local plaque = Kit.Plaque(top, 300, nil, 16)
+    plaque:SetPoint("TOP", view, "TOPLEFT", MAP_CX, -4)
+    view.title = plaque.text
+    view.event = Kit.Ink(top, 13, { 1, 0.95, 0.8 }, "OUTLINE")
+    view.event:SetPoint("TOP", plaque, "BOTTOM", 0, 2)
+    view.event:SetWidth(MAP_RIGHT - MAP_LEFT - 30)
+
     -- Party on the left.
-    local party = Panel(view, 10, 10, MAP_LEFT - 30, H - 64)
-    local partyTitle = Widgets.LocalizedText(party, 13, "gold", "MC_PARTY")
-    partyTitle:SetPoint("TOP", 0, -10)
+    local party = DarkPanel(view, 10, 10, MAP_LEFT - 22, H - 62)
+    local partyTitle = Kit.Plaque(party, 176, "MC_PARTY", 14)
+    partyTitle:SetPoint("TOP", 0, 6)
     self.partyRows = {}
     for i = 1, Bounty.PARTY_SIZE do
         local row = CreateFrame("Frame", nil, party)
-        row:SetSize(MAP_LEFT - 46, 54)
-        row:SetPoint("TOP", 0, -34 - (i - 1) * 60)
+        row:SetSize(MAP_LEFT - 34, 60)
+        row:SetPoint("TOP", 0, -48 - (i - 1) * 64)
         row:EnableMouse(true)
-        row.role = row:CreateTexture(nil, "ARTWORK")
-        row.role:SetSize(24, 24)
-        row.role:SetPoint("TOPLEFT", 2, -2)
-        row.name = Widgets.Text(row, 12, "white")
-        row.name:SetPoint("TOPLEFT", row.role, "TOPRIGHT", 6, -1)
-        row.name:SetWidth(MAP_LEFT - 84)
+        local bg = row:CreateTexture(nil, "BACKGROUND")
+        bg:SetPoint("TOPLEFT", 0, -2)
+        bg:SetPoint("BOTTOMRIGHT", 0, 16)
+        Kit.Atlas(bg, "GarrMission_FollowerListButton", MC.Tex("plate"))
+        row.level = MC.Badge(row, "level", 28, 11)
+        row.level:SetPoint("LEFT", 4, 8)
+        row.name = Widgets.Text(row, 11, "white")
+        row.name:SetPoint("LEFT", row.level, "RIGHT", 4, 0)
+        row.name:SetWidth(MAP_LEFT - 92)
         row.name:SetJustifyH("LEFT")
         row.name:SetWordWrap(false)
-        row.level = Widgets.Text(row, 10, "gray")
-        row.level:SetPoint("TOPLEFT", row.name, "BOTTOMLEFT", 0, -2)
+        row.role = row:CreateTexture(nil, "ARTWORK")
+        row.role:SetSize(18, 18)
+        row.role:SetPoint("RIGHT", -6, 8)
         row.treasures = {}
         for k = 1, 8 do
             local icon = row:CreateTexture(nil, "ARTWORK")
-            icon:SetSize(15, 15)
-            icon:SetPoint("BOTTOMLEFT", 32 + (k - 1) * 17, 2)
+            icon:SetSize(14, 14)
+            icon:SetPoint("BOTTOMLEFT", 6 + (k - 1) * 16, 0)
             row.treasures[k] = icon
         end
         row:SetScript("OnEnter", function() self:PartyTooltip(row, i) end)
         row:SetScript("OnLeave", GameTooltip_Hide)
         self.partyRows[i] = row
     end
-    view.effects = Widgets.Text(party, 11, "blue")
-    view.effects:SetPoint("BOTTOM", 0, 10)
-    view.effects:SetWidth(MAP_LEFT - 46)
-    local abandon = Widgets.Button(view, MAP_LEFT - 30, 22, "MC_ABANDON", function() self.overlay:Show("confirm") end)
-    abandon:SetPoint("BOTTOMLEFT", 10, 14)
+    view.effects = Kit.Ink(party, 10, { 0.75, 0.9, 1 }, "OUTLINE")
+    view.effects:SetPoint("BOTTOM", 0, 8)
+    view.effects:SetWidth(MAP_LEFT - 40)
+    local abandon = Kit.Button(view, MAP_LEFT - 30, 26, "MC_ABANDON", function() self.overlay:Show("confirm") end)
+    Kit.Place(abandon, (MAP_LEFT - 30) / 2 + 14, H - 22)
 
-    -- The chosen stop on the right.
-    local info = Panel(view, MAP_RIGHT + 10, 10, W - MAP_RIGHT - 20, H - 64)
-    view.infoTitle = Widgets.Text(info, 15, "gold")
-    view.infoTitle:SetPoint("TOP", 0, -12)
-    view.infoTitle:SetWidth(W - MAP_RIGHT - 36)
+    -- The encounter on the right.
+    local info = DarkPanel(view, MAP_RIGHT + 10, 10, W - MAP_RIGHT - 20, H - 20)
+    local infoTitle = Kit.Plaque(info, 190, "MC_ENCOUNTER", 14)
+    infoTitle:SetPoint("TOP", 0, 6)
+    view.infoToken = MC.CreateToken(info)
+    view.infoToken:SetPoint("CENTER", info, "TOP", 0, -120)
+    view.infoToken:EnableMouse(false)
+    view.infoName = Kit.Banner(info, 182, 36, 12)
+    view.infoName:SetPoint("TOP", view.infoToken, "BOTTOM", 0, 10)
+    view.infoIcon = Kit.Medallion(info, 96)
+    view.infoIcon:SetPoint("CENTER", info, "TOP", 0, -120)
+    view.infoIcon:EnableMouse(false)
     view.infoLevel = Widgets.Text(info, 12, "white")
-    view.infoLevel:SetPoint("TOP", view.infoTitle, "BOTTOM", 0, -4)
-    view.infoModel = MC.Model(info, nil)
-    view.infoModel:SetSize(W - MAP_RIGHT - 40, 150)
-    view.infoModel:SetPoint("TOP", view.infoLevel, "BOTTOM", 0, -4)
+    view.infoLevel:SetPoint("TOP", view.infoName, "BOTTOM", 0, 0)
     view.infoText = Widgets.Text(info, 11, "white")
-    view.infoText:SetPoint("TOP", view.infoLevel, "BOTTOM", 0, -10)
-    view.infoText:SetWidth(W - MAP_RIGHT - 40)
+    view.infoText:SetPoint("TOP", view.infoLevel, "BOTTOM", 0, -8)
+    view.infoText:SetWidth(W - MAP_RIGHT - 44)
     view.infoText:SetJustifyH("LEFT")
     view.infoText:SetSpacing(3)
-    self.travelButton = Widgets.Button(view, W - MAP_RIGHT - 20, 30, nil, function() self:TravelSelected() end)
-    self.travelButton:SetPoint("BOTTOMRIGHT", -10, 14)
+    self.travelButton = Kit.BigButton(info, 86, nil, function() self:TravelSelected() end)
+    Kit.Place(self.travelButton, (W - MAP_RIGHT - 20) / 2, H - 78, info)
 
     view.refresh = function() self:RefreshMap() end
 end
@@ -172,13 +182,44 @@ function Module:IsReachable(run, layer, index)
     return false
 end
 
-function Module:Line(i)
-    local line = self.mapLines[i]
-    if not line then
-        line = self.lineLayer:CreateLine(nil, "ARTWORK")
-        self.mapLines[i] = line
+-- Dashed path between two points, skipping the part under the coins.
+function Module:DrawPath(count, x1, y1, x2, y2, r1, r2, color)
+    local dx, dy = x2 - x1, y2 - y1
+    local length = math.sqrt(dx * dx + dy * dy)
+    local angle = math.atan2(-dy, dx)
+    local d = r1 + 6
+    while d < length - r2 - 4 do
+        count = count + 1
+        local t = self.dashes[count]
+        if not t then
+            t = self.dashLayer:CreateTexture(nil, "ARTWORK")
+            t:SetTexture(MC.Tex("dash"))
+            t:SetSize(14, 7)
+            self.dashes[count] = t
+        end
+        t:ClearAllPoints()
+        t:SetPoint("CENTER", self.dashLayer, "TOPLEFT", x1 + dx * d / length, -(y1 + dy * d / length))
+        t:SetRotation(angle)
+        t:SetVertexColor(color[1], color[2], color[3], color[4])
+        t:Show()
+        d = d + DASH_GAP
     end
-    return line
+    return count
+end
+
+local function NodeSize(node)
+    return node.type == "boss" and BOSS_NODE or (node.type == "elite" and ELITE_NODE or NODE)
+end
+
+function Module:NodeIcon(run, node, visited)
+    if node.type == "boss" then
+        local boss = MC.Zones[run.zone].boss
+        if MC.BOSS_ART[boss] then return MC.BOSS_ART[boss], true end
+        return "Interface\\Icons\\" .. (MC.BOSS_ICON[boss] or "INV_Misc_Bone_HumanSkull_01")
+    end
+    if node.type == "boon" then return MC.Tex("role_" .. node.role) end
+    if node.type == "mystery" and visited then return MYSTERY_ICON[node.mystery] or NODE_ICON.mystery end
+    return NODE_ICON[node.type]
 end
 
 function Module:RefreshMap()
@@ -186,70 +227,49 @@ function Module:RefreshMap()
     local run = store.run
     local view = self.views.map
     if not run then return end
-    self:SetScene(run.zone, 0.3)
-    local u0, u1, v0, v1 = MC.ZoneView((MAP_RIGHT - MAP_LEFT + 20) / H)
+    self:SetScene(nil)
+    local u0, u1, v0, v1 = MC.ZoneView((MAP_RIGHT - MAP_LEFT) / (H - 20))
     view.art:SetMap(run.zone, u0, u1, v0, v1)
-    view.art:SetTint(0.92, 0.9, 0.85)
-    view.title:SetText(Describe.ZoneName(run.zone) .. (run.heroic and ("  |cffa335ee(" .. L.MC_HEROIC .. ")|r") or ""))
+    view.art:SetTint(0.95, 0.92, 0.86)
+    view.title:SetText(Describe.ZoneName(run.zone) .. (run.heroic and (" (" .. L.MC_HEROIC .. ")") or ""))
 
     local visited = {}
     for _, key in ipairs(run.visited) do visited[key] = true end
     local layers = run.map.layers
-    local used, lineCount = 0, 0
+    local used, dashCount = 0, 0
     for l, row in ipairs(layers) do
         for i, node in ipairs(row) do
             used = used + 1
             local b = self.mapNodes[used]
             local x, y = self:NodePoint(run, l, i)
-            local size = node.type == "boss" and BOSS_NODE or NODE
-            b:SetSize(size, size)
-            b.icon:SetSize(size - 6, size - 6)
-            b.ring:SetSize(size + 6, size + 6)
-            b.glow:SetSize(size * 1.9, size * 1.9)
-            Place(b, x, y)
-            b.layer, b.index = l, i
+            local size = NodeSize(node)
             local key = l .. ":" .. i
-            local icon = NODE_ICON[node.type]
-            if node.type == "boon" then icon = MC.Tex("role_" .. node.role) end
-            if node.type == "mystery" and visited[key] then
-                icon = ({
-                    stranger = "Interface\\Icons\\INV_Misc_Head_Human_01", sabotage = "Interface\\Icons\\INV_Misc_Bomb_04",
-                    portal = "Interface\\Icons\\Spell_Arcane_PortalIronForge", cursed = "Interface\\Icons\\Spell_Shadow_CurseOfSargeras",
-                    bonus = "Interface\\Icons\\INV_Misc_Coin_02",
-                })[node.mystery] or icon
-            end
+            Kit.SetBaseScale(b, size / NODE)
+            Kit.Place(b, x, y, self.nodeLayer)
+            b.layer, b.index = l, i
+            local icon, portrait = self:NodeIcon(run, node, visited[key])
             b.icon:SetTexture(icon)
+            if portrait then b.icon:SetTexCoord(0.1, 0.6, 0, 1) else b.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93) end
+            b:SetMetal(NODE_METAL[node.type])
             local reachable = self:IsReachable(run, l, i)
             local current = run.layer == l and run.index == i
             b.reachable = reachable
             b.icon:SetDesaturated(not reachable and not current and not visited[key])
-            b.icon:SetAlpha((reachable or current or visited[key]) and 1 or 0.7)
             b.check:SetShown(visited[key] and not current)
-            b.glow:SetShown(reachable or current)
-            b.glow:SetVertexColor(current and 1 or 0.5, current and 0.85 or 1, current and 0.3 or 0.5)
-            b.ring:SetVertexColor(node.type == "elite" and 0.8 or 1, node.type == "elite" and 0.55 or 1, node.type == "elite" and 1 or 1)
+            b.here:SetShown(current)
+            Kit.SetSelected(b, reachable, true)
             b:Show()
             for _, j in ipairs(node.links) do
-                lineCount = lineCount + 1
-                local line = self:Line(lineCount)
                 local x2, y2 = self:NodePoint(run, l + 1, j)
-                line:SetStartPoint("TOPLEFT", self.lineLayer, x, -y)
-                line:SetEndPoint("TOPLEFT", self.lineLayer, x2, -y2)
-                line:SetThickness(current and self:IsReachable(run, l + 1, j) and 4 or 3)
                 local walked = visited[key] and visited[(l + 1) .. ":" .. j]
-                if walked then
-                    line:SetColorTexture(0.85, 0.6, 0.15, 0.95)
-                elseif current and self:IsReachable(run, l + 1, j) then
-                    line:SetColorTexture(1, 0.95, 0.75, 0.9)
-                else
-                    line:SetColorTexture(0.35, 0.24, 0.14, 0.55)
-                end
-                line:Show()
+                local open = (current or (run.layer == 0 and false)) and self:IsReachable(run, l + 1, j)
+                local color = walked and { 0.35, 0.85, 0.35, 1 } or (open and { 1, 0.92, 0.6, 1 } or { 0.25, 0.16, 0.08, 0.75 })
+                dashCount = self:DrawPath(dashCount, x, y, x2, y2, size / 2, NodeSize(layers[l + 1][j]) / 2, color)
             end
         end
     end
     for i = used + 1, MAX_NODES do self.mapNodes[i]:Hide() end
-    for i = lineCount + 1, #self.mapLines do self.mapLines[i]:Hide() end
+    for i = dashCount + 1, #self.dashes do self.dashes[i]:Hide() end
 
     -- Party, boons and curse.
     local reference = math.floor(Bounty.PartyLevel(store) + 0.5)
@@ -259,10 +279,9 @@ function Module:RefreshMap()
         if member then
             local def = MC.Mercs[member.id]
             row.role:SetTexture(MC.Tex("role_" .. def.role))
-            row.name:SetText(Describe.MercName(member.id))
-            local entry = store.mercs[member.id]
-            row.level:SetText(member.dead and ("|cffff4040" .. L.MC_FALLEN .. "|r") or L.LEVEL:format(entry.level))
-            row:SetAlpha(member.dead and 0.5 or 1)
+            row.name:SetText(member.dead and ("|cffff5050" .. Describe.MercName(member.id) .. "|r") or Describe.MercName(member.id))
+            row.level.text:SetText(store.mercs[member.id].level)
+            row:SetAlpha(member.dead and 0.55 or 1)
             for k, icon in ipairs(row.treasures) do
                 local t = member.treasures[k]
                 icon:SetShown(t ~= nil)
@@ -306,9 +325,10 @@ function Module:ShowNodeInfo(layer, index)
     if not run then return end
     if not layer and self.mapSelection then layer, index = self.mapSelection.layer, self.mapSelection.index end
     local node = layer and Bounty.Node(run, layer, index)
-    view.infoModel:Hide()
     if not node then
-        view.infoTitle:SetText("")
+        view.infoToken:Hide()
+        view.infoIcon:Hide()
+        view.infoName:Hide()
         view.infoLevel:SetText("")
         view.infoText:SetText("")
         self.travelButton:Hide()
@@ -316,37 +336,47 @@ function Module:ShowNodeInfo(layer, index)
     end
     local reference = self.partyReference or 1
     local kind = node.type
-    view.infoTitle:SetText(L["MC_NODE_" .. kind:upper()])
-    view.infoLevel:SetText("")
+    view.infoName:Show()
     local lines = {}
     if node.enemies then
+        -- The strongest foe stands for the encounter: the boss, or the first of the group.
+        local lead = kind == "boss" and MC.Zones[run.zone].boss or node.enemies[1]
+        local def = MC.Enemies[lead]
+        view.infoToken:Show()
+        view.infoIcon:Hide()
+        view.infoToken:SetData({ kind = def.boss and "boss" or "enemy", id = lead, side = "enemy", role = def.role,
+            level = node.level, atk = def.atk, hp = def.hp }, reference)
+        view.infoToken.attack:Hide()
+        view.infoToken.health:Hide()
+        view.infoToken.name:SetText("")
+        view.infoName.text:SetText(kind == "boss" and L["MC_E_" .. lead] or L["MC_NODE_" .. kind:upper()])
         local r, g, b = MC.ConColor(node.level, reference)
         view.infoLevel:SetText(("|cff%02x%02x%02x%s|r"):format(r * 255, g * 255, b * 255,
             node.level - reference >= 10 and L.MC_LEVEL_SKULL or L.LEVEL:format(node.level)))
-        if kind == "boss" then
-            local boss = MC.Zones[run.zone].boss
-            view.infoModel:SetShown(MC.Enemies[boss].display ~= 0)
-            view.infoModel:SetDisplay(MC.Enemies[boss].display, 0.3)
-        end
         for _, id in ipairs(node.enemies) do
             lines[#lines + 1] = ("|T%s:14:14|t %s"):format(MC.Tex("role_" .. MC.Enemies[id].role), L["MC_E_" .. id])
         end
         if kind == "elite" then lines[#lines + 1] = "\n" .. L.MC_ELITE_INFO end
-    elseif kind == "boon" then
-        lines[#lines + 1] = L.MC_BOON_INFO:format(Describe.RoleName(node.role), Bounty.BoonTier(run) * 10)
-    elseif kind == "mystery" then
-        lines[#lines + 1] = L.MC_MYSTERY_INFO
-    elseif kind == "healer" then
-        lines[#lines + 1] = L.MC_HEALER_INFO
+    else
+        view.infoToken:Hide()
+        view.infoIcon:Show()
+        local key = layer .. ":" .. index
+        local seen = false
+        for _, v in ipairs(run.visited) do
+            if v == key then seen = true end
+        end
+        view.infoIcon.icon:SetTexture((self:NodeIcon(run, node, seen)))
+        view.infoName.text:SetText(L["MC_NODE_" .. kind:upper()])
+        view.infoLevel:SetText("")
+        if kind == "boon" then
+            lines[#lines + 1] = L.MC_BOON_INFO:format(Describe.RoleName(node.role), Bounty.BoonTier(run) * 10)
+        elseif kind == "mystery" then
+            lines[#lines + 1] = L.MC_MYSTERY_INFO
+        elseif kind == "healer" then
+            lines[#lines + 1] = L.MC_HEALER_INFO
+        end
     end
     view.infoText:SetText(table.concat(lines, "\n"))
-    -- The boss stands between the heading and the list.
-    view.infoText:ClearAllPoints()
-    if view.infoModel:IsShown() then
-        view.infoText:SetPoint("TOP", view.infoModel, "BOTTOM", 0, -6)
-    else
-        view.infoText:SetPoint("TOP", view.infoLevel, "BOTTOM", 0, -10)
-    end
     local selected = self.mapSelection and self.mapSelection.layer == layer and self.mapSelection.index == index
     local reachable = self:IsReachable(run, layer, index)
     self.travelButton:SetShown(reachable and selected and run.phase == "map")
@@ -368,6 +398,7 @@ function Module:PartyTooltip(owner, i)
     GameTooltip:SetOwner(owner, "ANCHOR_RIGHT")
     GameTooltip:SetText(Describe.MercName(member.id), 1, 0.82, 0)
     GameTooltip:AddLine(L.LEVEL:format(store.mercs[member.id].level) .. "  ·  " .. Describe.RoleName(MC.Mercs[member.id].role), 0.8, 0.8, 0.8)
+    if member.dead then GameTooltip:AddLine(L.MC_FALLEN, 1, 0.3, 0.3) end
     if #member.treasures == 0 then GameTooltip:AddLine(L.MC_NO_TREASURES, 0.6, 0.6, 0.6) end
     for _, t in ipairs(member.treasures) do
         local name, desc = self:TreasureText(t, member.id)
@@ -378,11 +409,6 @@ function Module:PartyTooltip(owner, i)
 end
 
 function Module:UpdateMap(dt)
-    self.mapPulse = (self.mapPulse or 0) + dt
-    local a = 0.55 + 0.35 * math.sin(self.mapPulse * 4)
-    for _, b in ipairs(self.mapNodes) do
-        if b:IsShown() and b.reachable then b.glow:SetAlpha(a) end
-    end
     local view = self.views.map
     if self.mapEventTime and self.mapEventTime > 0 then
         self.mapEventTime = self.mapEventTime - dt

@@ -3,14 +3,14 @@
 
 local _, ns = ...
 local MC = ns.Mercenaries
-local Combat, Describe = MC.Combat, MC.Describe
+local Combat, Describe, Kit = MC.Combat, MC.Describe, MC.Kit
 local Widgets, Media, L = ns.Widgets, ns.Media, ns.L
 local Module = MC.Module
 local W, H = MC.W, MC.H
 
-local ENEMY_Y, ALLY_Y, BENCH_Y, CARD_Y = 112, 300, 470, 476
+local ENEMY_Y, ALLY_Y, BENCH_Y, CARD_Y = 108, 292, 470, 474
 local SPACING, BENCH_SPACING, BENCH_SCALE = 150, 92, 0.78
-local CARD_GAP = 116
+local CARD_GAP, CARD_SCALE = 118, 0.8
 local KEY_SLOT = { ["1"] = 1, ["2"] = 2, ["3"] = 3 }
 
 function Module:TintBoard(zoneId)
@@ -57,15 +57,16 @@ function Module:BuildBattle()
     view.bench = Widgets.Text(view, 11, "gray")
     view.bench:SetPoint("TOPLEFT", 16, -(ALLY_Y + 40))
     view.hint = Widgets.Text(view, 12, "blue")
-    view.hint:SetPoint("CENTER", view, "TOPLEFT", W - 112, -(CARD_Y - 58))
+    view.hint:SetPoint("CENTER", view, "TOPLEFT", W - 104, -(CARD_Y - 6))
     view.hint:SetWidth(200)
 
     self.cards = {}
     for i = 1, 3 do
-        local card = MC.CreateAbilityCard(view)
-        Place(card, W / 2 + (i - 2) * CARD_GAP, CARD_Y)
+        local card = Kit.AbilityCard(view)
+        Kit.SetBaseScale(card, CARD_SCALE)
+        Kit.Place(card, W / 2 + (i - 2) * CARD_GAP, CARD_Y)
         card:SetScript("OnClick", function() self:PickAbility(i) end)
-        card:SetScript("OnEnter", function(c)
+        card:HookScript("OnEnter", function(c)
             local b = self:Battle()
             local u = b and self.selected and b.units[self.selected]
             if not u or not c.abilityId then return end
@@ -75,14 +76,14 @@ function Module:BuildBattle()
             GameTooltip:AddLine(Describe.Ability(c.abilityId, u, i), 1, 1, 1, true)
             GameTooltip:Show()
         end)
-        card:SetScript("OnLeave", GameTooltip_Hide)
+        card:HookScript("OnLeave", GameTooltip_Hide)
         self.cards[i] = card
     end
 
-    self.readyButton = Widgets.Button(view, 160, 34, "MC_READY", function() self:ResolveTurn() end)
-    Place(self.readyButton, W - 112, CARD_Y + 4)
-    self.autoButton = Widgets.Button(view, 160, 22, "MC_AUTO", function() self:AutoChoose() end)
-    Place(self.autoButton, W - 112, CARD_Y + 40)
+    self.readyButton = Kit.BigButton(view, 92, "MC_READY", function() self:ResolveTurn() end)
+    Kit.Place(self.readyButton, W - 70, (ENEMY_Y + ALLY_Y) / 2)
+    self.autoButton = Kit.Button(view, 170, 28, "MC_AUTO", function() self:AutoChoose() end)
+    Kit.Place(self.autoButton, W - 104, CARD_Y + 44)
 
     view.refresh = function() self:RefreshBattle() end
 end
@@ -203,8 +204,8 @@ function Module:RefreshBattle()
             card:SetAbility(slot.id, sel, i, slot.cd)
             local chosen = sel.choice and sel.choice.slot == i
             local pending = self.pending and self.pending.slot == i
-            card.glow:SetShown(chosen or pending)
-            card.glow:SetVertexColor(pending and 1 or 0.4, pending and 0.85 or 1, pending and 0.3 or 0.4)
+            Kit.SetSelected(card, chosen or pending, pending)
+            card.glowTex:SetVertexColor(pending and 1 or 0.4, pending and 0.85 or 1, pending and 0.3 or 0.4)
         end
     end
     self.readyButton:SetShown(commanding)

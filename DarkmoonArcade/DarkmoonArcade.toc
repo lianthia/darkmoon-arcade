@@ -67,6 +67,7 @@ Games\Mercenaries\Bounty.lua
 Games\Mercenaries\Describe.lua
 Games\Mercenaries\Mercenaries.lua
 Games\Mercenaries\Visuals.lua
+Games\Mercenaries\Kit.lua
 Games\Mercenaries\Camp.lua
 Games\Mercenaries\Map.lua
 Games\Mercenaries\Battle.lua

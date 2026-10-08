@@ -661,6 +661,7 @@ end
 function Module:OnUpdate(dt)
     if self.view == "battle" then self:UpdateBattle(dt) end
     if self.view == "map" then self:UpdateMap(dt) end
+    if self.view == "travel" then self:UpdateTravel(dt) end
     for i = #self.effects, 1, -1 do
         local e = self.effects[i]
         e.t = e.t + dt
