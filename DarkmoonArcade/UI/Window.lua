@@ -472,9 +472,13 @@ function Window:CreateTile(parent, game)
     shade:SetTexture(Media.Tex("card_shade"))
     shade:AddMaskTexture(mask)
 
-    local name = Widgets.LocalizedText(tile, 18, "gold", game.nameKey)
+    -- Name and best score sit on their own layer, above any 3D models a game adds to its card.
+    local labels = CreateFrame("Frame", nil, tile)
+    labels:SetAllPoints()
+    labels:SetFrameLevel(tile:GetFrameLevel() + 6)
+    local name = Widgets.LocalizedText(labels, 18, "gold", game.nameKey)
     name:SetPoint("BOTTOMLEFT", 14, 12)
-    tile.best = Widgets.Text(tile, 11, "white")
+    tile.best = Widgets.Text(labels, 11, "white")
     tile.best:SetPoint("TOPRIGHT", -14, -12)
 
     local frameArt = tile:CreateTexture(nil, "OVERLAY")

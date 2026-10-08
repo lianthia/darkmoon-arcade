@@ -1,21 +1,36 @@
--- The camp between bounties: the party on display, the travel board with every zone and the
--- collection where mercenaries are recruited, upgraded and put into the party.
+-- The camp between bounties: the party on stage, the travel board (a map of Azeroth with a
+-- wanted poster per zone) and the collection of mercenary cards.
 
 local _, ns = ...
 local MC = ns.Mercenaries
 local Combat, Bounty, Describe = MC.Combat, MC.Bounty, MC.Describe
-local Widgets, L = ns.Widgets, ns.L
+local Widgets, Media, L = ns.Widgets, ns.Media, ns.L
 local Module = MC.Module
 local W, H = MC.W, MC.H
 
 local CONTINENTS = { "ek", "kal", "zephras" }
-local ZONE_CARD_W, ZONE_CARD_H, ZONE_COLUMNS, ZONE_ROWS = 192, 128, 4, 3
+-- Which part of each continent's map the travel board shows (u0, u1, v0, v1).
+local MAP_W, MAP_H = 570, 440
+local function Crop(cu, cv, heightShare)
+    local v = heightShare
+    local u = v * (MAP_W / MAP_H) / (1002 / 668)
+    return cu - u / 2, cu + u / 2, cv - v / 2, cv + v / 2
+end
+local CONTINENT_VIEW = {
+    ek = { Crop(0.47, 0.5, 0.86) },
+    kal = { Crop(0.49, 0.5, 0.86) },
+    zephras = { Crop(0.5, 0.5, 1) },
+}
+local CARD_COLUMNS, CARD_ROWS = 4, 2
+local POSTER_RED = { 0.45, 0.06, 0.04 }
+local INK = { 0.2, 0.12, 0.05 }
 
-local function Fill(frame, r, g, b, a)
-    local t = frame:CreateTexture(nil, "BACKGROUND")
-    t:SetAllPoints()
-    t:SetColorTexture(r, g, b, a)
-    return t
+local function Ink(parent, size, color)
+    local fs = parent:CreateFontString(nil, "OVERLAY")
+    fs:SetFont(Media.FontFile(), size, "")
+    fs:SetTextColor(color[1], color[2], color[3])
+    fs:SetShadowOffset(0, 0)
+    return fs
 end
 
 -- What the collection shows of a mercenary: its level, equipment and ranks applied.
@@ -26,357 +41,653 @@ function MC.PreviewUnit(store, id)
     if gear then Bounty.AddMods(mods, gear.mods) end
     local abilities = {}
     for i = 1, 3 do abilities[i] = { id = def.abilities[i], rank = entry.ranks[i] or 1, cd = 0 } end
+    local factor = Combat.LevelFactor(entry.level)
     return {
-        kind = "merc", id = id, role = def.role, level = entry.level, mods = mods, abilities = abilities,
-        atk = def.atk * Combat.LevelFactor(entry.level) * (1 + (mods.atkPct or 0)),
+        kind = "merc", id = id, side = "ally", role = def.role, level = entry.level, mods = mods, abilities = abilities,
+        atk = def.atk * factor * (1 + (mods.atkPct or 0)),
+        hp = math.floor(def.hp * factor * (1 + (mods.hpPct or 0)) + 0.5),
     }
+end
+
+-- A big button of the camp: framed wood, an icon, a title and a line below.
+local function MenuCard(parent, icon, onClick)
+    local b = CreateFrame("Button", nil, parent)
+    b:SetSize(250, 62)
+    local bg = b:CreateTexture(nil, "BACKGROUND")
+    bg:SetAllPoints()
+    bg:SetTexture(MC.Tex("menu_card"))
+    local hl = b:CreateTexture(nil, "HIGHLIGHT")
+    hl:SetPoint("TOPLEFT", 6, -6)
+    hl:SetPoint("BOTTOMRIGHT", -6, 6)
+    hl:SetColorTexture(1, 0.85, 0.45, 0.12)
+    b.icon = b:CreateTexture(nil, "ARTWORK")
+    b.icon:SetSize(42, 42)
+    b.icon:SetPoint("LEFT", 12, 0)
+    b.icon:SetTexture(icon)
+    b.title = Widgets.Text(b, 15, "gold")
+    b.title:SetPoint("TOPLEFT", b.icon, "TOPRIGHT", 10, -3)
+    b.sub = Widgets.Text(b, 10, "white")
+    b.sub:SetPoint("TOPLEFT", b.title, "BOTTOMLEFT", 0, -4)
+    b.sub:SetWidth(176)
+    b.sub:SetJustifyH("LEFT")
+    b:SetScript("OnClick", function()
+        PlaySound(SOUNDKIT.IG_MAINMENU_OPTION)
+        onClick()
+    end)
+    return b
 end
 
 -- Camp ----------------------------------------------------------------------------------------------
 
 function Module:BuildCamp()
     local view = self:AddView("camp", CreateFrame("Frame", nil, self.container))
-    local title = Widgets.LocalizedText(view, 30, "gold", "MC_NAME")
-    title:SetPoint("TOP", 0, -26)
-    local tagline = Widgets.LocalizedText(view, 14, "blue", "MC_TAGLINE")
-    tagline:SetPoint("TOP", title, "BOTTOM", 0, -6)
+    local ribbon = MC.CreateRibbon(view, 440, "MC_NAME", 24)
+    ribbon:SetPoint("TOP", 0, -8)
+    local tagline = Widgets.LocalizedText(view, 13, "white", "MC_TAGLINE")
+    tagline:SetPoint("TOP", ribbon, "BOTTOM", 0, -2)
 
-    self.campModels = {}
+    -- The party on stage; plates and shadows sit on their own layers around the models.
+    local floor = CreateFrame("Frame", nil, view)
+    floor:SetAllPoints()
+    local stage = CreateFrame("Frame", nil, view)
+    stage:SetAllPoints()
+    stage:SetFrameLevel(floor:GetFrameLevel() + 2)
+    local plates = CreateFrame("Frame", nil, view)
+    plates:SetAllPoints()
+    plates:SetFrameLevel(stage:GetFrameLevel() + 10)
+    self.campSlots = {}
     for i = 1, Bounty.PARTY_SIZE do
-        local x = W / 2 + (i - 3.5) * 120
-        local m = MC.Model(view, nil)
-        m:SetSize(120, 190)
-        m:SetPoint("CENTER", view, "TOPLEFT", x, -230)
-        m.name = Widgets.Text(view, 12, "white")
-        m.name:SetPoint("TOP", view, "TOPLEFT", x, -330)
-        m.level = Widgets.Text(view, 10, "gray")
-        m.level:SetPoint("TOP", m.name, "BOTTOM", 0, -2)
-        self.campModels[i] = m
+        local x = W / 2 + (i - 3.5) * 128
+        local shadow = floor:CreateTexture(nil, "ARTWORK")
+        shadow:SetTexture(MC.Tex("node_glow"))
+        shadow:SetVertexColor(0, 0, 0, 0.8)
+        shadow:SetSize(110, 34)
+        shadow:SetPoint("CENTER", view, "TOPLEFT", x, -352)
+        local model = MC.Model(stage, nil)
+        model:SetSize(130, 220)
+        model:SetPoint("BOTTOM", view, "TOPLEFT", x, -362)
+        local plate = MC.CreatePlate(plates, 124, 30, 11)
+        plate:SetPoint("TOP", view, "TOPLEFT", x, -362)
+        plate.text:SetPoint("CENTER", 8, 5)
+        plate.text:SetWidth(98)
+        plate.role = plate:CreateTexture(nil, "ARTWORK")
+        plate.role:SetSize(18, 18)
+        plate.role:SetPoint("LEFT", 6, 0)
+        plate.level = Widgets.Text(plate, 9, "gray")
+        plate.level:SetPoint("BOTTOM", 8, 4)
+        self.campSlots[i] = { model = model, plate = plate, shadow = shadow }
     end
 
-    view.runInfo = Widgets.Text(view, 13, "white")
-    view.runInfo:SetPoint("TOP", 0, -372)
-    local continue = Widgets.Button(view, 240, 30, "MC_CONTINUE_RUN", function() self:Route() end)
-    local travel = Widgets.Button(view, 240, 30, "MC_BOUNTIES", function() self:ShowView("travel") end)
-    local collection = Widgets.Button(view, 240, 30, "MC_COLLECTION", function() self:ShowView("collection") end)
-    local scores = Widgets.Button(view, 240, 26, "HIGHSCORES", function() self.overlay:Show("scores") end)
+    view.travel = MenuCard(view, "Interface\\Icons\\INV_Misc_Map_01", function()
+        if self:Store().run then self:Route() else self:ShowView("travel") end
+    end)
+    view.collection = MenuCard(view, "Interface\\Icons\\INV_Misc_Book_11", function() self:ShowView("collection") end)
+    view.scores = MenuCard(view, "Interface\\Icons\\INV_Misc_Ribbon_01", function() self.overlay:Show("scores") end)
+    for i, card in ipairs({ view.travel, view.collection, view.scores }) do
+        card:SetPoint("CENTER", view, "TOPLEFT", W / 2 + (i - 2) * 266, -(H - 64))
+    end
+
     view.refresh = function()
         local store = self:Store()
-        self:TintBoard(nil)
-        for i, m in ipairs(self.campModels) do
+        local run = store.run
+        self:SetScene(run and run.zone or "elwynn", 0.42)
+        for i, slot in ipairs(self.campSlots) do
             local id = store.party[i]
-            m:SetShown(id ~= nil)
-            m.name:SetShown(id ~= nil)
-            m.level:SetShown(id ~= nil)
+            slot.model:SetShown(id ~= nil)
+            slot.plate:SetShown(id ~= nil)
+            slot.shadow:SetShown(id ~= nil)
             if id then
-                m:SetDisplay(MC.Mercs[id].display, (i - 3.5) * -0.12)
-                m.name:SetText(Describe.MercName(id))
-                m.level:SetText(L.LEVEL:format(store.mercs[id].level))
+                local def = MC.Mercs[id]
+                slot.model:SetDisplay(def.display, (i - 3.5) * -0.12)
+                slot.plate.text:SetText(Describe.MercName(id))
+                slot.plate.role:SetTexture(MC.Tex("role_" .. def.role))
+                slot.plate.level:SetText(L.LEVEL:format(store.mercs[id].level))
             end
         end
-        local run = store.run
-        continue:SetShown(run ~= nil)
-        travel:SetShown(run == nil)
         if run then
-            view.runInfo:SetText(L.MC_RUN_ACTIVE:format(Describe.ZoneName(run.zone)))
-            Widgets.Stack(view, { continue, collection, scores }, -400)
+            view.travel.title:SetText(L.MC_CONTINUE_RUN)
+            view.travel.sub:SetText(Describe.ZoneName(run.zone) .. (run.heroic and (" (" .. L.MC_HEROIC .. ")") or ""))
         else
-            view.runInfo:SetText("")
-            Widgets.Stack(view, { travel, collection, scores }, -400)
+            view.travel.title:SetText(L.MC_BOUNTIES)
+            view.travel.sub:SetText(L.MC_BOUNTIES_SUB)
         end
+        view.collection.title:SetText(L.MC_COLLECTION)
+        local owned = 0
+        for id, entry in pairs(store.mercs) do
+            if entry.owned and MC.Mercs[id] then owned = owned + 1 end
+        end
+        view.collection.sub:SetText(L.MC_COLLECTION_SUB:format(owned, #MC.MERC_ORDER))
+        view.scores.title:SetText(L.HIGHSCORES)
+        local best = ns.Scores.Best(self.id, "default")
+        view.scores.sub:SetText(best > 0 and L.BEST:format(ns.FormatNumber(best)) or L.MC_NO_SCORE)
     end
 end
 
--- Travel -------------------------------------------------------------------------------------------
+-- Travel board ----------------------------------------------------------------------------------------
 
 function Module:BuildTravel()
     local view = self:AddView("travel", CreateFrame("Frame", nil, self.container))
-    local title = Widgets.LocalizedText(view, 22, "gold", "MC_BOUNTIES")
-    title:SetPoint("TOPLEFT", 20, -14)
+    local ribbon = MC.CreateRibbon(view, 300, "MC_BOUNTIES", 18)
+    ribbon:SetPoint("TOPLEFT", 4, -2)
     view.party = Widgets.Text(view, 12, "white")
     view.party:SetPoint("TOPRIGHT", -20, -20)
-    self.travelContinent, self.travelPage = "ek", 1
+    self.travelContinent = "ek"
 
     view.tabs = {}
     for i, c in ipairs(CONTINENTS) do
-        local tab = Widgets.Button(view, 170, 24, "MC_CONTINENT_" .. c:upper(), function()
-            self.travelContinent, self.travelPage = c, 1
+        local tab = Widgets.Button(view, 150, 22, "MC_CONTINENT_" .. c:upper(), function()
+            self.travelContinent, self.travelZone = c, nil
             view.refresh()
         end)
-        tab:SetPoint("TOP", view, "TOP", (i - 2) * 180, -48)
+        tab:SetPoint("TOPLEFT", 330 + (i - 1) * 156, -24)
         view.tabs[c] = tab
     end
 
-    view.cards = {}
-    local left = (W - (ZONE_COLUMNS * ZONE_CARD_W + (ZONE_COLUMNS - 1) * 12)) / 2
-    for i = 1, ZONE_COLUMNS * ZONE_ROWS do
-        local col, row = (i - 1) % ZONE_COLUMNS, math.floor((i - 1) / ZONE_COLUMNS)
-        local card = CreateFrame("Frame", nil, view)
-        card:SetSize(ZONE_CARD_W, ZONE_CARD_H)
-        card:SetPoint("TOPLEFT", left + col * (ZONE_CARD_W + 12), -84 - row * (ZONE_CARD_H + 10))
-        Fill(card, 0.06, 0.04, 0.03, 0.85)
-        Widgets.Rim(card, card)
-        card.back = card:CreateTexture(nil, "BACKGROUND", nil, 1)
-        card.back:SetTexture(MC.Tex("token_back"))
-        card.back:SetPoint("TOPLEFT", 6, -6)
-        card.back:SetSize(64, 80)
-        card.model = MC.Model(card, 0.7)
-        card.model:SetPoint("TOPLEFT", 6, -6)
-        card.model:SetSize(64, 80)
-        card.name = Widgets.Text(card, 13, "gold")
-        card.name:SetPoint("TOPLEFT", 76, -8)
-        card.name:SetWidth(ZONE_CARD_W - 82)
-        card.name:SetJustifyH("LEFT")
-        card.levels = Widgets.Text(card, 11, "white")
-        card.levels:SetPoint("TOPLEFT", card.name, "BOTTOMLEFT", 0, -4)
-        card.boss = Widgets.Text(card, 10, "gray")
-        card.boss:SetPoint("TOPLEFT", card.levels, "BOTTOMLEFT", 0, -3)
-        card.boss:SetWidth(ZONE_CARD_W - 82)
-        card.boss:SetJustifyH("LEFT")
-        card.status = Widgets.Text(card, 10, "white")
-        card.status:SetPoint("TOPLEFT", card.boss, "BOTTOMLEFT", 0, -3)
-        card.normal = Widgets.Button(card, 88, 22, "MC_NORMAL", function() self:StartBounty(card.zone, false) end)
-        card.normal:SetPoint("BOTTOMLEFT", 6, 6)
-        card.heroic = Widgets.Button(card, 88, 22, "MC_HEROIC", function() self:StartBounty(card.zone, true) end)
-        card.heroic:SetPoint("BOTTOMRIGHT", -6, 6)
-        card.heroic:SetScript("OnEnter", function(b)
-            if not b:IsEnabled() then
-                GameTooltip:SetOwner(b, "ANCHOR_TOP")
-                GameTooltip:SetText(L.MC_HEROIC_LOCKED, 1, 1, 1, 1, true)
-                GameTooltip:Show()
-            end
+    local map = MC.CreateMapCanvas(view, MAP_W, MAP_H)
+    map:SetPoint("TOPLEFT", 14, -62)
+    Widgets.Rim(view, map)
+    view.map = map
+    local pinLayer = CreateFrame("Frame", nil, view)
+    pinLayer:SetAllPoints(map)
+    pinLayer:SetFrameLevel(map:GetFrameLevel() + 5)
+    view.pins = {}
+    for i = 1, 24 do
+        local pin = CreateFrame("Button", nil, pinLayer)
+        pin:SetSize(28, 28)
+        pin.glow = pin:CreateTexture(nil, "BACKGROUND")
+        pin.glow:SetTexture(MC.Tex("node_glow"))
+        pin.glow:SetSize(54, 54)
+        pin.glow:SetPoint("CENTER")
+        pin.glow:SetBlendMode("ADD")
+        pin.icon = pin:CreateTexture(nil, "ARTWORK")
+        pin.icon:SetSize(23, 23)
+        pin.icon:SetPoint("CENTER")
+        local mask = pin:CreateMaskTexture()
+        mask:SetTexture(MC.Tex("circle_mask"), "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
+        mask:SetAllPoints(pin.icon)
+        pin.icon:AddMaskTexture(mask)
+        pin.ring = pin:CreateTexture(nil, "OVERLAY")
+        pin.ring:SetTexture(MC.Tex("node_ring"))
+        pin.ring:SetSize(33, 33)
+        pin.ring:SetPoint("CENTER")
+        pin.check = pin:CreateTexture(nil, "OVERLAY", nil, 1)
+        pin.check:SetTexture("Interface\\RaidFrame\\ReadyCheck-Ready")
+        pin.check:SetSize(14, 14)
+        pin.check:SetPoint("BOTTOMRIGHT", 4, -4)
+        -- Names only show for the hovered or chosen zone; the south of the map is crowded.
+        pin.label = Widgets.Text(pin, 11, "white")
+        pin.label:SetPoint("TOP", pin, "BOTTOM", 0, -1)
+        pin:SetScript("OnClick", function()
+            self.travelZone = pin.zone
+            MC.Sound("select")
+            view.refresh()
         end)
-        card.heroic:SetScript("OnLeave", GameTooltip_Hide)
-        view.cards[i] = card
+        pin:SetScript("OnEnter", function()
+            pin.glow:Show()
+            pin.label:Show()
+            local zone = MC.Zones[pin.zone]
+            GameTooltip:SetOwner(pin, "ANCHOR_RIGHT")
+            GameTooltip:SetText(Describe.ZoneName(pin.zone), 1, 0.82, 0)
+            GameTooltip:AddLine(L.MC_LEVEL_RANGE:format(zone.min, zone.max), 1, 1, 1)
+            GameTooltip:AddLine(L["MC_E_" .. zone.boss], 0.8, 0.8, 0.8)
+            GameTooltip:Show()
+        end)
+        pin:SetScript("OnLeave", function()
+            pin.glow:SetShown(self.travelZone == pin.zone)
+            pin.label:SetShown(self.travelZone == pin.zone)
+            GameTooltip:Hide()
+        end)
+        pin:Hide()
+        view.pins[i] = pin
     end
 
-    local back = Widgets.Button(view, 140, 24, "BACK", function() self:ShowView("camp") end)
-    back:SetPoint("BOTTOMLEFT", 20, 16)
-    view.pager = Widgets.Cycler(view, 140, function(dir)
-        self.travelPage = self.travelPage + dir
-        view.refresh()
+    -- The wanted poster of the chosen zone.
+    local poster = CreateFrame("Frame", nil, view)
+    poster:SetSize(236, 490)
+    poster:SetPoint("TOPRIGHT", -8, -52)
+    local paper = poster:CreateTexture(nil, "BACKGROUND")
+    paper:SetAllPoints()
+    paper:SetTexture(MC.Tex("poster"))
+    paper:SetTexCoord(0, 1, 0, 490 / 512)
+    view.poster = poster
+    poster.wanted = Ink(poster, 26, POSTER_RED)
+    poster.wanted:SetPoint("TOP", 0, -34)
+    poster.frame = CreateFrame("Frame", nil, poster)
+    poster.frame:SetSize(176, 168)
+    poster.frame:SetPoint("TOP", 0, -72)
+    local back = poster.frame:CreateTexture(nil, "BACKGROUND")
+    back:SetAllPoints()
+    back:SetColorTexture(0.1, 0.07, 0.05, 0.9)
+    Widgets.Rim(poster.frame, poster.frame)
+    poster.model = MC.Model(poster.frame, 0.55)
+    poster.model:SetAllPoints()
+    poster.boss = Ink(poster, 16, INK)
+    poster.boss:SetPoint("TOP", poster.frame, "BOTTOM", 0, -10)
+    poster.boss:SetWidth(210)
+    poster.zone = Ink(poster, 12, INK)
+    poster.zone:SetPoint("TOP", poster.boss, "BOTTOM", 0, -4)
+    poster.levels = Ink(poster, 12, INK)
+    poster.levels:SetPoint("TOP", poster.zone, "BOTTOM", 0, -6)
+    poster.reward = Ink(poster, 11, INK)
+    poster.reward:SetPoint("TOP", poster.levels, "BOTTOM", 0, -12)
+    poster.reward:SetWidth(200)
+    poster.reward:SetSpacing(3)
+    poster.status = Ink(poster, 11, INK)
+    poster.status:SetPoint("BOTTOM", 0, 64)
+    poster.hint = Ink(poster, 13, INK)
+    poster.hint:SetPoint("CENTER", 0, 20)
+    poster.hint:SetWidth(180)
+    poster.normal = Widgets.Button(poster, 100, 24, "MC_NORMAL", function() self:StartBounty(self.travelZone, false) end)
+    poster.normal:SetPoint("BOTTOMLEFT", 16, 30)
+    poster.heroic = Widgets.Button(poster, 100, 24, "MC_HEROIC", function() self:StartBounty(self.travelZone, true) end)
+    poster.heroic:SetPoint("BOTTOMRIGHT", -16, 30)
+    poster.heroic:SetMotionScriptsWhileDisabled(true)
+    poster.heroic:SetScript("OnEnter", function(b)
+        if not b:IsEnabled() then
+            GameTooltip:SetOwner(b, "ANCHOR_TOP")
+            GameTooltip:SetText(L.MC_HEROIC_LOCKED, 1, 1, 1, 1, true)
+            GameTooltip:Show()
+        end
     end)
-    view.pager:SetPoint("BOTTOM", 0, 16)
+    poster.heroic:SetScript("OnLeave", GameTooltip_Hide)
 
-    view.refresh = function()
-        local store = self:Store()
-        self:TintBoard(nil)
-        local reference = math.floor(Bounty.PartyLevel(store) + 0.5)
-        view.party:SetText(L.MC_PARTY_LEVEL:format(reference))
-        for c, tab in pairs(view.tabs) do tab:SetEnabled(c ~= self.travelContinent) end
-        local zones = {}
-        for _, zid in ipairs(MC.ZONE_ORDER) do
-            if MC.Zones[zid].continent == self.travelContinent then zones[#zones + 1] = zid end
-        end
-        local perPage = #view.cards
-        local pages = math.max(1, math.ceil(#zones / perPage))
-        self.travelPage = (self.travelPage - 1) % pages + 1
-        view.pager:SetShown(pages > 1)
-        view.pager.label:SetText(("%d / %d"):format(self.travelPage, pages))
-        local running = store.run ~= nil
-        for i, card in ipairs(view.cards) do
-            local zid = zones[(self.travelPage - 1) * perPage + i]
-            card:SetShown(zid ~= nil)
-            if zid then
-                local zone = MC.Zones[zid]
-                local state = Bounty.ZoneState(store, zid)
-                card.zone = zid
-                card.name:SetText(Describe.ZoneName(zid))
-                local bossLevel = Bounty.BossLevel(zone, false)
-                local r, g, b = MC.ConColor(bossLevel, reference)
-                card.levels:SetText(L.MC_LEVEL_RANGE:format(zone.min, zone.max)
-                    .. ("  |cff%02x%02x%02x(%d)|r"):format(r * 255, g * 255, b * 255, bossLevel))
-                card.boss:SetText(L["MC_E_" .. zone.boss])
-                local status = {}
-                if state.normal > 0 then status[#status + 1] = "|cff40ff40" .. L.MC_DONE_NORMAL .. "|r" end
-                if state.heroic > 0 then status[#status + 1] = "|cffa335ee" .. L.MC_DONE_HEROIC .. "|r" end
-                card.status:SetText(table.concat(status, "  "))
-                card.model:SetDisplay(MC.Enemies[zone.boss].display, 0.35)
-                card.normal:SetEnabled(not running)
-                card.heroic:SetEnabled(not running and Bounty.HeroicUnlocked(store, zid))
-            end
+    local backButton = Widgets.Button(view, 140, 22, "BACK", function() self:ShowView("camp") end)
+    backButton:SetPoint("BOTTOMLEFT", 14, 8)
+
+    view.refresh = function() self:RefreshTravel() end
+end
+
+function Module:RefreshTravel()
+    local store = self:Store()
+    local view = self.views.travel
+    self:SetScene(nil)
+    local reference = math.floor(Bounty.PartyLevel(store) + 0.5)
+    view.party:SetText(L.MC_PARTY_LEVEL:format(reference))
+    local continent = self.travelContinent
+    for c, tab in pairs(view.tabs) do tab:SetEnabled(c ~= continent) end
+    local crop = CONTINENT_VIEW[continent]
+    view.map:SetMap(continent, crop[1], crop[2], crop[3], crop[4])
+
+    local used = 0
+    for _, zid in ipairs(MC.ZONE_ORDER) do
+        local place = MC.ZoneMaps[zid]
+        if place and place.continent == continent then
+            used = used + 1
+            local pin = view.pins[used]
+            local r = place.rect
+            local x, y = view.map:Point((r[1] + r[2]) / 2, (r[3] + r[4]) / 2)
+            pin:ClearAllPoints()
+            pin:SetPoint("CENTER", view.map, "TOPLEFT", x, -y)
+            pin.zone = zid
+            local state = Bounty.ZoneState(store, zid)
+            local zone = MC.Zones[zid]
+            pin.icon:SetTexture(state.heroic > 0 and "Interface\\Icons\\INV_Misc_Head_Dragon_01" or "Interface\\Icons\\INV_Misc_Bone_HumanSkull_01")
+            pin.ring:SetVertexColor(state.heroic > 0 and 0.8 or 1, state.heroic > 0 and 0.5 or 1, 1)
+            pin.check:SetShown(state.normal > 0)
+            local cr, cg, cb = MC.ConColor(Bounty.BossLevel(zone, false), reference)
+            pin.label:SetText(("%s |cff%02x%02x%02x(%d-%d)|r"):format(Describe.ZoneName(zid), cr * 255, cg * 255, cb * 255, zone.min, zone.max))
+            pin.glow:SetShown(self.travelZone == zid)
+            pin.label:SetShown(self.travelZone == zid)
+            pin:SetFrameLevel(pin:GetParent():GetFrameLevel() + (self.travelZone == zid and 5 or 1))
+            pin:Show()
         end
     end
+    for i = used + 1, #view.pins do view.pins[i]:Hide() end
+    if continent == "zephras" and not self.travelZone then self.travelZone = "zephras" end
+    self:RefreshPoster()
 end
 
--- Collection ---------------------------------------------------------------------------------------
-
-local function ListButton(parent, w, h)
-    local b = CreateFrame("Button", nil, parent)
-    b:SetSize(w, h)
-    b.fill = Fill(b, 0.06, 0.04, 0.03, 0.85)
-    b.rim = Widgets.Rim(b, b)
-    local hl = b:CreateTexture(nil, "HIGHLIGHT")
-    hl:SetAllPoints()
-    hl:SetColorTexture(1, 0.82, 0.4, 0.12)
-    b.mark = b:CreateTexture(nil, "BORDER")
-    b.mark:SetAllPoints()
-    b.mark:SetColorTexture(1, 0.82, 0.3, 0.22)
-    b.mark:Hide()
-    b.role = b:CreateTexture(nil, "ARTWORK")
-    b.role:SetSize(20, 20)
-    b.role:SetPoint("LEFT", 5, 0)
-    b.name = Widgets.Text(b, 11, "white")
-    b.name:SetPoint("TOPLEFT", b.role, "TOPRIGHT", 5, 2)
-    b.name:SetWidth(w - 34)
-    b.name:SetJustifyH("LEFT")
-    b.name:SetWordWrap(false)
-    b.sub = Widgets.Text(b, 10, "gray")
-    b.sub:SetPoint("TOPLEFT", b.name, "BOTTOMLEFT", 0, -2)
-    return b
+function Module:RefreshPoster()
+    local store = self:Store()
+    local poster = self.views.travel.poster
+    local zid = self.travelZone
+    local zone = zid and MC.Zones[zid]
+    poster.wanted:SetText(L.MC_WANTED)
+    for _, region in ipairs({ poster.frame, poster.boss, poster.zone, poster.levels, poster.reward, poster.status, poster.normal, poster.heroic }) do
+        region:SetShown(zone ~= nil)
+    end
+    poster.hint:SetShown(zone == nil)
+    poster.hint:SetText(L.MC_PICK_ZONE)
+    if not zone then return end
+    local boss = MC.Enemies[zone.boss]
+    poster.model:SetDisplay(boss.display, 0.35)
+    poster.boss:SetText(L["MC_E_" .. zone.boss])
+    poster.zone:SetText(Describe.ZoneName(zid))
+    local reference = math.floor(Bounty.PartyLevel(store) + 0.5)
+    local bossLevel = Bounty.BossLevel(zone, false)
+    local r, g, b = MC.ConColor(bossLevel, reference)
+    poster.levels:SetText(L.MC_LEVEL_RANGE:format(zone.min, zone.max)
+        .. ("  ·  |cff%02x%02x%02x%s|r"):format(r * 200, g * 160, b * 120, L.MC_BOSS_LEVEL:format(bossLevel)))
+    local reward = { L.MC_REWARD }
+    for _, id in ipairs(zone.loot) do
+        reward[#reward + 1] = ("|T%s:14:14|t %s"):format(MC.Tex("role_" .. MC.Mercs[id].role), Describe.MercName(id))
+    end
+    poster.reward:SetText(table.concat(reward, "\n"))
+    local state = Bounty.ZoneState(store, zid)
+    local status = {}
+    if state.normal > 0 then status[#status + 1] = L.MC_DONE_NORMAL end
+    if state.heroic > 0 then status[#status + 1] = L.MC_DONE_HEROIC end
+    poster.status:SetText(table.concat(status, "  ·  "))
+    local running = store.run ~= nil
+    poster.normal:SetEnabled(not running)
+    poster.heroic:SetEnabled(not running and Bounty.HeroicUnlocked(store, zid))
 end
+
+-- Collection -------------------------------------------------------------------------------------------
 
 function Module:BuildCollection()
     local view = self:AddView("collection", CreateFrame("Frame", nil, self.container))
-    local title = Widgets.LocalizedText(view, 22, "gold", "MC_COLLECTION")
-    title:SetPoint("TOPLEFT", 20, -14)
+    local ribbon = MC.CreateRibbon(view, 300, "MC_COLLECTION", 18)
+    ribbon:SetPoint("TOPLEFT", 4, -2)
+    self.collectionPage = 1
 
-    -- Party slots on the left.
-    local partyTitle = Widgets.LocalizedText(view, 13, "gold", "MC_PARTY")
-    partyTitle:SetPoint("TOPLEFT", 20, -56)
+    -- Cards: the mercenary's token with its name on a plate below.
+    view.cards = {}
+    local plates = CreateFrame("Frame", nil, view)
+    plates:SetAllPoints()
+    plates:SetFrameLevel(view:GetFrameLevel() + 20)
+    for i = 1, CARD_COLUMNS * CARD_ROWS do
+        local col, row = (i - 1) % CARD_COLUMNS, math.floor((i - 1) / CARD_COLUMNS)
+        local x, y = 86 + col * 140, 140 + row * 206
+        local token = MC.CreateToken(view)
+        token:SetScale(1.1)
+        token:SetPoint("CENTER", view, "TOPLEFT", x / 1.1, -y / 1.1)
+        local plate = MC.CreatePlate(plates, 132, 26, 11)
+        plate:SetPoint("TOP", view, "TOPLEFT", x, -(y + 76))
+        plate.sub = Widgets.Text(plate, 9, "gray")
+        plate.sub:SetPoint("TOP", plate, "BOTTOM", 0, -1)
+        token:SetScript("OnClick", function() self:CollectionClicked(token.merc) end)
+        token:SetScript("OnEnter", function() token.glow:Show() end)
+        token:SetScript("OnLeave", function() token.glow:Hide() end)
+        token.plate = plate
+        view.cards[i] = token
+    end
+    view.pager = Widgets.Cycler(view, 140, function(dir)
+        local pages = math.ceil(#MC.MERC_ORDER / #view.cards)
+        self.collectionPage = (self.collectionPage - 1 + dir) % pages + 1
+        view.refresh()
+    end)
+    view.pager:SetPoint("BOTTOM", view, "BOTTOMLEFT", 296, 14)
+
+    -- The party on the right.
+    local panel = CreateFrame("Frame", nil, view)
+    panel:SetPoint("TOPLEFT", 604, -56)
+    panel:SetPoint("BOTTOMRIGHT", -10, 44)
+    local fill = panel:CreateTexture(nil, "BACKGROUND")
+    fill:SetAllPoints()
+    fill:SetColorTexture(0.05, 0.03, 0.02, 0.82)
+    Widgets.Rim(panel, panel)
+    local title = Widgets.LocalizedText(panel, 14, "gold", "MC_PARTY")
+    title:SetPoint("TOP", 0, -10)
     view.slots = {}
     for i = 1, Bounty.PARTY_SIZE do
-        local b = ListButton(view, 180, 44)
-        b:SetPoint("TOPLEFT", 16, -78 - (i - 1) * 50)
+        local b = CreateFrame("Button", nil, panel)
+        b:SetSize(204, 50)
+        b:SetPoint("TOP", 0, -34 - (i - 1) * 56)
+        b.bg = b:CreateTexture(nil, "BACKGROUND")
+        b.bg:SetAllPoints()
+        b.bg:SetTexture(MC.Tex("plate"))
+        b.mark = b:CreateTexture(nil, "BORDER")
+        b.mark:SetPoint("TOPLEFT", 4, -4)
+        b.mark:SetPoint("BOTTOMRIGHT", -4, 4)
+        b.mark:SetColorTexture(0.3, 1, 0.3, 0.2)
+        local hl = b:CreateTexture(nil, "HIGHLIGHT")
+        hl:SetPoint("TOPLEFT", 4, -4)
+        hl:SetPoint("BOTTOMRIGHT", -4, 4)
+        hl:SetColorTexture(1, 0.85, 0.4, 0.12)
+        b.role = b:CreateTexture(nil, "ARTWORK")
+        b.role:SetSize(26, 26)
+        b.role:SetPoint("LEFT", 10, 0)
+        b.name = Widgets.Text(b, 12, "white")
+        b.name:SetPoint("TOPLEFT", b.role, "TOPRIGHT", 8, 0)
+        b.name:SetWidth(150)
+        b.name:SetJustifyH("LEFT")
+        b.name:SetWordWrap(false)
+        b.level = Widgets.Text(b, 10, "gray")
+        b.level:SetPoint("TOPLEFT", b.name, "BOTTOMLEFT", 0, -2)
         b:SetScript("OnClick", function()
+            if self:Store().run then return end
             self.partySlot = self.partySlot ~= i and i or nil
-            self.collectionSelected = self:Store().party[i]
+            MC.Sound("select")
             view.refresh()
         end)
         view.slots[i] = b
     end
-    view.slotHint = Widgets.Text(view, 10, "gray")
-    view.slotHint:SetPoint("TOPLEFT", 18, -386)
-    view.slotHint:SetWidth(180)
-    view.slotHint:SetJustifyH("LEFT")
+    view.hint = Widgets.Text(panel, 10, "gray")
+    view.hint:SetPoint("BOTTOM", 0, 10)
+    view.hint:SetWidth(200)
 
-    -- Every mercenary in the middle.
-    view.grid = {}
-    for i, id in ipairs(MC.MERC_ORDER) do
-        local col, row = (i - 1) % 3, math.floor((i - 1) / 3)
-        local b = ListButton(view, 104, 44)
-        b:SetPoint("TOPLEFT", 210 + col * 108, -56 - row * 50)
-        b.id = id
-        b:SetScript("OnClick", function()
-            local store = self:Store()
-            if self.partySlot and store.mercs[id] and store.mercs[id].owned then
-                if Bounty.SetPartySlot(store, self.partySlot, id) then MC.Sound("select") end
-                self.partySlot = nil
-            end
-            self.collectionSelected = id
-            view.refresh()
-        end)
-        view.grid[i] = b
-    end
-
-    -- The chosen mercenary on the right.
-    local detail = CreateFrame("Frame", nil, view)
-    detail:SetPoint("TOPLEFT", 540, -14)
-    detail:SetPoint("BOTTOMRIGHT", -10, 10)
-    Fill(detail, 0.05, 0.03, 0.02, 0.8)
-    Widgets.Rim(detail, detail)
-    view.detail = detail
-    detail.model = MC.Model(detail, nil)
-    detail.model:SetSize(160, 170)
-    detail.model:SetPoint("TOPLEFT", 6, -6)
-    detail.name = Widgets.Text(detail, 16, "gold")
-    detail.name:SetPoint("TOPLEFT", 170, -14)
-    detail.name:SetWidth(110)
-    detail.name:SetJustifyH("LEFT")
-    detail.role = Widgets.Text(detail, 11, "white")
-    detail.role:SetPoint("TOPLEFT", detail.name, "BOTTOMLEFT", 0, -4)
-    detail.level = Widgets.Text(detail, 11, "white")
-    detail.level:SetPoint("TOPLEFT", detail.role, "BOTTOMLEFT", 0, -6)
-    detail.xp = Widgets.Text(detail, 10, "gray")
-    detail.xp:SetPoint("TOPLEFT", detail.level, "BOTTOMLEFT", 0, -2)
-    detail.coins = Widgets.Text(detail, 11, "gold")
-    detail.coins:SetPoint("TOPLEFT", detail.xp, "BOTTOMLEFT", 0, -8)
-    detail.recruit = Widgets.Button(detail, 112, 24, "MC_RECRUIT", function()
-        local store = self:Store()
-        if Bounty.Recruit(store, self.collectionSelected) then
-            PlaySound(SOUNDKIT.IG_QUEST_LIST_COMPLETE)
-            self:CheckLevels()
-            view.refresh()
-        end
-    end)
-    detail.recruit:SetPoint("TOPLEFT", detail.coins, "BOTTOMLEFT", 0, -8)
-
-    detail.abilities = {}
-    for i = 1, 3 do
-        local row = CreateFrame("Frame", nil, detail)
-        row:SetSize(270, 44)
-        row:SetPoint("TOPLEFT", 10, -186 - (i - 1) * 50)
-        row:EnableMouse(true)
-        row.icon = row:CreateTexture(nil, "ARTWORK")
-        row.icon:SetSize(36, 36)
-        row.icon:SetPoint("LEFT")
-        row.name = Widgets.Text(row, 12, "gold")
-        row.name:SetPoint("TOPLEFT", row.icon, "TOPRIGHT", 8, -1)
-        row.name:SetWidth(140)
-        row.name:SetJustifyH("LEFT")
-        row.name:SetWordWrap(false)
-        row.sub = Widgets.Text(row, 10, "gray")
-        row.sub:SetPoint("TOPLEFT", row.name, "BOTTOMLEFT", 0, -2)
-        row.up = Widgets.Button(row, 74, 22, nil, function()
-            if Bounty.RankUp(self:Store(), self.collectionSelected, i) then
-                PlaySound(SOUNDKIT.IG_QUEST_LIST_COMPLETE)
-                self:CheckLevels()
-                view.refresh()
-            end
-        end)
-        row.up:SetPoint("RIGHT")
-        row:SetScript("OnEnter", function()
-            local store = self:Store()
-            local unit = MC.PreviewUnit(store, self.collectionSelected)
-            local aid = unit.abilities[i].id
-            GameTooltip:SetOwner(row, "ANCHOR_LEFT")
-            GameTooltip:SetText(Describe.AbilityName(aid), 1, 0.82, 0)
-            GameTooltip:AddLine(Describe.AbilityStats(aid, unit, i), 0.7, 0.7, 0.7)
-            GameTooltip:AddLine(Describe.Ability(aid, unit, i), 1, 1, 1, true)
-            if unit.level < MC.ABILITY_LEVELS[i] then
-                GameTooltip:AddLine(L.MC_UNLOCKS_AT:format(MC.ABILITY_LEVELS[i]), 1, 0.4, 0.3)
-            end
-            GameTooltip:Show()
-        end)
-        row:SetScript("OnLeave", GameTooltip_Hide)
-        detail.abilities[i] = row
-    end
-
-    local gearTitle = Widgets.LocalizedText(detail, 12, "gold", "MC_EQUIPMENT")
-    gearTitle:SetPoint("TOPLEFT", 10, -340)
-    detail.gear = {}
-    for i = 1, 3 do
-        local b = CreateFrame("Button", nil, detail)
-        b:SetSize(40, 40)
-        b:SetPoint("TOPLEFT", 10 + (i - 1) * 48, -360)
-        b.icon = b:CreateTexture(nil, "ARTWORK")
-        b.icon:SetAllPoints()
-        b.mark = b:CreateTexture(nil, "OVERLAY")
-        b.mark:SetTexture("Interface\\Buttons\\CheckButtonHilight")
-        b.mark:SetBlendMode("ADD")
-        b.mark:SetAllPoints()
-        b:SetScript("OnClick", function()
-            if Bounty.SetGear(self:Store(), self.collectionSelected, i) then
-                MC.Sound("select")
-                view.refresh()
-            end
-        end)
-        b:SetScript("OnEnter", function() self:GearTooltip(b, self.collectionSelected, i) end)
-        b:SetScript("OnLeave", GameTooltip_Hide)
-        detail.gear[i] = b
-    end
-    detail.gearText = Widgets.Text(detail, 10, "white")
-    detail.gearText:SetPoint("TOPLEFT", 10, -408)
-    detail.gearText:SetWidth(270)
-    detail.gearText:SetJustifyH("LEFT")
-
-    local back = Widgets.Button(view, 140, 24, "BACK", function()
+    local back = Widgets.Button(view, 140, 22, "BACK", function()
         self.partySlot = nil
         self:ShowView("camp")
     end)
-    back:SetPoint("BOTTOMLEFT", 20, 16)
+    back:SetPoint("BOTTOMLEFT", 14, 8)
 
+    self:CreateMercPage()
     view.refresh = function() self:RefreshCollection() end
+end
+
+function Module:CollectionClicked(id)
+    if not id then return end
+    local store = self:Store()
+    local entry = store.mercs[id]
+    if self.partySlot and entry and entry.owned then
+        if Bounty.SetPartySlot(store, self.partySlot, id) then MC.Sound("select") end
+        self.partySlot = nil
+        self:RefreshCollection()
+        return
+    end
+    self.overlay:Show("merc", id)
+end
+
+function Module:RefreshCollection()
+    local store = self:Store()
+    local view = self.views.collection
+    self:SetScene("ek", 0.3)
+    local locked = store.run ~= nil
+    if locked then self.partySlot = nil end
+    local inParty = {}
+    for i, b in ipairs(view.slots) do
+        local id = store.party[i]
+        if id then inParty[id] = true end
+        b.role:SetTexture(id and MC.Tex("role_" .. MC.Mercs[id].role) or nil)
+        b.name:SetText(id and Describe.MercName(id) or "")
+        b.level:SetText(id and L.LEVEL:format(store.mercs[id].level) or "")
+        b.mark:SetShown(self.partySlot == i)
+    end
+    view.hint:SetText(locked and L.MC_PARTY_LOCKED or (self.partySlot and L.MC_PARTY_PICK or L.MC_PARTY_HINT))
+
+    local perPage = #view.cards
+    local pages = math.ceil(#MC.MERC_ORDER / perPage)
+    view.pager.label:SetText(("%d / %d"):format(self.collectionPage, pages))
+    for i, token in ipairs(view.cards) do
+        local id = MC.MERC_ORDER[(self.collectionPage - 1) * perPage + i]
+        token:SetShown(id ~= nil)
+        token.plate:SetShown(id ~= nil)
+        token.merc = id
+        if id then
+            local entry = store.mercs[id]
+            local owned = entry and entry.owned
+            local unit = MC.PreviewUnit(store, id)
+            token:SetData({
+                kind = "merc", id = id, side = "ally", role = unit.role, level = unit.level,
+                atk = math.floor(unit.atk + 0.5), hp = unit.hp, maxHp = unit.hp,
+            })
+            token:SetLocked(not owned)
+            token.select:SetShown(inParty[id] or false)
+            token.select:SetVertexColor(1, 0.82, 0.3)
+            token.name:SetText("")
+            token.plate.text:SetText(Describe.MercName(id))
+            if owned then
+                token.plate.sub:SetText(inParty[id] and L.MC_IN_PARTY or "")
+            else
+                token.plate.sub:SetText(L.MC_COINS_PROGRESS:format(entry and entry.coins or 0, Bounty.RECRUIT_COST))
+            end
+        end
+    end
+end
+
+-- Mercenary page --------------------------------------------------------------------------------------
+
+function Module:CreateMercPage()
+    local page = self.overlay:AddPage("merc")
+    local ribbon = MC.CreateRibbon(page, 360, nil, 20)
+    ribbon:SetPoint("TOPLEFT", 10, -6)
+    page.token = MC.CreateToken(page)
+    page.token:SetScale(1.9)
+    page.token:SetPoint("CENTER", page, "TOPLEFT", 140 / 1.9, -210 / 1.9)
+    page.token:EnableMouse(false)
+    page.role = Widgets.Text(page, 13, "white")
+    page.role:SetPoint("TOP", page, "TOPLEFT", 140, -340)
+    page.level = Widgets.Text(page, 13, "gold")
+    page.level:SetPoint("TOP", page.role, "BOTTOM", 0, -6)
+    local bar = CreateFrame("StatusBar", nil, page)
+    bar:SetSize(200, 12)
+    bar:SetPoint("TOP", page.level, "BOTTOM", 0, -6)
+    bar:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
+    bar:SetStatusBarColor(0.58, 0.0, 0.55)
+    local barBg = bar:CreateTexture(nil, "BACKGROUND")
+    barBg:SetAllPoints()
+    barBg:SetColorTexture(0, 0, 0, 0.6)
+    Widgets.Rim(page, bar)
+    page.xpBar = bar
+    page.xp = Widgets.Text(bar, 9, "white")
+    page.xp:SetPoint("CENTER")
+    page.coins = Widgets.Text(page, 13, "gold")
+    page.coins:SetPoint("TOP", bar, "BOTTOM", 0, -12)
+    page.recruit = Widgets.Button(page, 180, 26, "MC_RECRUIT", function()
+        local store = self:Store()
+        if Bounty.Recruit(store, page.merc) then
+            PlaySound(SOUNDKIT.IG_QUEST_LIST_COMPLETE)
+            self:CheckLevels()
+            page.refresh(page.merc)
+        end
+    end)
+    page.recruit:SetPoint("TOP", page.coins, "BOTTOM", 0, -8)
+
+    local abilitiesTitle = Widgets.LocalizedText(page, 15, "gold", "MC_ABILITIES")
+    abilitiesTitle:SetPoint("TOPLEFT", 300, -60)
+    page.cards, page.ups, page.locks = {}, {}, {}
+    for i = 1, 3 do
+        local x = 352 + (i - 1) * 140
+        local card = MC.CreateAbilityCard(page)
+        card:SetPoint("CENTER", page, "TOPLEFT", x, -160)
+        card:SetScript("OnEnter", function(c)
+            if not c.abilityId then return end
+            local unit = MC.PreviewUnit(self:Store(), page.merc)
+            GameTooltip:SetOwner(c, "ANCHOR_RIGHT")
+            GameTooltip:SetText(Describe.AbilityName(c.abilityId), 1, 0.82, 0)
+            GameTooltip:AddLine(Describe.AbilityStats(c.abilityId, unit, i), 0.7, 0.7, 0.7)
+            GameTooltip:AddLine(Describe.Ability(c.abilityId, unit, i), 1, 1, 1, true)
+            GameTooltip:Show()
+        end)
+        card:SetScript("OnLeave", GameTooltip_Hide)
+        page.cards[i] = card
+        local lock = Widgets.Text(page, 11, "white")
+        lock:SetPoint("CENTER", card, "CENTER", 0, 0)
+        page.locks[i] = lock
+        local up = Widgets.Button(page, 120, 22, nil, function()
+            if Bounty.RankUp(self:Store(), page.merc, i) then
+                PlaySound(SOUNDKIT.IG_QUEST_LIST_COMPLETE)
+                self:CheckLevels()
+                page.refresh(page.merc)
+            end
+        end)
+        up:SetPoint("TOP", card, "BOTTOM", 0, -6)
+        page.ups[i] = up
+    end
+
+    local gearTitle = Widgets.LocalizedText(page, 15, "gold", "MC_EQUIPMENT")
+    gearTitle:SetPoint("TOPLEFT", 300, -282)
+    page.gear = {}
+    for i = 1, 3 do
+        local b = CreateFrame("Button", nil, page)
+        b:SetSize(46, 46)
+        b:SetPoint("TOPLEFT", 300 + (i - 1) * 56, -306)
+        b.icon = b:CreateTexture(nil, "ARTWORK")
+        b.icon:SetAllPoints()
+        b.border = b:CreateTexture(nil, "OVERLAY")
+        b.border:SetTexture("Interface\\Buttons\\UI-ActionButton-Border")
+        b.border:SetBlendMode("ADD")
+        b.border:SetPoint("CENTER")
+        b.border:SetSize(82, 82)
+        b:SetScript("OnClick", function()
+            if Bounty.SetGear(self:Store(), page.merc, i) then
+                MC.Sound("select")
+                page.refresh(page.merc)
+            end
+        end)
+        b:SetScript("OnEnter", function() self:GearTooltip(b, page.merc, i) end)
+        b:SetScript("OnLeave", GameTooltip_Hide)
+        page.gear[i] = b
+    end
+    page.gearName = Widgets.Text(page, 13, "gold")
+    page.gearName:SetPoint("TOPLEFT", 480, -310)
+    page.gearDesc = Widgets.Text(page, 11, "white")
+    page.gearDesc:SetPoint("TOPLEFT", page.gearName, "BOTTOMLEFT", 0, -4)
+    page.gearDesc:SetWidth(330)
+    page.gearDesc:SetJustifyH("LEFT")
+
+    local back = Widgets.Button(page, 180, 26, "BACK", function()
+        self.overlay:Hide()
+        self:RefreshCollection()
+    end)
+    back:SetPoint("BOTTOM", 0, 18)
+
+    local ROMAN = { "I", "II", "III" }
+    page.refresh = function(id)
+        id = id or page.merc
+        page.merc = id
+        local store = self:Store()
+        local def = MC.Mercs[id]
+        local entry = store.mercs[id] or Bounty.NewEntry(false)
+        local unit = MC.PreviewUnit(store, id)
+        ribbon.text:SetText(Describe.MercName(id))
+        page.token:SetData({
+            kind = "merc", id = id, side = "ally", role = def.role, level = entry.level,
+            atk = math.floor(unit.atk + 0.5), hp = unit.hp, maxHp = unit.hp,
+        })
+        page.token:SetLocked(not entry.owned)
+        page.token.name:SetText("")
+        local c = MC.ROLE_COLORS[def.role]
+        page.role:SetText(Describe.RoleName(def.role))
+        page.role:SetTextColor(c[1], c[2], c[3])
+        page.level:SetText(L.LEVEL:format(entry.level))
+        if entry.level < MC.MAX_LEVEL then
+            local need = Bounty.XPNeeded(entry.level)
+            page.xpBar:SetMinMaxValues(0, need)
+            page.xpBar:SetValue(entry.xp)
+            page.xp:SetText(L.MC_XP:format(ns.FormatNumber(entry.xp), ns.FormatNumber(need)))
+        else
+            page.xpBar:SetMinMaxValues(0, 1)
+            page.xpBar:SetValue(1)
+            page.xp:SetText(L.MC_MAX_LEVEL)
+        end
+        page.coins:SetText(L.MC_COINS:format(entry.coins))
+        page.recruit:SetShown(not entry.owned)
+        page.recruit:SetEnabled(Bounty.CanRecruit(store, id))
+        page.recruit:SetText(L.MC_RECRUIT_COST:format(Bounty.RECRUIT_COST))
+        for i, card in ipairs(page.cards) do
+            local unlocked = entry.level >= MC.ABILITY_LEVELS[i]
+            card:SetAbility(def.abilities[i], unit, i)
+            card.shade:SetShown(not unlocked)
+            card.icon:SetDesaturated(not unlocked)
+            page.locks[i]:SetText(unlocked and "" or L.MC_UNLOCKS_AT:format(MC.ABILITY_LEVELS[i]))
+            local cost = Bounty.RankCost(entry, i)
+            page.ups[i]:SetShown(entry.owned and cost ~= nil)
+            if cost then page.ups[i]:SetText(L.MC_RANK_UP:format(ROMAN[entry.ranks[i] + 1], cost)) end
+            page.ups[i]:SetEnabled(Bounty.CanRankUp(store, id, i))
+        end
+        for i, b in ipairs(page.gear) do
+            b.icon:SetTexture(def.gear[i].icon)
+            b.icon:SetDesaturated(not entry.gears[i])
+            b.icon:SetAlpha(entry.gears[i] and 1 or 0.45)
+            b.border:SetShown(entry.gear == i)
+        end
+        local gear = entry.gear or 1
+        page.gearName:SetText(L["MC_G_" .. id .. "_" .. gear])
+        page.gearDesc:SetText(Describe.Mods(def.gear[gear].mods, def.abilities))
+    end
 end
 
 -- Where a piece of equipment drops, for the tooltip of a locked one.
@@ -390,7 +701,7 @@ end
 function Module:GearTooltip(owner, mercId, slot)
     local store = self:Store()
     local def, entry = MC.Mercs[mercId], store.mercs[mercId] or Bounty.NewEntry(false)
-    GameTooltip:SetOwner(owner, "ANCHOR_LEFT")
+    GameTooltip:SetOwner(owner, "ANCHOR_RIGHT")
     GameTooltip:SetText(L["MC_G_" .. mercId .. "_" .. slot], 1, 0.82, 0)
     GameTooltip:AddLine(Describe.Mods(def.gear[slot].mods, def.abilities), 1, 1, 1, true)
     if not entry.gears[slot] then
@@ -401,80 +712,4 @@ function Module:GearTooltip(owner, mercId, slot)
         end
     end
     GameTooltip:Show()
-end
-
-function Module:RefreshCollection()
-    local store = self:Store()
-    local view = self.views.collection
-    self:TintBoard(nil)
-    local locked = store.run ~= nil
-    if locked then self.partySlot = nil end
-    view.slotHint:SetText(locked and L.MC_PARTY_LOCKED or L.MC_PARTY_HINT)
-    local inParty = {}
-    for i, b in ipairs(view.slots) do
-        local id = store.party[i]
-        inParty[id or ""] = true
-        b.role:SetTexture(id and MC.Tex("role_" .. MC.Mercs[id].role) or nil)
-        b.name:SetText(id and Describe.MercName(id) or "")
-        b.sub:SetText(id and L.LEVEL:format(store.mercs[id].level) or "")
-        b.mark:SetShown(self.partySlot == i)
-        b:SetEnabled(not locked)
-    end
-    self.collectionSelected = self.collectionSelected or store.party[1]
-    for _, b in ipairs(view.grid) do
-        local id = b.id
-        local entry = store.mercs[id]
-        local owned = entry and entry.owned
-        b.role:SetTexture(MC.Tex("role_" .. MC.Mercs[id].role))
-        b.role:SetDesaturated(not owned)
-        b.name:SetText(Describe.MercName(id))
-        b.name:SetTextColor(owned and 1 or 0.6, owned and (inParty[id] and 0.82 or 1) or 0.6, owned and (inParty[id] and 0 or 1) or 0.6)
-        if owned then
-            b.sub:SetText(L.LEVEL:format(entry.level))
-        else
-            b.sub:SetText(L.MC_COINS_PROGRESS:format(entry and entry.coins or 0, Bounty.RECRUIT_COST))
-        end
-        b.mark:SetShown(id == self.collectionSelected)
-    end
-
-    local id = self.collectionSelected
-    local detail = view.detail
-    local def = MC.Mercs[id]
-    local entry = store.mercs[id] or Bounty.NewEntry(false)
-    detail.model:SetDisplay(def.display, 0.4)
-    detail.name:SetText(Describe.MercName(id))
-    local c = MC.ROLE_COLORS[def.role]
-    detail.role:SetText(Describe.RoleName(def.role))
-    detail.role:SetTextColor(c[1], c[2], c[3])
-    detail.level:SetText(L.LEVEL:format(entry.level))
-    if entry.level < MC.MAX_LEVEL then
-        detail.xp:SetText(L.MC_XP:format(ns.FormatNumber(entry.xp), ns.FormatNumber(Bounty.XPNeeded(entry.level))))
-    else
-        detail.xp:SetText("")
-    end
-    detail.coins:SetText(L.MC_COINS:format(entry.coins))
-    detail.recruit:SetShown(not entry.owned)
-    detail.recruit:SetEnabled(Bounty.CanRecruit(store, id))
-    local unit = MC.PreviewUnit(store, id)
-    local ROMAN = { "I", "II", "III" }
-    for i, row in ipairs(detail.abilities) do
-        local aid = def.abilities[i]
-        local unlocked = entry.level >= MC.ABILITY_LEVELS[i]
-        row.icon:SetTexture(MC.Abilities[aid].icon)
-        row.icon:SetDesaturated(not unlocked)
-        row.name:SetText(Describe.AbilityName(aid) .. "  " .. ROMAN[entry.ranks[i]])
-        row.sub:SetText(unlocked and Describe.AbilityStats(aid, unit, i) or L.MC_UNLOCKS_AT:format(MC.ABILITY_LEVELS[i]))
-        local cost = Bounty.RankCost(entry, i)
-        row.up:SetShown(entry.owned and cost ~= nil)
-        if cost then row.up:SetText(L.MC_RANK_UP:format(ROMAN[entry.ranks[i] + 1], cost)) end
-        row.up:SetEnabled(Bounty.CanRankUp(store, id, i))
-    end
-    for i, b in ipairs(detail.gear) do
-        b.icon:SetTexture(def.gear[i].icon)
-        b.icon:SetDesaturated(not entry.gears[i])
-        b.icon:SetAlpha(entry.gears[i] and 1 or 0.45)
-        b.mark:SetShown(entry.gear == i)
-    end
-    local gear = entry.gear or 1
-    detail.gearText:SetText("|cffffd100" .. L["MC_G_" .. id .. "_" .. gear] .. "|r\n" .. Describe.Mods(def.gear[gear].mods, def.abilities))
 end

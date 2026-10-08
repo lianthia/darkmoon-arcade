@@ -40,20 +40,32 @@ end
 
 function Module:BuildMap()
     local view = self:AddView("map", CreateFrame("Frame", nil, self.container))
-    local bg = view:CreateTexture(nil, "BACKGROUND", nil, 1)
-    bg:SetPoint("TOPLEFT", MAP_LEFT - 10, 0)
-    bg:SetPoint("BOTTOMRIGHT", -(W - MAP_RIGHT - 10), 0)
-    bg:SetTexture(MC.Tex("map"))
-    bg:SetTexCoord(MAP_LEFT / 1024, MAP_RIGHT / 1024, 0, H / 1024)
+    -- The zone's own map under the path.
+    local art = MC.CreateMapCanvas(view, MAP_RIGHT - MAP_LEFT + 20, H)
+    art:SetPoint("TOPLEFT", MAP_LEFT - 10, 0)
+    view.art = art
+    local edge = CreateFrame("Frame", nil, art)
+    edge:SetAllPoints()
+    edge:SetFrameLevel(art:GetFrameLevel() + 2)
+    local vignette = edge:CreateTexture(nil, "ARTWORK")
+    vignette:SetAllPoints()
+    vignette:SetTexture(MC.Tex("vignette"))
+    vignette:SetAlpha(0.7)
 
-    view.title = Widgets.Text(view, 18, "gold")
-    view.title:SetPoint("TOP", view, "TOPLEFT", MAP_CX, -14)
-    view.event = Widgets.Text(view, 13, "white")
-    view.event:SetPoint("TOP", view.title, "BOTTOM", 0, -4)
+    -- Heading on a ribbon, above the map art.
+    local top = CreateFrame("Frame", nil, view)
+    top:SetAllPoints()
+    top:SetFrameLevel(art:GetFrameLevel() + 12)
+    local ribbon = MC.CreateRibbon(top, 360, nil, 16)
+    ribbon:SetPoint("TOP", view, "TOPLEFT", MAP_CX, -2)
+    view.title = ribbon.text
+    view.event = Widgets.Text(top, 13, "white")
+    view.event:SetPoint("TOP", ribbon, "BOTTOM", 0, -2)
     view.event:SetWidth(MAP_RIGHT - MAP_LEFT - 20)
 
     local lines = CreateFrame("Frame", nil, view)
     lines:SetAllPoints()
+    lines:SetFrameLevel(art:GetFrameLevel() + 4)
     self.mapLines = {}
     self.lineLayer = lines
 
@@ -174,7 +186,10 @@ function Module:RefreshMap()
     local run = store.run
     local view = self.views.map
     if not run then return end
-    self:TintBoard(run.zone)
+    self:SetScene(run.zone, 0.3)
+    local u0, u1, v0, v1 = MC.ZoneView((MAP_RIGHT - MAP_LEFT + 20) / H)
+    view.art:SetMap(run.zone, u0, u1, v0, v1)
+    view.art:SetTint(0.92, 0.9, 0.85)
     view.title:SetText(Describe.ZoneName(run.zone) .. (run.heroic and ("  |cffa335ee(" .. L.MC_HEROIC .. ")|r") or ""))
 
     local visited = {}

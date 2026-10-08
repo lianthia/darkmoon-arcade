@@ -16,7 +16,15 @@ def main() -> int:
     g = lua.globals()
     g.ADDON_FILES = lua.table_from(files)
     g.ADDON_SOURCES = lua.table_from({f: (ADDON / f).read_text(encoding="utf-8") for f in files})
-    murloc, flappy, clicks, best = lua.execute((ROOT / "tests" / "smoke.lua").read_text(encoding="utf-8"))
+    try:
+        murloc, flappy, clicks, best = lua.execute((ROOT / "tests" / "smoke.lua").read_text(encoding="utf-8"))
+    except lupa.LuaError:
+        # Errors caught inside the addon explain most failures; show them first.
+        errors = g.DarkmoonArcadeDB and g.DarkmoonArcadeDB.errors
+        if errors:
+            for i in range(1, len(errors) + 1):
+                print("captured:", errors[i].message)
+        raise
     print(f"smoke: ok ({murloc} murloc shots, {flappy} flappy frames, best flappy score {best}, {clicks} button clicks)")
     return 0
 

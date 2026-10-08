@@ -14,3 +14,6 @@ desktop.ini
 # Packaging output
 *.zip
 /dist/
+
+# Downloaded client data
+tools/.cache/

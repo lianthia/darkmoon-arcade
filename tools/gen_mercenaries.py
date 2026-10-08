@@ -305,6 +305,84 @@ def tile():
     return img
 
 
+def vignette():
+    """Dark edges for backgrounds; drawn over map art to frame the scene."""
+    size = 512
+    yy, xx = np.mgrid[0:size, 0:size].astype(float) / (size - 1) * 2 - 1
+    d = np.sqrt((xx * 0.95) ** 2 + (yy * 1.05) ** 2)
+    alpha = np.clip((d - 0.45) / 0.75, 0, 1) ** 1.6 * 0.92
+    return arc.to_rgba(np.zeros((size, size, 3)), alpha)
+
+
+def poster():
+    """A wanted poster: weathered parchment with ragged edges and two nails."""
+    w, h = 256, 512
+    rng = np.random.default_rng(23)
+    yy, xx = np.mgrid[0:h, 0:w].astype(float)
+    stains = ga.fbm(h, w, rng, ((64, 0.4), (24, 0.3), (8, 0.2), (3, 0.1)))
+    rgb = np.array([0.86, 0.76, 0.56]) * (0.78 + 0.32 * stains)[..., None]
+    d = np.sqrt(((xx - w / 2) / (w * 0.55)) ** 2 + ((yy - h / 2) / (h * 0.55)) ** 2)
+    rgb = rgb * (1.05 - 0.5 * np.clip(d, 0, 1) ** 2)[..., None]
+    # Ragged outline: the edge wanders a few pixels in and out.
+    edge = ga.fbm(h, w, np.random.default_rng(5), ((16, 0.6), (4, 0.4)))
+    inset = 6 + 8 * edge
+    inside = (xx > inset) & (xx < w - 1 - inset) & (yy > inset) & (yy < h - 1 - inset)
+    alpha = inside.astype(float)
+    burn = np.clip(1 - np.minimum.reduce([xx - inset, w - 1 - inset - xx, yy - inset, h - 1 - inset - yy]) / 14, 0, 1)
+    rgb = rgb * (1 - 0.55 * burn[..., None])
+    img = arc.to_rgba(rgb, alpha)
+
+    def nails(dr):
+        for x in (40, w - 40):
+            dr.ellipse([x - 7, 14, x + 7, 28], fill=(70, 60, 50, 255))
+            dr.ellipse([x - 4, 17, x + 2, 23], fill=(150, 140, 130, 255))
+    return overlay(img, nails).filter(ImageFilter.GaussianBlur(0.5))
+
+
+def plate():
+    """Dark name plate with a gold rim."""
+    w, h = 256, 64
+    outer = arc.rounded_rect_alpha(w, h, 14, inset=2)
+    inner = arc.rounded_rect_alpha(w, h, 11, inset=5)
+    body = vertical(h, w, (0.2, 0.15, 0.12), (0.07, 0.05, 0.04))
+    gold = vertical(h, w, (1.0, 0.86, 0.48), (0.6, 0.38, 0.1))
+    ring = np.clip(outer - inner, 0, 1)[..., None]
+    rgb = body * (1 - ring) + gold * ring
+    return arc.to_rgba(rgb, outer * 0.96)
+
+
+def ribbon():
+    """Red title ribbon with gold trim and folded ends."""
+    w, h = 512, 96
+
+    def draw(dr, s):
+        dark, red, gold = (90, 12, 10, 255), (168, 28, 22, 255), (226, 182, 86, 255)
+        # Folded tails behind the band.
+        dr.polygon([(0, 30 * s), (60 * s, 30 * s), (60 * s, 86 * s), (0, 86 * s), (22 * s, 58 * s)], fill=dark)
+        dr.polygon([(w * s, 30 * s), ((w - 60) * s, 30 * s), ((w - 60) * s, 86 * s), (w * s, 86 * s), ((w - 22) * s, 58 * s)], fill=dark)
+        dr.rectangle([40 * s, 12 * s, (w - 40) * s, 76 * s], fill=gold)
+        dr.rectangle([40 * s, 16 * s, (w - 40) * s, 72 * s], fill=red)
+        dr.line([(40 * s, 22 * s), ((w - 40) * s, 22 * s)], fill=(200, 60, 50, 255), width=2 * s)
+    img = supersampled(w, h, draw)
+    arr = np.array(img).astype(float)
+    shade = np.linspace(1.15, 0.8, h)[:, None]
+    arr[..., :3] *= shade[..., None]
+    return Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8), "RGBA")
+
+
+def menu_card():
+    """Large menu button of the camp: dark wood with a gold frame."""
+    w, h = 512, 128
+    rng = np.random.default_rng(13)
+    outer = arc.rounded_rect_alpha(w, h, 18, inset=2)
+    inner = arc.rounded_rect_alpha(w, h, 14, inset=7)
+    grain = ga.fbm(h, w, rng, ((64, 0.2), (8, 0.5), (2, 0.3)))
+    wood = vertical(h, w, (0.32, 0.2, 0.12), (0.14, 0.08, 0.05)) * (0.8 + 0.35 * grain)[..., None]
+    gold = vertical(h, w, (1.0, 0.88, 0.5), (0.58, 0.36, 0.1))
+    ring = np.clip(outer - inner, 0, 1)[..., None]
+    return arc.to_rgba(wood * (1 - ring) + gold * ring, outer)
+
+
 def sounds():
     rng = np.random.default_rng(9)
     hit = ga.mix(ga.noise(0.12, rng, 0.25) * ga.env(int(ga.RATE * 0.12), 0.002, 0.04), ga.tone(110, 0.15, 0.05) * 0.8)
@@ -345,6 +423,11 @@ def main():
     ga.save_tga(node_glow(), "node_glow", FOLDER)
     ga.save_tga(map_background(), "map", FOLDER)
     ga.save_tga(tile(), "mercenaries", "tiles")
+    ga.save_tga(vignette(), "vignette", FOLDER)
+    ga.save_tga(poster(), "poster", FOLDER)
+    ga.save_tga(plate(), "plate", FOLDER)
+    ga.save_tga(ribbon(), "ribbon", FOLDER)
+    ga.save_tga(menu_card(), "menu_card", FOLDER)
     sounds()
     print("Mercenaries assets generated")
 

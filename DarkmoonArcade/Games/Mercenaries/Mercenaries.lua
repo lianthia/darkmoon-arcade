@@ -93,11 +93,17 @@ function Module:Build(container)
     self.effects = {}
     Bounty.Init(self:Store())
 
-    local bg = container:CreateTexture(nil, "BACKGROUND")
-    bg:SetAllPoints()
-    bg:SetTexture(MC.Tex("board"))
-    bg:SetTexCoord(0, W / 1024, 0, H / 1024)
-    self.background = bg
+    -- Behind every view: a dark ground and the map art of the zone the view is about.
+    local ground = container:CreateTexture(nil, "BACKGROUND")
+    ground:SetAllPoints()
+    ground:SetColorTexture(0.04, 0.03, 0.03, 1)
+    self.scene = MC.CreateScene(container, W, H)
+    self.scene:SetPoint("TOPLEFT")
+
+    -- The overlay comes first: views add pages of their own to it.
+    self.overlay = Widgets.NewOverlay(container)
+    self.overlay.frame:SetFrameLevel(container:GetFrameLevel() + 70)
+    self:CreatePages()
 
     self.views = {}
     self:BuildCamp()
@@ -112,15 +118,19 @@ function Module:Build(container)
     self.fxLayer = fx
     self.textPool = Media.Pool(function() return fx:CreateFontString(nil, "OVERLAY") end, function(fs) fs:Hide() end)
 
-    self.overlay = Widgets.NewOverlay(container)
-    self.overlay.frame:SetFrameLevel(container:GetFrameLevel() + 70)
-    self:CreatePages()
     self.overlay:Hide()
     self:Route()
 end
 
+-- Shows `key`'s map art dimmed to `dim` behind the views; nil leaves the dark ground.
+function Module:SetScene(key, dim)
+    self.scene:SetShown(key ~= nil)
+    if key then self.scene:ShowZone(key, dim) end
+end
+
 function Module:AddView(name, frame)
     frame:SetAllPoints()
+    frame:SetFrameLevel(self.container:GetFrameLevel() + 10)
     frame:Hide()
     self.views[name] = frame
     return frame

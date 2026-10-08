@@ -34,16 +34,14 @@ MC.DisplayFor = DisplayFor
 -- A model that keeps its display across hides (the client resets models when they are hidden).
 function MC.Model(parent, zoom)
     local m = CreateFrame("PlayerModel", nil, parent)
-    m.zoom = zoom
+    m.zoom, m.display, m.facing = zoom, false, false
     function m:SetDisplay(display, facing)
         self.display, self.facing = display, facing
+        self:SetShown(display ~= nil and display ~= 0)
         self:Apply()
     end
     function m:Apply()
-        if not self.display or self.display == 0 then
-            self:Hide()
-            return
-        end
+        if not self.display or self.display == 0 then return end
         pcall(self.ClearModel, self)
         pcall(self.SetDisplayInfo, self, self.display)
         if self.zoom then pcall(self.SetPortraitZoom, self, self.zoom) end
@@ -51,6 +49,113 @@ function MC.Model(parent, zoom)
     end
     m:SetScript("OnShow", function(self) self:Apply() end)
     return m
+end
+
+-- Map art ----------------------------------------------------------------------------------------
+
+-- A window onto a map's client art (MapArt.lua). `SetMap` shows the part u0..u1, v0..v1 of the
+-- map (0..1 across its visible 1002x668), stretched to the canvas; `Point` turns map coordinates
+-- into canvas offsets for pins.
+function MC.CreateMapCanvas(parent, w, h)
+    local clip = CreateFrame("Frame", nil, parent)
+    clip:SetSize(w, h)
+    clip:SetClipsChildren(true)
+    local inner = CreateFrame("Frame", nil, clip)
+    inner:SetAllPoints()
+    clip.tiles = {}
+    for i = 1, 12 do
+        clip.tiles[i] = inner:CreateTexture(nil, "BACKGROUND")
+    end
+    clip.fallback = inner:CreateTexture(nil, "BACKGROUND", nil, -1)
+    clip.fallback:SetAllPoints()
+    clip.fallback:SetTexture(MC.Tex("map"))
+    clip.fallback:SetTexCoord(0, 840 / 1024, 0, 560 / 1024)
+    clip.view = { 0, 1, 0, 1 }
+
+    function clip:SetMap(key, u0, u1, v0, v1)
+        local art = MC.MapArt[key]
+        self.view = { u0 or 0, u1 or 1, v0 or 0, v1 or 1 }
+        self.fallback:SetShown(art == nil)
+        for i, tex in ipairs(self.tiles) do
+            local file = art and art.files[i]
+            tex:SetShown(file ~= nil)
+            if file then
+                local u0, u1, v0, v1 = unpack(self.view)
+                local sx, sy = w / ((u1 - u0) * art.w), h / ((v1 - v0) * art.h)
+                local row, col = math.floor((i - 1) / art.cols), (i - 1) % art.cols
+                tex:SetTexture(file)
+                tex:SetSize(art.tw * sx, art.th * sy)
+                tex:ClearAllPoints()
+                tex:SetPoint("TOPLEFT", inner, "TOPLEFT", (col * art.tw - u0 * art.w) * sx, -(row * art.th - v0 * art.h) * sy)
+            end
+        end
+    end
+
+    function clip:Point(u, v)
+        local u0, u1, v0, v1 = unpack(self.view)
+        return (u - u0) / (u1 - u0) * w, (v - v0) / (v1 - v0) * h
+    end
+
+    function clip:SetTint(r, g, b)
+        for _, tex in ipairs(self.tiles) do tex:SetVertexColor(r, g, b) end
+        self.fallback:SetVertexColor(r, g, b)
+    end
+    return clip
+end
+
+-- The part of a zone's own map that frames it best for a scene of the given aspect (w / h).
+function MC.ZoneView(aspect)
+    local mapAspect = 1002 / 668
+    if aspect >= mapAspect then
+        local v = mapAspect / aspect
+        return 0, 1, 0.5 - v / 2, 0.5 + v / 2
+    end
+    local u = aspect / mapAspect
+    return 0.5 - u / 2, 0.5 + u / 2, 0, 1
+end
+
+-- A scene background: the zone's map art, dimmed, with dark edges.
+function MC.CreateScene(parent, w, h)
+    local canvas = MC.CreateMapCanvas(parent, w, h)
+    local shade = CreateFrame("Frame", nil, canvas)
+    shade:SetAllPoints()
+    shade:SetFrameLevel(canvas:GetFrameLevel() + 2)
+    local vignette = shade:CreateTexture(nil, "ARTWORK")
+    vignette:SetAllPoints()
+    vignette:SetTexture(MC.Tex("vignette"))
+    function canvas:ShowZone(key, dim)
+        local u0, u1, v0, v1 = MC.ZoneView(w / h)
+        self:SetMap(key, u0, u1, v0, v1)
+        dim = dim or 0.55
+        self:SetTint(dim, dim * 0.95, dim * 0.88)
+    end
+    return canvas
+end
+
+-- Gold-rimmed dark plate with a line of text, drawn above models.
+function MC.CreatePlate(parent, w, h, size)
+    local f = CreateFrame("Frame", nil, parent)
+    f:SetSize(w, h)
+    f.bg = f:CreateTexture(nil, "BACKGROUND")
+    f.bg:SetAllPoints()
+    f.bg:SetTexture(MC.Tex("plate"))
+    f.text = Widgets.Text(f, size or 12, "white")
+    f.text:SetPoint("CENTER", 0, 1)
+    f.text:SetWidth(w - 12)
+    f.text:SetWordWrap(false)
+    return f
+end
+
+-- Red title ribbon with a gold heading.
+function MC.CreateRibbon(parent, w, key, size)
+    local f = CreateFrame("Frame", nil, parent)
+    f:SetSize(w, w * 96 / 512)
+    f.bg = f:CreateTexture(nil, "BACKGROUND")
+    f.bg:SetAllPoints()
+    f.bg:SetTexture(MC.Tex("ribbon"))
+    f.text = key and Widgets.LocalizedText(f, size or 18, "gold", key) or Widgets.Text(f, size or 18, "gold")
+    f.text:SetPoint("CENTER", 0, w * 6 / 512)
+    return f
 end
 
 -- Token -------------------------------------------------------------------------------------------
@@ -209,6 +314,15 @@ function Token:SetStats(data, reference)
         icon:SetShown(icons[i] ~= nil)
         if icons[i] then icon:SetTexture(icons[i]) end
     end
+end
+
+-- Mercenaries not yet recruited show greyed out.
+function Token:SetLocked(locked)
+    for _, tex in ipairs({ self.frame, self.back, self.attack.tex, self.health.tex, self.level.tex }) do
+        tex:SetDesaturated(locked)
+    end
+    self.model:SetAlpha(locked and 0.35 or 1)
+    self.frame:SetVertexColor(locked and 0.6 or 1, locked and 0.6 or 1, locked and 0.6 or 1)
 end
 
 function Token:SetBubble(abilityId, speed, order)

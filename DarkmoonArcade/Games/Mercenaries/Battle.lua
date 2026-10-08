@@ -13,20 +13,8 @@ local SPACING, BENCH_SPACING, BENCH_SCALE = 150, 92, 0.78
 local CARD_GAP = 116
 local KEY_SLOT = { ["1"] = 1, ["2"] = 2, ["3"] = 3 }
 
--- Board tints per zone, so every bounty has its own ground.
-local ZONE_TINT = {
-    elwynn = { 0.86, 1, 0.78 }, dunmorogh = { 0.88, 0.94, 1 }, tirisfal = { 0.78, 0.76, 0.86 },
-    teldrassil = { 0.78, 0.86, 1 }, durotar = { 1, 0.78, 0.62 }, mulgore = { 1, 0.92, 0.7 },
-    zephras = { 0.86, 0.96, 1 }, westfall = { 1, 0.92, 0.66 }, lochmodan = { 0.92, 0.9, 0.82 },
-    silverpine = { 0.76, 0.84, 0.8 }, darkshore = { 0.72, 0.8, 0.95 }, barrens = { 1, 0.86, 0.6 },
-    redridge = { 1, 0.8, 0.7 }, stonetalon = { 0.88, 0.86, 0.8 }, ashenvale = { 0.74, 0.92, 0.82 },
-    duskwood = { 0.62, 0.64, 0.78 }, wetlands = { 0.8, 0.88, 0.74 }, hillsbrad = { 0.88, 1, 0.82 },
-}
-MC.ZONE_TINT = ZONE_TINT
-
 function Module:TintBoard(zoneId)
-    local tint = zoneId and ZONE_TINT[zoneId] or { 1, 1, 1 }
-    self.background:SetVertexColor(tint[1], tint[2], tint[3])
+    self:SetScene(zoneId, 0.5)
 end
 
 function Module:Battle()

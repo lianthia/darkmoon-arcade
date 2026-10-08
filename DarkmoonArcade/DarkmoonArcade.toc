@@ -62,6 +62,7 @@ Games\Mercenaries\Mercs.lua
 Games\Mercenaries\Treasures.lua
 Games\Mercenaries\Enemies.lua
 Games\Mercenaries\Zones.lua
+Games\Mercenaries\MapArt.lua
 Games\Mercenaries\Bounty.lua
 Games\Mercenaries\Describe.lua
 Games\Mercenaries\Mercenaries.lua
