@@ -98,6 +98,13 @@ for _, pin in ipairs(travel.pins) do
     end
 end
 if Want("travel") then Snap("travel_zone") end
+for _, pin in ipairs(travel.pins) do
+    if pin:IsShown() and pin.zone == "duskwood" then Click(pin) end
+end
+if Want("travel") then Snap("travel_warn") end
+for _, pin in ipairs(travel.pins) do
+    if pin:IsShown() and pin.zone == "elwynn" then Click(pin) end
+end
 Click(travel.boss.choose)
 Tick(0.5)
 if Want("map") then Snap("map") end

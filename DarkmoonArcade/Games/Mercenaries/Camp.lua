@@ -99,8 +99,9 @@ local function ContinentView(continent)
 end
 
 -- What the collection shows of a mercenary: its level, equipment and ranks applied.
-function MC.PreviewUnit(store, id)
-    local def, entry = MC.Mercs[id], store.mercs[id] or Bounty.NewEntry(false)
+function MC.PreviewUnit(store, id, entry)
+    local def = MC.Mercs[id]
+    entry = entry or store.mercs[id] or Bounty.NewEntry(false)
     local mods = {}
     local gear = def.gear[entry.gear or 1]
     if gear then Bounty.AddMods(mods, gear.mods) end
@@ -428,6 +429,10 @@ function Module:BuildBossPanel(view)
         end
     end)
     panel.heroic:HookScript("OnLeave", GameTooltip_Hide)
+    -- A plain warning when the party is below the zone: the zone stays open, but it will hurt.
+    panel.warning = Kit.Ink(panel, 11, { 1, 0.4, 0.3 }, "OUTLINE")
+    panel.warning:SetPoint("TOP", panel.normal, "BOTTOMRIGHT", 7, -6)
+    panel.warning:SetWidth(214)
     panel.choose = Kit.BigButton(panel, 82, "MC_CHOOSE", function()
         self:StartBounty(self.travelZone, self.travelHeroic or false)
     end)
@@ -578,6 +583,9 @@ function Module:RefreshBossPanel()
     Kit.SetSelected(panel.normal, not self.travelHeroic)
     Kit.SetSelected(panel.heroic, self.travelHeroic or false)
     panel.choose:SetEnabled(store.run == nil)
+    local partyLevel = math.floor(Bounty.PartyLevel(store))
+    local needed = self.travelHeroic and Bounty.HEROIC_LEVEL or zone.min
+    panel.warning:SetText(partyLevel < needed and L.MC_WARN_LEVEL:format(partyLevel, needed) or "")
 end
 
 -- Collection --------------------------------------------------------------------------------------

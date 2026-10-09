@@ -250,7 +250,7 @@ local function TextWidth(o)
     local text = (o._text or ""):gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", ""):gsub("|T.-|t", "WW")
     local widest = 0
     for line in (text .. "\n"):gmatch("(.-)\n") do widest = math.max(widest, #line) end
-    return widest * o._size * 0.5
+    return widest * o._size * 0.56
 end
 
 local resolving = {}

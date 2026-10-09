@@ -17,7 +17,7 @@ Bounty.HEROIC_LEVEL = 60
 Bounty.RECRUIT_COST = 50
 Bounty.RANK_COST = { [2] = 30, [3] = 80 }
 Bounty.NODE_WEIGHTS = { { "fight", 50 }, { "elite", 14 }, { "healer", 9 }, { "boon", 12 }, { "mystery", 15 } }
-Bounty.MYSTERIES = { "stranger", "sabotage", "portal", "cursed", "bonus" }
+Bounty.MYSTERIES = { "stranger", "sabotage", "portal", "cursed", "bonus", "recruit" }
 Bounty.ROLES = { "protector", "fighter", "caster" }
 
 local function Copy(list)
@@ -157,6 +157,11 @@ function Bounty.SetPartySlot(store, slot, id)
     return true
 end
 
+-- The progress entry behind a party member: the collection's, or a guest's own for this run.
+function Bounty.MemberEntry(store, member)
+    return member.guest or store.mercs[member.id]
+end
+
 function Bounty.PartyLevel(store)
     local sum = 0
     for _, id in ipairs(store.party) do sum = sum + store.mercs[id].level end
@@ -167,7 +172,7 @@ end
 
 function Bounty.MercSpec(store, id, member, run)
     local def = MC.Mercs[id]
-    local entry = store.mercs[id]
+    local entry = member and member.guest or store.mercs[id]
     local mods = {}
     local gear = def.gear[entry.gear or 1]
     if gear then AddMods(mods, gear.mods) end
@@ -221,7 +226,7 @@ end
 function Bounty.LayerCount(zone, heroic)
     if heroic then return 9 end
     if zone.max <= 12 then return 5 end
-    if zone.max <= 30 then return 7 end
+    if zone.min < 45 then return 7 end
     return 9
 end
 
@@ -423,10 +428,10 @@ local function GiveTreasure(store, run, memberIdx, id)
 end
 
 -- Whether a treasure would do anything for this mercenary.
-function Bounty.TreasureFits(store, treasure, mercId)
+function Bounty.TreasureFits(store, treasure, mercId, member)
     local need = treasure.needs
     if not need then return true end
-    local def, entry = MC.Mercs[mercId], store.mercs[mercId]
+    local def, entry = MC.Mercs[mercId], member and member.guest or store.mercs[mercId]
     local unlocked = Bounty.UnlockedAbilities(entry.level)
     if type(need) == "number" then return unlocked >= need end
     for i = 1, unlocked do
@@ -449,7 +454,7 @@ function Bounty.RollTreasures(store, run, memberIdx, elite, count)
     local pool = {}
     for _, id in ipairs(MC.TREASURE_ORDER) do
         local t = MC.Treasures[id]
-        if not t.cursed and (t.elite or false) == (elite or false) and Bounty.TreasureFits(store, t, mercId) then
+        if not t.cursed and (t.elite or false) == (elite or false) and Bounty.TreasureFits(store, t, mercId, run.party[memberIdx]) then
             pool[#pool + 1] = id
         end
     end
@@ -517,11 +522,38 @@ local function Visit(store, run, node)
             run.phase = "map"
         elseif m == "cursed" then
             OfferTreasure(store, run, false, "cursed")
+        elseif m == "recruit" then
+            run.guestJoined = Bounty.AddGuest(store, run)
+            run.phase = "map"
         else
             run.bonusLoot = true
             run.phase = "map"
         end
     end
+end
+
+-- A mercenary from outside the party joins for the rest of this bounty, at the party's level.
+-- Mercenaries not yet recruited come first, so the guest is a chance to try one. One guest per run.
+function Bounty.AddGuest(store, run)
+    for _, member in ipairs(run.party) do
+        if member.guest then return nil end
+    end
+    local taken = {}
+    for _, member in ipairs(run.party) do taken[member.id] = true end
+    local fresh, known = {}, {}
+    for _, id in ipairs(MC.MERC_ORDER) do
+        if not taken[id] then
+            local entry = store.mercs[id]
+            if entry and entry.owned then known[#known + 1] = id else fresh[#fresh + 1] = id end
+        end
+    end
+    local pool = #fresh > 0 and fresh or known
+    if #pool == 0 then return nil end
+    local id = pool[Random(run, #pool)]
+    local level = math.max(1, math.floor(Bounty.PartyLevel(store) + 0.5))
+    run.party[#run.party + 1] = { id = id, dead = false, treasures = {},
+        guest = { level = level, gear = 1, ranks = { 1, 1, 1 }, gears = { true, false, false } } }
+    return id
 end
 
 function Bounty.Travel(store, run, layer, index)
@@ -566,7 +598,9 @@ local function Complete(store, run)
         Bounty.Entry(store, id).coins = Bounty.Entry(store, id).coins + amount
         rewards.coins[id] = (rewards.coins[id] or 0) + amount
     end
-    for _, member in ipairs(run.party) do Give(member.id, run.heroic and 10 or 5) end
+    for _, member in ipairs(run.party) do
+        if not member.guest then Give(member.id, run.heroic and 10 or 5) end
+    end
     for _, id in ipairs(zone.loot) do Give(id, (run.heroic and 25 or 12) * (first and 2 or 1)) end
     local gearMerc = zone.gear and zone.gear[key]
     if gearMerc then
@@ -598,11 +632,13 @@ function Bounty.AfterBattle(store, run)
     run.score = run.score + Bounty.FightScore(run, node)
     run.levelUps = {}
     for _, member in ipairs(run.party) do
-        local entry = store.mercs[member.id]
-        local xp = Bounty.FightXP(node, entry.level)
-        run.xp = run.xp + xp
-        if Bounty.AddXP(entry, xp) > 0 then run.levelUps[#run.levelUps + 1] = member.id end
-        entry.coins = entry.coins + 1
+        if not member.guest then
+            local entry = store.mercs[member.id]
+            local xp = Bounty.FightXP(node, entry.level)
+            run.xp = run.xp + xp
+            if Bounty.AddXP(entry, xp) > 0 then run.levelUps[#run.levelUps + 1] = member.id end
+            entry.coins = entry.coins + 1
+        end
     end
     if node.type == "boss" then
         Complete(store, run)

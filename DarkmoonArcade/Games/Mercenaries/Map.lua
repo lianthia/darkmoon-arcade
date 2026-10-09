@@ -24,7 +24,7 @@ local NODE_ICON = {
 local MYSTERY_ICON = {
     stranger = "Interface\\Icons\\INV_Misc_Head_Human_01", sabotage = "Interface\\Icons\\INV_Misc_Bomb_04",
     portal = "Interface\\Icons\\Spell_Arcane_PortalIronForge", cursed = "Interface\\Icons\\Spell_Shadow_CurseOfSargeras",
-    bonus = "Interface\\Icons\\INV_Misc_Coin_02",
+    bonus = "Interface\\Icons\\INV_Misc_Coin_02", recruit = "Interface\\Icons\\Achievement_Character_Human_Male",
 }
 local NODE_METAL = { boss = "gold", elite = "gold", fight = "bronze", healer = "silver", boon = "silver", mystery = "silver" }
 
@@ -103,10 +103,10 @@ function Module:BuildMap()
     local partyTitle = Kit.Plaque(party, 176, "MC_PARTY", 14)
     partyTitle:SetPoint("TOP", 0, 6)
     self.partyRows = {}
-    for i = 1, Bounty.PARTY_SIZE do
+    for i = 1, Bounty.PARTY_SIZE + 1 do
         local row = CreateFrame("Frame", nil, party)
         row:SetSize(MAP_LEFT - 34, 60)
-        row:SetPoint("TOP", 0, -48 - (i - 1) * 64)
+        row:SetPoint("TOP", 0, -46 - (i - 1) * 58)
         row:EnableMouse(true)
         local bg = row:CreateTexture(nil, "BACKGROUND")
         bg:SetPoint("TOPLEFT", 0, -2)
@@ -295,8 +295,9 @@ function Module:RefreshMap()
         if member then
             local def = MC.Mercs[member.id]
             row.role:SetTexture(MC.Tex("role_" .. def.role))
-            row.name:SetText(member.dead and ("|cffff5050" .. Describe.MercName(member.id) .. "|r") or Describe.MercName(member.id))
-            row.level.text:SetText(store.mercs[member.id].level)
+            local name = Describe.MercName(member.id) .. (member.guest and (" |cff80c0ff(" .. L.MC_GUEST .. ")|r") or "")
+            row.name:SetText(member.dead and ("|cffff5050" .. name .. "|r") or name)
+            row.level.text:SetText(Bounty.MemberEntry(store, member).level)
             row:SetAlpha(member.dead and 0.55 or 1)
             for k, icon in ipairs(row.treasures) do
                 local t = member.treasures[k]
@@ -410,7 +411,8 @@ function Module:PartyTooltip(owner, i)
     if not member then return end
     GameTooltip:SetOwner(owner, "ANCHOR_RIGHT")
     GameTooltip:SetText(Describe.MercName(member.id), 1, 0.82, 0)
-    GameTooltip:AddLine(L.LEVEL:format(store.mercs[member.id].level) .. "  ·  " .. Describe.RoleName(MC.Mercs[member.id].role), 0.8, 0.8, 0.8)
+    GameTooltip:AddLine(L.LEVEL:format(Bounty.MemberEntry(store, member).level) .. "  ·  " .. Describe.RoleName(MC.Mercs[member.id].role), 0.8, 0.8, 0.8)
+    if member.guest then GameTooltip:AddLine(L.MC_GUEST_INFO, 0.5, 0.75, 1, true) end
     if member.dead then GameTooltip:AddLine(L.MC_FALLEN, 1, 0.3, 0.3) end
     if #member.treasures == 0 then GameTooltip:AddLine(L.MC_NO_TREASURES, 0.6, 0.6, 0.6) end
     for _, t in ipairs(member.treasures) do

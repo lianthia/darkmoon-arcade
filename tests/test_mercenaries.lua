@@ -335,4 +335,21 @@ test("treasures only go where they help", function()
     assert(not Bounty.TreasureFits(store, MC.Treasures.focus2, "benedictus"), "second ability locked")
 end)
 
+test("a guest joins once, fights at the party level and earns nothing", function()
+    local store = NewStore()
+    local run = Bounty.NewRun(store, "elwynn", false, 5)
+    local id = Bounty.AddGuest(store, run)
+    assert(id, "guest joined")
+    eq(#run.party, Bounty.PARTY_SIZE + 1, "seven members")
+    assert(not Bounty.AddGuest(store, run), "only one guest")
+    local guest = run.party[#run.party]
+    assert(not (store.mercs[id] and store.mercs[id].owned), "guest is a mercenary not yet recruited")
+    eq(Bounty.MercSpec(store, id, guest, run).level, guest.guest.level, "guest level")
+    local before = store.mercs[id] and store.mercs[id].xp or 0
+    run.layer, run.index = 1, 1
+    run.battle = { phase = "won", units = {} }
+    Bounty.AfterBattle(store, run)
+    eq(store.mercs[id] and store.mercs[id].xp or 0, before, "no experience for the guest")
+end)
+
 return passed, failed

@@ -192,6 +192,8 @@ function Module:Travel(layer, index)
     local node = Bounty.Node(run)
     if node.type == "boon" then
         self:MapEvent(L.MC_EVENT_BOON:format(Describe.RoleName(node.role), Bounty.BoonTier(run) * 10))
+    elseif node.type == "mystery" and node.mystery == "recruit" and run.phase == "map" then
+        self:MapEvent(run.guestJoined and L.MC_EVENT_RECRUIT:format(Describe.MercName(run.guestJoined)) or L.MC_EVENT_BONUS)
     elseif node.type == "mystery" and run.phase == "map" then
         self:MapEvent(L["MC_EVENT_" .. node.mystery:upper()])
     elseif node.type == "healer" and run.phase == "map" then
@@ -382,7 +384,7 @@ function Module:CreatePages()
         if not offer then return end
         local mercId = run.party[offer.member].id
         local cursed = offer.kind == "cursed"
-        local unit = MC.PreviewUnit(self:Store(), mercId)
+        local unit = MC.PreviewUnit(self:Store(), mercId, run.party[offer.member].guest)
         unit.side = "ally"
         tToken:SetData(unit)
         tTitle:SetText(cursed and L.MC_CURSED_TITLE or L.MC_TREASURE_TITLE)

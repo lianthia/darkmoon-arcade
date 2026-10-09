@@ -126,11 +126,15 @@ function Module:RefreshResult()
     end
 
     local coins = won and run.rewards and run.rewards.coins or {}
-    local n = #run.party
+    local members = {}
+    for _, member in ipairs(run.party) do
+        if not member.guest then members[#members + 1] = member end
+    end
+    local n = #members
     local order = 0
     self.resultAnims = {}
     for i, m in ipairs(page.members) do
-        local member = run.party[i]
+        local member = members[i]
         local shown = member ~= nil
         m.token:SetShown(shown)
         m.ribbon:Hide()

@@ -12,6 +12,14 @@ ADDON = ROOT / "DarkmoonArcade"
 def main() -> int:
     toc = (ADDON / "DarkmoonArcade.toc").read_text(encoding="utf-8")
     files = [line.strip().replace("\\", "/") for line in toc.splitlines() if line.strip() and not line.startswith("#")]
+    # WoW runs Lua 5.1; LuaJIT (used here) also knows goto and labels, so catch them before the client does.
+    for f in files:
+        if f.endswith(".lua"):
+            for n, line in enumerate((ADDON / f).read_text(encoding="utf-8").splitlines(), 1):
+                code = line.split("--", 1)[0]
+                if re.search(r"\bgoto\b|::\w+::", code):
+                    print(f"{f}:{n}: goto/labels are not Lua 5.1")
+                    return 1
     # The dev copy in the client loads its own generated TOC; it must list the same files.
     dev = ADDON / "DarkmoonArcade_Dev.toc"
     if dev.exists():
