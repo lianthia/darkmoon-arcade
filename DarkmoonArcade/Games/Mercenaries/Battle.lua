@@ -154,8 +154,8 @@ function Module:BuildBattle()
 
     self.readyButton = Kit.BigButton(view, 92, "MC_READY", function() self:ResolveTurn() end)
     Kit.Place(self.readyButton, W - 66, TRAY_Y + 4)
-    self.autoButton = Kit.Button(view, 132, 28, "MC_AUTO", function() self:AutoChoose() end, "blue")
-    Kit.Place(self.autoButton, W - 198, TRAY_Y + 30)
+    self.autoButton = Kit.Button(view, 170, 28, "MC_AUTO", function() self:AutoChoose() end, "blue")
+    Kit.Place(self.autoButton, W - 214, TRAY_Y + 30)
 
     -- The aiming line from a mercenary to the target under the mouse.
     local fx = CreateFrame("Frame", nil, view)

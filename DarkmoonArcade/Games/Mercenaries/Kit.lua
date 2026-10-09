@@ -268,14 +268,17 @@ function Kit.Button(parent, w, h, key, onClick, style)
     b.glowTex:SetColorTexture(1, 0.9, 0.6, 0.25)
     b.glowTex:SetBlendMode("ADD")
     b.glowTex:SetAlpha(0)
+    local size, flags = math.floor(math.min(14, h * 0.45)), style and "OUTLINE" or ""
     if style then
-        b.label = Kit.Ink(b, math.min(14, h * 0.45), { 1, 0.96, 0.88 }, "OUTLINE")
+        b.label = Kit.Ink(b, size, { 1, 0.96, 0.88 }, flags)
     else
-        b.label = Kit.Ink(b, math.min(14, h * 0.45), INK)
+        b.label = Kit.Ink(b, size, INK)
     end
     b.label:SetPoint("CENTER", 0, 1)
-    function b:SetText(text) self.label:SetText(text) end
-    if key then Widgets.OnRefresh(function() b.label:SetText(L[key]) end) end
+    b.label:SetWordWrap(false)
+    -- Long labels (and long translations) shrink to fit between the metal caps.
+    function b:SetText(text) Kit.FitText(self.label, text, w - 44, size, size - 4, flags) end
+    if key then Widgets.OnRefresh(function() b:SetText(L[key]) end) end
     b:HookScript("OnEnable", function() b.bg:SetDesaturated(false); b.label:SetAlpha(1) end)
     b:HookScript("OnDisable", function() b.bg:SetDesaturated(true); b.label:SetAlpha(0.5) end)
     b:SetMotionScriptsWhileDisabled(true)
