@@ -12,6 +12,14 @@ ADDON = ROOT / "DarkmoonArcade"
 def main() -> int:
     toc = (ADDON / "DarkmoonArcade.toc").read_text(encoding="utf-8")
     files = [line.strip().replace("\\", "/") for line in toc.splitlines() if line.strip() and not line.startswith("#")]
+    # The dev copy in the client loads its own generated TOC; it must list the same files.
+    dev = ADDON / "DarkmoonArcade_Dev.toc"
+    if dev.exists():
+        dev_files = [line.strip().replace("\\", "/") for line in dev.read_text(encoding="utf-8").splitlines()
+                     if line.strip() and not line.startswith("#")]
+        if dev_files != files:
+            print("DarkmoonArcade_Dev.toc is out of date: run tools/deploy.ps1")
+            return 1
     lua = lupa.LuaRuntime(unpack_returned_tuples=True)
     g = lua.globals()
     g.ADDON_FILES = lua.table_from(files)
