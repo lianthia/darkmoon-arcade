@@ -159,11 +159,21 @@ local POWER = {
     elwynn = -0.20, dunmorogh = 0.02, tirisfal = 0.11, teldrassil = 0.01, durotar = 0.24, mulgore = -0.03,
     zephras = 0.18, westfall = 0.03, lochmodan = 0.43, silverpine = 0.22, darkshore = 0.25, barrens = 0.24,
     redridge = 0.09, stonetalon = 0.61, ashenvale = 0.18, duskwood = 0.13, wetlands = 0.00, hillsbrad = 0.47,
+    thousandneedles = 0.56, alterac = 0.94, arathi = 0.83, desolace = 0.49, stranglethorn = 0.49,
+    riverglades = 0.15, badlands = 0.67, swampofsorrows = 0.65, dustwallow = 0.30, shendralas = 0.34,
+    feralas = 0.08, tanaris = 0.69, hinterlands = 0.68, searinggorge = 0.63, azshara = 0.68,
+    blastedlands = -0.04, felwood = 0.20, ungoro = -0.02, burningsteppes = -0.13, westernplaguelands = 0.13,
+    easternplaguelands = 0.00, winterspring = -0.09, silithus = 0.20, hyjal = 0.05,
 }
 local HEROIC_POWER = {
     elwynn = -0.02, dunmorogh = 0.30, tirisfal = 0.11, teldrassil = 0.30, durotar = 0.12, mulgore = 0.14,
     zephras = 0.09, westfall = 0.08, lochmodan = 0.20, silverpine = -0.09, darkshore = 0.16, barrens = 0.06,
     redridge = 0.09, stonetalon = 0.40, ashenvale = 0.09, duskwood = 0.03, wetlands = -0.08, hillsbrad = 0.20,
+    thousandneedles = 0.09, alterac = 0.19, arathi = 0.16, desolace = 0.07, stranglethorn = 0.10,
+    riverglades = 0.03, badlands = 0.19, swampofsorrows = 0.09, dustwallow = 0.09, shendralas = 0.09,
+    feralas = -0.11, tanaris = 0.19, hinterlands = 0.14, searinggorge = 0.31, azshara = 0.38,
+    blastedlands = -0.13, felwood = 0.05, ungoro = -0.03, burningsteppes = -0.23, westernplaguelands = 0.01,
+    easternplaguelands = -0.04, winterspring = -0.15, silithus = -0.10, hyjal = 0.07,
 }
 for id, zone in pairs(MC.Zones) do
     zone.power, zone.heroicPower = POWER[id] or 0, HEROIC_POWER[id] or 0
