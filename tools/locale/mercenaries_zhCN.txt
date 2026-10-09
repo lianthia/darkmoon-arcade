@@ -302,6 +302,10 @@ MC_ACH_GEAR	装备精良
 MC_ACH_GEAR_DESC	解锁 10 件装备。
 MC_ACH_STAGE1	从艾尔文到希尔斯布莱德
 MC_ACH_STAGE1_DESC	通关 30 级以内的所有区域。
+MC_ACH_STAGE2	穿越荒野
+MC_ACH_STAGE2_DESC	通关 45 级以内的所有区域。
+MC_ACH_STAGE3	海加尔山的胜利
+MC_ACH_STAGE3_DESC	通关所有区域，包括海加尔山。
 MC_ACH_COLLECTION	全员到齐
 MC_ACH_COLLECTION_DESC	招募所有佣兵。
 MC_ACH_HEROIC10	艾泽拉斯传奇

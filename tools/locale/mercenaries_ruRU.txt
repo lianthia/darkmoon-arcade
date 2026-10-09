@@ -302,6 +302,10 @@ MC_ACH_GEAR	Хорошо снаряжен
 MC_ACH_GEAR_DESC	Откройте 10 предметов снаряжения.
 MC_ACH_STAGE1	От Элвинна до Хилсбрада
 MC_ACH_STAGE1_DESC	Пройдите все зоны до 30 уровня.
+MC_ACH_STAGE2	Через дикие земли
+MC_ACH_STAGE2_DESC	Пройдите все зоны до 45 уровня.
+MC_ACH_STAGE3	Победа на горе Хиджал
+MC_ACH_STAGE3_DESC	Пройдите все зоны, включая гору Хиджал.
 MC_ACH_COLLECTION	Полный состав
 MC_ACH_COLLECTION_DESC	Наймите всех наемников.
 MC_ACH_HEROIC10	Легенда Азерота

@@ -302,6 +302,10 @@ MC_ACH_GEAR	Bien équipé
 MC_ACH_GEAR_DESC	Débloquer 10 pièces d'équipement.
 MC_ACH_STAGE1	D'Elwynn à Hautebrande
 MC_ACH_STAGE1_DESC	Terminer toutes les zones jusqu'au niveau 30.
+MC_ACH_STAGE2	À travers les terres sauvages
+MC_ACH_STAGE2_DESC	Terminer toutes les zones jusqu'au niveau 45.
+MC_ACH_STAGE3	Victoire au mont Hyjal
+MC_ACH_STAGE3_DESC	Terminer toutes les zones, mont Hyjal compris.
 MC_ACH_COLLECTION	Effectif complet
 MC_ACH_COLLECTION_DESC	Recruter tous les mercenaires.
 MC_ACH_HEROIC10	Légende d'Azeroth

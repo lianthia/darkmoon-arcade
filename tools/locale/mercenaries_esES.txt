@@ -302,6 +302,10 @@ MC_ACH_GEAR	Bien equipado
 MC_ACH_GEAR_DESC	Desbloquea 10 piezas de equipo.
 MC_ACH_STAGE1	De Elwynn a Trabalomas
 MC_ACH_STAGE1_DESC	Completa todas las zonas hasta el nivel 30.
+MC_ACH_STAGE2	A través de las tierras salvajes
+MC_ACH_STAGE2_DESC	Completa todas las zonas hasta el nivel 45.
+MC_ACH_STAGE3	Victoria en el Monte Hyjal
+MC_ACH_STAGE3_DESC	Completa todas las zonas, incluido el Monte Hyjal.
 MC_ACH_COLLECTION	Plantilla completa
 MC_ACH_COLLECTION_DESC	Recluta a todos los mercenarios.
 MC_ACH_HEROIC10	Leyenda de Azeroth

@@ -62,7 +62,9 @@ Achievements.Register("mercenaries", {
     { id = "mc_flight", nameKey = "MC_ACH_FLIGHT", descKey = "MC_ACH_FLIGHT_DESC", icon = "Interface\\TaxiFrame\\UI-Taxi-Icon-Green" },
     { id = "mc_level30", nameKey = "MC_ACH_LEVEL30", descKey = "MC_ACH_LEVEL30_DESC", icon = "Interface\\Icons\\INV_Misc_Book_09" },
     { id = "mc_gear", nameKey = "MC_ACH_GEAR", descKey = "MC_ACH_GEAR_DESC", icon = "Interface\\Icons\\INV_Chest_Plate06" },
-    { id = "mc_stage1", nameKey = "MC_ACH_STAGE1", descKey = "MC_ACH_STAGE1_DESC", icon = "Interface\\Icons\\INV_Misc_Map_02" },
+    { id = "mc_stage1", nameKey = "MC_ACH_STAGE1", descKey = "MC_ACH_STAGE1_DESC", icon = "Interface\\Icons\\Ability_Hunter_Pathfinding" },
+    { id = "mc_stage2", nameKey = "MC_ACH_STAGE2", descKey = "MC_ACH_STAGE2_DESC", icon = "Interface\\Icons\\Spell_Nature_EarthBind" },
+    { id = "mc_stage3", nameKey = "MC_ACH_STAGE3", descKey = "MC_ACH_STAGE3_DESC", icon = "Interface\\Icons\\Spell_Fire_FelFlameRing" },
     { id = "mc_collection", nameKey = "MC_ACH_COLLECTION", descKey = "MC_ACH_COLLECTION_DESC", icon = "Interface\\Icons\\INV_Misc_Book_11" },
     { id = "mc_heroic10", nameKey = "MC_ACH_HEROIC10", descKey = "MC_ACH_HEROIC10_DESC", icon = "Interface\\Icons\\INV_Crown_01" },
     { id = "mc_level60", nameKey = "MC_ACH_LEVEL60", descKey = "MC_ACH_LEVEL60_DESC", icon = "Interface\\Icons\\INV_Misc_Book_07" },
@@ -255,15 +257,20 @@ function Module:OnBountyComplete(run, survivors)
         end
         if heroics >= 10 then Achievements.Unlock("mc_heroic10") end
     end
-    local starters, all = true, true
+    local starters = true
     for _, zid in ipairs(STARTING_ZONES) do
         if Bounty.ZoneState(store, zid).normal == 0 then starters = false end
     end
-    for _, zid in ipairs(MC.ZONE_ORDER) do
-        if Bounty.ZoneState(store, zid).normal == 0 then all = false end
-    end
     if starters then Achievements.Unlock("mc_starter") end
-    if all then Achievements.Unlock("mc_stage1") end
+    -- Stages: every zone up to level 30, up to level 45, and all of them.
+    local stages = { { 30, "mc_stage1" }, { 45, "mc_stage2" }, { MC.MAX_LEVEL, "mc_stage3" } }
+    for _, stage in ipairs(stages) do
+        local done = true
+        for _, zid in ipairs(MC.ZONE_ORDER) do
+            if MC.Zones[zid].max <= stage[1] and Bounty.ZoneState(store, zid).normal == 0 then done = false end
+        end
+        if done then Achievements.Unlock(stage[2]) end
+    end
     local gears = 0
     for _, entry in pairs(store.mercs) do
         for i = 2, 3 do
