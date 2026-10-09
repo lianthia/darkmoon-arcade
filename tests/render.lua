@@ -88,6 +88,19 @@ mc:ShowView("camp")
 Click(mc.views.camp.travel)
 local travel = mc.views.travel
 if Want("travel") then Snap("travel") end
+Click(travel.regions[1])
+Tick(1)
+if Want("travel") then Snap("travel_lordaeron") end
+Click(travel.overview)
+Tick(1)
+Click(travel.tabs.kal)
+Tick(1)
+if Want("travel") then Snap("travel_kalimdor") end
+Click(travel.regions[2])
+Tick(1)
+if Want("travel") then Snap("travel_central") end
+Click(travel.tabs.ek)
+Tick(1)
 Click(travel.regions[3])
 Tick(1)
 if Want("travel") then Snap("travel_region") end

@@ -318,6 +318,16 @@ function Module:BuildTravel()
     layer:SetAllPoints(map)
     layer:SetFrameLevel(map:GetFrameLevel() + 5)
     view.layer = layer
+    -- Right-click anywhere on a zoomed map goes back to the continent, as on the world map.
+    local function ZoomOut(_, button)
+        if button == "RightButton" and self.travelRegion and self.travelContinent ~= "zephras" then
+            PlaySound(SOUNDKIT.IG_MAINMENU_CLOSE)
+            self:ZoomToRegion(nil)
+        end
+    end
+    layer:EnableMouse(true)
+    layer:SetScript("OnMouseUp", ZoomOut)
+    self.travelZoomOut = ZoomOut
 
     -- Region labels on the continent; a click zooms in.
     view.regions = {}
@@ -368,6 +378,7 @@ function Module:BuildTravel()
             GameTooltip:Show()
         end)
         pin:HookScript("OnLeave", GameTooltip_Hide)
+        pin:HookScript("OnMouseUp", function(_, button) self.travelZoomOut(nil, button) end)
         Kit.Hover(pin, { grow = 1.18, sound = false })
         pin:Hide()
         view.pins[i] = pin
@@ -487,14 +498,42 @@ function Module:UpdateTravel(dt)
     if zoom.t >= 1 then self.travelZoom = nil end
 end
 
+-- A pin with its name plate takes about this much room; closer pins are pushed apart.
+local PIN_ROOM_X, PIN_ROOM_Y = 134, 74
+
 function Module:PlacePins()
     local view = self.views.travel
+    local spots = {}
     for _, pin in ipairs(view.pins) do
         if pin:IsShown() then
             local r = MC.ZoneMaps[pin.zone].rect
             local x, y = view.map:Point((r[1] + r[2]) / 2, (r[3] + r[4]) / 2)
-            Kit.Place(pin, x, y, view.layer)
+            spots[#spots + 1] = { pin = pin, x = x, y = y }
         end
+    end
+    for _ = 1, 12 do
+        for i = 1, #spots do
+            for j = i + 1, #spots do
+                local a, b = spots[i], spots[j]
+                local dx, dy = b.x - a.x, b.y - a.y
+                local ox, oy = PIN_ROOM_X - math.abs(dx), PIN_ROOM_Y - math.abs(dy)
+                if ox > 0 and oy > 0 then
+                    -- Push along the axis that needs the shorter way.
+                    if ox * PIN_ROOM_Y < oy * PIN_ROOM_X then
+                        local push = ox / 2 * (dx < 0 and -1 or 1)
+                        a.x, b.x = a.x - push, b.x + push
+                    else
+                        local push = oy / 2 * (dy < 0 and -1 or 1)
+                        a.y, b.y = a.y - push, b.y + push
+                    end
+                end
+            end
+        end
+    end
+    for _, spot in ipairs(spots) do
+        local x = math.max(40, math.min(MAP_W - 40, spot.x))
+        local y = math.max(30, math.min(MAP_H - 50, spot.y))
+        Kit.Place(spot.pin, x, y, view.layer)
     end
     for _, b in ipairs(view.regions) do
         if b:IsShown() then
