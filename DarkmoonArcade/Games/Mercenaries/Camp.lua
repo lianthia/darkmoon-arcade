@@ -62,7 +62,7 @@ local REGIONS = {
     },
 }
 
-local MAP_W, MAP_H = 566, 452
+local MAP_W, MAP_H = 566, 468
 
 -- The part of a map (u0, u1, v0, v1) that shows a rectangle with a margin at the canvas' aspect.
 local function FitView(l, r, t, b, margin)
@@ -148,9 +148,8 @@ local function Hotspot(parent, icon, size, onClick)
     return b
 end
 
--- Where the six party members stand: a gentle arc, names alternating high and low so long names
--- never touch.
-local CAMP_X0, CAMP_GAP, CAMP_FEET = W / 2 - 2.5 * 92, 92, 462
+-- Where the six party members stand: a gentle arc, each with its name banner below.
+local CAMP_GAP, CAMP_Y = 124, 384
 
 function Module:BuildCamp()
     local view = self:AddView("camp", CreateFrame("Frame", nil, self.container))
@@ -165,8 +164,11 @@ function Module:BuildCamp()
     dusk:SetTexture(MC.Tex("vignette"))
     dusk:SetAlpha(0.85)
 
-    local title = Kit.Plaque(view, 300, "MC_NAME", 20)
-    title:SetPoint("TOP", 0, -4)
+    local logo = view:CreateTexture(nil, "ARTWORK")
+    logo:SetSize(380, 380 * 302 / 1024)
+    logo:SetPoint("TOP", 0, -10)
+    logo:SetTexture(MC.Tex("logo"))
+    logo:SetTexCoord(0, 1, 0, 302 / 512)
 
     local stage = CreateFrame("Frame", nil, view)
     stage:SetAllPoints()
@@ -176,19 +178,25 @@ function Module:BuildCamp()
     plates:SetFrameLevel(stage:GetFrameLevel() + 10)
     self.campSlots = {}
     for i = 1, Bounty.PARTY_SIZE do
-        local x = CAMP_X0 + (i - 1) * CAMP_GAP
-        local feet = CAMP_FEET - math.abs(i - 3.5) * 6
-        local shadow = stage:CreateTexture(nil, "BACKGROUND")
-        shadow:SetTexture(MC.Tex("node_glow"))
-        shadow:SetVertexColor(0, 0, 0, 0.75)
-        shadow:SetSize(84, 22)
-        shadow:SetPoint("CENTER", view, "TOPLEFT", x, -feet)
-        local model = MC.Model(stage, nil)
-        model:SetSize(118, 200)
-        model:SetPoint("BOTTOM", view, "TOPLEFT", x, -(feet + 6))
-        local plate = Kit.Banner(plates, 140, 28, 10)
-        plate:SetPoint("TOP", view, "TOPLEFT", x, -(feet + (i % 2 == 1 and 4 or 32)))
-        self.campSlots[i] = { model = model, plate = plate, shadow = shadow }
+        local x = W / 2 + (i - 3.5) * CAMP_GAP
+        local y = CAMP_Y - (2.5 - math.abs(i - 3.5)) * 8
+        local token = MC.CreateToken(stage)
+        token.name:Hide()
+        rawset(token, "glowTex", token.glow)
+        token.glow:Show()
+        token.glow:SetAlpha(0)
+        token:SetScript("OnClick", function()
+            local id = self:Store().party[i]
+            if id then
+                self.mercShown = id
+                self:ShowView("merc")
+            end
+        end)
+        Kit.Hover(token, { grow = 1.06, lift = 6 })
+        Kit.Place(token, x, y)
+        local plate = Kit.Banner(plates, CAMP_GAP + 8, 30, 12)
+        plate:SetPoint("TOP", view, "TOPLEFT", x, -(y + MC.TOKEN_H / 2 + 2))
+        self.campSlots[i] = { token = token, plate = plate }
     end
 
     view.travel = Hotspot(view, "Interface\\Icons\\Spell_Arcane_PortalStormwind", 88, function()
@@ -214,12 +222,13 @@ function Module:RefreshCamp()
     self:SetScene(nil)
     for i, slot in ipairs(self.campSlots) do
         local id = store.party[i]
-        slot.model:SetShown(id ~= nil)
+        slot.token:SetShown(id ~= nil)
         slot.plate:SetShown(id ~= nil)
-        slot.shadow:SetShown(id ~= nil)
         if id then
-            slot.model:SetDisplay(MC.Mercs[id].display, (i - 3.5) * -0.16)
-            slot.plate.text:SetText(Describe.MercName(id))
+            local unit = MC.PreviewUnit(store, id)
+            unit.side = "ally"
+            slot.token:SetData(unit)
+            Kit.FitText(slot.plate.text, Describe.MercName(id), (CAMP_GAP + 8) * 0.78 - 2, 12, 9)
         end
     end
     view.travel.plaque.text:SetText(run and L.MC_CONTINUE_RUN or L.MC_TRAVEL_POINT)
@@ -247,8 +256,6 @@ function Module:BuildTravel()
     local view = self:AddView("travel", CreateFrame("Frame", nil, self.container))
     local wood = Kit.Wood(view, W, H, true)
     wood:SetPoint("TOPLEFT")
-    local title = Kit.Plaque(view, 280, "MC_TRAVEL_POINT", 18)
-    title:SetPoint("TOP", view, "TOPLEFT", 14 + MAP_W / 2, -2)
     self.travelContinent = "ek"
 
     -- Continent tabs above the map.
@@ -261,12 +268,12 @@ function Module:BuildTravel()
             self.travelZoom = nil
             self:RefreshTravel(true)
         end)
-        Kit.Place(tab, 14 + MAP_W / 2 + (i - 2) * 160, 66)
+        Kit.Place(tab, 14 + MAP_W / 2 + (i - 2) * 172, 30)
         view.tabs[c] = tab
     end
 
     local map = MC.CreateMapCanvas(view, MAP_W, MAP_H)
-    map:SetPoint("TOPLEFT", 14, -84)
+    map:SetPoint("TOPLEFT", 14, -56)
     Widgets.Rim(view, map)
     view.map = map
     local layer = CreateFrame("Frame", nil, view)
@@ -278,7 +285,7 @@ function Module:BuildTravel()
     view.regions = {}
     for i = 1, 4 do
         local b = CreateFrame("Button", nil, layer)
-        b:SetSize(170, 50)
+        b:SetSize(220, 52)
         local bg = b:CreateTexture(nil, "ARTWORK")
         bg:SetAllPoints()
         Kit.Atlas(bg, "ui-frame-neutral-ribbon", MC.Tex("ribbon"))
@@ -331,7 +338,7 @@ function Module:BuildTravel()
     Kit.Place(view.overview, 14 + 95, H - 16)
 
     self:BuildBossPanel(view)
-    local back = Kit.Button(view, 120, 28, "BACK", function() self:ShowView("camp") end)
+    local back = Kit.Button(view, 120, 28, "BACK", function() self:ShowView("camp") end, "red")
     Kit.Place(back, W - 76, H - 18)
     view.refresh = function() self:RefreshTravel(true) end
 end
@@ -479,7 +486,7 @@ function Module:RefreshTravel(resetView)
             for _, zid in ipairs(region.zones) do
                 if MC.Zones[zid] and Bounty.ZoneState(store, zid).normal > 0 then done = done + 1 end
             end
-            b.text:SetText(L["MC_REGION_" .. region.key:upper()] .. "  |cff6a4a20" .. done .. "/" .. #region.zones .. "|r")
+            Kit.FitText(b.text, L["MC_REGION_" .. region.key:upper()] .. "  |cff6a4a20" .. done .. "/" .. #region.zones .. "|r", 170, 13, 10)
         end
     end
 
@@ -653,7 +660,7 @@ function Module:BuildCollection()
     local back = Kit.Button(view, 120, 28, "BACK", function()
         self.partySlot = nil
         self:ShowView("camp")
-    end)
+    end, "red")
     Kit.Place(back, W - 76, H - 18)
 
     self:BuildMercView()
@@ -751,7 +758,7 @@ function Module:BuildMercView()
             self:CheckLevels()
             self:RefreshMercView()
         end
-    end)
+    end, "green")
     Kit.Place(view.recruit, 128, 440)
     view.levelText = Widgets.Text(view, 12, "gold")
     view.levelText:SetPoint("TOP", view, "TOPLEFT", 128, -470)
@@ -786,7 +793,7 @@ function Module:BuildMercView()
                 self:CheckLevels()
                 self:RefreshMercView()
             end
-        end)
+        end, "green")
         Kit.Place(up, x, 292, sheet)
         view.ups[i] = up
     end
@@ -815,7 +822,7 @@ function Module:BuildMercView()
     view.gearDesc:SetPoint("BOTTOM", 0, 14)
     view.gearDesc:SetWidth(520)
 
-    local done = Kit.Button(view, 140, 30, "MC_DONE", function() self:ShowView("collection") end)
+    local done = Kit.Button(view, 140, 30, "MC_DONE", function() self:ShowView("collection") end, "red")
     Kit.Place(done, W - 86, H - 20)
     view.refresh = function() self:RefreshMercView() end
 end

@@ -65,7 +65,19 @@ def moon_icon():
     square.resize((128, 128), Image.LANCZOS).save(MEDIA / "portrait.tga")
 
 
+def mercenaries_logo():
+    """The Mercenaries title (already cut out): 1024 wide at the top of a 1024x512 texture."""
+    src = Image.open(ROOT / "art" / "mercenaries_logo.webp").convert("RGBA")
+    src = src.crop(src.getbbox())
+    h = round(1024 * src.height / src.width)
+    canvas = Image.new("RGBA", (1024, 512), (0, 0, 0, 0))
+    canvas.paste(src.resize((1024, h), Image.LANCZOS), (0, 0))
+    canvas.save(MEDIA / "mercs" / "logo.tga")
+    print("mercenaries logo height", h)
+
+
 if __name__ == "__main__":
     cutout_logo()
     moon_icon()
+    mercenaries_logo()
     print("Artwork imported into", MEDIA)

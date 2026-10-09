@@ -542,20 +542,42 @@ def hs_ability_card(role):
     return arc.to_rgba(rgb, np.clip(np.maximum(body, outer) - window, 0, 1))
 
 
-def hs_button():
-    """Parchment button with a gold rim and dark metal caps."""
-    w, h = 256, 64
+BUTTON_FACES = {
+    "button": ((240, 226, 190), (205, 172, 110)),
+    "button_red": ((196, 52, 36), (98, 14, 10)),
+    "button_blue": ((62, 132, 214), (18, 46, 112)),
+    "button_green": ((84, 172, 64), (24, 82, 20)),
+}
 
-    def draw(dr, s):
-        dr.rounded_rectangle([10 * s, 8 * s, (w - 10) * s, (h - 8) * s], radius=10 * s, fill=(60, 44, 28, 255))
-        dr.rounded_rectangle([14 * s, 11 * s, (w - 14) * s, (h - 11) * s], radius=8 * s, fill=(214, 176, 92, 255))
-        dr.rounded_rectangle([18 * s, 14 * s, (w - 18) * s, (h - 14) * s], radius=6 * s, fill=(236, 222, 186, 255))
-        for x in (8, w - 8):
-            dr.ellipse([(x - 10) * s, (h / 2 - 14) * s, (x + 10) * s, (h / 2 + 14) * s], fill=(70, 72, 80, 255))
-            dr.ellipse([(x - 6) * s, (h / 2 - 9) * s, (x + 6) * s, (h / 2 + 9) * s], fill=(150, 152, 162, 255))
-    arr = np.array(supersampled(w, h, draw)).astype(float)
-    arr[..., :3] *= np.linspace(1.08, 0.85, h)[:, None, None]
-    return Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8), "RGBA")
+
+def hs_button(kind="button"):
+    """A lacquered button: dark outline, gold rim, a face with a soft top light and a gloss band,
+    and metal caps with a small gem on both ends."""
+    w, h = 256, 64
+    top, bottom = BUTTON_FACES[kind]
+    s = SS
+    face = Image.new("RGBA", (w * s, h * s), (0, 0, 0, 0))
+    d = ImageDraw.Draw(face)
+    d.rounded_rectangle([10 * s, 7 * s, (w - 10) * s, (h - 7) * s], radius=12 * s, fill=(34, 22, 12, 255))
+    d.rounded_rectangle([12 * s, 9 * s, (w - 12) * s, (h - 9) * s], radius=10 * s, fill=(232, 190, 96, 255))
+    d.rounded_rectangle([15 * s, 12 * s, (w - 15) * s, (h - 12) * s], radius=8 * s, fill=(120, 80, 30, 255))
+    inner = Image.new("L", (w * s, h * s), 0)
+    ImageDraw.Draw(inner).rounded_rectangle([17 * s, 14 * s, (w - 17) * s, (h - 14) * s], radius=7 * s, fill=255)
+    t = np.linspace(0, 1, h * s)[:, None]
+    grad = np.array(top)[None, None, :] * (1 - t[..., None]) + np.array(bottom)[None, None, :] * t[..., None]
+    grad = np.broadcast_to(grad, (h * s, w * s, 3)).copy()
+    # Gloss: a light band over the upper half.
+    gloss = np.clip(1 - np.abs(t - 0.32) / 0.14, 0, 1)[..., None] * 0.35
+    grad = grad + (255 - grad) * gloss
+    fill = Image.fromarray(np.clip(grad, 0, 255).astype(np.uint8), "RGB").convert("RGBA")
+    face.paste(fill, (0, 0), inner)
+    d = ImageDraw.Draw(face)
+    for x in (10, w - 10):
+        d.ellipse([(x - 11) * s, (h / 2 - 15) * s, (x + 11) * s, (h / 2 + 15) * s], fill=(30, 26, 24, 255))
+        d.ellipse([(x - 9) * s, (h / 2 - 13) * s, (x + 9) * s, (h / 2 + 13) * s], fill=(150, 150, 160, 255))
+        d.ellipse([(x - 5) * s, (h / 2 - 7) * s, (x + 5) * s, (h / 2 + 7) * s], fill=(232, 190, 96, 255))
+        d.ellipse([(x - 3) * s, (h / 2 - 5) * s, (x + 1) * s, (h / 2 - 1) * s], fill=(255, 245, 210, 255))
+    return face.resize((w, h), Image.LANCZOS)
 
 
 def swirl():
@@ -673,7 +695,8 @@ def main():
         ga.save_tga(hs_token(role), "otoken_" + role, FOLDER)
         for kind in ("attack", "health"):
             ga.save_tga(hs_badge(kind, role), f"hs_{kind}_{role}", FOLDER)
-    ga.save_tga(hs_button(), "button", FOLDER)
+    for kind in BUTTON_FACES:
+        ga.save_tga(hs_button(kind), kind, FOLDER)
     ga.save_tga(hs_token_back(), "otoken_back", FOLDER)
     ga.save_tga(hs_token_glow(), "otoken_glow", FOLDER)
     ga.save_tga(swirl(), "swirl", FOLDER)

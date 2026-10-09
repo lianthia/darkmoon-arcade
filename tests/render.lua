@@ -144,3 +144,23 @@ for _ = 1, 200 do
     end
     Tick(1)
 end
+
+-- Dialogs: the treasure after the first fight, then the handbook.
+for _ = 1, 60 do
+    run = store.run
+    if not run or run.phase ~= "battle" then break end
+    if run.battle.phase == "command" and not mc.playing then mc:AutoChoose(); mc:ResolveTurn() end
+    if run.battle.phase == "deploy" or run.battle.phase == "replace" then
+        MC.Combat.Deploy(run.battle, run.battle.bench.ally[1])
+        mc:RefreshBattle()
+    end
+    Tick(2)
+end
+if store.run and store.run.phase == "treasure" then
+    mc:Route()
+    if Want("treasure") then Snap("treasure") end
+end
+mc.overlay:Show("help")
+if Want("help") then Snap("help") end
+mc:ShowHelpChapter(4)
+if Want("help") then Snap("help_battle") end

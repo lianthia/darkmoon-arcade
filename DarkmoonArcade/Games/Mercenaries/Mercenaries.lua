@@ -297,25 +297,37 @@ end
 -- Dialogs --------------------------------------------------------------------------------------------
 
 local function OptionButton(parent, width, height)
+    local Kit = MC.Kit
     local b = CreateFrame("Button", nil, parent)
     b:SetSize(width, height)
-    local fill = b:CreateTexture(nil, "BACKGROUND")
-    fill:SetAllPoints()
-    fill:SetColorTexture(0.08, 0.06, 0.1, 0.92)
+    b.glowTex = b:CreateTexture(nil, "BACKGROUND", nil, -8)
+    b.glowTex:SetPoint("TOPLEFT", -10, 10)
+    b.glowTex:SetPoint("BOTTOMRIGHT", 10, -10)
+    b.glowTex:SetColorTexture(1, 0.8, 0.35, 0.35)
+    b.glowTex:SetBlendMode("ADD")
+    b.glowTex:SetAlpha(0)
+    Kit.Parchment(b)
     Widgets.Rim(b, b)
-    local hl = b:CreateTexture(nil, "HIGHLIGHT")
-    hl:SetAllPoints()
-    hl:SetColorTexture(1, 0.82, 0.4, 0.12)
     b.icon = b:CreateTexture(nil, "ARTWORK")
-    b.icon:SetSize(44, 44)
-    b.icon:SetPoint("TOP", 0, -14)
-    b.name = Widgets.Text(b, 14, "gold")
-    b.name:SetPoint("TOP", b.icon, "BOTTOM", 0, -8)
+    b.icon:SetSize(46, 46)
+    b.icon:SetPoint("TOP", 0, -18)
+    local mask = b:CreateMaskTexture()
+    mask:SetTexture(MC.Tex("disc_mask"), "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
+    mask:SetAllPoints(b.icon)
+    b.icon:AddMaskTexture(mask)
+    local ring = b:CreateTexture(nil, "OVERLAY")
+    ring:SetPoint("CENTER", b.icon)
+    ring:SetSize(60, 60)
+    Kit.Atlas(ring, "hud-PlayerFrame-portraitring-large", MC.Tex("node_ring"))
+    b.name = Kit.Ink(b, 14, { 0.45, 0.12, 0.04 })
+    b.name:SetPoint("TOP", b.icon, "BOTTOM", 0, -12)
     b.name:SetWidth(width - 16)
-    b.desc = Widgets.Text(b, 11, "white")
+    b.desc = Kit.Ink(b, 11, { 0.2, 0.12, 0.05 })
     b.desc:SetPoint("TOP", b.name, "BOTTOM", 0, -6)
-    b.desc:SetWidth(width - 20)
+    b.desc:SetWidth(width - 24)
     b.desc:SetJustifyH("CENTER")
+    b:HookScript("OnClick", function() PlaySound(SOUNDKIT.IG_MAINMENU_OPTION) end)
+    Kit.Hover(b, { grow = 1.04, lift = 6, sound = false })
     return b
 end
 MC.OptionButton = OptionButton
@@ -338,14 +350,17 @@ function Module:CreatePages()
 
     -- Treasure: three choices for one mercenary; cursed offers may be declined.
     local treasure = overlay:AddPage("treasure")
-    local tTitle = Widgets.PageTitle(treasure, nil, -60)
+    local tTitle = Widgets.PageTitle(treasure, nil, -26)
     local tSub = Widgets.Text(treasure, 14, "blue")
-    tSub:SetPoint("TOP", tTitle, "BOTTOM", 0, -8)
+    tSub:SetPoint("TOP", tTitle, "BOTTOM", 0, -6)
     tSub:SetWidth(W - 120)
+    local tToken = MC.CreateToken(treasure)
+    tToken:SetPoint("TOP", treasure, "TOP", 0, -98)
+    tToken:EnableMouse(false)
     local tButtons = {}
     for i = 1, 3 do
-        local b = OptionButton(treasure, 200, 190)
-        b:SetPoint("TOP", treasure, "TOP", (i - 2) * 220, -170)
+        local b = OptionButton(treasure, 200, 176)
+        MC.Kit.Place(b, W / 2 + (i - 2) * 220, 352, treasure)
         b:SetScript("OnClick", function()
             local store = self:Store()
             if Bounty.ChooseTreasure(store, store.run, i) then
@@ -359,7 +374,7 @@ function Module:CreatePages()
         local store = self:Store()
         if Bounty.ChooseTreasure(store, store.run, nil) then self:Route() end
     end)
-    decline:SetPoint("TOP", treasure, "TOP", 0, -390)
+    decline:SetPoint("TOP", treasure, "TOP", 0, -456)
     self.treasureButtons, self.declineButton = tButtons, decline
     treasure.refresh = function()
         local run = self:Store().run
@@ -367,6 +382,9 @@ function Module:CreatePages()
         if not offer then return end
         local mercId = run.party[offer.member].id
         local cursed = offer.kind == "cursed"
+        local unit = MC.PreviewUnit(self:Store(), mercId)
+        unit.side = "ally"
+        tToken:SetData(unit)
         tTitle:SetText(cursed and L.MC_CURSED_TITLE or L.MC_TREASURE_TITLE)
         tSub:SetText((cursed and L.MC_CURSED_SUB or L.MC_TREASURE_SUB):format(Describe.MercName(mercId), MC.CURSE_HEALTH * 100))
         for i, b in ipairs(tButtons) do
@@ -418,7 +436,11 @@ function Module:CreatePages()
             if idx then
                 local id = run.party[idx].id
                 b.member = idx
-                b.icon:SetTexture(MC.Tex("role_" .. MC.Mercs[id].role))
+                if MC.Kit.HAS_PORTRAITS then
+                    SetPortraitTextureFromCreatureDisplayID(b.icon, MC.Mercs[id].display)
+                else
+                    b.icon:SetTexture(MC.Tex("role_" .. MC.Mercs[id].role))
+                end
                 b.name:SetText(Describe.MercName(id))
             end
         end
@@ -505,7 +527,7 @@ function Module:CreatePages()
         end
     end
     Widgets.AchievementsPage(overlay, W, self.id, Back)
-    Widgets.HelpPage(overlay, W, "MC_RULES", "MC_HELP", Back)
+    self:BuildHelp(Back)
 end
 
 function Module:CreateResultPage()

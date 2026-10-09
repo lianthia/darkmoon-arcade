@@ -136,7 +136,7 @@ function Module:BuildMap()
     view.effects = Kit.Ink(party, 10, { 0.75, 0.9, 1 }, "OUTLINE")
     view.effects:SetPoint("BOTTOM", 0, 8)
     view.effects:SetWidth(MAP_LEFT - 40)
-    local abandon = Kit.Button(view, MAP_LEFT - 30, 26, "MC_ABANDON", function() self.overlay:Show("confirm") end)
+    local abandon = Kit.Button(view, MAP_LEFT - 30, 26, "MC_ABANDON", function() self.overlay:Show("confirm") end, "red")
     Kit.Place(abandon, (MAP_LEFT - 30) / 2 + 14, H - 22)
 
     -- The encounter on the right.

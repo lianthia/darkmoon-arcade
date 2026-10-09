@@ -71,5 +71,6 @@ Games\Mercenaries\Kit.lua
 Games\Mercenaries\Camp.lua
 Games\Mercenaries\Map.lua
 Games\Mercenaries\Battle.lua
+Games\Mercenaries\Help.lua
 
 Main.lua

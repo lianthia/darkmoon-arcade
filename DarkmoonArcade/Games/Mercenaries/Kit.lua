@@ -242,20 +242,34 @@ end
 
 -- Buttons ------------------------------------------------------------------------------------------
 
--- Parchment button with gold rim and metal caps; grows on hover, sinks on press.
-function Kit.Button(parent, w, h, key, onClick)
+-- Sets `text` at `size`, shrinking the font down to `minSize` until it fits `maxW`.
+function Kit.FitText(fs, text, maxW, size, minSize, flags)
+    fs:SetText(text)
+    for s = size, minSize or size - 4, -1 do
+        fs:SetFont(Media.FontFile(), s, flags or "")
+        if fs:GetStringWidth() <= maxW then return end
+    end
+end
+
+-- A lacquered button with gold rim and metal caps; grows on hover, sinks on press.
+-- `style`: nil (parchment), "red" (back, abandon), "blue" or "green" (go ahead).
+function Kit.Button(parent, w, h, key, onClick, style)
     local b = CreateFrame("Button", nil, parent)
     b:SetSize(w, h)
     b.bg = b:CreateTexture(nil, "ARTWORK")
     b.bg:SetAllPoints()
-    b.bg:SetTexture(MC.Tex("button"))
+    b.bg:SetTexture(MC.Tex(style and ("button_" .. style) or "button"))
     b.glowTex = b:CreateTexture(nil, "OVERLAY")
     b.glowTex:SetPoint("TOPLEFT", 8, -6)
     b.glowTex:SetPoint("BOTTOMRIGHT", -8, 6)
     b.glowTex:SetColorTexture(1, 0.9, 0.6, 0.25)
     b.glowTex:SetBlendMode("ADD")
     b.glowTex:SetAlpha(0)
-    b.label = Kit.Ink(b, math.min(14, h * 0.42), INK)
+    if style then
+        b.label = Kit.Ink(b, math.min(14, h * 0.45), { 1, 0.96, 0.88 }, "OUTLINE")
+    else
+        b.label = Kit.Ink(b, math.min(14, h * 0.45), INK)
+    end
     b.label:SetPoint("CENTER", 0, 1)
     function b:SetText(text) self.label:SetText(text) end
     if key then Widgets.OnRefresh(function() b.label:SetText(L[key]) end) end
@@ -342,9 +356,9 @@ function Kit.Medallion(parent, size, dark)
     f:SetSize(size, size)
     f.icon = f:CreateTexture(nil, "ARTWORK")
     f.icon:SetPoint("CENTER")
-    f.icon:SetSize(size * 0.74, size * 0.74)
+    f.icon:SetSize(size * 0.64, size * 0.64)
     local mask = f:CreateMaskTexture()
-    mask:SetTexture(MC.Tex("circle_mask"), "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
+    mask:SetTexture(MC.Tex("disc_mask"), "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
     mask:SetAllPoints(f.icon)
     f.icon:AddMaskTexture(mask)
     f.ring = f:CreateTexture(nil, "OVERLAY")
