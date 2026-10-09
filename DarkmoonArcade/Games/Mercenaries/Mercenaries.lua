@@ -530,60 +530,9 @@ function Module:CreatePages()
     self:BuildHelp(Back)
 end
 
-function Module:CreateResultPage()
-    local page = self.overlay:AddPage("result")
-    local title = Widgets.PageTitle(page, nil, -36)
-    local sub = Widgets.Text(page, 14, "blue")
-    sub:SetPoint("TOP", title, "BOTTOM", 0, -6)
-    local lines = Widgets.Text(page, 12, "white")
-    lines:SetPoint("TOP", sub, "BOTTOM", 0, -16)
-    lines:SetWidth(W - 160)
-    lines:SetSpacing(4)
-    local share = Widgets.ShareRow(page, function() return self.lastEntry and ShareMessage(self.lastEntry) end)
-    share:SetPoint("BOTTOM", 0, 64)
-    local close = Widgets.Button(page, 200, 26, "MC_TO_CAMP", function() self:CloseRun() end)
-    close:SetPoint("BOTTOM", 0, 24)
-    self.resultClose = close
-    page.refresh = function()
-        local store = self:Store()
-        local run = store.run
-        if not run then return end
-        local zone = Describe.ZoneName(run.zone) .. (run.heroic and (" (" .. L.MC_HEROIC .. ")") or "")
-        local out = {}
-        if run.phase == "complete" then
-            title:SetText(L.MC_COMPLETE)
-            sub:SetText(zone)
-            local r = run.rewards
-            if r.first then out[#out + 1] = "|cffffd100" .. L.MC_FIRST_CLEAR .. "|r" end
-            local coins = {}
-            for _, id in ipairs(MC.MERC_ORDER) do
-                if r.coins[id] then coins[#coins + 1] = ("%s +%d"):format(Describe.MercName(id), r.coins[id]) end
-            end
-            out[#out + 1] = L.MC_COINS_EARNED:format(table.concat(coins, ", "))
-            if r.gear then
-                out[#out + 1] = "|cff40ff40" .. L.MC_GEAR_UNLOCKED:format(L["MC_G_" .. r.gear.merc .. "_" .. r.gear.slot], Describe.MercName(r.gear.merc)) .. "|r"
-            end
-            if not run.heroic and r.first then out[#out + 1] = "|cffa335ee" .. L.MC_HEROIC_UNLOCKED .. "|r" end
-        else
-            title:SetText(L.MC_DEFEAT)
-            sub:SetText(zone)
-            out[#out + 1] = L.MC_FIGHTS_WON:format(run.fights)
-        end
-        out[#out + 1] = L.MC_XP_EARNED:format(ns.FormatNumber(run.xp))
-        if run.levelUps and #run.levelUps > 0 then
-            local names = {}
-            for _, id in ipairs(run.levelUps) do
-                names[#names + 1] = ("%s (%d)"):format(Describe.MercName(id), store.mercs[id].level)
-            end
-            out[#out + 1] = "|cff40ff40" .. L.MC_LEVEL_UPS:format(table.concat(names, ", ")) .. "|r"
-        end
-        out[#out + 1] = L.FINAL_SCORE:format(ns.FormatNumber(run.score))
-        lines:SetText(table.concat(out, "\n"))
-        if run.score > 0 then
-            self.lastEntry = { score = run.score, zone = run.zone, heroic = run.heroic or nil }
-        end
-        share:SetShown(run.score > 0)
-    end
+-- The result page lives in Result.lua.
+function Module:ShareText(entry)
+    return ShareMessage(entry)
 end
 
 -- A short notice on the map: what a boon, a mystery or an idle healer did.

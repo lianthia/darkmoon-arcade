@@ -352,8 +352,11 @@ function Bounty.NewRun(store, zoneId, heroic, seed)
         layer = 0, index = nil, phase = "map",
         party = {}, boons = {}, curse = 0, fights = 0, score = 0, xp = 0, visited = {},
     }
+    -- Levels at the start, so the result can show every level gained on the way.
+    run.startLevels = {}
     for _, id in ipairs(store.party) do
         run.party[#run.party + 1] = { id = id, dead = false, treasures = {} }
+        run.startLevels[id] = Bounty.Entry(store, id).level
     end
     run.map = Bounty.GenerateMap(run, zone, heroic)
     store.run = run

@@ -164,3 +164,21 @@ mc.overlay:Show("help")
 if Want("help") then Snap("help") end
 mc:ShowHelpChapter(4)
 if Want("help") then Snap("help_battle") end
+
+-- The result after a won bounty: two mercenaries gained levels on the way.
+run = store.run
+if run then
+    run.phase = "complete"
+    run.fights, run.xp, run.score = 4, 1416, 210
+    run.rewards = { first = true, coins = {}, gear = { merc = store.party[1], slot = 2 } }
+    for _, member in ipairs(run.party) do run.rewards.coins[member.id] = 5 end
+    run.rewards.coins.jaina = 24
+    run.startLevels = run.startLevels or {}
+    for _, member in ipairs(run.party) do run.startLevels[member.id] = store.mercs[member.id].level end
+    store.mercs[store.party[2]].level = store.mercs[store.party[2]].level + 2
+    store.mercs[store.party[5]].level = store.mercs[store.party[5]].level + 1
+    mc:Route()
+    if Want("result") then Snap("result_anim") end
+    Tick(4)
+    if Want("result") then Snap("result") end
+end
