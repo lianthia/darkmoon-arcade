@@ -77,14 +77,20 @@ function GetMinimapShape() return "ROUND" end
 MinimalSliderWithSteppersMixin = { Label = { Right = 1 } }
 function CreateSettingsListSectionHeaderInitializer() return {} end
 local settingCallbacks, dropdownOptions = {}, {}
+-- Like the client's secure delegate: a refused setting (taken name) hands back the previous result.
+local registeredSettings, lastSettingResult = {}, nil
 Settings = {
     VarType = { Boolean = "boolean", Number = "number", String = "string" },
     RegisterVerticalLayoutCategory = function()
-        return { GetID = function() return 1 end }, { AddInitializer = function() end }
+        lastSettingResult = { GetID = function() return 1 end }
+        return lastSettingResult, { AddInitializer = function() end }
     end,
-    RegisterAddOnSetting = function(_, variable, key, tbl, _, _, default)
+    RegisterAddOnSetting = function(_, variable, key, tbl, varType, _, default)
+        if registeredSettings[variable] then return lastSettingResult end
+        registeredSettings[variable] = true
         if tbl[key] == nil then tbl[key] = default end
-        return { variable = variable, key = key, tbl = tbl }
+        lastSettingResult = { variable = variable, key = key, tbl = tbl, GetVariableType = function() return varType end }
+        return lastSettingResult
     end,
     CreateCheckbox = function() end,
     CreateDropdown = function(_, setting, options) dropdownOptions[setting.variable] = { setting = setting, options = options } end,
@@ -661,6 +667,11 @@ end
 Window:OpenHub()
 
 -- Settings callbacks and dropdown contents.
+for _, name in ipairs({ "DarkmoonArcade_language", "DarkmoonArcade_scale", "DarkmoonArcade_flightGame",
+        "DarkmoonArcade_mercenaries_fast" }) do
+    assert(registeredSettings[name], name .. " registered")
+end
+assert(ns.SafeCall("Settings again", ns.Settings.Register, ns.Settings), "taken setting names are skipped quietly")
 for variable, entry in pairs(dropdownOptions) do
     local data = entry.options()
     assert(#data > 0, variable .. " options")

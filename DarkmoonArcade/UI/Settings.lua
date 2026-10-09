@@ -1,13 +1,14 @@
 -- Option definitions shared by the in-window options view and Blizzard's settings panel.
 
-local _, ns = ...
+local ADDON, ns = ...
 
 local L = ns.L
 
 local SettingsPage = {}
 ns.Settings = SettingsPage
 
-local PREFIX = "DarkmoonArcade_"
+-- Setting variables are global to the client: the folder name keeps the release and a dev copy apart.
+local PREFIX = ADDON .. "_"
 
 -- kind: "section", "check", "choice" (choices() -> { {value, label}, ... }) or "range" (min, max, step).
 function SettingsPage.Definitions()
@@ -49,7 +50,10 @@ function SettingsPage.Definitions()
         local game = ns.Arcade.games[id]
         if game.Options then
             defs[#defs + 1] = { kind = "section", label = game.nameKey, tab = "games" }
-            for _, def in ipairs(game:Options()) do defs[#defs + 1] = def end
+            for _, def in ipairs(game:Options()) do
+                def.scope = id
+                defs[#defs + 1] = def
+            end
         end
     end
     return defs
@@ -57,15 +61,21 @@ end
 
 function SettingsPage:Register()
     if not (Settings and Settings.RegisterVerticalLayoutCategory) then return end
-    local category, layout = Settings.RegisterVerticalLayoutCategory(L.TITLE)
+    local title = ADDON == "DarkmoonArcade" and L.TITLE or (L.TITLE .. " (Dev)")
+    local category, layout = Settings.RegisterVerticalLayoutCategory(title)
     local types = { check = Settings.VarType.Boolean, choice = Settings.VarType.String, range = Settings.VarType.Number }
 
     for _, def in ipairs(SettingsPage.Definitions()) do
         if def.kind == "section" then
             layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L[def.label]))
         else
-            local variable = PREFIX .. def.key
+            local variable = PREFIX .. (def.scope and (def.scope .. "_") or "") .. def.key
             local setting = Settings.RegisterAddOnSetting(category, variable, def.key, def.tbl, types[def.kind], L[def.label], def.default)
+            -- A refused setting (e.g. a name taken by another addon) hands back an older result instead.
+            if not (setting and setting.GetVariableType) then
+                ns.Debug("settingRefused", variable)
+                break
+            end
             if def.kind == "check" then
                 Settings.CreateCheckbox(category, setting, L[def.tip])
             elseif def.kind == "choice" then
