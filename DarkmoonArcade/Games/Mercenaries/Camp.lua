@@ -13,8 +13,10 @@ local INK = { 0.24, 0.14, 0.06 }
 local ROLES = { "protector", "fighter", "caster" }
 local ROMAN = { "I", "II", "III" }
 
--- The painted village of Elwynn from the housing loading screen (2992x1684).
-local VILLAGE_ART = 7377860
+-- The camp stands at the Darkmoon Faire: its classic loading screen (1024x1024, a 4:3 picture
+-- with a logo band at the top and a frame band at the bottom).
+local CAMP_ART = 2821800
+local CAMP_V0, CAMP_V1 = 0.255, 0.815
 
 -- What the travel point shows of each zone: a starting-zone picture, a dungeon loading screen
 -- (cropped to its painting) or, failing both, the zone's own map.
@@ -128,16 +130,16 @@ end
 
 -- Village -------------------------------------------------------------------------------------------
 
-local function Hotspot(parent, icon, onClick)
-    local b = Kit.Medallion(parent, 92)
+local function Hotspot(parent, icon, size, onClick)
+    local b = Kit.Medallion(parent, size)
     b.icon:SetTexture(icon)
-    b.plaque = Kit.Plaque(b, 170, nil, 14)
-    b.plaque:SetPoint("TOP", b, "BOTTOM", 0, 10)
-    b.sub = Kit.Ink(b, 10, { 1, 0.95, 0.85 }, "OUTLINE")
-    b.sub:SetPoint("TOP", b.plaque, "BOTTOM", 0, 6)
-    b.sub:SetWidth(190)
+    b.plaque = Kit.Plaque(b, 168, nil, 14)
+    b.plaque:SetPoint("TOP", b, "BOTTOM", 0, 12)
+    b.sub = Kit.Ink(b, 11, { 1, 0.95, 0.85 }, "OUTLINE")
+    b.sub:SetPoint("TOP", b.plaque, "BOTTOM", 0, 8)
+    b.sub:SetWidth(200)
     b.marker = Marker(b)
-    b.marker:SetPoint("BOTTOM", b, "TOP", 0, -6)
+    b.marker:SetPoint("BOTTOM", b, "TOP", 0, -8)
     b:SetScript("OnClick", function()
         PlaySound(SOUNDKIT.IG_MAINMENU_OPEN)
         onClick()
@@ -146,23 +148,26 @@ local function Hotspot(parent, icon, onClick)
     return b
 end
 
+-- Where the six party members stand: a gentle arc, names alternating high and low so long names
+-- never touch.
+local CAMP_X0, CAMP_GAP, CAMP_FEET = W / 2 - 2.5 * 92, 92, 462
+
 function Module:BuildCamp()
     local view = self:AddView("camp", CreateFrame("Frame", nil, self.container))
     local art = view:CreateTexture(nil, "BACKGROUND")
     art:SetAllPoints()
-    art:SetTexture(VILLAGE_ART)
-    -- Only rows 268-1415 of the image are painted (opaque); fill the view from that band.
-    local top, bottom = 268 / 1684, 1416 / 1684
-    local share = (W / H) * (bottom - top) * 1684 / 2992
-    art:SetTexCoord(0.5 - share / 2, 0.5 + share / 2, top, bottom)
+    art:SetTexture(CAMP_ART)
+    -- The painting is 1024 wide and (v1 - v0) * 768 high on screen; show the middle at our aspect.
+    local share = (W / H) * (CAMP_V1 - CAMP_V0) * 768 / 1024
+    art:SetTexCoord(0.5 - share / 2 + 0.06, 0.5 + share / 2 + 0.06, CAMP_V0, CAMP_V1)
     local dusk = view:CreateTexture(nil, "BACKGROUND", nil, 2)
     dusk:SetAllPoints()
     dusk:SetTexture(MC.Tex("vignette"))
+    dusk:SetAlpha(0.85)
 
     local title = Kit.Plaque(view, 300, "MC_NAME", 20)
     title:SetPoint("TOP", 0, -4)
 
-    -- The party gathers in the middle of the village; name plates sit above the models.
     local stage = CreateFrame("Frame", nil, view)
     stage:SetAllPoints()
     stage:SetFrameLevel(view:GetFrameLevel() + 2)
@@ -170,31 +175,34 @@ function Module:BuildCamp()
     plates:SetAllPoints()
     plates:SetFrameLevel(stage:GetFrameLevel() + 10)
     self.campSlots = {}
-    local SPOTS = { { -150, 372 }, { -90, 352 }, { -30, 382 }, { 30, 382 }, { 90, 352 }, { 150, 372 } }
-    for i, spot in ipairs(SPOTS) do
-        local x, feet = W / 2 + spot[1], spot[2]
+    for i = 1, Bounty.PARTY_SIZE do
+        local x = CAMP_X0 + (i - 1) * CAMP_GAP
+        local feet = CAMP_FEET - math.abs(i - 3.5) * 6
         local shadow = stage:CreateTexture(nil, "BACKGROUND")
         shadow:SetTexture(MC.Tex("node_glow"))
-        shadow:SetVertexColor(0, 0, 0, 0.7)
-        shadow:SetSize(80, 22)
+        shadow:SetVertexColor(0, 0, 0, 0.75)
+        shadow:SetSize(84, 22)
         shadow:SetPoint("CENTER", view, "TOPLEFT", x, -feet)
         local model = MC.Model(stage, nil)
-        model:SetSize(110, 190)
+        model:SetSize(118, 200)
         model:SetPoint("BOTTOM", view, "TOPLEFT", x, -(feet + 6))
-        local plate = Kit.Banner(plates, 116, 30, 10)
-        plate:SetPoint("TOP", view, "TOPLEFT", x, -(feet + 4))
+        local plate = Kit.Banner(plates, 140, 28, 10)
+        plate:SetPoint("TOP", view, "TOPLEFT", x, -(feet + (i % 2 == 1 and 4 or 32)))
         self.campSlots[i] = { model = model, plate = plate, shadow = shadow }
     end
 
-    view.travel = Hotspot(view, "Interface\\Icons\\Spell_Arcane_PortalStormwind", function()
+    view.travel = Hotspot(view, "Interface\\Icons\\Spell_Arcane_PortalStormwind", 88, function()
         if self:Store().run then self:Route() else self:ShowView("travel") end
     end)
-    Kit.Place(view.travel, 118, 236)
-    view.collection = Hotspot(view, "Interface\\Icons\\INV_Misc_Book_11", function() self:ShowView("collection") end)
-    Kit.Place(view.collection, W - 118, 236)
-    view.scores = Hotspot(view, "Interface\\Icons\\INV_Misc_Ribbon_01", function() self.overlay:Show("scores") end)
-    Kit.SetBaseScale(view.scores, 0.75)
-    Kit.Place(view.scores, W - 92, 452)
+    Kit.Place(view.travel, 112, 150)
+    view.collection = Hotspot(view, "Interface\\Icons\\INV_Misc_Book_11", 88, function() self:ShowView("collection") end)
+    Kit.Place(view.collection, W - 112, 150)
+    view.scores = Hotspot(view, "Interface\\Icons\\INV_Misc_Ribbon_01", 64, function() self.overlay:Show("scores") end)
+    view.scores.plaque:ClearAllPoints()
+    view.scores.plaque:SetPoint("LEFT", view.scores, "RIGHT", -14, 0)
+    view.scores.sub:ClearAllPoints()
+    view.scores.sub:SetPoint("TOP", view.scores.plaque, "BOTTOM", 0, 6)
+    Kit.Place(view.scores, 50, 50)
 
     view.refresh = function() self:RefreshCamp() end
 end
@@ -210,7 +218,7 @@ function Module:RefreshCamp()
         slot.plate:SetShown(id ~= nil)
         slot.shadow:SetShown(id ~= nil)
         if id then
-            slot.model:SetDisplay(MC.Mercs[id].display, (i - 3.5) * -0.18)
+            slot.model:SetDisplay(MC.Mercs[id].display, (i - 3.5) * -0.16)
             slot.plate.text:SetText(Describe.MercName(id))
         end
     end
@@ -544,7 +552,7 @@ end
 -- Collection --------------------------------------------------------------------------------------
 
 local PAGE_X, PAGE_Y, PAGE_W, PAGE_H = 14, 54, 572, 470
-local CARD_SCALE = 0.92
+local CARD_SCALE = 0.86
 
 function Module:BuildCollection()
     local view = self:AddView("collection", CreateFrame("Frame", nil, self.container))
@@ -580,7 +588,7 @@ function Module:BuildCollection()
         local col, row = (i - 1) % 3, math.floor((i - 1) / 3)
         local card = Kit.MercCard(page)
         Kit.SetBaseScale(card, CARD_SCALE)
-        Kit.Place(card, 130 + col * 156, 152 + row * 218)
+        Kit.Place(card, 130 + col * 156, 150 + row * 212)
         card:SetScript("OnClick", function() self:CollectionClicked(card.merc) end)
         view.cards[i] = card
     end
@@ -589,7 +597,7 @@ function Module:BuildCollection()
     view.next = Kit.Arrow(page, 1, function(dir) self:TurnCollectionPage(dir) end)
     Kit.Place(view.next, PAGE_W - 28, PAGE_H / 2)
     view.pageNumber = Kit.Ink(page, 12, INK)
-    view.pageNumber:SetPoint("BOTTOM", 0, 10)
+    view.pageNumber:SetPoint("TOP", view.next, "BOTTOM", 0, -2)
 
     -- The party on the right, one garrison follower button per slot.
     local panel = CreateFrame("Frame", nil, view)
@@ -716,7 +724,7 @@ function Module:RefreshCollection()
         if id then
             local unit = MC.PreviewUnit(store, id)
             local extra = CardExtra(store, id)
-            extra.note = inParty[id] and L.MC_IN_PARTY or (Bounty.CanRecruit(store, id) and L.MC_CAN_RECRUIT or "")
+            extra.member = inParty[id] or false
             card:SetMerc(unit, extra)
             Kit.SetSelected(card, (self.partySlot ~= nil and store.mercs[id] and store.mercs[id].owned) and true or false)
         end
@@ -752,11 +760,12 @@ function Module:BuildMercView()
     view.sheet = sheet
     local abilities = Kit.Plaque(sheet, 220, "MC_ABILITIES", 16)
     abilities:SetPoint("TOP", 0, 4)
-    view.cards, view.ups, view.locks = {}, {}, {}
+    view.cards, view.ups = {}, {}
     for i = 1, 3 do
         local x = 104 + (i - 1) * 182
         local card = Kit.AbilityCard(sheet)
-        Kit.Place(card, x, 150, sheet)
+        Kit.SetBaseScale(card, 1.18)
+        Kit.Place(card, x, 168, sheet)
         card:HookScript("OnEnter", function(c)
             if not c.abilityId then return end
             local unit = MC.PreviewUnit(self:Store(), self.mercShown)
@@ -768,10 +777,6 @@ function Module:BuildMercView()
         end)
         card:HookScript("OnLeave", GameTooltip_Hide)
         view.cards[i] = card
-        local lock = Kit.Ink(card, 12, { 1, 0.9, 0.6 }, "OUTLINE")
-        lock:SetPoint("CENTER", 0, 20)
-        lock:SetWidth(110)
-        view.locks[i] = lock
         local up = Kit.Button(sheet, 130, 28, nil, function()
             if Bounty.RankUp(self:Store(), self.mercShown, i) then
                 PlaySound(SOUNDKIT.IG_QUEST_LIST_COMPLETE)
@@ -779,12 +784,12 @@ function Module:BuildMercView()
                 self:RefreshMercView()
             end
         end)
-        Kit.Place(up, x, 256, sheet)
+        Kit.Place(up, x, 292, sheet)
         view.ups[i] = up
     end
 
     local gearTitle = Kit.Plaque(sheet, 220, "MC_EQUIPMENT", 16)
-    gearTitle:SetPoint("TOP", 0, -284)
+    gearTitle:SetPoint("TOP", 0, -314)
     view.gear = {}
     for i = 1, 3 do
         local b = Kit.Medallion(sheet, 64, true)
@@ -797,7 +802,7 @@ function Module:BuildMercView()
         b:HookScript("OnEnter", function() self:GearTooltip(b, self.mercShown, i) end)
         b:HookScript("OnLeave", GameTooltip_Hide)
         Kit.Hover(b, { grow = 1.1 })
-        Kit.Place(b, 104 + (i - 1) * 182, 374, sheet)
+        Kit.Place(b, 104 + (i - 1) * 182, 400, sheet)
         b.name = Kit.Ink(b, 10, INK)
         b.name:SetPoint("TOP", b, "BOTTOM", 0, -2)
         b.name:SetWidth(160)
@@ -833,9 +838,7 @@ function Module:RefreshMercView()
     for i, card in ipairs(view.cards) do
         local unlocked = entry.level >= MC.ABILITY_LEVELS[i]
         card:SetAbility(def.abilities[i], unit, i, nil, def.role)
-        card.shade:SetShown(not unlocked)
-        card.icon:SetDesaturated(not unlocked)
-        view.locks[i]:SetText(unlocked and "" or L.MC_UNLOCKS_AT:format(MC.ABILITY_LEVELS[i]))
+        card:SetLocked(not unlocked and MC.ABILITY_LEVELS[i] or nil)
         local cost = Bounty.RankCost(entry, i)
         view.ups[i]:SetShown(entry.owned and cost ~= nil)
         if cost then view.ups[i]:SetText(L.MC_RANK_UP:format(ROMAN[entry.ranks[i] + 1], cost)) end

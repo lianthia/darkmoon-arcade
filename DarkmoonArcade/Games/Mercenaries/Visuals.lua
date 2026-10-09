@@ -173,34 +173,29 @@ function MC.CreateToken(parent)
     f.shake, f.nudge, f.fadeIn = 0, 0, false
     f.uid, f.unitKey, f.data = false, false, false
 
-    f.glow = f:CreateTexture(nil, "BACKGROUND", nil, 0)
-    f.glow:SetTexture(MC.Tex("otoken_glow"))
-    f.glow:SetPoint("CENTER")
-    f.glow:SetSize(TW * 1.25, TH * 1.25)
-    f.glow:SetBlendMode("ADD")
+    -- Light round the token's outline: targets, bench picks and the selected mercenary.
+    f.glow = MC.Kit.Halo(f, "glow_token", 192, TW)
+    f.glow:SetAlpha(1)
     f.glow:Hide()
     f.taunt = f:CreateTexture(nil, "BACKGROUND", nil, 1)
     f.taunt:SetTexture(MC.Tex("taunt"))
     f.taunt:SetPoint("CENTER", 0, -2)
     f.taunt:SetSize(TW * 1.2, TH * 1.18)
     f.taunt:Hide()
-    f.back = f:CreateTexture(nil, "BACKGROUND", nil, 2)
-    f.back:SetTexture(MC.Tex("otoken_back"))
-    f.back:SetAllPoints()
 
-    f.model = MC.Model(f, 0.62)
-    f.model:SetPoint("TOPLEFT", OVAL_X, -OVAL_Y)
-    f.model:SetSize(OVAL_W, OVAL_H)
-    f.missing = f:CreateTexture(nil, "BACKGROUND", nil, 3)
-    f.missing:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark")
-    f.missing:SetSize(OVAL_W * 0.6, OVAL_W * 0.6)
-    f.missing:SetPoint("CENTER", 0, TH / 2 - OVAL_Y - OVAL_H / 2)
-    f.missing:Hide()
+    f.portrait = MC.Kit.Portrait(f, OVAL_W, OVAL_H)
+    f.portrait:SetPoint("TOPLEFT", OVAL_X, -OVAL_Y)
+    -- A white flash over the portrait when hit.
+    f.flash = f.portrait:CreateTexture(nil, "OVERLAY")
+    f.flash:SetAllPoints()
+    f.flash:SetTexture(MC.Tex("disc_mask"))
+    f.flash:SetBlendMode("ADD")
+    f.flash:SetAlpha(0)
 
     -- Frame, badges and status icons sit on a layer above the model.
     local top = CreateFrame("Frame", nil, f)
     top:SetAllPoints()
-    top:SetFrameLevel(f.model:GetFrameLevel() + 2)
+    top:SetFrameLevel(f.portrait:GetFrameLevel() + 2)
     f.top = top
     f.frame = top:CreateTexture(nil, "ARTWORK", nil, 0)
     f.frame:SetAllPoints()
@@ -209,12 +204,12 @@ function MC.CreateToken(parent)
     f.divine:SetAllPoints()
     f.divine:SetBlendMode("ADD")
     f.divine:Hide()
+    -- The selected mercenary: a bright gold ring round its portrait.
     f.select = top:CreateTexture(nil, "OVERLAY", nil, 0)
-    f.select:SetTexture(MC.Tex("otoken_glow"))
-    f.select:SetPoint("CENTER")
-    f.select:SetSize(TW * 1.15, TH * 1.15)
+    f.select:SetPoint("CENTER", f.portrait, "CENTER")
+    f.select:SetSize(OVAL_W * 1.16, OVAL_H * 1.13)
+    MC.Kit.Atlas(f.select, "charactercreate-ring-select", MC.Tex("node_glow"))
     f.select:SetBlendMode("ADD")
-    f.select:SetVertexColor(0.4, 1, 0.4)
     f.select:Hide()
 
     f.attack = Badge(top, "attack", 40, 18)
@@ -246,8 +241,8 @@ function MC.CreateToken(parent)
 
     -- The chosen ability over the token: its icon and speed.
     local bubble = CreateFrame("Frame", nil, f)
-    bubble:SetSize(34, 34)
-    bubble:SetPoint("BOTTOM", top, "TOP", 0, 4)
+    bubble:SetSize(36, 36)
+    bubble:SetPoint("CENTER", top, "TOPRIGHT", -2, -30)
     bubble:SetFrameLevel(top:GetFrameLevel() + 2)
     bubble.icon = bubble:CreateTexture(nil, "ARTWORK")
     bubble.icon:SetAllPoints()
@@ -256,16 +251,16 @@ function MC.CreateToken(parent)
     mask:SetAllPoints()
     bubble.icon:AddMaskTexture(mask)
     bubble.ring = bubble:CreateTexture(nil, "OVERLAY")
-    bubble.ring:SetTexture(MC.Tex("node_ring"))
+    MC.Kit.Atlas(bubble.ring, "hud-PlayerFrame-portraitring-large", MC.Tex("node_ring"))
     bubble.ring:SetPoint("CENTER")
-    bubble.ring:SetSize(40, 40)
+    bubble.ring:SetSize(44, 44)
     bubble.speed = Badge(bubble, "speed", 22, 11)
-    bubble.speed:SetPoint("CENTER", bubble, "BOTTOMRIGHT", -2, 4)
+    bubble.speed:SetPoint("CENTER", bubble, "BOTTOMRIGHT", 0, 2)
     bubble.speed.text:SetTextColor(0.1, 0.1, 0.15)
     bubble.speed.text:SetShadowOffset(0, 0)
     bubble.order = bubble:CreateFontString(nil, "OVERLAY")
     bubble.order:SetFont(Media.FontFile(), 12, "OUTLINE")
-    bubble.order:SetPoint("CENTER", bubble, "TOPLEFT", 2, -2)
+    bubble.order:SetPoint("CENTER", bubble, "TOPLEFT", 0, 0)
     bubble:Hide()
     f.bubble = bubble
     return f
@@ -283,10 +278,7 @@ function Token:SetData(data, reference)
     self.attack.tex:SetTexture(MC.Tex("hs_attack_" .. role))
     self.health.tex:SetTexture(MC.Tex("hs_health_" .. role))
     if first then
-        local display = DisplayFor(data.kind, data.id)
-        self.missing:SetShown(display == 0)
-        self.model:SetShown(display ~= 0)
-        self.model:SetDisplay(display, data.side == "enemy" and -0.25 or 0.25)
+        self.portrait:SetDisplay(DisplayFor(data.kind, data.id))
         self.name:SetText(Describe.UnitName(data.kind, data.id))
     end
     self:SetStats(data, reference)
@@ -308,8 +300,8 @@ function Token:SetStats(data, reference)
     self.divine:SetShown(data.shield and true or false)
     self.taunt:SetShown(data.taunt and true or false)
     self.absorb:SetText((data.absorb or 0) > 0 and ("+" .. data.absorb) or "")
-    self:SetAlpha(data.dead and 0.35 or (data.stealth and 0.55 or 1))
-    self.model:SetAlpha(data.dead and 0.4 or 1)
+    self:SetAlpha(data.dead and 0.45 or (data.stealth and 0.6 or 1))
+    self.portrait:SetDimmed(data.dead or false, data.dead and 0.6 or 1)
     local icons = {}
     if data.stun then icons[#icons + 1] = "Interface\\Icons\\Spell_Frost_Stun" end
     if data.dot then icons[#icons + 1] = "Interface\\Icons\\Spell_Shadow_ShadowWordPain" end
@@ -324,10 +316,10 @@ end
 
 -- Mercenaries not yet recruited show greyed out.
 function Token:SetLocked(locked)
-    for _, tex in ipairs({ self.frame, self.back, self.attack.tex, self.health.tex, self.level.tex }) do
+    for _, tex in ipairs({ self.frame, self.attack.tex, self.health.tex, self.level.tex }) do
         tex:SetDesaturated(locked)
     end
-    self.model:SetAlpha(locked and 0.35 or 1)
+    self.portrait:SetDimmed(locked, locked and 0.6 or 1)
     self.frame:SetVertexColor(locked and 0.6 or 1, locked and 0.6 or 1, locked and 0.6 or 1)
 end
 

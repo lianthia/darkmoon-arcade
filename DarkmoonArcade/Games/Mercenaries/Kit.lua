@@ -117,8 +117,9 @@ function Kit.Hover(f, opts)
     a.hover = true
     f:HookScript("OnEnter", function()
         if not a.hover then return end
-        a.scaleTarget, a.liftTarget, a.glowTarget = a.base * grow, lift, 1
-        if not a.placed and Glow(f) then Glow(f):SetAlpha(1) end
+        a.scaleTarget, a.liftTarget = a.base * grow, lift
+        a.glowTarget = a.selected and 1 or (opts.glow or 0.6)
+        if not a.placed and Glow(f) then Glow(f):SetAlpha(a.glowTarget) end
         if opts.sound ~= false then PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON) end
     end)
     f:HookScript("OnLeave", function()
@@ -175,18 +176,16 @@ function Kit.Wood(parent, w, h, frame)
         end
     end
     if frame then
-        local edge = CreateFrame("Frame", nil, holder)
-        edge:SetAllPoints()
-        edge:SetFrameLevel(holder:GetFrameLevel() + 1)
+        -- The frame sits on the holder itself, so whatever the view adds later stays above it.
         for _, side in ipairs({ "TOP", "BOTTOM" }) do
-            local t = edge:CreateTexture(nil, "BORDER")
+            local t = holder:CreateTexture(nil, "BORDER")
             t:SetHeight(20)
             t:SetPoint(side .. "LEFT", 0, 0)
             t:SetPoint(side .. "RIGHT", 0, 0)
             Kit.Atlas(t, side == "TOP" and "_Garr_WoodFrameTile-Top" or "_Garr_WoodFrameTile-Bottom")
             t:SetHorizTile(true)
         end
-        local shade = edge:CreateTexture(nil, "ARTWORK")
+        local shade = holder:CreateTexture(nil, "BACKGROUND", nil, 5)
         shade:SetAllPoints()
         shade:SetTexture(MC.Tex("vignette"))
         shade:SetAlpha(0.6)
@@ -350,29 +349,126 @@ function Kit.Medallion(parent, size, dark)
     return f
 end
 
--- A bounty coin: gold, silver or bronze rim round a picture.
-local COIN_FRAMES = { gold = "adventures-mission-frame-elite", silver = "adventures-mission-frame-medium", bronze = "adventures-mission-frame-normal" }
+-- Glows and portraits ------------------------------------------------------------------------------
+
+-- A soft light that follows the outline of a card or token (generated with GLOW_PAD pixels of room
+-- round a `texW` wide shape). Hidden until hover or selection lights it.
+local GLOW_PAD = 32
+
+function Kit.Halo(f, name, texW, w)
+    local t = f:CreateTexture(nil, "BACKGROUND", nil, -8)
+    local pad = GLOW_PAD * (w or f:GetWidth()) / texW
+    t:SetPoint("TOPLEFT", -pad, pad)
+    t:SetPoint("BOTTOMRIGHT", pad, -pad)
+    t:SetTexture(MC.Tex(name))
+    t:SetBlendMode("ADD")
+    t:SetVertexColor(1, 0.8, 0.35)
+    t:SetAlpha(0)
+    return t
+end
+
+-- A creature's painted portrait (the client renders it from the display ID, like the
+-- dungeon journal does) inside an oval of w x h. Clients without that function show the model.
+local HAS_PORTRAITS = SetPortraitTextureFromCreatureDisplayID ~= nil
+Kit.HAS_PORTRAITS = HAS_PORTRAITS
+
+function Kit.Portrait(parent, w, h)
+    local f = CreateFrame("Frame", nil, parent)
+    f:SetSize(w, h)
+    local mask = f:CreateMaskTexture()
+    mask:SetTexture(MC.Tex("disc_mask"), "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
+    mask:SetAllPoints()
+    f.back = f:CreateTexture(nil, "BACKGROUND", nil, 1)
+    f.back:SetAllPoints()
+    f.back:SetTexture(MC.Tex("otoken_back"))
+    f.back:SetTexCoord(22 / 192, 170 / 192, 10 / 224, 190 / 224)
+    f.back:AddMaskTexture(mask)
+    f.tex = f:CreateTexture(nil, "ARTWORK")
+    -- Portraits are square; the oval shows their middle.
+    local side = math.max(w, h)
+    f.tex:SetSize(side, side)
+    f.tex:SetPoint("CENTER")
+    f.tex:AddMaskTexture(mask)
+    if not HAS_PORTRAITS then
+        f.model = MC.Model(f, 0.62)
+        f.model:SetAllPoints()
+    end
+    function f:SetDisplay(display)
+        if rawget(self, "model") then
+            self.model:SetDisplay(display, 0)
+        elseif display and display ~= 0 then
+            SetPortraitTextureFromCreatureDisplayID(self.tex, display)
+        else
+            self.tex:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark")
+        end
+    end
+    function f:SetDimmed(dim, alpha)
+        self.tex:SetDesaturated(dim)
+        self.tex:SetAlpha(alpha or 1)
+        if rawget(self, "model") then self.model:SetAlpha(alpha or 1) end
+    end
+    return f
+end
+
+-- The mark on finished stops and zones.
+function Kit.Check(parent, size)
+    local t = parent:CreateTexture(nil, "OVERLAY", nil, 6)
+    t:SetSize(size, size)
+    Kit.Atlas(t, "adventures-checkmark", "Interface\\RaidFrame\\ReadyCheck-Ready")
+    return t
+end
+
+-- A bounty coin: a picture in a gold, silver or bronze ring.
+local COIN_RINGS = {
+    gold = { atlas = "hud-PlayerFrame-portraitring-large" },
+    silver = { atlas = "hud-PlayerFrame-portraitring-large", desat = true },
+    bronze = { atlas = "legacy-tree-frame-ring-big-c60" },
+}
 
 function Kit.Coin(parent, size)
     local f = CreateFrame("Button", nil, parent)
     f:SetSize(size, size)
     f.glowTex = f:CreateTexture(nil, "BACKGROUND")
     f.glowTex:SetPoint("CENTER")
-    f.glowTex:SetSize(size * 1.45, size * 1.45)
+    f.glowTex:SetSize(size * 1.5, size * 1.5)
     Kit.Atlas(f.glowTex, "charactercreate-ring-select", MC.Tex("node_glow"))
     f.glowTex:SetBlendMode("ADD")
     f.glowTex:SetAlpha(0)
-    f.icon = f:CreateTexture(nil, "ARTWORK")
-    f.icon:SetPoint("CENTER")
-    f.icon:SetSize(size * 0.74, size * 0.74)
     local mask = f:CreateMaskTexture()
-    mask:SetTexture(MC.Tex("circle_mask"), "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
-    mask:SetAllPoints(f.icon)
+    mask:SetTexture(MC.Tex("disc_mask"), "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
+    mask:SetPoint("CENTER")
+    mask:SetSize(size * 0.82, size * 0.82)
+    f.back = f:CreateTexture(nil, "BORDER")
+    f.back:SetAllPoints(mask)
+    f.back:SetColorTexture(0.1, 0.08, 0.06, 1)
+    f.back:AddMaskTexture(mask)
+    f.icon = f:CreateTexture(nil, "ARTWORK")
+    f.icon:SetAllPoints(mask)
     f.icon:AddMaskTexture(mask)
     f.rim = f:CreateTexture(nil, "OVERLAY")
     f.rim:SetAllPoints()
+    f.check = Kit.Check(f, size * 0.5)
+    f.check:SetPoint("CENTER", f, "BOTTOMRIGHT", -size * 0.16, size * 0.16)
+    f.check:Hide()
     function f:SetMetal(kind)
-        Kit.Atlas(self.rim, COIN_FRAMES[kind] or COIN_FRAMES.bronze, MC.Tex("node_ring"))
+        local ring = COIN_RINGS[kind] or COIN_RINGS.bronze
+        Kit.Atlas(self.rim, ring.atlas, MC.Tex("node_ring"))
+        self.rim:SetDesaturated(ring.desat or false)
+        local light = ring.desat and 1.15 or 1
+        self.rim:SetVertexColor(light, light, light)
+    end
+    -- A portrait of the creature instead of an icon (bosses).
+    function f:SetCreature(display)
+        if HAS_PORTRAITS and display and display ~= 0 then
+            self.icon:SetTexCoord(0, 1, 0, 1)
+            SetPortraitTextureFromCreatureDisplayID(self.icon, display)
+            return true
+        end
+        return false
+    end
+    function f:SetIcon(icon)
+        self.icon:SetTexture(icon)
+        self.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
     end
     f:SetMetal("gold")
     return f
@@ -391,39 +487,28 @@ end
 Kit.CARD_W, Kit.CARD_H = 140, 192
 local CARD_SCALE = Kit.CARD_W / 256
 
--- A mercenary card of the collection: portrait model in the oval, name banner, level,
--- experience, attack and health.
+-- A mercenary card of the collection: portrait in the oval, name banner, level, experience,
+-- attack and health.
 function Kit.MercCard(parent)
     local c = CreateFrame("Button", nil, parent)
     c:SetSize(Kit.CARD_W, Kit.CARD_H)
-    c.glowTex = c:CreateTexture(nil, "BACKGROUND", nil, 0)
-    c.glowTex:SetPoint("CENTER", 0, 4)
-    c.glowTex:SetSize(Kit.CARD_W * 1.3, Kit.CARD_H * 1.22)
-    c.glowTex:SetTexture(MC.Tex("card_glow"))
-    c.glowTex:SetBlendMode("ADD")
-    c.glowTex:SetVertexColor(1, 0.85, 0.4)
-    c.glowTex:SetAlpha(0)
+    c.glowTex = Kit.Halo(c, "glow_card", 256, Kit.CARD_W)
     local ox, oy, rx, ry = 128 * CARD_SCALE, 122 * CARD_SCALE, 82 * CARD_SCALE, 102 * CARD_SCALE
-    c.back = c:CreateTexture(nil, "BACKGROUND", nil, 2)
-    c.back:SetTexture(MC.Tex("otoken_back"))
-    c.back:SetSize(rx * 2 * 192 / 148, ry * 2 * 224 / 180)
-    c.back:SetPoint("CENTER", c, "TOPLEFT", ox, -(oy + ry * 0.04))
-    c.model = MC.Model(c, 0.62)
-    c.model:SetSize(rx * 2, ry * 2)
-    c.model:SetPoint("CENTER", c, "TOPLEFT", ox, -oy)
+    c.portrait = Kit.Portrait(c, rx * 2 + 2, ry * 2 + 2)
+    c.portrait:SetPoint("CENTER", c, "TOPLEFT", ox, -oy)
     local top = CreateFrame("Frame", nil, c)
     top:SetAllPoints()
-    top:SetFrameLevel(c.model:GetFrameLevel() + 3)
+    top:SetFrameLevel(c.portrait:GetFrameLevel() + 3)
     c.top = top
     c.frame = top:CreateTexture(nil, "ARTWORK")
     c.frame:SetAllPoints()
-    c.banner = Kit.Banner(top, 138, 36, 11)
-    c.banner:SetPoint("CENTER", top, "TOPLEFT", ox, -(oy + ry - 4))
+    c.banner = Kit.Banner(top, 136, 32, 11)
+    c.banner:SetPoint("CENTER", top, "TOPLEFT", ox, -(oy + ry - 2))
     c.level = MC.Badge(top, "level", 26, 11)
-    c.level:SetPoint("CENTER", top, "TOPLEFT", ox, -(oy + ry + 22))
+    c.level:SetPoint("CENTER", top, "TOPLEFT", ox, -(oy + ry + 24))
     local bar = CreateFrame("StatusBar", nil, top)
-    bar:SetSize(70, 7)
-    bar:SetPoint("CENTER", top, "TOPLEFT", ox, -(oy + ry + 40))
+    bar:SetSize(62, 6)
+    bar:SetPoint("CENTER", top, "TOPLEFT", ox, -(oy + ry + 43))
     bar:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
     bar:SetStatusBarColor(0.25, 0.55, 1)
     local barBg = bar:CreateTexture(nil, "BACKGROUND")
@@ -444,14 +529,16 @@ function Kit.MercCard(parent)
     c.health.tex:SetAllPoints()
     c.health.text = Kit.Ink(c.health, 20, { 1, 1, 1 }, "THICKOUTLINE")
     c.health.text:SetPoint("CENTER", 0, -3)
-    c.coin = Kit.CoinIcon(top, 22)
-    c.coin:SetPoint("TOP", top, "BOTTOM", -14, -2)
-    c.coins = Kit.Ink(top, 15, { 0.35, 0.24, 0.12 })
-    c.coins:SetPoint("LEFT", c.coin, "RIGHT", 4, 0)
-    c.status = Kit.Ink(top, 10, { 0.35, 0.24, 0.12 })
-    c.status:SetPoint("TOP", c.coin, "BOTTOM", 14, -1)
+    -- In the party: a check on the card's corner.
+    c.member = Kit.Check(top, 30)
+    c.member:SetPoint("CENTER", top, "TOPRIGHT", -16, -16)
+    c.member:Hide()
+    c.coin = Kit.CoinIcon(top, 20)
+    c.coin:SetPoint("TOPRIGHT", top, "BOTTOM", -2, -1)
+    c.coins = Kit.Ink(top, 13, { 0.35, 0.24, 0.12 })
+    c.coins:SetPoint("LEFT", c.coin, "RIGHT", 3, 0)
 
-    -- unit: kind, id, role, level, atk, hp; extra: xp share, coins, locked, note
+    -- unit: kind, id, role, level, atk, hp; extra: xp share, coins, locked, member
     function c:SetMerc(u, extra)
         extra = extra or {}
         self.merc = u.id
@@ -462,7 +549,7 @@ function Kit.MercCard(parent)
         self.health.text:SetText(u.hp)
         self.level.text:SetText(u.level)
         self.banner.text:SetText(Describe.UnitName(u.kind, u.id))
-        self.model:SetDisplay(MC.DisplayFor(u.kind, u.id), 0.3)
+        self.portrait:SetDisplay(MC.DisplayFor(u.kind, u.id))
         self.bar:SetShown(extra.xp ~= nil)
         if extra.xp then
             self.bar:SetMinMaxValues(0, 1)
@@ -470,30 +557,25 @@ function Kit.MercCard(parent)
         end
         self.coin:SetShown(extra.coins ~= nil)
         self.coins:SetText(extra.coins or "")
-        self.status:SetText(extra.note or "")
+        self.member:SetShown(extra.member or false)
         local locked = extra.locked
-        for _, tex in ipairs({ self.frame, self.attack.tex, self.health.tex, self.back }) do tex:SetDesaturated(locked) end
-        self.frame:SetVertexColor(locked and 0.7 or 1, locked and 0.7 or 1, locked and 0.7 or 1)
-        self.model:SetAlpha(locked and 0.35 or 1)
+        for _, tex in ipairs({ self.frame, self.attack.tex, self.health.tex }) do tex:SetDesaturated(locked) end
+        self.frame:SetVertexColor(locked and 0.75 or 1, locked and 0.75 or 1, locked and 0.75 or 1)
+        self.portrait:SetDimmed(locked, locked and 0.65 or 1)
     end
-    Kit.Hover(c, { grow = 1.05, lift = 6 })
+    Kit.Hover(c, { grow = 1.04, lift = 8 })
     return c
 end
 
--- An ability card: the icon in a gold medallion, speed, name, the text on parchment.
+-- An ability card: speed in the top left corner, the icon in a gold ring, the name on a banner
+-- and the text on parchment.
 Kit.ACARD_W, Kit.ACARD_H = 124, 170
 local A_SCALE = Kit.ACARD_W / 256
 
 function Kit.AbilityCard(parent)
     local c = CreateFrame("Button", nil, parent)
     c:SetSize(Kit.ACARD_W, Kit.ACARD_H)
-    c.glowTex = c:CreateTexture(nil, "BACKGROUND")
-    c.glowTex:SetPoint("CENTER")
-    c.glowTex:SetSize(Kit.ACARD_W * 1.25, Kit.ACARD_H * 1.18)
-    c.glowTex:SetTexture(MC.Tex("card_glow"))
-    c.glowTex:SetBlendMode("ADD")
-    c.glowTex:SetVertexColor(0.4, 1, 0.4)
-    c.glowTex:SetAlpha(0)
+    c.glowTex = Kit.Halo(c, "glow_acard", 256, Kit.ACARD_W)
     local cx, cy, r = 128 * A_SCALE, 104 * A_SCALE, 66 * A_SCALE
     c.icon = c:CreateTexture(nil, "BACKGROUND", nil, 2)
     c.icon:SetSize(r * 2 + 2, r * 2 + 2)
@@ -501,28 +583,37 @@ function Kit.AbilityCard(parent)
     c.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
     c.frame = c:CreateTexture(nil, "ARTWORK")
     c.frame:SetAllPoints()
-    c.speed = MC.Badge(c, "speed", 30, 14)
-    c.speed:SetPoint("CENTER", c, "TOPLEFT", cx - r + 2, -(cy + r - 4))
+    c.speed = MC.Badge(c, "speed", 34, 15)
+    c.speed:SetPoint("CENTER", c, "TOPLEFT", 17, -17)
     c.speed.text:SetTextColor(0.1, 0.1, 0.15)
     c.speed.text:SetShadowOffset(0, 0)
-    c.banner = Kit.Banner(c, 120, 30, 10)
-    c.banner:SetPoint("CENTER", c, "TOPLEFT", cx, -(cy + r + 8))
+    c.banner = Kit.Banner(c, 124, 28, 10)
+    c.banner:SetPoint("CENTER", c, "TOPLEFT", cx, -(cy + r + 10))
     c.desc = Kit.Ink(c, 9, INK)
-    c.desc:SetPoint("TOP", c, "TOPLEFT", cx, -(196 * A_SCALE + 8))
-    c.desc:SetWidth(Kit.ACARD_W - 28)
-    c.desc:SetHeight(122 * A_SCALE - 10)
+    c.desc:SetPoint("TOP", c, "TOPLEFT", cx, -(cy + r + 26))
+    c.desc:SetWidth(Kit.ACARD_W - 30)
+    c.desc:SetHeight(318 * A_SCALE - (cy + r + 26))
     c.desc:SetJustifyV("TOP")
     c.footer = Kit.Ink(c, 9, { 1, 1, 1 }, "OUTLINE")
     c.footer:SetPoint("BOTTOM", 0, 6)
-    c.rank = Kit.Ink(c, 11, { 1, 0.82, 0 }, "OUTLINE")
-    c.rank:SetPoint("TOPRIGHT", -12, -10)
+    c.rank = Kit.Ink(c, 12, { 1, 0.82, 0 }, "OUTLINE")
+    c.rank:SetPoint("CENTER", c, "TOPRIGHT", -16, -16)
     c.shade = c:CreateTexture(nil, "OVERLAY", nil, 3)
-    c.shade:SetPoint("TOPLEFT", 6, -6)
-    c.shade:SetPoint("BOTTOMRIGHT", -6, 6)
-    c.shade:SetColorTexture(0, 0, 0, 0.55)
+    c.shade:SetPoint("TOPLEFT", 7, -7)
+    c.shade:SetPoint("BOTTOMRIGHT", -7, 7)
+    c.shade:SetColorTexture(0, 0, 0, 0.5)
     c.shade:Hide()
     c.cooldown = Kit.Ink(c, 30, { 1, 1, 1 }, "THICKOUTLINE")
     c.cooldown:SetPoint("CENTER", c, "TOPLEFT", cx, -cy)
+    -- Not yet learned: a lock over the icon and the level below it.
+    c.lock = c:CreateTexture(nil, "OVERLAY", nil, 5)
+    c.lock:SetSize(34, 34)
+    c.lock:SetPoint("CENTER", c, "TOPLEFT", cx, -cy)
+    c.lock:SetTexture("Interface\\PetBattles\\PetBattle-LockIcon")
+    c.lock:Hide()
+    c.lockText = Kit.Ink(c, 11, { 1, 0.9, 0.6 }, "OUTLINE")
+    c.lockText:SetPoint("TOP", c, "TOPLEFT", cx, -(cy + r + 34))
+    c.lockText:SetWidth(Kit.ACARD_W - 24)
 
     local ROMAN = { "I", "II", "III" }
     function c:SetAbility(id, unit, slot, cdLeft, role)
@@ -537,11 +628,20 @@ function Kit.AbilityCard(parent)
         local rank = unit and unit.abilities and unit.abilities[slot] and unit.abilities[slot].rank or 1
         self.rank:SetText(ROMAN[rank] or "")
         self.footer:SetText(cd > 0 and L.MC_COOLDOWN:format(cd) or L["MC_SCHOOL_" .. (def.school or "physical")])
-        local waiting = cdLeft and cdLeft > 0
-        self.shade:SetShown(waiting)
-        self.cooldown:SetText(waiting and cdLeft or "")
-        self.icon:SetDesaturated(waiting)
+        self.waiting = cdLeft and cdLeft > 0
+        self.cooldown:SetText(self.waiting and cdLeft or "")
+        self:SetLocked(nil)
     end
-    Kit.Hover(c, { grow = 1.06, lift = 4 })
+    -- `level`: the level that teaches the ability, nil when it is known.
+    function c:SetLocked(level)
+        local locked = level ~= nil
+        self.lock:SetShown(locked)
+        self.lockText:SetText(locked and L.MC_UNLOCKS_AT:format(level) or "")
+        self.desc:SetShown(not locked)
+        self.icon:SetDesaturated(locked or self.waiting or false)
+        self.frame:SetDesaturated(locked)
+        self.shade:SetShown(locked or self.waiting or false)
+    end
+    Kit.Hover(c, { grow = 1.05, lift = 6 })
     return c
 end

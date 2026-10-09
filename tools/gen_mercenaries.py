@@ -599,7 +599,51 @@ def sounds():
     ga.write_ogg(ga.tone(1200, 0.07, 0.02, ((1, 1.0), (2.5, 0.3))), "select", 0.3, FOLDER)
 
 
+def disc_mask():
+    """A circle filling its whole square; stretched over an oval it masks portraits."""
+    m = ellipse_mask(128, 128, 64, 64, 63.5, 63.5)
+    return arc.to_rgba(np.ones((128, 128, 3)), m)
+
+
+GLOW_PAD = 32
+
+
+def halo(alpha, spread=10, blur=9):
+    """A soft glow around a shape and nothing inside it, with GLOW_PAD pixels of room on each side
+    so it never meets the texture's edge."""
+    h, w = alpha.shape
+    big = np.zeros((h + 2 * GLOW_PAD, w + 2 * GLOW_PAD))
+    big[GLOW_PAD:GLOW_PAD + h, GLOW_PAD:GLOW_PAD + w] = alpha
+    img = Image.fromarray((big * 255).astype(np.uint8))
+    grown = img.filter(ImageFilter.MaxFilter(2 * (spread // 2) + 1)).filter(ImageFilter.MaxFilter(2 * (spread // 2) + 1))
+    soft = np.asarray(grown.filter(ImageFilter.GaussianBlur(blur))).astype(float) / 255
+    glow = np.clip(soft * 1.5, 0, 1) * (1 - np.clip(big * 1.2, 0, 1))
+    return arc.to_rgba(np.ones(glow.shape + (3,)), glow)
+
+
+def card_halo():
+    cx, cy, rx, ry = C_OVAL
+    shape = np.asarray(merc_card("neutral").split()[3]).astype(float) / 255
+    return halo(np.maximum(shape, ellipse_mask(CW, CH, cx, cy, rx + 2, ry + 2)))
+
+
+def acard_halo():
+    shape = np.asarray(hs_ability_card("neutral").split()[3]).astype(float) / 255
+    return halo(np.maximum(shape, ellipse_mask(CW, CH, 128, 104, 68, 68)))
+
+
+def token_halo():
+    cx, cy, rx, ry = T_OVAL
+    ring_out = ellipse_mask(TW_, TH_, cx, cy, rx + 12, ry + 12)
+    base = ellipse_mask(TW_, TH_, cx, cy + 22, rx + 14, ry + 6)
+    return halo(np.maximum(ring_out, base), spread=8, blur=8)
+
+
 def main():
+    ga.save_tga(disc_mask(), "disc_mask", FOLDER)
+    ga.save_tga(card_halo(), "glow_card", FOLDER)
+    ga.save_tga(acard_halo(), "glow_acard", FOLDER)
+    ga.save_tga(token_halo(), "glow_token", FOLDER)
     ga.save_tga(board(), "board", FOLDER)
     for role in ROLE_COLORS:
         ga.save_tga(token_frame(role), "token_" + role, FOLDER)
