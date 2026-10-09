@@ -170,11 +170,16 @@ function Module:BuildCamp()
     shadow:SetPoint("TOP", 0, 22)
     shadow:SetTexture(MC.Tex("soft_spot"))
     shadow:SetVertexColor(0, 0, 0, 0.85)
-    local logo = view:CreateTexture(nil, "ARTWORK")
-    logo:SetSize(230, 230 * 302 / 1024)
-    logo:SetPoint("TOP", 0, -14)
-    logo:SetTexture(MC.Tex("logo"))
-    logo:SetTexCoord(0, 1, 0, 302 / 512)
+    -- The logo texture holds the title 960 wide with 32 px of room round it (347 px of 512 used);
+    -- the halo texture has the same layout and outlines the letters in soft black.
+    local LOGO_W = 230 * 1024 / 960
+    for i, name in ipairs({ "logo_shadow", "logo" }) do
+        local t = view:CreateTexture(nil, "ARTWORK", nil, i)
+        t:SetSize(LOGO_W, LOGO_W * 347 / 1024)
+        t:SetPoint("TOP", 0, -14 + 32 * LOGO_W / 1024)
+        t:SetTexture(MC.Tex(name))
+        t:SetTexCoord(0, 1, 0, 347 / 512)
+    end
 
     local stage = CreateFrame("Frame", nil, view)
     stage:SetAllPoints()

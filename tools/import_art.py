@@ -66,14 +66,20 @@ def moon_icon():
 
 
 def mercenaries_logo():
-    """The Mercenaries title (already cut out): 1024 wide at the top of a 1024x512 texture."""
+    """The Mercenaries title (already cut out), 960 wide with 32 px room all round at the top of a
+    1024x512 texture, plus a matching soft dark halo that lifts it off busy backgrounds."""
     src = Image.open(ROOT / "art" / "mercenaries_logo.webp").convert("RGBA")
     src = src.crop(src.getbbox())
-    h = round(1024 * src.height / src.width)
+    h = round(960 * src.height / src.width)
     canvas = Image.new("RGBA", (1024, 512), (0, 0, 0, 0))
-    canvas.paste(src.resize((1024, h), Image.LANCZOS), (0, 0))
+    canvas.paste(src.resize((960, h), Image.LANCZOS), (32, 32))
     canvas.save(MEDIA / "mercs" / "logo.tga")
-    print("mercenaries logo height", h)
+    alpha = canvas.split()[3].filter(ImageFilter.MaxFilter(15)).filter(ImageFilter.GaussianBlur(12))
+    alpha = alpha.point(lambda v: min(255, int(v * 2.4)))
+    halo = Image.new("RGBA", canvas.size, (0, 0, 0, 0))
+    halo.putalpha(alpha)
+    halo.save(MEDIA / "mercs" / "logo_shadow.tga")
+    print("mercenaries logo used height", h + 64)
 
 
 if __name__ == "__main__":
