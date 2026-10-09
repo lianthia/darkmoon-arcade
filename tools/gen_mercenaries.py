@@ -661,8 +661,17 @@ def token_halo():
     return halo(np.maximum(ring_out, base), spread=8, blur=8)
 
 
+def soft_spot():
+    """A round shade that fades to nothing well inside its square (for shadows behind titles)."""
+    yy, xx = np.mgrid[0:128, 0:128].astype(float)
+    r = np.sqrt((xx - 63.5) ** 2 + (yy - 63.5) ** 2) / 62
+    alpha = np.clip(1 - r, 0, 1) ** 1.6
+    return arc.to_rgba(np.ones((128, 128, 3)), alpha)
+
+
 def main():
     ga.save_tga(disc_mask(), "disc_mask", FOLDER)
+    ga.save_tga(soft_spot(), "soft_spot", FOLDER)
     ga.save_tga(card_halo(), "glow_card", FOLDER)
     ga.save_tga(acard_halo(), "glow_acard", FOLDER)
     ga.save_tga(token_halo(), "glow_token", FOLDER)
