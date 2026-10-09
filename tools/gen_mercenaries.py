@@ -290,18 +290,26 @@ def role_icon(role):
 
 
 def tile():
-    """Hub card: the arena with the three role gems; models are added in game."""
+    """Hub card: the Darkmoon Faire camp with the game's logo; the party's models are added in game."""
+    import atlas_preview as ap
     w, h = 512, 256
-    rng = np.random.default_rng(4)
-    yy, xx = np.mgrid[0:h, 0:w].astype(float)
-    grain = ga.fbm(h, w, rng, ((48, 0.5), (16, 0.3), (4, 0.2)))
-    rgb = np.array([0.45, 0.38, 0.28]) * (0.75 + 0.45 * grain)[..., None]
-    light = np.exp(-(((xx - w / 2) / 260) ** 2 + ((yy - h / 2) / 150) ** 2))
-    rgb = rgb * (0.35 + 0.8 * light)[..., None]
-    img = arc.to_rgba(rgb)
-    for i, role in enumerate(("protector", "fighter", "caster")):
-        gem = role_icon(role).resize((44, 44), Image.LANCZOS)
-        img.alpha_composite(gem, (w - 60 - i * 50, 14))
+    camp = ap.texture(2821800).convert("RGBA")  # Darkmoon Faire loading screen, the camp's painting
+    cw, ch = camp.size
+    # The painting spans v 0.255 to 0.815 and shows at a 1024 x 768 aspect; take its full height
+    # and as much width as a 2:1 card needs, shifted right like the camp view.
+    share = (w / h) * (0.815 - 0.255) * 768 / 1024
+    u0, u1 = 0.5 - share / 2 + 0.06, 0.5 + share / 2 + 0.06
+    img = camp.crop((int(u0 * cw), int(0.255 * ch), int(u1 * cw), int(0.815 * ch))).resize((w, h), Image.LANCZOS)
+    # Darker toward the right, where the models stand, so they read against the painting.
+    xx = np.linspace(0, 1, w)[None, :] * np.ones((h, 1))
+    shade = arc.to_rgba(np.zeros((h, w, 3)), 0.15 + 0.35 * xx)
+    img.alpha_composite(shade)
+    logo_w = 220
+    for name in ("logo_shadow", "logo"):
+        logo = Image.open(ga.MEDIA / "mercs" / f"{name}.tga").convert("RGBA")
+        logo = logo.crop((0, 0, logo.width, int(logo.height * 347 / 512)))
+        logo = logo.resize((logo_w, int(logo_w * logo.height / logo.width)), Image.LANCZOS)
+        img.alpha_composite(logo, (10, 4))
     return img
 
 

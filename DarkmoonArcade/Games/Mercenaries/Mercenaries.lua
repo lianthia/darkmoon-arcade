@@ -701,8 +701,9 @@ function Module:DecorateTile(tile, art)
     local displays = { 4527, 2970, 4307 } -- Thrall, Jaina, Cairne
     for i, display in ipairs(displays) do
         local m = CreateFrame("PlayerModel", nil, tile)
-        m:SetSize(110, 140)
-        m:SetPoint("BOTTOMLEFT", art, "BOTTOMLEFT", -6 + (i - 1) * 62, 0)
+        -- Right of the logo and below the best score.
+        m:SetSize(96, 112)
+        m:SetPoint("BOTTOMRIGHT", art, "BOTTOMRIGHT", 6 - (#displays - i) * 58, 2)
         local function Apply()
             pcall(m.SetDisplayInfo, m, display)
             pcall(m.SetFacing, m, 0.5 - (i - 1) * 0.35)
