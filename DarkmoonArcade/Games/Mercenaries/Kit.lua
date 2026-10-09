@@ -176,6 +176,9 @@ function Kit.Wood(parent, w, h, frame)
     local holder = CreateFrame("Frame", nil, parent)
     holder:SetSize(w, h)
     holder:SetClipsChildren(true)
+    -- Siblings on the same frame level draw in no fixed order (it can change after a hide and
+    -- show), so the wood sits on its parent's level, below everything else in the view.
+    holder:SetFrameLevel(parent:GetFrameLevel())
     local tile = 256
     for x = 0, math.ceil(w / tile) - 1 do
         for y = 0, math.ceil(h / tile) - 1 do
