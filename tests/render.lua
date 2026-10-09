@@ -53,6 +53,10 @@ end
 DarkmoonArcadeDB = nil
 Fire("ADDON_LOADED", "DarkmoonArcade")
 Fire("PLAYER_LOGIN")
+if RENDER_LANG then
+    ns.SetLanguage(RENDER_LANG)
+    ns.Media.ApplyLanguageFonts()
+end
 SlashCmdList.DARKMOONARCADE("mercenaries")
 local Window = ns.Window
 mc = Window.activeGame

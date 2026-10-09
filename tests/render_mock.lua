@@ -161,10 +161,10 @@ function M:SetRotation(rad) self._rot = rad end
 function M:AddMaskTexture(mask) self._mask = mask end
 function M:GetTexture() return self._file end
 
-function M:SetFont(file, size, flags) self._size, self._flags = size or self._size, flags or "" end
+function M:SetFont(file, size, flags) self._fontFile, self._size, self._flags = file, size or self._size, flags or "" end
 function M:SetFontObject(font)
     if font and font._fsize then
-        self._size, self._flags = font._fsize, font._fflags or ""
+        self._size, self._flags, self._fontFile = font._fsize, font._fflags or "", font._ffile
         if font._fcolor then self._textColor = font._fcolor end
     end
 end
@@ -212,7 +212,7 @@ function CreateFrame(kind, name, parent)
 end
 function CreateFont(name)
     local f = New("fontobject")
-    f.SetFont = function(self, _, size, flags) self._fsize, self._fflags = size, flags end
+    f.SetFont = function(self, file, size, flags) self._ffile, self._fsize, self._fflags = file, size, flags end
     f.SetTextColor = function(self, r, g, b) self._fcolor = { r, g, b, 1 } end
     return f
 end
@@ -370,6 +370,7 @@ function RenderDump(root)
                     if reg._text and reg._text ~= "" then
                         item.kind = "text"
                         item.text, item.size, item.flags = reg._text, reg._size * RenderScale(reg), reg._flags or ""
+                        item.font = reg._fontFile
                         item.color = reg._textColor or { 1, 0.82, 0, 1 }
                         item.justifyH, item.justifyV, item.wrap, item.shadow = reg._justifyH, reg._justifyV, reg._wrap, reg._shadow
                         out[#out + 1] = item

@@ -55,6 +55,7 @@ Games\DarkmoonDeck\Game.lua
 Games\DarkmoonDeck\DarkmoonDeck.lua
 
 Games\Mercenaries\Locale.lua
+Games\Mercenaries\Translations.lua
 Games\Mercenaries\EnemyNames.lua
 Games\Mercenaries\Combat.lua
 Games\Mercenaries\Abilities.lua

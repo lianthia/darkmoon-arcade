@@ -94,10 +94,11 @@ class Assets:
         sx, sy = tex.width / aw, tex.height / ah
         return tex.crop((int(l * sx), int(t * sy), int(r * sx), int(b * sy)))
 
-    def font(self, size):
-        path = CACHE / "frizqt.ttf"
+    def font(self, size, file=None):
+        file = (file or "Fonts/FRIZQT__.TTF").replace("\\", "/")
+        path = CACHE / ("font_" + file.split("/")[-1].lower())
         if not path.exists():
-            fid = self.file_id("Fonts/FRIZQT__.TTF")
+            fid = self.file_id(file)
             path.write_bytes(self.client.read(fid))
         return ImageFont.truetype(str(path), max(6, int(round(size))))
 
@@ -200,7 +201,7 @@ def draw_item(canvas, item, assets):
             hx = m.group(1)
             color = [int(hx[2:4], 16) / 255, int(hx[4:6], 16) / 255, int(hx[6:8], 16) / 255, 1]
         text = COLOR_CODE.sub(lambda mm: "  " if mm.group(0).startswith("|T") else "", text)
-        font = assets.font(item["size"] * S)
+        font = assets.font(item["size"] * S, item["font"])
         flags = item["flags"] or ""
         stroke = 2 if "THICK" in flags else (1 if "OUTLINE" in flags else 0)
         lines = []
@@ -280,6 +281,7 @@ def main():
     g.ADDON_SOURCES = lua.table_from({f: (ADDON / f).read_text(encoding="utf-8") for f in files})
     g.RENDER_ATLASES = lua.table_from({name: True for name in assets.atlas})
     g.RENDER_ONLY = only
+    g.RENDER_LANG = sys.argv[3] if len(sys.argv) > 3 else None
     smoke = (ROOT / "tests" / "smoke.lua").read_text(encoding="utf-8")
     header = smoke[:smoke.index("\nlocal ns = {}")]
     script = header + "\n" + (ROOT / "tests" / "render_mock.lua").read_text(encoding="utf-8") + "\n" + \

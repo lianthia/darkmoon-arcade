@@ -1,0 +1,695 @@
+MC_NAME	Mercenaries
+MC_DESC	Lead heroes of Azeroth from bounty to bounty: six mercenaries, three at a time, every ability resolved by speed.
+MC_TAGLINE	Heroes for hire, bounties across Azeroth
+MC_RULES	Pick a bounty at the travel board: every zone ends with its boss, and you choose the path there. Fights put three of your six mercenaries on the board. Each turn you choose an ability for every one of them, then all abilities of both sides resolve by speed - the lowest number goes first. Protectors (red) deal double damage to fighters (green), fighters to casters (blue), casters to protectors. Fallen mercenaries stay down until a spirit healer brings them back. After every won fight one mercenary takes a treasure for the rest of the bounty. Bosses drop coins to recruit and upgrade mercenaries and unlock equipment; beating a zone opens its heroic mode. Foes above your level miss you less and you miss them more - level up before you take on harder zones. Your progress is saved after every step, even in the middle of a fight.
+MC_HELP	Click a mercenary, then an ability card (or keys 1-3) · Click a target when asked; a line shows whom you aim at · Right-click a mercenary to change its order · Tab: next mercenary · Right-click on a zoomed map: back to the continent · Escape: cancel aiming · Space or Enter: Ready! · A: choose automatically · Hover a portrait, card, coin or piece of equipment for details · Options: \"Fast battle animations\" plays turns twice as fast
+MC_HELP_OVERVIEW_TITLE	How a bounty works
+MC_HELP_OVERVIEW	Mercenaries is played in bounties. At the |cff8a4a10Travel Point|r you pick a zone; every zone ends with its boss.\n\n1. Your party of six mercenaries travels a path of stops from the bottom of the map to the boss at the top. At every fork you choose the way.\n2. Fights put three of your mercenaries on the board against the foes.\n3. After every won fight a mercenary takes a treasure that stays with it until the bounty ends.\n4. Beat the boss to finish the bounty: you get coins and possibly new equipment.\n\nBetween bounties you level, recruit and upgrade mercenaries in the |cff8a4a10Mercenaries|r book. Everything is saved after every step - you can close the game in the middle of a fight and continue later.
+MC_HELP_ZONES_TITLE	Bounties and zones
+MC_HELP_ZONES	Every zone has the level range of its classic zone. Its boss stands at about two thirds of that range, the foes on the way a little lower.\n\nAll zones are open from the start, but level matters a lot: every level a foe is above your mercenaries makes you miss more often and deal less damage. Foes ten or more levels above you show a skull - such a bounty cannot be won.\n\nThe level next to each foe is coloured like in the game: grey and green are easy, yellow is even, orange and red are dangerous.\n\n|cff8a4a10Heroic:|r once you beat a zone's boss, its heroic mode opens. All foes there are level 60 and much stronger - this is the endgame. Heroic bosses drop more coins and the best equipment.
+MC_HELP_PATH_TITLE	The path
+MC_HELP_PATH	The coins on the bounty map are the stops. Lit coins are the stops you can travel to next; click one to see what waits there, then press the big button.\n\n|cff8a4a10Fight|r - an ordinary group of foes.\n|cff8a4a10Elite|r - four stronger foes, but the treasure afterwards is better.\n|cff8a4a10Spirit healer|r - brings one fallen mercenary back.\n|cff8a4a10Blessing|r - all mercenaries of one role get more attack and health for the rest of the bounty.\n|cff8a4a10Mystery|r - shows itself on arrival (see Treasures and events).\n|cff8a4a10Boss|r - the end of the bounty.\n\nVisited stops carry a check mark. Stops you can no longer reach fade out. You can abandon a bounty at any time; levels and coins earned so far are kept.
+MC_HELP_BATTLE_TITLE	The battle
+MC_HELP_BATTLE	A fight starts by choosing which three mercenaries take the board; the others wait on the bench below.\n\nEvery turn has two parts:\n1. |cff8a4a10Orders:|r select each of your mercenaries and pick one of its abilities (cards in the tray). If the ability needs a target, click the target - a line shows whom you aim at. Then press |cff8a4a10Ready!|r\n2. |cff8a4a10Resolution:|r all abilities of both sides run in order of their speed, the |cff8a4a10lowest number first|r. You only learn what the foes do when it happens; the numbers above the portraits show the order.\n\nSome abilities have a cooldown and are not available every turn. When a mercenary falls, you send in a new one from the bench at the start of the next turn. The fight is won when no foe is left. From turn 30 on everybody loses more and more health each turn, so no fight lasts forever.
+MC_HELP_ROLES_TITLE	Roles and levels
+MC_HELP_ROLES	Every mercenary and foe has a role, shown by the colour of its frame:\n\n|cffc03020Protector (red)|r - tough, protects its friends.\n|cff2f8a20Fighter (green)|r - strong attacks against single foes.\n|cff2050c0Caster (blue)|r - spells, often against several foes.\n\nThe roles beat each other in a circle: |cffc03020Protectors|r deal double damage to |cff2f8a20fighters|r, |cff2f8a20fighters|r to |cff2050c0casters|r and |cff2050c0casters|r to |cffc03020protectors|r. Advantage shows as a bigger number in the fight. A good party mixes all three roles and sends the right mercenary against the right foe.\n\nThe shield on a portrait shows attack, the drop health. Levels raise both, as do equipment, treasures and blessings. Neutral foes (grey) have no strength and no weakness.
+MC_HELP_EFFECTS_TITLE	Effects
+MC_HELP_EFFECTS	|cff8a4a10Taunt|r - foes must attack this unit first.\n|cff8a4a10Stealth|r - cannot be targeted until it acts.\n|cff8a4a10Stun|r - loses its next action.\n|cff8a4a10Divine shield|r (golden glow) - the next hit does no damage.\n|cff8a4a10Absorb|r (number above health) - soaks damage before health.\n|cff8a4a10Damage over time / healing over time|r - works at the end of every turn.\n|cff8a4a10Buffs and debuffs|r - change attack, damage dealt or taken, or speed for a few turns.\n|cff8a4a10Thorns|r - attackers take damage back.\n\nSmall icons on the lower edge of a portrait show what is active. Hover a portrait for its abilities, their values and cooldowns.
+MC_HELP_MERCS_TITLE	Improving mercenaries
+MC_HELP_MERCS	|cff8a4a10Experience:|r every mercenary of the party gains experience from every won fight, up to level 60.\n|cff8a4a10Abilities:|r the second ability is learned at level 10, the third at level 30.\n|cff8a4a10Coins:|r each mercenary has its own coins. Every won fight gives each party member one coin, a beaten boss more. Each zone's boss also pays coins to certain mercenaries - that is how you recruit new ones.\n|cff8a4a10Recruiting:|r 50 coins of that mercenary.\n|cff8a4a10Ranks:|r abilities can be raised to rank II (30 coins) and rank III (80 coins).\n|cff8a4a10Equipment:|r each mercenary has three pieces. The first is there from the start, the second drops from a zone's boss in normal mode, the third in heroic mode. Hover a piece to see where it drops; click it to equip it.\n\nYour party is set in the book: click a slot on the right, then a mercenary.
+MC_HELP_TREASURES_TITLE	Treasures and events
+MC_HELP_TREASURES	|cff8a4a10Treasures:|r after a won fight a mercenary may take one of three treasures. It keeps it until the bounty ends. Elite fights offer stronger treasures.\n|cff8a4a10Cursed treasures|r are very strong, but each one lowers the health of the whole party for the rest of the bounty.\n\nMysteries:\n|cff8a4a10Stranger|r - copies a treasure one of your mercenaries already carries.\n|cff8a4a10Sabotage|r - the foes of the next fight start with less health.\n|cff8a4a10Portal|r - lets you skip a stop.\n|cff8a4a10Cursed chest|r - a choice of cursed treasures.\n|cff8a4a10Bonus loot|r - the boss pays half as many coins again.\n|cff8a4a10Recruit|r - a mercenary you may not own yet joins as a guest for the rest of the bounty.\n\n|cff8a4a10Score:|r every won fight scores ten times the foes' level; elites score half again, bosses three times as much and heroic bounties double.
+MC_HELP_CONTROLS_TITLE	Controls
+MC_OPT_FAST	Fast battle animations
+MC_OPT_FAST_TIP	Plays the turns of Mercenaries about twice as fast.
+MC_ROLE_protector	Protector
+MC_ROLE_fighter	Fighter
+MC_ROLE_caster	Caster
+MC_ROLE_neutral	Neutral
+MC_DMG_physical	physical damage
+MC_DMG_fire	Fire damage
+MC_DMG_frost	Frost damage
+MC_DMG_nature	Nature damage
+MC_DMG_shadow	Shadow damage
+MC_DMG_holy	Holy damage
+MC_DMG_arcane	Arcane damage
+MC_FX_DAMAGE	Deal %d %s
+MC_TIMES	 %d times
+MC_TO_ALL	 to all enemies
+MC_TO_ADJACENT	 to adjacent enemies
+MC_TO_RANDOM	 to a random enemy
+MC_FX_ATTACK	Attack for %d
+MC_FX_ATTACK_PLAIN	Attack
+MC_FX_ATTACK_BONUS	Attack with +%d
+MC_FX_ATTACK_ALL	Strike all enemies for %d
+MC_FX_ATTACK_ALL_PLAIN	Strike all enemies
+MC_FX_HEAL	Restore %d health
+MC_TO_HEAL_SELF	 to yourself
+MC_TO_HEAL_ALLIES	 to all allies
+MC_TO_HEAL_LOWEST	 to the most wounded ally
+MC_FX_SHIELD	Grant Divine Shield
+MC_FX_ABSORB	Shield for %d
+MC_TO_BUFF_SELF	
+MC_TO_BUFF_ALLIES	 for all allies
+MC_TO_BUFF_ALL	 for all enemies
+MC_FX_TAUNT	Taunt (%s)
+MC_FX_STEALTH	Gain Stealth
+MC_FX_STUN	Stun the target
+MC_FX_DOT	%d %s each turn for %s
+MC_FX_HOT	Restore %d health each turn for %s
+MC_FX_MAXHP	+%d maximum health
+MC_FX_CLEANSE	Remove harmful effects
+MC_BUFF_ATK	%+d Attack
+MC_BUFF_ATKPCT	%+d%% Attack
+MC_BUFF_DMG	%+d%% damage dealt
+MC_BUFF_TAKEN	%+d%% damage taken
+MC_BUFF_SPEED	Speed %+d
+MC_BUFF_THORNS	Thorns %d
+MC_BUFF_AMBUSH	Next ability deals %+d%% damage
+MC_FOR	 for %s
+MC_ONE_TURN	1 turn
+MC_TURNS	%d turns
+MC_SPEED	Speed %d
+MC_COOLDOWN	Cooldown %d
+MC_ABILITY_N	Ability %d
+MC_MOD_ABIL_VALUE	%s: +%d%% effect
+MC_MOD_ABIL_SPEED	%s: speed %+d
+MC_MOD_ABIL_CD	%s: cooldown %+d
+MC_MOD_SCHOOL	+%d%% %s
+MC_MOD_STARTSHIELD	Starts every fight with Divine Shield
+MC_MOD_READYSTART	All abilities ready when a fight starts
+MC_MOD_THORNS	Deals %d damage to attackers
+MC_MOD_SPEED	All abilities: speed %+d
+MC_MOD_ATKPCT	+%d%% Attack
+MC_MOD_HPPCT	+%d%% health
+MC_MOD_DMGPCT	+%d%% damage
+MC_MOD_TAKENPCT	Takes %d%% less damage
+MC_MOD_HEALPCT	+%d%% healing
+MC_MOD_LIFESTEAL	Heals for %d%% of damage dealt
+MC_MOD_REGENPCT	Restores %d%% health each turn
+MC_MOD_CRITCHANCE	%d%% chance to deal double damage
+MC_MOD_EXECUTEPCT	+%d%% damage against foes below 30%% health
+MC_MOD_VENGEANCE	+%d%% Attack whenever an ally falls
+MC_NODE_FIGHT	Fight
+MC_NODE_ELITE	Elite fight
+MC_NODE_BOSS	Boss
+MC_NODE_HEALER	Spirit healer
+MC_NODE_BOON	Boon
+MC_NODE_MYSTERY	Mystery
+MC_PARTY	Party
+MC_FALLEN	Fallen
+MC_BOON_LINE	%s +%d%%
+MC_CURSE_LINE	Curse: -%d%% health
+MC_SABOTAGE_LINE	Next foes weakened
+MC_PORTAL_LINE	Portal open: skip a stop
+MC_ABANDON	Abandon bounty
+MC_FIGHT	Fight!
+MC_TRAVEL	Travel
+MC_ELITE_INFO	Four foes, stronger than usual - but the treasure is better.
+MC_BOON_INFO	All %s gain +%d%% Attack and health for the rest of this bounty.
+MC_MYSTERY_INFO	What waits here only shows when you arrive.
+MC_MYSTERY_STRANGER	A stranger
+MC_MYSTERY_SABOTAGE	Sabotage
+MC_MYSTERY_PORTAL	Portal
+MC_MYSTERY_CURSED	Cursed chest
+MC_MYSTERY_BONUS	Bonus loot
+MC_MYSTERY_RECRUIT	A recruit
+MC_HEALER_INFO	Brings one fallen mercenary back.
+MC_NO_TREASURES	No treasures yet
+MC_LEVEL_SKULL	Level ??
+MC_EVENT_BOON	Boon: all %s +%d%%
+MC_EVENT_SABOTAGE	Sabotage! The next foes start weakened.
+MC_EVENT_PORTAL	A portal: you may skip the next stop.
+MC_EVENT_BONUS	Bonus loot: the boss drops more coins.
+MC_EVENT_RECRUIT	%s joins your party for this bounty.
+MC_GUEST	guest
+MC_WARN_LEVEL	Party level %d - this zone needs %d!
+MC_GUEST_INFO	Joined for this bounty only; gains no experience or coins.
+MC_EVENT_HEALER_IDLE	Nobody needs the spirit healer.
+MC_READY	Ready!
+MC_AUTO	Choose automatically
+MC_TURN	Turn %d
+MC_RESERVE	+%d in reserve
+MC_BENCH	Bench: %d
+MC_HINT_DEPLOY	Choose %d |4mercenary:mercenaries; for the fight.
+MC_HINT_TARGET	Choose a target.
+MC_HINT_CHOOSE	Choose an ability for every mercenary.
+MC_HINT_READY	All set - Ready!
+MC_TRAY_KEYS	Keys 1-3 pick an ability, Tab the next mercenary.
+MC_BENCH_TITLE	Bench
+MC_ADVANTAGE	Advantage!
+MC_MISS	Miss
+MC_STUNNED	Stunned
+MC_FIZZLE	No target
+MC_ELITE	Elite
+MC_READY_IN	Ready in %d |4turn:turns;
+MC_SAVED	Your bounty is saved.
+MC_TREASURE_TITLE	Treasure
+MC_TREASURE_SUB	Choose a treasure for %s.
+MC_CURSED_TITLE	Cursed treasure
+MC_CURSED_SUB	A cursed treasure for %s - but every mercenary loses %d%% health for the rest of the bounty.
+MC_DECLINE	Leave it
+MC_HEALER_TITLE	Spirit healer
+MC_HEALER_SUB	Who should return?
+MC_CONTINUE	Continue
+MC_STRANGER_TITLE	Mysterious stranger
+MC_STRANGER_SUB	\"I can copy one of your treasures. Choose wisely.\"
+MC_ABANDON_TITLE	Abandon bounty?
+MC_ABANDON_TEXT	The bounty ends here. Experience already earned stays, treasures are lost.
+MC_TO_CAMP	Back to camp
+MC_LEVEL_UP	Level up!
+MC_STAT_FIGHTS	Fights won
+MC_STAT_XP	Experience
+MC_STAT_SCORE	Score
+MC_COMPLETE	Bounty complete!
+MC_DEFEAT	Defeat
+MC_FIRST_CLEAR	First clear: double coins!
+MC_COINS_EARNED	Coins: %s
+MC_GEAR_UNLOCKED	New equipment: %s (%s)
+MC_HEROIC_UNLOCKED	Heroic mode unlocked for this zone!
+MC_FIGHTS_WON	Fights won: %d
+MC_XP_EARNED	Experience: %s
+MC_LEVEL_UPS	Level up: %s
+MC_STAGE	Stop %d of %d
+MC_PARTY_LEVEL	Party level %d
+MC_HEROIC	Heroic
+MC_NORMAL	Normal
+MC_SHARE	scored %s points on a Mercenaries bounty: %s!
+MC_CONTINUE_RUN	Continue bounty
+MC_ENCOUNTER	Encounter
+MC_TRAVEL_POINT	Travel Point
+MC_OVERVIEW	Back to the continent
+MC_BOSS_INFO	Bounty
+MC_CHOOSE	Choose
+MC_REGION_LORDAERON	Lordaeron
+MC_REGION_KHAZMODAN	Khaz Modan
+MC_REGION_AZEROTH	Kingdom of Azeroth
+MC_REGION_NORTHKAL	Northern Kalimdor
+MC_REGION_CENTRALKAL	Central Kalimdor
+MC_REGION_ZEPHRAS	Zephras Isle
+MC_REGION_SOUTHLANDS	Southern Lands
+MC_REGION_SOUTHKAL	Southern Kalimdor
+MC_PAGE	Page %d
+MC_CAN_RECRUIT	Ready to recruit!
+MC_DONE	Done
+MC_SCHOOL_physical	Physical
+MC_SCHOOL_fire	Fire
+MC_SCHOOL_frost	Frost
+MC_SCHOOL_nature	Nature
+MC_SCHOOL_shadow	Shadow
+MC_SCHOOL_holy	Holy
+MC_SCHOOL_arcane	Arcane
+MC_ZD_thousandneedles	Among the mesas, Galak centaurs raid the caravans, and Arnak Grimtotem gathers his clan against the Bloodhoof tauren.
+MC_ZD_alterac	From the ruins of Alterac, the Syndicate schemes on - led by Lord Aliden Perenolde, heir of the traitor king.
+MC_ZD_arathi	Ogres and trolls roam the highlands, and beneath the hills the earth spirit Myzrael waits to break its prison.
+MC_ZD_desolace	Centaur clans and demons fight over the barren land, while deep in Maraudon Princess Theradras poisons the earth.
+MC_ZD_shendralas	South of Desolace the Shen'dralar guard their secrets. The Magram centaurs raise the dead - their Necrokhan leads them.
+MC_ZD_riverglades	Ogres of Krol'dok and the Twilight's Hammer have claimed the riverlands. Clugfist, the strongest of the ogres, holds them.
+MC_ZD_stranglethorn	In the jungle, trolls and the Kurzen rebels fight each other - and the great tiger King Bangalash hunts them all.
+MC_ZD_badlands	Ogres and dark dwarves search the scorched land, while in Uldaman the stone keeper Archaedas wakes.
+MC_ZD_swampofsorrows	Murlocs lurk in the mire, and in the sunken temple of Atal'Hakkar the shade of Eranikus spreads the Nightmare.
+MC_ZD_dustwallow	Black dragonkin gather in the marsh. In her lair, Onyxia, daughter of Deathwing, waits for the brave.
+MC_ZD_feralas	Gordunni ogres rule the ruins of Eldre'Thalas, and in Dire Maul King Gordok sits on his throne.
+MC_ZD_tanaris	Bandits, pirates and Sandfury trolls plague the desert. In Zul'Farrak, the hydra Gahz'rilla rises from the sacred pool.
+MC_ZD_hinterlands	The Vilebranch trolls hold Jintha'Alor, where Vile Priestess Hexx calls upon dark gods.
+MC_ZD_searinggorge	Dark Iron dwarves drive slaves through the burning gorge for Emperor Dagran Thaurissan in Blackrock.
+MC_ZD_azshara	Naga and ghosts haunt the shores of fallen Azshara, and the blue dragon Azuregos guards its magic.
+MC_ZD_blastedlands	Before the Dark Portal, demons and the Shadowsworn gather. Lord Kazzak commands the Burning Legion's host.
+MC_ZD_felwood	The corrupted forest of Felwood hides the Shadow Council in Jaedenar, ruled by the dreadlord Lord Banehollow.
+MC_ZD_ungoro	In the steaming crater, giant beasts roam - none mightier than the devilsaur King Mosh.
+MC_ZD_burningsteppes	The Blackrock orcs march across the steppes, led by Warchief Rend Blackhand from Blackrock Spire.
+MC_ZD_westernplaguelands	The Scourge holds the plagued fields. In Scholomance, Darkmaster Gandling teaches necromancy.
+MC_ZD_easternplaguelands	Undead legions guard the ruins of Stratholme, where the death knight Baron Rivendare rules.
+MC_ZD_winterspring	In the snowy valleys, the Winterfall furbolgs have turned on all strangers - led by High Chief Winterfall.
+MC_ZD_silithus	The silithid swarm boils out of Ahn'Qiraj. Deep below, the Old God C'Thun stirs.
+MC_ZD_hyjal	Where the World Tree once burned, the echo of Archimonde lingers - the demon lord who fell at Mount Hyjal.
+MC_ZD_elwynn	Gnolls and kobolds plague the peaceful forest - and the gnoll Hogger leads them all.
+MC_ZD_dunmorogh	In the snow of Dun Morogh, troggs and Frostmane trolls roam. Below, Gnomeregan has fallen to Mekgineer Thermaplugg.
+MC_ZD_tirisfal	Undead stalk Tirisfal's glades while the Scarlet Crusade, led by High Inquisitor Whitemane, burns all it calls unclean.
+MC_ZD_teldrassil	Under the World Tree, corrupted creatures gather around Fel Rock, where Lord Melenas plots.
+MC_ZD_durotar	The red canyons of Durotar shelter the Horde - and the witch doctor Zalazane, who holds the Echo Isles in his thrall.
+MC_ZD_mulgore	On the plains of Mulgore, the giant kodo Arra'chea tramples everything in its path.
+MC_ZD_zephras	High above the clouds, the Skyborne's isle trembles under the storms of High Priestess Lorthuna.
+MC_ZD_westfall	The Defias Brotherhood rules Westfall's fields from the Deadmines. Edwin VanCleef awaits below.
+MC_ZD_lochmodan	Stonesplinter troggs swarm the hills of Loch Modan under their chieftain, Boss Galgosh.
+MC_ZD_silverpine	Worgen howl in Silverpine Forest, called by Archmage Arugal from Shadowfang Keep.
+MC_ZD_darkshore	Murlocs of the Greymist tribe raid Darkshore's coast, led by the fearsome Murkdeep.
+MC_ZD_barrens	Centaurs and quilboar fight over the dusty Barrens. Barak Kodobane leads the Kolkar raids.
+MC_ZD_redridge	Blackrock orcs and gnolls threaten Lakeshire. Their warlord: Gath'Ilzogg.
+MC_ZD_stonetalon	The Venture Company clears Stonetalon's ancient forests under the greedy Gerenzo Wrenchwhistle.
+MC_ZD_ashenvale	Deep beneath Ashenvale's shore lies Blackfathom Deeps, home of the ancient beast Aku'mai.
+MC_ZD_duskwood	In eternal night, the undead of Duskwood rise - and Stitches, the abomination, marches on Darkshire.
+MC_ZD_wetlands	The Dragonmaw clan holds the Wetlands under Chieftain Nek'rosh.
+MC_ZD_hillsbrad	Hillsbrad Foothills are torn by war; Magistrate Burnside defends the town with all he has.
+MC_BOUNTIES_SUB	Pick a zone on the map of Azeroth.
+MC_COLLECTION_SUB	%d of %d recruited
+MC_NO_SCORE	No bounty completed yet
+MC_WANTED	WANTED
+MC_PICK_ZONE	Choose a bounty on the map.
+MC_BOSS_LEVEL	Boss %d
+MC_REWARD	Reward:
+MC_PARTY_PICK	Now click a mercenary card.
+MC_IN_PARTY	In the party
+MC_ABILITIES	Abilities
+MC_MAX_LEVEL	Highest level
+MC_RECRUIT_COST	Recruit (%d coins)
+MC_BOUNTIES	Bounties
+MC_COLLECTION	Mercenaries
+MC_RUN_ACTIVE	Bounty in progress: %s
+MC_CONTINENT_EK	Eastern Kingdoms
+MC_CONTINENT_KAL	Kalimdor
+MC_CONTINENT_ZEPHRAS	Zephras Isle
+MC_LEVEL_RANGE	Level %d-%d
+MC_DONE_NORMAL	Normal cleared
+MC_DONE_HEROIC	Heroic cleared
+MC_HEROIC_LOCKED	Defeat this zone's boss in normal mode first.
+MC_PARTY_LOCKED	The party can't change during a bounty.
+MC_PARTY_HINT	Click a slot, then a mercenary to swap.
+MC_COINS_PROGRESS	%d / %d coins
+MC_RECRUIT	Recruit
+MC_XP	XP %s / %s
+MC_COINS	%d coins
+MC_UNLOCKS_AT	Unlocks at level %d
+MC_RANK_UP	Rank %s (%d)
+MC_EQUIPMENT	Equipment
+MC_GEAR_FROM	Dropped by %s in %s (%s)
+MC_STAT_ZONES	Bounties cleared
+MC_STAT_HEROIC	Heroic bounties cleared
+MC_STAT_MERCS	Mercenaries recruited
+MC_STAT_LEVEL	Highest level
+MC_STAT_FIGHTS	Fights won
+MC_ACH_FIRST	First Blood
+MC_ACH_FIRST_DESC	Win a fight.
+MC_ACH_BOUNTY	Bounty Hunter
+MC_ACH_BOUNTY_DESC	Complete a bounty.
+MC_ACH_RECRUIT	Fresh Blood
+MC_ACH_RECRUIT_DESC	Recruit a mercenary.
+MC_ACH_RANK	Honed
+MC_ACH_RANK_DESC	Raise an ability to rank III.
+MC_ACH_STARTER	Off the Beaten Path
+MC_ACH_STARTER_DESC	Clear every starting zone, Zephras Isle included.
+MC_ACH_HEROIC	Heroic Deeds
+MC_ACH_HEROIC_DESC	Complete a heroic bounty.
+MC_ACH_FLAWLESS	Nobody Left Behind
+MC_ACH_FLAWLESS_DESC	Complete a bounty without a mercenary falling.
+MC_ACH_FEW	Last Ones Standing
+MC_ACH_FEW_DESC	Defeat a boss with three or fewer mercenaries left.
+MC_ACH_FLIGHT	Contract in the Clouds
+MC_ACH_FLIGHT_DESC	Complete a bounty you started during a flight while still flying.
+MC_ACH_LEVEL30	Veteran
+MC_ACH_LEVEL30_DESC	Bring a mercenary to level 30.
+MC_ACH_GEAR	Well Equipped
+MC_ACH_GEAR_DESC	Unlock 10 pieces of equipment.
+MC_ACH_STAGE1	From Elwynn to Hillsbrad
+MC_ACH_STAGE1_DESC	Clear every zone up to level 30.
+MC_ACH_COLLECTION	Full Roster
+MC_ACH_COLLECTION_DESC	Recruit every mercenary.
+MC_ACH_HEROIC10	Legend of Azeroth
+MC_ACH_HEROIC10_DESC	Clear 10 different zones in heroic mode.
+MC_ACH_LEVEL60	At the Peak
+MC_ACH_LEVEL60_DESC	Bring a mercenary to level 60.
+MC_ACH_HEROIC_FLAWLESS	Untouchable
+MC_ACH_HEROIC_FLAWLESS_DESC	Complete a heroic bounty without a mercenary falling.
+MC_A_saurfang_1	Revenge
+MC_A_saurfang_2	Rallying Cry
+MC_A_saurfang_3	Last Stand
+MC_A_windsor_1	Shield Slam
+MC_A_windsor_2	Banner of Stormwind
+MC_A_windsor_3	Hold the Line
+MC_A_jorach_1	Backstab
+MC_A_jorach_2	Kidney Shot
+MC_A_jorach_3	Blade Flurry
+MC_A_natpagle_1	Harpoon
+MC_A_natpagle_2	Fresh Catch
+MC_A_natpagle_3	Fishing Net
+MC_A_fandral_1	Moonfire
+MC_A_fandral_2	Thorns
+MC_A_fandral_3	Hurricane
+MC_A_drekthar_1	Frost Shock
+MC_A_drekthar_2	Healing Wave
+MC_A_drekthar_3	Frost Totem
+MC_G_saurfang_1	Kor'kron Axe
+MC_G_saurfang_2	Overlord's Plate
+MC_G_saurfang_3	Trophy of the Horde
+MC_G_windsor_1	Shield of the Stockade
+MC_G_windsor_2	Banner of the Alliance
+MC_G_windsor_3	Marshal's Helm
+MC_G_jorach_1	Ravenholdt Dagger
+MC_G_jorach_2	Assassin's Blade
+MC_G_jorach_3	Cloak of Shadows
+MC_G_natpagle_1	Nat's Lucky Pole
+MC_G_natpagle_2	Grilled Squid
+MC_G_natpagle_3	Master Angler's Catch
+MC_G_fandral_1	Staff of the Arch Druid
+MC_G_fandral_2	Branch of Teldrassil
+MC_G_fandral_3	Moonstone Orb
+MC_G_drekthar_1	Frostwolf Staff
+MC_G_drekthar_2	Ring of the Elements
+MC_G_drekthar_3	Talisman of the Frost Wolf
+MC_A_cairne_1	Hoof Strike
+MC_A_cairne_2	War Stomp
+MC_A_cairne_3	Earthmother's Vow
+MC_A_bolvar_1	Righteous Strike
+MC_A_bolvar_2	Divine Shield
+MC_A_bolvar_3	Rally of Stormwind
+MC_A_magni_1	Storm Hammer
+MC_A_magni_2	Stoneform
+MC_A_magni_3	Mountain King's Bellow
+MC_A_tirion_1	Crusader's Blow
+MC_A_tirion_2	Hammer of Justice
+MC_A_tirion_3	Lay on Hands
+MC_A_eitrigg_1	Mortal Strike
+MC_A_eitrigg_2	Shield Wall
+MC_A_eitrigg_3	Cleave
+MC_A_taelan_1	Holy Strike
+MC_A_taelan_2	Consecration
+MC_A_taelan_3	Devotion Aura
+MC_A_rexxar_1	Misha's Maul
+MC_A_rexxar_2	Bestial Wrath
+MC_A_rexxar_3	Multi-Shot
+MC_A_sylvanas_1	Aimed Shot
+MC_A_sylvanas_2	Withering Arrow
+MC_A_sylvanas_3	Banshee's Wail
+MC_A_voljin_1	Spear Throw
+MC_A_voljin_2	Hex
+MC_A_voljin_3	Healing Wave
+MC_A_shandris_1	Sentinel's Arrow
+MC_A_shandris_2	Hunter's Mark
+MC_A_shandris_3	Volley
+MC_A_mankrik_1	Avenging Strike
+MC_A_mankrik_2	Enrage
+MC_A_mankrik_3	Whirlwind
+MC_A_renzik_1	Sinister Strike
+MC_A_renzik_2	Gouge
+MC_A_renzik_3	Vanish
+MC_A_jaina_1	Fireball
+MC_A_jaina_2	Frostbolt
+MC_A_jaina_3	Blizzard
+MC_A_thrall_1	Chain Lightning
+MC_A_thrall_2	Lightning Shield
+MC_A_thrall_3	Windfury Totem
+MC_A_tyrande_1	Starshards
+MC_A_tyrande_2	Heal
+MC_A_tyrande_3	Prayer of Healing
+MC_A_magatha_1	Lightning Bolt
+MC_A_magatha_2	Curse of Weakness
+MC_A_magatha_3	Searing Totem
+MC_A_benedictus_1	Smite
+MC_A_benedictus_2	Power Word: Shield
+MC_A_benedictus_3	Holy Nova
+MC_A_hamuul_1	Wrath
+MC_A_hamuul_2	Rejuvenation
+MC_A_hamuul_3	Entangling Roots
+MC_A_e_strike	Strike
+MC_A_e_bite	Bite
+MC_A_e_claw	Rend
+MC_A_e_slam	Slam
+MC_A_e_cleave	Cleave
+MC_A_e_frenzy	Frenzy
+MC_A_e_shieldbash	Shield Bash
+MC_A_e_enrage	Enrage
+MC_A_e_rally	Battle Shout
+MC_A_e_guard	Defend
+MC_A_e_harden	Harden
+MC_A_e_web	Web
+MC_A_e_poison	Poison
+MC_A_e_firebolt	Fire Bolt
+MC_A_e_frostbolt	Frostbolt
+MC_A_e_shadowbolt	Shadow Bolt
+MC_A_e_lightning	Lightning Bolt
+MC_A_e_holyfire	Holy Fire
+MC_A_e_drain	Drain Life
+MC_A_e_curse	Curse of Weakness
+MC_A_e_heal	Heal
+MC_A_e_renew	Renew
+MC_A_e_dive	Dive
+MC_A_e_howl	Howl
+MC_A_e_trample	Charge
+MC_A_e_explode	Explode
+MC_A_e_net	Net
+MC_A_e_plague	Plague Cloud
+MC_A_e_wave	Tidal Wave
+MC_A_e_fireball	Fireball
+MC_A_e_volley	Shadow Bolt Volley
+MC_A_e_thunderclap	Thunder Clap
+MC_A_e_chainlight	Chain Lightning
+MC_A_e_sunder	Sunder Armor
+MC_A_e_bloodlust	Bloodlust
+MC_A_e_shadowword	Shadow Word: Pain
+MC_A_e_flamestrike	Flamestrike
+MC_A_arnak_1	Grimtotem Crush
+MC_A_arnak_2	Earthbind Totem
+MC_A_arnak_3	Stoneskin
+MC_A_arnak_h	Searing Totem
+MC_A_perenolde_1	Shadow Bolt
+MC_A_perenolde_2	Call the Syndicate
+MC_A_perenolde_3	Curse of Alterac
+MC_A_perenolde_h	Domination
+MC_A_myzrael_1	Earth Shock
+MC_A_myzrael_2	Earthquake
+MC_A_myzrael_3	Prismatic Ward
+MC_A_myzrael_h	Shatter the Shards
+MC_A_theradras_1	Boulder
+MC_A_theradras_2	Dust Field
+MC_A_theradras_3	Repulsive Gaze
+MC_A_theradras_h	Heart of the Earth
+MC_A_necrokhan_1	Necrotic Bolt
+MC_A_necrokhan_2	Bone Armor
+MC_A_necrokhan_3	Grave Plague
+MC_A_necrokhan_h	Death Coil
+MC_A_clugfist_1	Ogre Club
+MC_A_clugfist_2	Thunderous Slam
+MC_A_clugfist_3	Ogre Rage
+MC_A_clugfist_h	Skull Crack
+MC_A_bangalash_1	Maul
+MC_A_bangalash_2	Rend
+MC_A_bangalash_3	Call of the Pride
+MC_A_bangalash_h	Pounce
+MC_A_archaedas_1	Ground Tremor
+MC_A_archaedas_2	Awaken Earthen
+MC_A_archaedas_3	Titan's Guard
+MC_A_archaedas_h	Stone Dais
+MC_A_eranikus_1	Nightmare Bolt
+MC_A_eranikus_2	Acid Breath
+MC_A_eranikus_3	Deep Slumber
+MC_A_eranikus_h	Emerald Nightmare
+MC_A_onyxia_1	Flame Breath
+MC_A_onyxia_2	Wing Buffet
+MC_A_onyxia_3	Deep Breath
+MC_A_onyxia_h	Bellowing Roar
+MC_A_gordok_1	Mortal Strike
+MC_A_gordok_2	War Stomp
+MC_A_gordok_3	Sunder Armor
+MC_A_gordok_h	Gordok Fury
+MC_A_gahzrilla_1	Icicle
+MC_A_gahzrilla_2	Freeze Solid
+MC_A_gahzrilla_3	Gahz'rilla Slam
+MC_A_gahzrilla_h	Hydra Regeneration
+MC_A_hexx_1	Shadow Bolt
+MC_A_hexx_2	Hex
+MC_A_hexx_3	Dark Mending
+MC_A_hexx_h	Vilebranch Curse
+MC_A_thaurissan_1	Hand of Thaurissan
+MC_A_thaurissan_2	Avatar of Flame
+MC_A_thaurissan_3	Emperor's Command
+MC_A_thaurissan_h	Fire Nova
+MC_A_azuregos_1	Frost Breath
+MC_A_azuregos_2	Arcane Vacuum
+MC_A_azuregos_3	Manastorm
+MC_A_azuregos_h	Reflection
+MC_A_kazzak_1	Cleave
+MC_A_kazzak_2	Shadow Bolt Volley
+MC_A_kazzak_3	Mark of Kazzak
+MC_A_kazzak_h	Capture Soul
+MC_A_banehollow_1	Shadow Bolt
+MC_A_banehollow_2	Sleep
+MC_A_banehollow_3	Carrion Swarm
+MC_A_banehollow_h	Dreadlord's Hunger
+MC_A_mosh_1	Devilsaur Bite
+MC_A_mosh_2	Trample
+MC_A_mosh_3	Frightening Roar
+MC_A_mosh_h	King's Rage
+MC_A_rend_1	Cleave
+MC_A_rend_2	Whirlwind
+MC_A_rend_3	Warchief's Blessing
+MC_A_rend_h	Mortal Strike
+MC_A_gandling_1	Arcane Missiles
+MC_A_gandling_2	Shadow Shield
+MC_A_gandling_3	Curse of the Darkmaster
+MC_A_gandling_h	Shadow Portal
+MC_A_rivendare_1	Mortal Strike
+MC_A_rivendare_2	Unholy Aura
+MC_A_rivendare_3	Raise Dead
+MC_A_rivendare_h	Death Pact
+MC_A_winterfall_1	Furbolg Strike
+MC_A_winterfall_2	Frost Totem
+MC_A_winterfall_3	Rallying Howl
+MC_A_winterfall_h	Winterfall Fury
+MC_A_cthun_1	Eye Beam
+MC_A_cthun_2	Dark Glare
+MC_A_cthun_3	Mind Flay
+MC_A_cthun_h	Tentacles Rise
+MC_A_archimonde_1	Finger of Death
+MC_A_archimonde_2	Doomfire
+MC_A_archimonde_3	Air Burst
+MC_A_archimonde_h	Grip of the Legion
+MC_A_hogger_1	Hogger's Maul
+MC_A_hogger_2	Pack Call
+MC_A_hogger_3	Rampage
+MC_A_hogger_h	Thick Hide
+MC_A_thermaplugg_1	Bomb Toss
+MC_A_thermaplugg_2	Leper Blast
+MC_A_thermaplugg_3	Steam Armor
+MC_A_thermaplugg_h	Shock Coil
+MC_A_whitemane_1	Smite
+MC_A_whitemane_2	Flash Heal
+MC_A_whitemane_3	Scarlet Scream
+MC_A_whitemane_h	Scarlet Resurrection
+MC_A_melenas_1	Shadow Bolt
+MC_A_melenas_2	Corruption
+MC_A_melenas_3	Death Coil
+MC_A_melenas_h	Curse of Despair
+MC_A_zalazane_1	Hex of Pain
+MC_A_zalazane_2	Voodoo Hex
+MC_A_zalazane_3	Healing Wave
+MC_A_zalazane_h	Voodoo Frenzy
+MC_A_arrachea_1	Gore
+MC_A_arrachea_2	War Stomp
+MC_A_arrachea_3	Bash
+MC_A_arrachea_h	Wild Fury
+MC_A_lorthuna_1	Storm Call
+MC_A_lorthuna_2	Cyclone
+MC_A_lorthuna_3	Renewing Winds
+MC_A_lorthuna_h	Tempest
+MC_A_vancleef_1	Cutlass Strike
+MC_A_vancleef_2	Ambush
+MC_A_vancleef_3	Call to Arms
+MC_A_vancleef_h	Sprint
+MC_A_galgosh_1	Crushing Blow
+MC_A_galgosh_2	Earthbind
+MC_A_galgosh_3	Rock Skin
+MC_A_galgosh_h	Earthquake
+MC_A_arugal_1	Shadow Bolt
+MC_A_arugal_2	Shadow Port
+MC_A_arugal_3	Shadow Pain
+MC_A_arugal_h	Arugal's Curse
+MC_A_murkdeep_1	Tidal Spear
+MC_A_murkdeep_2	Crashing Wave
+MC_A_murkdeep_3	Murloc Net
+MC_A_murkdeep_h	Mrgllrrgll!
+MC_A_kodobane_1	Kolkar Strike
+MC_A_kodobane_2	Trample
+MC_A_kodobane_3	Storm Lash
+MC_A_kodobane_h	Rampage
+MC_A_gathilzogg_1	Cleave
+MC_A_gathilzogg_2	Blackrock Shout
+MC_A_gathilzogg_3	Charge
+MC_A_gathilzogg_h	Shield Wall
+MC_A_gerenzo_1	Rocket Shot
+MC_A_gerenzo_2	Goblin Bomb
+MC_A_gerenzo_3	Quick Repair
+MC_A_gerenzo_h	Overcharge
+MC_A_akumai_1	Rend
+MC_A_akumai_2	Poison Cloud
+MC_A_akumai_3	Shell Shield
+MC_A_akumai_h	Frost Breath
+MC_A_stitches_1	Crushing Blow
+MC_A_stitches_2	Plague Stench
+MC_A_stitches_3	Frenzy
+MC_A_stitches_h	Embalmed Hide
+MC_A_nekrosh_1	Dragonmaw Cleave
+MC_A_nekrosh_2	Fireball
+MC_A_nekrosh_3	War Cry
+MC_A_nekrosh_h	Dragonfire
+MC_A_burnside_1	Smite
+MC_A_burnside_2	Blessing of Protection
+MC_A_burnside_3	Prayer of Healing
+MC_A_burnside_h	Hammer of Justice
+MC_T_might	Might
+MC_T_vigor	Vigor
+MC_T_haste	Swiftness
+MC_T_aegis	Aegis
+MC_T_leech	Vampiric Fang
+MC_T_thorns	Thorn Mantle
+MC_T_renewal	Renewal
+MC_T_readiness	Readiness
+MC_T_precision	Precision
+MC_T_bulwark	Bulwark
+MC_T_execution	Executioner
+MC_T_vengeance	Vengeance
+MC_T_devotion	Devotion
+MC_T_focus1	Practiced Strike
+MC_T_focus2	Practiced Craft
+MC_T_focus3	Practiced Mastery
+MC_T_quick1	Quickened Strike
+MC_T_quick2	Quickened Craft
+MC_T_quick3	Quickened Mastery
+MC_T_fire	Ember Charm
+MC_T_frost	Frost Crystal
+MC_T_nature	Storm Totem
+MC_T_shadow	Shadow Idol
+MC_T_holy	Holy Relic
+MC_T_arcane	Arcane Focus
+MC_T_physical	Whetstone
+MC_T_titan	Titan's Blessing
+MC_T_zeal	Zeal
+MC_T_overflow	Timeless Hourglass
+MC_T_champion	Champion's Banner
+MC_T_lifebloom	Lifebloom
+MC_T_cursedblade	Cursed Blade
+MC_T_cursedmail	Cursed Mail
+MC_T_cursedrelic	Cursed Relic
+MC_G_cairne_1	Earthmother's Talisman
+MC_G_cairne_2	Bloodhoof Warplate
+MC_G_cairne_3	Runespear of the Plains
+MC_G_bolvar_1	Lion's Crest Shield
+MC_G_bolvar_2	Stormwind Standard
+MC_G_bolvar_3	Blade of the Highlord
+MC_G_magni_1	Bronzebeard Signet
+MC_G_magni_2	Ironforge Warhammer
+MC_G_magni_3	Crown of the Mountain King
+MC_G_tirion_1	Libram of Hope
+MC_G_tirion_2	Hammer of the Silver Hand
+MC_G_tirion_3	Armor of Light's Hope
+MC_G_eitrigg_1	Veteran's Axe
+MC_G_eitrigg_2	Bulwark of Orgrimmar
+MC_G_eitrigg_3	Warchief's Favor
+MC_G_taelan_1	Highlord's Signet
+MC_G_taelan_2	Aegis of Hearthglen
+MC_G_taelan_3	Fordring's Libram
+MC_G_rexxar_1	Misha's Collar
+MC_G_rexxar_2	Mok'Nathal Axes
+MC_G_rexxar_3	Beastmaster's Quiver
+MC_G_sylvanas_1	Windrunner Longbow
+MC_G_sylvanas_2	Veil of the Banshee
+MC_G_sylvanas_3	Dark Lady's Quiver
+MC_G_voljin_1	Darkspear Spear
+MC_G_voljin_2	Shadow Hunter's Mask
+MC_G_voljin_3	Sen'jin Fetish
+MC_G_shandris_1	Sentinel's Longbow
+MC_G_shandris_2	Feathermoon Cloak
+MC_G_shandris_3	Moonglaive
+MC_G_mankrik_1	Avenger's Axe
+MC_G_mankrik_2	Barrens Warharness
+MC_G_mankrik_3	Olgra's Locket
+MC_G_renzik_1	SI:7 Dagger
+MC_G_renzik_2	Vial of Venom
+MC_G_renzik_3	Cloak of Shadows
+MC_G_jaina_1	Staff of Theramore
+MC_G_jaina_2	Kul Tiran Pendant
+MC_G_jaina_3	Archmage's Focus
+MC_G_thrall_1	Doomhammer Grip
+MC_G_thrall_2	Earthen Talisman
+MC_G_thrall_3	Warchief's Mantle
+MC_G_tyrande_1	Moonsilver Circlet
+MC_G_tyrande_2	Tear of Elune
+MC_G_tyrande_3	Glaive of the Moon
+MC_G_magatha_1	Grimtotem Staff
+MC_G_magatha_2	Elder's Fetish
+MC_G_magatha_3	Smoldering Totem
+MC_G_benedictus_1	Cathedral Censer
+MC_G_benedictus_2	Vestments of Light
+MC_G_benedictus_3	Archbishop's Mitre
+MC_G_hamuul_1	Runetotem Staff
+MC_G_hamuul_2	Moonglade Antlers
+MC_G_hamuul_3	Cenarion Seed

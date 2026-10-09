@@ -631,7 +631,9 @@ function Module:RefreshBossPanel()
     panel.level.text:SetTextColor(MC.ConColor(bossLevel, reference))
     panel.name.text:SetText(L["MC_E_" .. zone.boss])
     panel.levels:SetText(Describe.ZoneName(zid) .. "  ·  " .. L.MC_LEVEL_RANGE:format(zone.min, zone.max))
-    panel.story:SetText(L["MC_ZD_" .. zid])
+    local story = L["MC_ZD_" .. zid]
+    if story:find("%s", 1, true) then story = story:format(L["MC_E_" .. zone.boss]) end
+    panel.story:SetText(story)
     local unlocked = Bounty.HeroicUnlocked(store, zid)
     if not unlocked then self.travelHeroic = false end
     panel.heroic:SetEnabled(unlocked)

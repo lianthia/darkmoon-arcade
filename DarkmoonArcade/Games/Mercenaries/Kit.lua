@@ -225,6 +225,7 @@ function Kit.Plaque(parent, w, key, size)
     f.text:SetPoint("CENTER", 0, 2)
     f.text:SetWidth(w * 0.7)
     f.text:SetWordWrap(false)
+    Kit.AutoFit(f.text, w * 0.7, size or 16, (size or 16) - 5)
     if key then Widgets.OnRefresh(function() f.text:SetText(L[key]) end) end
     return f
 end
@@ -240,12 +241,26 @@ function Kit.Banner(parent, w, h, size)
     f.text:SetPoint("CENTER", 0, 1)
     f.text:SetWidth(w * 0.78)
     f.text:SetWordWrap(false)
+    Kit.AutoFit(f.text, w * 0.78, size or 11, (size or 11) - 3)
     return f
 end
 
 -- Buttons ------------------------------------------------------------------------------------------
 
 -- Sets `text` at `size`, shrinking the font down to `minSize` until it fits `maxW`.
+-- From now on every SetText on `fs` shrinks the font (down to minSize) until the text fits maxW,
+-- so long names and translations stay whole instead of ending in "...".
+function Kit.AutoFit(fs, maxW, size, minSize, flags)
+    local set = fs.SetText
+    fs.SetText = function(self, text)
+        set(self, text)
+        for s = size, minSize, -1 do
+            self:SetFont(Media.FontFile(), s, flags or "")
+            if self:GetStringWidth() <= maxW then return end
+        end
+    end
+end
+
 function Kit.FitText(fs, text, maxW, size, minSize, flags)
     fs:SetText(text)
     for s = size, minSize or size - 4, -1 do

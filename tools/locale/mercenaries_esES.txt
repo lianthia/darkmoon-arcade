@@ -1,0 +1,695 @@
+MC_NAME	Mercenaries
+MC_DESC	Guía a los héroes de Azeroth de recompensa en recompensa: seis mercenarios, tres a la vez, cada habilidad resuelta según su velocidad.
+MC_TAGLINE	Héroes a sueldo, recompensas por todo Azeroth
+MC_RULES	Elige una recompensa en el punto de viaje: cada zona termina con su jefe, y tú eliges el camino. En combate, tres de tus seis mercenarios salen al tablero. Cada turno eliges una habilidad para cada uno; después, todas las habilidades de ambos bandos se resuelven según su velocidad: el número más bajo actúa primero. Los protectores (rojo) infligen el doble de daño a los luchadores (verde), los luchadores a los lanzadores (azul) y los lanzadores a los protectores. Los mercenarios caídos no se levantan hasta que un ángel de la resurrección los devuelve. Tras cada combate ganado, un mercenario recibe un tesoro para el resto de la recompensa. Los jefes sueltan monedas para reclutar y mejorar mercenarios y desbloquean equipo; vencer una zona abre su modo heroico. Los enemigos de nivel superior te fallan menos y tú les fallas más: sube de nivel antes de afrontar zonas más difíciles. El progreso se guarda tras cada paso, incluso en mitad de un combate.
+MC_HELP	Haz clic en un mercenario y luego en una carta de habilidad (o teclas 1-3) · Haz clic en un objetivo cuando se pida; una línea muestra a quién apuntas · Clic derecho en un mercenario para cambiar su orden · Tab: siguiente mercenario · Clic derecho en un mapa ampliado: volver al continente · Escape: cancelar la puntería · Espacio o Intro: ¡Listo! · A: elegir automáticamente · Pasa el ratón sobre un retrato, carta, moneda o pieza de equipo para ver detalles · Opciones: «Animaciones de combate rápidas» reproduce los turnos el doble de rápido
+MC_HELP_OVERVIEW_TITLE	Cómo funciona una recompensa
+MC_HELP_OVERVIEW	Mercenaries se juega por recompensas. En el |cff8a4a10punto de viaje|r eliges una zona; cada zona termina con su jefe.\n\n1. Tu grupo de seis mercenarios recorre un camino de paradas desde la parte inferior del mapa hasta el jefe, arriba. En cada bifurcación eliges la ruta.\n2. En combate, tres de tus mercenarios se enfrentan a los enemigos en el tablero.\n3. Tras cada combate ganado, un mercenario recibe un tesoro que conserva hasta el final de la recompensa.\n4. Derrota al jefe para completar la recompensa: obtienes monedas y quizá equipo nuevo.\n\nEntre recompensas subes de nivel, reclutas y mejoras a tus mercenarios en el libro |cff8a4a10Mercenarios|r. Todo se guarda tras cada paso: puedes cerrar el juego en mitad de un combate y continuar más tarde.
+MC_HELP_ZONES_TITLE	Recompensas y zonas
+MC_HELP_ZONES	Cada zona tiene el rango de niveles de su zona clásica. Su jefe está a unos dos tercios de ese rango, y los enemigos del camino algo por debajo.\n\nTodas las zonas están abiertas desde el principio, pero el nivel importa mucho: cada nivel que un enemigo te supera hace que falles más y causes menos daño. Los enemigos diez o más niveles por encima muestran una calavera: esa recompensa no se puede ganar.\n\nEl nivel junto a cada enemigo tiene el color del juego: gris y verde son fáciles, amarillo es parejo, naranja y rojo son peligrosos.\n\n|cff8a4a10Heroico:|r al derrotar al jefe de una zona se abre su modo heroico. Allí todos los enemigos son de nivel 60 y mucho más fuertes: es el contenido final. Los jefes heroicos dan más monedas y el mejor equipo.
+MC_HELP_PATH_TITLE	El camino
+MC_HELP_PATH	Las monedas del mapa de recompensa son las paradas. Las monedas iluminadas son las paradas a las que puedes viajar; haz clic en una para ver qué te espera y pulsa el botón grande.\n\n|cff8a4a10Combate|r: un grupo normal de enemigos.\n|cff8a4a10Élite|r: cuatro enemigos más fuertes, pero un tesoro mejor después.\n|cff8a4a10Ángel de la resurrección|r: devuelve a un mercenario caído.\n|cff8a4a10Bendición|r: todos los mercenarios de un rol ganan ataque y salud durante el resto de la recompensa.\n|cff8a4a10Misterio|r: se revela al llegar (ver Tesoros y sucesos).\n|cff8a4a10Jefe|r: el final de la recompensa.\n\nLas paradas visitadas llevan una marca. Las que ya no puedes alcanzar se atenúan. Puedes abandonar una recompensa cuando quieras; los niveles y monedas ganados se conservan.
+MC_HELP_BATTLE_TITLE	El combate
+MC_HELP_BATTLE	Un combate empieza eligiendo qué tres mercenarios salen al tablero; los demás esperan en el banquillo de abajo.\n\nCada turno tiene dos partes:\n1. |cff8a4a10Órdenes:|r selecciona a cada mercenario y elige una de sus habilidades (cartas de la bandeja). Si la habilidad necesita objetivo, haz clic en él: una línea muestra a quién apuntas. Luego pulsa |cff8a4a10¡Listo!|r\n2. |cff8a4a10Resolución:|r todas las habilidades de ambos bandos se ejecutan según su velocidad, |cff8a4a10el número más bajo primero|r. Solo sabes lo que hacen los enemigos cuando ocurre; los números sobre los retratos indican el orden.\n\nAlgunas habilidades tienen tiempo de reutilización y no están disponibles cada turno. Cuando cae un mercenario, envías otro del banquillo al inicio del turno siguiente. El combate se gana cuando no queda ningún enemigo. A partir del turno 30 todos pierden cada vez más salud por turno, para que ningún combate dure eternamente.
+MC_HELP_ROLES_TITLE	Roles y niveles
+MC_HELP_ROLES	Cada mercenario y enemigo tiene un rol, indicado por el color de su marco:\n\n|cffc03020Protector (rojo)|r: resistente, protege a sus aliados.\n|cff2f8a20Luchador (verde)|r: ataques fuertes contra un solo enemigo.\n|cff2050c0Lanzador (azul)|r: hechizos, a menudo contra varios enemigos.\n\nLos roles se vencen en círculo: los |cffc03020protectores|r infligen el doble de daño a los |cff2f8a20luchadores|r, los |cff2f8a20luchadores|r a los |cff2050c0lanzadores|r y los |cff2050c0lanzadores|r a los |cffc03020protectores|r. La ventaja se ve en combate como un número mayor. Un buen grupo mezcla los tres roles y envía al mercenario adecuado contra el enemigo adecuado.\n\nEl escudo de un retrato indica el ataque y la gota la salud. Los niveles aumentan ambos, igual que el equipo, los tesoros y las bendiciones. Los enemigos neutrales (gris) no tienen fuerza ni debilidad.
+MC_HELP_EFFECTS_TITLE	Efectos
+MC_HELP_EFFECTS	|cff8a4a10Provocar|r: los enemigos deben atacar primero a esta unidad.\n|cff8a4a10Sigilo|r: no puede ser objetivo hasta que actúe.\n|cff8a4a10Aturdimiento|r: pierde su siguiente acción.\n|cff8a4a10Escudo divino|r (brillo dorado): el siguiente golpe no causa daño.\n|cff8a4a10Absorción|r (número sobre la salud): absorbe daño antes que la salud.\n|cff8a4a10Daño en el tiempo / sanación en el tiempo|r: actúan al final de cada turno.\n|cff8a4a10Beneficios y perjuicios|r: cambian el ataque, el daño infligido o recibido, o la velocidad durante unos turnos.\n|cff8a4a10Espinas|r: los atacantes reciben daño.\n\nPequeños iconos en el borde inferior de un retrato muestran lo que está activo. Pasa el ratón sobre un retrato para ver sus habilidades, valores y tiempos de reutilización.
+MC_HELP_MERCS_TITLE	Mejorar mercenarios
+MC_HELP_MERCS	|cff8a4a10Experiencia:|r cada mercenario del grupo gana experiencia con cada combate ganado, hasta el nivel 60.\n|cff8a4a10Habilidades:|r la segunda habilidad se aprende al nivel 10, la tercera al nivel 30.\n|cff8a4a10Monedas:|r cada mercenario tiene sus propias monedas. Cada combate ganado da una moneda a cada miembro del grupo, y un jefe derrotado más. El jefe de cada zona también paga monedas a ciertos mercenarios: así se reclutan otros nuevos.\n|cff8a4a10Reclutar:|r 50 monedas de ese mercenario.\n|cff8a4a10Rangos:|r las habilidades pueden subir al rango II (30 monedas) y al rango III (80 monedas).\n|cff8a4a10Equipo:|r cada mercenario tiene tres piezas. La primera la tiene desde el principio, la segunda la suelta el jefe de una zona en modo normal y la tercera en modo heroico. Pasa el ratón sobre una pieza para ver dónde cae; haz clic para equiparla.\n\nEl grupo se forma en el libro: haz clic en un hueco de la derecha y luego en un mercenario.
+MC_HELP_TREASURES_TITLE	Tesoros y sucesos
+MC_HELP_TREASURES	|cff8a4a10Tesoros:|r tras un combate ganado, un mercenario puede elegir uno de tres tesoros. Lo conserva hasta el final de la recompensa. Los combates de élite ofrecen tesoros más fuertes.\n|cff8a4a10Los tesoros malditos|r son muy fuertes, pero cada uno reduce la salud de todo el grupo durante el resto de la recompensa.\n\nMisterios:\n|cff8a4a10Desconocido|r: copia un tesoro que ya lleva uno de tus mercenarios.\n|cff8a4a10Sabotaje|r: los enemigos del siguiente combate empiezan con menos salud.\n|cff8a4a10Portal|r: te permite saltar una parada.\n|cff8a4a10Cofre maldito|r: una selección de tesoros malditos.\n|cff8a4a10Botín extra|r: el jefe paga la mitad más de monedas.\n|cff8a4a10Recluta|r: un mercenario que quizá aún no tienes se une como invitado hasta el final de la recompensa.\n\n|cff8a4a10Puntuación:|r cada combate ganado puntúa diez veces el nivel de los enemigos; la élite vale la mitad más, los jefes el triple y las recompensas heroicas el doble.
+MC_HELP_CONTROLS_TITLE	Controles
+MC_OPT_FAST	Animaciones de combate rápidas
+MC_OPT_FAST_TIP	Reproduce los turnos de Mercenaries aproximadamente el doble de rápido.
+MC_ROLE_protector	Protector
+MC_ROLE_fighter	Luchador
+MC_ROLE_caster	Lanzador
+MC_ROLE_neutral	Neutral
+MC_DMG_physical	de daño físico
+MC_DMG_fire	de daño de Fuego
+MC_DMG_frost	de daño de Escarcha
+MC_DMG_nature	de daño de Naturaleza
+MC_DMG_shadow	de daño de Sombras
+MC_DMG_holy	de daño Sagrado
+MC_DMG_arcane	de daño Arcano
+MC_FX_DAMAGE	Inflige %d %s
+MC_TIMES	 %d veces
+MC_TO_ALL	 a todos los enemigos
+MC_TO_ADJACENT	 a los enemigos adyacentes
+MC_TO_RANDOM	 a un enemigo aleatorio
+MC_FX_ATTACK	Ataca por %d
+MC_FX_ATTACK_PLAIN	Ataca
+MC_FX_ATTACK_BONUS	Ataca con +%d
+MC_FX_ATTACK_ALL	Golpea a todos los enemigos por %d
+MC_FX_ATTACK_ALL_PLAIN	Golpea a todos los enemigos
+MC_FX_HEAL	Restaura %d de salud
+MC_TO_HEAL_SELF	 a sí mismo
+MC_TO_HEAL_ALLIES	 a todos los aliados
+MC_TO_HEAL_LOWEST	 al aliado más herido
+MC_FX_SHIELD	Otorga Escudo divino
+MC_FX_ABSORB	Escudo de %d
+MC_TO_BUFF_SELF
+MC_TO_BUFF_ALLIES	 para todos los aliados
+MC_TO_BUFF_ALL	 para todos los enemigos
+MC_FX_TAUNT	Provocar (%s)
+MC_FX_STEALTH	Entra en sigilo
+MC_FX_STUN	Aturde al objetivo
+MC_FX_DOT	%d %s cada turno durante %s
+MC_FX_HOT	Restaura %d de salud cada turno durante %s
+MC_FX_MAXHP	+%d de salud máxima
+MC_FX_CLEANSE	Elimina los efectos perjudiciales
+MC_BUFF_ATK	%+d de ataque
+MC_BUFF_ATKPCT	%+d%% de ataque
+MC_BUFF_DMG	%+d%% de daño infligido
+MC_BUFF_TAKEN	%+d%% de daño recibido
+MC_BUFF_SPEED	Velocidad %+d
+MC_BUFF_THORNS	Espinas %d
+MC_BUFF_AMBUSH	La siguiente habilidad inflige %+d%% de daño
+MC_FOR	 durante %s
+MC_ONE_TURN	1 turno
+MC_TURNS	%d turnos
+MC_SPEED	Velocidad %d
+MC_COOLDOWN	Reutilización %d
+MC_ABILITY_N	Habilidad %d
+MC_MOD_ABIL_VALUE	%s: +%d%% de efecto
+MC_MOD_ABIL_SPEED	%s: velocidad %+d
+MC_MOD_ABIL_CD	%s: reutilización %+d
+MC_MOD_SCHOOL	+%d%% %s
+MC_MOD_STARTSHIELD	Empieza cada combate con Escudo divino
+MC_MOD_READYSTART	Todas las habilidades listas al empezar un combate
+MC_MOD_THORNS	Inflige %d de daño a los atacantes
+MC_MOD_SPEED	Todas las habilidades: velocidad %+d
+MC_MOD_ATKPCT	+%d%% de ataque
+MC_MOD_HPPCT	+%d%% de salud
+MC_MOD_DMGPCT	+%d%% de daño
+MC_MOD_TAKENPCT	Recibe un %d%% menos de daño
+MC_MOD_HEALPCT	+%d%% de sanación
+MC_MOD_LIFESTEAL	Se sana un %d%% del daño infligido
+MC_MOD_REGENPCT	Restaura un %d%% de salud cada turno
+MC_MOD_CRITCHANCE	%d%% de probabilidad de infligir el doble de daño
+MC_MOD_EXECUTEPCT	+%d%% de daño contra enemigos por debajo del 30%% de salud
+MC_MOD_VENGEANCE	+%d%% de ataque cada vez que cae un aliado
+MC_NODE_FIGHT	Combate
+MC_NODE_ELITE	Combate de élite
+MC_NODE_BOSS	Jefe
+MC_NODE_HEALER	Ángel de la resurrección
+MC_NODE_BOON	Bendición
+MC_NODE_MYSTERY	Misterio
+MC_PARTY	Grupo
+MC_FALLEN	Caído
+MC_BOON_LINE	%s +%d%%
+MC_CURSE_LINE	Maldición: -%d%% de salud
+MC_SABOTAGE_LINE	Próximos enemigos debilitados
+MC_PORTAL_LINE	Portal abierto: salta una parada
+MC_ABANDON	Abandonar la recompensa
+MC_FIGHT	¡Combate!
+MC_TRAVEL	Viajar
+MC_ELITE_INFO	Cuatro enemigos más fuertes de lo normal, pero el tesoro es mejor.
+MC_BOON_INFO	Todos los %s ganan +%d%% de ataque y salud durante el resto de esta recompensa.
+MC_MYSTERY_INFO	Lo que espera aquí solo se revela al llegar.
+MC_MYSTERY_STRANGER	Un desconocido
+MC_MYSTERY_SABOTAGE	Sabotaje
+MC_MYSTERY_PORTAL	Portal
+MC_MYSTERY_CURSED	Cofre maldito
+MC_MYSTERY_BONUS	Botín extra
+MC_MYSTERY_RECRUIT	Un recluta
+MC_HEALER_INFO	Devuelve a un mercenario caído.
+MC_NO_TREASURES	Aún sin tesoros
+MC_LEVEL_SKULL	Nivel ??
+MC_EVENT_BOON	Bendición: todos los %s +%d%%
+MC_EVENT_SABOTAGE	¡Sabotaje! Los próximos enemigos empiezan debilitados.
+MC_EVENT_PORTAL	Un portal: puedes saltarte la siguiente parada.
+MC_EVENT_BONUS	Botín extra: el jefe suelta más monedas.
+MC_EVENT_RECRUIT	%s se une a tu grupo para esta recompensa.
+MC_GUEST	invitado
+MC_WARN_LEVEL	Grupo de nivel %d: ¡esta zona requiere %d!
+MC_GUEST_INFO	Solo para esta recompensa; no gana experiencia ni monedas.
+MC_EVENT_HEALER_IDLE	Nadie necesita al ángel de la resurrección.
+MC_READY	¡Listo!
+MC_AUTO	Elegir automáticamente
+MC_TURN	Turno %d
+MC_RESERVE	+%d en reserva
+MC_BENCH	Banquillo: %d
+MC_HINT_DEPLOY	Elige %d |4mercenario:mercenarios; para el combate.
+MC_HINT_TARGET	Elige un objetivo.
+MC_HINT_CHOOSE	Elige una habilidad para cada mercenario.
+MC_HINT_READY	Todo listo: ¡Listo!
+MC_TRAY_KEYS	Teclas 1-3: habilidad; Tab: siguiente mercenario.
+MC_BENCH_TITLE	Banquillo
+MC_ADVANTAGE	¡Ventaja!
+MC_MISS	Fallo
+MC_STUNNED	Aturdido
+MC_FIZZLE	Sin objetivo
+MC_ELITE	Élite
+MC_READY_IN	Listo en %d |4turno:turnos;
+MC_SAVED	Tu recompensa está guardada.
+MC_TREASURE_TITLE	Tesoro
+MC_TREASURE_SUB	Elige un tesoro para %s.
+MC_CURSED_TITLE	Tesoro maldito
+MC_CURSED_SUB	Un tesoro maldito para %s, pero cada mercenario pierde un %d%% de salud durante el resto de la recompensa.
+MC_DECLINE	Dejarlo
+MC_HEALER_TITLE	Ángel de la resurrección
+MC_HEALER_SUB	¿Quién debe volver?
+MC_CONTINUE	Continuar
+MC_STRANGER_TITLE	Desconocido misterioso
+MC_STRANGER_SUB	«Puedo copiar uno de tus tesoros. Elige bien».
+MC_ABANDON_TITLE	¿Abandonar la recompensa?
+MC_ABANDON_TEXT	La recompensa termina aquí. La experiencia ganada se conserva; los tesoros se pierden.
+MC_TO_CAMP	Volver al campamento
+MC_LEVEL_UP	¡Subes de nivel!
+MC_STAT_FIGHTS	Combates ganados
+MC_STAT_XP	Experiencia
+MC_STAT_SCORE	Puntuación
+MC_COMPLETE	¡Recompensa completada!
+MC_DEFEAT	Derrota
+MC_FIRST_CLEAR	Primera victoria: ¡monedas dobles!
+MC_COINS_EARNED	Monedas: %s
+MC_GEAR_UNLOCKED	Equipo nuevo: %s (%s)
+MC_HEROIC_UNLOCKED	¡Modo heroico desbloqueado para esta zona!
+MC_FIGHTS_WON	Combates ganados: %d
+MC_XP_EARNED	Experiencia: %s
+MC_LEVEL_UPS	Suben de nivel: %s
+MC_STAGE	Parada %d de %d
+MC_PARTY_LEVEL	Nivel del grupo %d
+MC_HEROIC	Heroico
+MC_NORMAL	Normal
+MC_SHARE	ha conseguido %s puntos en una recompensa de Mercenaries: ¡%s!
+MC_CONTINUE_RUN	Continuar la recompensa
+MC_ENCOUNTER	Encuentro
+MC_TRAVEL_POINT	Punto de viaje
+MC_OVERVIEW	Volver al continente
+MC_BOSS_INFO	Recompensa
+MC_CHOOSE	Elegir
+MC_REGION_LORDAERON	Lordaeron
+MC_REGION_KHAZMODAN	Khaz Modan
+MC_REGION_AZEROTH	Reino de Azeroth
+MC_REGION_NORTHKAL	Kalimdor del Norte
+MC_REGION_CENTRALKAL	Kalimdor central
+MC_REGION_ZEPHRAS	Isla de Zephras
+MC_REGION_SOUTHLANDS	Tierras del Sur
+MC_REGION_SOUTHKAL	Kalimdor del Sur
+MC_PAGE	Página %d
+MC_CAN_RECRUIT	¡Listo para reclutar!
+MC_DONE	Hecho
+MC_SCHOOL_physical	Físico
+MC_SCHOOL_fire	Fuego
+MC_SCHOOL_frost	Escarcha
+MC_SCHOOL_nature	Naturaleza
+MC_SCHOOL_shadow	Sombras
+MC_SCHOOL_holy	Sagrado
+MC_SCHOOL_arcane	Arcano
+MC_ZD_thousandneedles	Entre las mesas, los centauros Galak asaltan las caravanas y %s reúne a su clan contra los tauren.
+MC_ZD_alterac	Desde las ruinas de Alterac, el Sindicato sigue conspirando, dirigido por %s, heredero del rey traidor.
+MC_ZD_arathi	Ogros y trols recorren las tierras altas, y bajo las colinas el espíritu de la tierra %s espera romper su prisión.
+MC_ZD_desolace	Clanes centauros y demonios se disputan la tierra yerma, mientras en lo profundo de Maraudon %s envenena la tierra.
+MC_ZD_shendralas	Al sur de Desolace, los Shen'dralar guardan sus secretos. Los centauros Magram alzan a los muertos, guiados por %s.
+MC_ZD_riverglades	Los ogros de Krol'dok y el Martillo Crepuscular han tomado las tierras del río. %s, el más fuerte de los ogros, las domina.
+MC_ZD_stranglethorn	En la selva, trols y rebeldes Kurzen luchan entre sí, y el gran tigre %s los caza a todos.
+MC_ZD_badlands	Ogros y enanos Hierro Negro recorren la tierra abrasada, mientras en Uldaman despierta %s.
+MC_ZD_swampofsorrows	Los múrlocs acechan en el fango, y en el templo sumergido de Atal'Hakkar %s extiende la Pesadilla.
+MC_ZD_dustwallow	Dragonantes negros se reúnen en el pantano. En su guarida, %s, hija de Alamuerte, espera a los valientes.
+MC_ZD_feralas	Los ogros Gordunni dominan las ruinas de Eldre'Thalas, y en La Masacre %s ocupa su trono.
+MC_ZD_tanaris	Bandidos, piratas y trols Furiarena plagan el desierto. En Zul'Farrak, la hidra %s surge del estanque sagrado.
+MC_ZD_hinterlands	Los trols Malarrama controlan Jintha'Alor, donde %s invoca a dioses oscuros.
+MC_ZD_searinggorge	Los enanos Hierro Negro arrastran esclavos por la garganta ardiente para %s.
+MC_ZD_azshara	Nagas y fantasmas acechan las costas de la caída Azshara, y %s vigila su magia.
+MC_ZD_blastedlands	Ante el Portal Oscuro se reúnen demonios y Juramorte. %s dirige la hueste de la Legión Ardiente.
+MC_ZD_felwood	El bosque corrupto de Frondavil oculta al Consejo de la Sombra en Jaedenar, gobernado por %s.
+MC_ZD_ungoro	En el cráter humeante vagan bestias gigantes, ninguna más poderosa que %s.
+MC_ZD_burningsteppes	Los orcos Roca Negra marchan por las estepas, guiados por %s desde la Cumbre de Roca Negra.
+MC_ZD_westernplaguelands	La Plaga domina los campos apestados. En Scholomance, %s enseña nigromancia.
+MC_ZD_easternplaguelands	Legiones de no-muertos guardan las ruinas de Stratholme, donde gobierna %s.
+MC_ZD_winterspring	En los valles nevados, los furbolgs Nevada se han vuelto contra todos los extraños, guiados por %s.
+MC_ZD_silithus	El enjambre silítido brota de Ahn'Qiraj. En lo más hondo se agita el dios antiguo %s.
+MC_ZD_hyjal	Donde una vez ardió el Árbol del Mundo perdura %s, el señor demoníaco que cayó en el monte Hyjal.
+MC_ZD_elwynn	Gnolls y kóbolds plagan el apacible bosque, y el gnoll %s los dirige a todos.
+MC_ZD_dunmorogh	En la nieve de Dun Morogh vagan troggs y trols Escarcha. Abajo, Gnomeregan ha caído en manos de %s.
+MC_ZD_tirisfal	Los no-muertos acechan en los claros de Tirisfal mientras la Cruzada Escarlata, liderada por %s, quema todo lo que considera impuro.
+MC_ZD_teldrassil	Bajo el Árbol del Mundo, criaturas corruptas se reúnen en torno a la Roca Vil, donde conspira %s.
+MC_ZD_durotar	Los cañones rojos de Durotar cobijan a la Horda, y al médico brujo %s, que tiene a las islas del Eco bajo su yugo.
+MC_ZD_mulgore	En las llanuras de Mulgore, el kodo gigante %s arrasa todo a su paso.
+MC_ZD_zephras	Muy por encima de las nubes, la isla de los Nacidos del Cielo tiembla bajo las tormentas de %s.
+MC_ZD_westfall	La Hermandad Defias domina los campos de los Páramos de Poniente desde las Minas de la Muerte. %s aguarda abajo.
+MC_ZD_lochmodan	Los troggs Rompepiedras invaden las colinas de Loch Modan bajo su cabecilla, %s.
+MC_ZD_silverpine	Los huargen aúllan en el Bosque de Argénteos, llamados por %s desde el Castillo de Colmillo Oscuro.
+MC_ZD_darkshore	Los múrlocs Neblina Gris asaltan la costa de Costa Oscura, liderados por el temible %s.
+MC_ZD_barrens	Centauros y jabaespines luchan por los polvorientos Baldíos. %s dirige las incursiones Kolkar.
+MC_ZD_redridge	Orcos Roca Negra y gnolls amenazan Villa del Lago. Su señor de la guerra: %s.
+MC_ZD_stonetalon	La Compañía Ventura arrasa los bosques ancestrales del Espolón bajo el codicioso %s.
+MC_ZD_ashenvale	Bajo la costa de Vallefresno se extienden las Cavernas de Brazanegra, hogar de la bestia ancestral %s.
+MC_ZD_duskwood	En la noche eterna, los no-muertos del Bosque del Ocaso se alzan, y la abominación %s marcha sobre Villa Oscura.
+MC_ZD_wetlands	El clan Faucedraco domina los Humedales bajo el mando de %s.
+MC_ZD_hillsbrad	Las Laderas de Trabalomas están desgarradas por la guerra; %s defiende el pueblo con todo lo que tiene.
+MC_BOUNTIES_SUB	Elige una zona en el mapa de Azeroth.
+MC_COLLECTION_SUB	%d de %d reclutados
+MC_NO_SCORE	Aún no has completado ninguna recompensa
+MC_WANTED	SE BUSCA
+MC_PICK_ZONE	Elige una recompensa en el mapa.
+MC_BOSS_LEVEL	Jefe %d
+MC_REWARD	Recompensa:
+MC_PARTY_PICK	Ahora haz clic en una carta de mercenario.
+MC_IN_PARTY	En el grupo
+MC_ABILITIES	Habilidades
+MC_MAX_LEVEL	Nivel máximo
+MC_RECRUIT_COST	Reclutar (%d monedas)
+MC_BOUNTIES	Recompensas
+MC_COLLECTION	Mercenarios
+MC_RUN_ACTIVE	Recompensa en curso: %s
+MC_CONTINENT_EK	Reinos del Este
+MC_CONTINENT_KAL	Kalimdor
+MC_CONTINENT_ZEPHRAS	Isla de Zephras
+MC_LEVEL_RANGE	Nivel %d-%d
+MC_DONE_NORMAL	Normal completado
+MC_DONE_HEROIC	Heroico completado
+MC_HEROIC_LOCKED	Derrota primero al jefe de esta zona en modo normal.
+MC_PARTY_LOCKED	El grupo no puede cambiar durante una recompensa.
+MC_PARTY_HINT	Haz clic en un hueco y luego en un mercenario para cambiarlo.
+MC_COINS_PROGRESS	%d / %d monedas
+MC_RECRUIT	Reclutar
+MC_XP	XP %s / %s
+MC_COINS	%d monedas
+MC_UNLOCKS_AT	Se desbloquea al nivel %d
+MC_RANK_UP	Rango %s (%d)
+MC_EQUIPMENT	Equipo
+MC_GEAR_FROM	Lo suelta %s en %s (%s)
+MC_STAT_ZONES	Recompensas completadas
+MC_STAT_HEROIC	Recompensas heroicas completadas
+MC_STAT_MERCS	Mercenarios reclutados
+MC_STAT_LEVEL	Nivel más alto
+MC_STAT_FIGHTS	Combates ganados
+MC_ACH_FIRST	Primera sangre
+MC_ACH_FIRST_DESC	Gana un combate.
+MC_ACH_BOUNTY	Cazarrecompensas
+MC_ACH_BOUNTY_DESC	Completa una recompensa.
+MC_ACH_RECRUIT	Sangre nueva
+MC_ACH_RECRUIT_DESC	Recluta a un mercenario.
+MC_ACH_RANK	Afilado
+MC_ACH_RANK_DESC	Sube una habilidad al rango III.
+MC_ACH_STARTER	Fuera de los caminos trillados
+MC_ACH_STARTER_DESC	Completa todas las zonas iniciales, incluida la isla de Zephras.
+MC_ACH_HEROIC	Hazañas heroicas
+MC_ACH_HEROIC_DESC	Completa una recompensa heroica.
+MC_ACH_FLAWLESS	Nadie se queda atrás
+MC_ACH_FLAWLESS_DESC	Completa una recompensa sin que caiga ningún mercenario.
+MC_ACH_FEW	Los últimos en pie
+MC_ACH_FEW_DESC	Derrota a un jefe con tres mercenarios o menos en pie.
+MC_ACH_FLIGHT	Contrato entre nubes
+MC_ACH_FLIGHT_DESC	Completa una recompensa empezada durante un vuelo sin haber aterrizado.
+MC_ACH_LEVEL30	Veterano
+MC_ACH_LEVEL30_DESC	Lleva a un mercenario al nivel 30.
+MC_ACH_GEAR	Bien equipado
+MC_ACH_GEAR_DESC	Desbloquea 10 piezas de equipo.
+MC_ACH_STAGE1	De Elwynn a Trabalomas
+MC_ACH_STAGE1_DESC	Completa todas las zonas hasta el nivel 30.
+MC_ACH_COLLECTION	Plantilla completa
+MC_ACH_COLLECTION_DESC	Recluta a todos los mercenarios.
+MC_ACH_HEROIC10	Leyenda de Azeroth
+MC_ACH_HEROIC10_DESC	Completa 10 zonas distintas en modo heroico.
+MC_ACH_LEVEL60	En la cima
+MC_ACH_LEVEL60_DESC	Lleva a un mercenario al nivel 60.
+MC_ACH_HEROIC_FLAWLESS	Intocable
+MC_ACH_HEROIC_FLAWLESS_DESC	Completa una recompensa heroica sin que caiga ningún mercenario.
+MC_A_saurfang_1	Revancha
+MC_A_saurfang_2	Grito de convocación
+MC_A_saurfang_3	Última carga
+MC_A_windsor_1	Embate con escudo
+MC_A_windsor_2	Estandarte de Ventormenta
+MC_A_windsor_3	Mantener la línea
+MC_A_jorach_1	Puñalada
+MC_A_jorach_2	Golpe en los riñones
+MC_A_jorach_3	Aluvión de acero
+MC_A_natpagle_1	Arpón
+MC_A_natpagle_2	Pesca fresca
+MC_A_natpagle_3	Red de pesca
+MC_A_fandral_1	Fuego lunar
+MC_A_fandral_2	Espinas
+MC_A_fandral_3	Huracán
+MC_A_drekthar_1	Choque de Escarcha
+MC_A_drekthar_2	Ola de sanación
+MC_A_drekthar_3	Tótem de Escarcha
+MC_G_saurfang_1	Hacha Kor'kron
+MC_G_saurfang_2	Coraza del Alto Señor Supremo
+MC_G_saurfang_3	Trofeo de la Horda
+MC_G_windsor_1	Escudo de las Mazmorras
+MC_G_windsor_2	Estandarte de la Alianza
+MC_G_windsor_3	Yelmo del mariscal
+MC_G_jorach_1	Daga de Ravenholdt
+MC_G_jorach_2	Hoja de asesino
+MC_G_jorach_3	Capa de las Sombras
+MC_G_natpagle_1	Caña de la suerte de Nat
+MC_G_natpagle_2	Calamar a la parrilla
+MC_G_natpagle_3	Captura del maestro pescador
+MC_G_fandral_1	Bastón del archidruida
+MC_G_fandral_2	Rama de Teldrassil
+MC_G_fandral_3	Orbe de piedra lunar
+MC_G_drekthar_1	Bastón Lobo Gélido
+MC_G_drekthar_2	Anillo de los elementos
+MC_G_drekthar_3	Talismán del lobo gélido
+MC_A_cairne_1	Golpe de pezuña
+MC_A_cairne_2	Pisotón de guerra
+MC_A_cairne_3	Voto de la Madre Tierra
+MC_A_bolvar_1	Golpe justo
+MC_A_bolvar_2	Escudo divino
+MC_A_bolvar_3	Llamada de Ventormenta
+MC_A_magni_1	Martillo de tormenta
+MC_A_magni_2	Forma de piedra
+MC_A_magni_3	Bramido del Rey de la Montaña
+MC_A_tirion_1	Golpe del cruzado
+MC_A_tirion_2	Martillo de justicia
+MC_A_tirion_3	Imposición de manos
+MC_A_eitrigg_1	Golpe mortal
+MC_A_eitrigg_2	Muro de escudo
+MC_A_eitrigg_3	Rajar
+MC_A_taelan_1	Golpe sagrado
+MC_A_taelan_2	Consagración
+MC_A_taelan_3	Aura de devoción
+MC_A_rexxar_1	Vapulear de Misha
+MC_A_rexxar_2	Cólera de las bestias
+MC_A_rexxar_3	Disparo múltiple
+MC_A_sylvanas_1	Disparo apuntado
+MC_A_sylvanas_2	Flecha marchitadora
+MC_A_sylvanas_3	Lamento de la alma en pena
+MC_A_voljin_1	Lanzamiento de lanza
+MC_A_voljin_2	Maleficio
+MC_A_voljin_3	Ola de sanación
+MC_A_shandris_1	Flecha de centinela
+MC_A_shandris_2	Marca del cazador
+MC_A_shandris_3	Descarga
+MC_A_mankrik_1	Golpe vengativo
+MC_A_mankrik_2	Enfurecer
+MC_A_mankrik_3	Torbellino
+MC_A_renzik_1	Golpe siniestro
+MC_A_renzik_2	Gubia
+MC_A_renzik_3	Esfumarse
+MC_A_jaina_1	Bola de Fuego
+MC_A_jaina_2	Descarga de Escarcha
+MC_A_jaina_3	Ventisca
+MC_A_thrall_1	Cadena de relámpagos
+MC_A_thrall_2	Escudo de relámpagos
+MC_A_thrall_3	Tótem Viento Furioso
+MC_A_tyrande_1	Fragmentos estelares
+MC_A_tyrande_2	Sanar
+MC_A_tyrande_3	Rezo de sanación
+MC_A_magatha_1	Descarga de relámpagos
+MC_A_magatha_2	Maldición de debilidad
+MC_A_magatha_3	Tótem abrasador
+MC_A_benedictus_1	Punición
+MC_A_benedictus_2	Palabra de poder: escudo
+MC_A_benedictus_3	Nova Sagrada
+MC_A_hamuul_1	Cólera
+MC_A_hamuul_2	Rejuvenecimiento
+MC_A_hamuul_3	Raíces enredadoras
+MC_A_e_strike	Golpe
+MC_A_e_bite	Mordedura
+MC_A_e_claw	Desgarrar
+MC_A_e_slam	Embate
+MC_A_e_cleave	Rajar
+MC_A_e_frenzy	Frenesí
+MC_A_e_shieldbash	Azote de escudo
+MC_A_e_enrage	Enfurecer
+MC_A_e_rally	Grito de batalla
+MC_A_e_guard	Defensa
+MC_A_e_harden	Endurecer
+MC_A_e_web	Telaraña
+MC_A_e_poison	Veneno
+MC_A_e_firebolt	Descarga de fuego
+MC_A_e_frostbolt	Descarga de Escarcha
+MC_A_e_shadowbolt	Descarga de las Sombras
+MC_A_e_lightning	Descarga de relámpagos
+MC_A_e_holyfire	Fuego Sagrado
+MC_A_e_drain	Drenar vida
+MC_A_e_curse	Maldición de debilidad
+MC_A_e_heal	Sanar
+MC_A_e_renew	Renovar
+MC_A_e_dive	Picado
+MC_A_e_howl	Aullido
+MC_A_e_trample	Cargar
+MC_A_e_explode	Explosión
+MC_A_e_net	Red
+MC_A_e_plague	Nube de peste
+MC_A_e_wave	Maremoto
+MC_A_e_fireball	Bola de Fuego
+MC_A_e_volley	Salva de descargas de las Sombras
+MC_A_e_thunderclap	Atronar
+MC_A_e_chainlight	Cadena de relámpagos
+MC_A_e_sunder	Hender armadura
+MC_A_e_bloodlust	Ansia de sangre
+MC_A_e_shadowword	Palabra de las Sombras: dolor
+MC_A_e_flamestrike	Fogonazo
+MC_A_arnak_1	Aplastamiento Tótem Siniestro
+MC_A_arnak_2	Tótem Nexo Terrestre
+MC_A_arnak_3	Piel de piedra
+MC_A_arnak_h	Tótem abrasador
+MC_A_perenolde_1	Descarga de las Sombras
+MC_A_perenolde_2	Llamada del Sindicato
+MC_A_perenolde_3	Maldición de Alterac
+MC_A_perenolde_h	Dominación
+MC_A_myzrael_1	Choque de tierra
+MC_A_myzrael_2	Terremoto
+MC_A_myzrael_3	Guarda prismática
+MC_A_myzrael_h	Romper los fragmentos
+MC_A_theradras_1	Roca
+MC_A_theradras_2	Campo de polvo
+MC_A_theradras_3	Mirada repulsiva
+MC_A_theradras_h	Corazón de la tierra
+MC_A_necrokhan_1	Descarga necrótica
+MC_A_necrokhan_2	Armadura de huesos
+MC_A_necrokhan_3	Peste de tumba
+MC_A_necrokhan_h	Espiral de la muerte
+MC_A_clugfist_1	Garrote de ogro
+MC_A_clugfist_2	Embate atronador
+MC_A_clugfist_3	Furia de ogro
+MC_A_clugfist_h	Rompecráneos
+MC_A_bangalash_1	Vapulear
+MC_A_bangalash_2	Desgarrar
+MC_A_bangalash_3	Llamada de la manada
+MC_A_bangalash_h	Abalanzarse
+MC_A_archaedas_1	Temblor de tierra
+MC_A_archaedas_2	Despertar a los terráneos
+MC_A_archaedas_3	Guarda de los titanes
+MC_A_archaedas_h	Estrado de piedra
+MC_A_eranikus_1	Descarga de pesadilla
+MC_A_eranikus_2	Aliento ácido
+MC_A_eranikus_3	Sueño profundo
+MC_A_eranikus_h	Pesadilla Esmeralda
+MC_A_onyxia_1	Aliento de llamas
+MC_A_onyxia_2	Golpe de alas
+MC_A_onyxia_3	Aliento profundo
+MC_A_onyxia_h	Rugido ensordecedor
+MC_A_gordok_1	Golpe mortal
+MC_A_gordok_2	Pisotón de guerra
+MC_A_gordok_3	Hender armadura
+MC_A_gordok_h	Furia Gordok
+MC_A_gahzrilla_1	Carámbano
+MC_A_gahzrilla_2	Congelación
+MC_A_gahzrilla_3	Embate de Gahz'rilla
+MC_A_gahzrilla_h	Regeneración de hidra
+MC_A_hexx_1	Descarga de las Sombras
+MC_A_hexx_2	Maleficio
+MC_A_hexx_3	Remiendo oscuro
+MC_A_hexx_h	Maldición Malarrama
+MC_A_thaurissan_1	Mano de Thaurissan
+MC_A_thaurissan_2	Avatar de llamas
+MC_A_thaurissan_3	Orden del emperador
+MC_A_thaurissan_h	Nova de fuego
+MC_A_azuregos_1	Aliento de Escarcha
+MC_A_azuregos_2	Vacío arcano
+MC_A_azuregos_3	Tormenta de maná
+MC_A_azuregos_h	Reflejo
+MC_A_kazzak_1	Rajar
+MC_A_kazzak_2	Salva de descargas de las Sombras
+MC_A_kazzak_3	Marca de Kazzak
+MC_A_kazzak_h	Capturar alma
+MC_A_banehollow_1	Descarga de las Sombras
+MC_A_banehollow_2	Dormir
+MC_A_banehollow_3	Enjambre carroñero
+MC_A_banehollow_h	Hambre del señor del terror
+MC_A_mosh_1	Mordisco de demosaurio
+MC_A_mosh_2	Pisotear
+MC_A_mosh_3	Rugido aterrador
+MC_A_mosh_h	Furia del rey
+MC_A_rend_1	Rajar
+MC_A_rend_2	Torbellino
+MC_A_rend_3	Bendición del jefe de guerra
+MC_A_rend_h	Golpe mortal
+MC_A_gandling_1	Proyectiles Arcanos
+MC_A_gandling_2	Escudo de las Sombras
+MC_A_gandling_3	Maldición del maestro oscuro
+MC_A_gandling_h	Portal de las Sombras
+MC_A_rivendare_1	Golpe mortal
+MC_A_rivendare_2	Aura profana
+MC_A_rivendare_3	Resucitar a los muertos
+MC_A_rivendare_h	Pacto de la muerte
+MC_A_winterfall_1	Golpe furbolg
+MC_A_winterfall_2	Tótem de Escarcha
+MC_A_winterfall_3	Aullido de convocación
+MC_A_winterfall_h	Furia Nevada
+MC_A_cthun_1	Rayo ocular
+MC_A_cthun_2	Mirada oscura
+MC_A_cthun_3	Tortura mental
+MC_A_cthun_h	Se alzan los tentáculos
+MC_A_archimonde_1	Dedo de la muerte
+MC_A_archimonde_2	Fuego maldito
+MC_A_archimonde_3	Explosión de aire
+MC_A_archimonde_h	Garra de la Legión
+MC_A_hogger_1	Vapulear de Hogger
+MC_A_hogger_2	Llamada de la manada
+MC_A_hogger_3	Desenfreno
+MC_A_hogger_h	Pellejo grueso
+MC_A_thermaplugg_1	Lanzar bomba
+MC_A_thermaplugg_2	Estallido leproso
+MC_A_thermaplugg_3	Armadura de vapor
+MC_A_thermaplugg_h	Bobina de choque
+MC_A_whitemane_1	Punición
+MC_A_whitemane_2	Sanación relámpago
+MC_A_whitemane_3	Grito Escarlata
+MC_A_whitemane_h	Resurrección Escarlata
+MC_A_melenas_1	Descarga de las Sombras
+MC_A_melenas_2	Corrupción
+MC_A_melenas_3	Espiral de la muerte
+MC_A_melenas_h	Maldición de desesperación
+MC_A_zalazane_1	Maleficio de dolor
+MC_A_zalazane_2	Maleficio vudú
+MC_A_zalazane_3	Ola de sanación
+MC_A_zalazane_h	Frenesí vudú
+MC_A_arrachea_1	Cornada
+MC_A_arrachea_2	Pisotón de guerra
+MC_A_arrachea_3	Golpe
+MC_A_arrachea_h	Furia salvaje
+MC_A_lorthuna_1	Llamada de la tormenta
+MC_A_lorthuna_2	Ciclón
+MC_A_lorthuna_3	Vientos renovadores
+MC_A_lorthuna_h	Tempestad
+MC_A_vancleef_1	Tajo de alfanje
+MC_A_vancleef_2	Emboscada
+MC_A_vancleef_3	A las armas
+MC_A_vancleef_h	Sprint
+MC_A_galgosh_1	Golpe aplastante
+MC_A_galgosh_2	Nexo terrestre
+MC_A_galgosh_3	Piel de roca
+MC_A_galgosh_h	Terremoto
+MC_A_arugal_1	Descarga de las Sombras
+MC_A_arugal_2	Salto de las Sombras
+MC_A_arugal_3	Dolor de las Sombras
+MC_A_arugal_h	Maldición de Arugal
+MC_A_murkdeep_1	Lanza de las mareas
+MC_A_murkdeep_2	Ola rompiente
+MC_A_murkdeep_3	Red múrloc
+MC_A_murkdeep_h	¡Mrgllrrgll!
+MC_A_kodobane_1	Golpe Kolkar
+MC_A_kodobane_2	Pisotear
+MC_A_kodobane_3	Latigazo de tormenta
+MC_A_kodobane_h	Desenfreno
+MC_A_gathilzogg_1	Rajar
+MC_A_gathilzogg_2	Grito Roca Negra
+MC_A_gathilzogg_3	Cargar
+MC_A_gathilzogg_h	Muro de escudo
+MC_A_gerenzo_1	Disparo de cohete
+MC_A_gerenzo_2	Bomba goblin
+MC_A_gerenzo_3	Reparación rápida
+MC_A_gerenzo_h	Sobrecarga
+MC_A_akumai_1	Desgarrar
+MC_A_akumai_2	Nube de veneno
+MC_A_akumai_3	Escudo de caparazón
+MC_A_akumai_h	Aliento de Escarcha
+MC_A_stitches_1	Golpe aplastante
+MC_A_stitches_2	Hedor de peste
+MC_A_stitches_3	Frenesí
+MC_A_stitches_h	Piel embalsamada
+MC_A_nekrosh_1	Rajar Faucedraco
+MC_A_nekrosh_2	Bola de Fuego
+MC_A_nekrosh_3	Grito de guerra
+MC_A_nekrosh_h	Fuego de dragón
+MC_A_burnside_1	Punición
+MC_A_burnside_2	Bendición de protección
+MC_A_burnside_3	Rezo de sanación
+MC_A_burnside_h	Martillo de justicia
+MC_T_might	Poderío
+MC_T_vigor	Vigor
+MC_T_haste	Celeridad
+MC_T_aegis	Égida
+MC_T_leech	Colmillo vampírico
+MC_T_thorns	Manto de espinas
+MC_T_renewal	Renovación
+MC_T_readiness	Presteza
+MC_T_precision	Precisión
+MC_T_bulwark	Baluarte
+MC_T_execution	Verdugo
+MC_T_vengeance	Venganza
+MC_T_devotion	Devoción
+MC_T_focus1	Golpe ensayado
+MC_T_focus2	Arte ensayado
+MC_T_focus3	Maestría ensayada
+MC_T_quick1	Golpe acelerado
+MC_T_quick2	Arte acelerado
+MC_T_quick3	Maestría acelerada
+MC_T_fire	Amuleto de ascuas
+MC_T_frost	Cristal de escarcha
+MC_T_nature	Tótem de tormenta
+MC_T_shadow	Ídolo de las Sombras
+MC_T_holy	Reliquia sagrada
+MC_T_arcane	Foco arcano
+MC_T_physical	Piedra de afilar
+MC_T_titan	Bendición de los titanes
+MC_T_zeal	Celo
+MC_T_overflow	Reloj de arena atemporal
+MC_T_champion	Estandarte del campeón
+MC_T_lifebloom	Flor de vida
+MC_T_cursedblade	Hoja maldita
+MC_T_cursedmail	Cota maldita
+MC_T_cursedrelic	Reliquia maldita
+MC_G_cairne_1	Talismán de la Madre Tierra
+MC_G_cairne_2	Placas de guerra Pezuña de Sangre
+MC_G_cairne_3	Lanza rúnica de las llanuras
+MC_G_bolvar_1	Escudo del león
+MC_G_bolvar_2	Estandarte de Ventormenta
+MC_G_bolvar_3	Hoja del Alto Señor
+MC_G_magni_1	Sello Barbabronce
+MC_G_magni_2	Martillo de guerra de Forjaz
+MC_G_magni_3	Corona del Rey de la Montaña
+MC_G_tirion_1	Tratado de la esperanza
+MC_G_tirion_2	Martillo de la Mano de Plata
+MC_G_tirion_3	Armadura de la Capilla de la Esperanza de la Luz
+MC_G_eitrigg_1	Hacha del veterano
+MC_G_eitrigg_2	Baluarte de Orgrimmar
+MC_G_eitrigg_3	Favor del jefe de guerra
+MC_G_taelan_1	Sello del Alto Señor
+MC_G_taelan_2	Égida de Vega del Amparo
+MC_G_taelan_3	Tratado de Vadín
+MC_G_rexxar_1	Collar de Misha
+MC_G_rexxar_2	Hachas Mok'Nathal
+MC_G_rexxar_3	Carcaj del señor de las bestias
+MC_G_sylvanas_1	Arco largo Brisaveloz
+MC_G_sylvanas_2	Velo de la alma en pena
+MC_G_sylvanas_3	Carcaj de la Dama Oscura
+MC_G_voljin_1	Lanza Lanza Negra
+MC_G_voljin_2	Máscara de cazador de las Sombras
+MC_G_voljin_3	Fetiche de Sen'jin
+MC_G_shandris_1	Arco largo de centinela
+MC_G_shandris_2	Capa Plumaluna
+MC_G_shandris_3	Guja lunar
+MC_G_mankrik_1	Hacha del vengador
+MC_G_mankrik_2	Arnés de guerra de los Baldíos
+MC_G_mankrik_3	Guardapelo de Olgra
+MC_G_renzik_1	Daga del IV:7
+MC_G_renzik_2	Vial de veneno
+MC_G_renzik_3	Capa de las Sombras
+MC_G_jaina_1	Bastón de Theramore
+MC_G_jaina_2	Colgante de Kul Tiras
+MC_G_jaina_3	Foco de la archimaga
+MC_G_thrall_1	Empuñadura de Martillo Maldito
+MC_G_thrall_2	Talismán terráneo
+MC_G_thrall_3	Manto del jefe de guerra
+MC_G_tyrande_1	Diadema de plata lunar
+MC_G_tyrande_2	Lágrima de Elune
+MC_G_tyrande_3	Guja de la luna
+MC_G_magatha_1	Bastón Tótem Siniestro
+MC_G_magatha_2	Fetiche de la anciana
+MC_G_magatha_3	Tótem humeante
+MC_G_benedictus_1	Incensario de la catedral
+MC_G_benedictus_2	Vestiduras de luz
+MC_G_benedictus_3	Mitra del arzobispo
+MC_G_hamuul_1	Bastón Tótem de Runa
+MC_G_hamuul_2	Astas del Claro de la Luna
+MC_G_hamuul_3	Semilla Cenarion

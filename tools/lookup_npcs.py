@@ -95,7 +95,35 @@ def german_name(npc_id):
     return html.unescape(match.group(1)).split("<")[0].strip()
 
 
+LOCALES = {"fr": "frFR", "es": "esES", "ru": "ruRU", "cn": "zhCN"}
+
+
+def local_name(npc_id, sub):
+    page = fetch(f"https://www.wowhead.com/forever/{sub}/npc={npc_id}")
+    match = re.search(r'<h1 class="heading-size-1">([^<]+)', page)
+    return html.unescape(match.group(1)).split("<")[0].strip() if match else None
+
+
 def main():
+    if sys.argv[1:] == ["--locales"]:
+        # Names in the other client languages, stored per NPC as "names": {"frFR": ...}.
+        cache = json.loads(CACHE.read_text(encoding="utf-8"))
+        for name, entry in cache.items():
+            if not entry:
+                continue
+            names = entry.setdefault("names", {})
+            for sub, lang in LOCALES.items():
+                if lang in names:
+                    continue
+                try:
+                    names[lang] = local_name(entry["id"], sub)
+                except Exception as exc:  # noqa: BLE001
+                    print("failed", name, lang, exc)
+                    continue
+                CACHE.write_text(json.dumps(cache, indent=1, ensure_ascii=False, sort_keys=True), encoding="utf-8")
+                time.sleep(1.5)
+            print(name, names, flush=True)
+        return
     if sys.argv[1:] == ["--refresh-de"]:
         cache = json.loads(CACHE.read_text(encoding="utf-8"))
         for name, entry in cache.items():

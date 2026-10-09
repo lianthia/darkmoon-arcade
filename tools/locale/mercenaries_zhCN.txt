@@ -1,0 +1,695 @@
+MC_NAME	Mercenaries
+MC_DESC	率领艾泽拉斯的英雄完成一个又一个悬赏：六名佣兵，每次三名上场，每个技能按速度结算。
+MC_TAGLINE	雇佣英雄，悬赏遍布艾泽拉斯
+MC_RULES	在旅行点选择一个悬赏：每个区域的终点都是它的首领，前往的道路由你选择。战斗中，你的六名佣兵中有三名上场。每回合你为每名佣兵选择一个技能，然后双方所有技能按速度结算——数值越小越先行动。守护者（红色）对斗士（绿色）造成双倍伤害，斗士对施法者（蓝色）造成双倍伤害，施法者对守护者造成双倍伤害。阵亡的佣兵会一直倒地，直到灵魂医者将其复活。每赢得一场战斗，一名佣兵会获得一件宝藏，直到悬赏结束。首领会掉落用于招募和强化佣兵的硬币，并解锁装备；击败一个区域会开启其英雄模式。等级高于你的敌人更少失手，而你更容易失手——在挑战更难的区域之前先提升等级。每一步之后都会保存进度，即使在战斗中途也一样。
+MC_HELP	点击一名佣兵，然后点击一张技能卡（或按键 1-3） · 需要时点击目标；一条线会显示你瞄准的对象 · 右键点击佣兵可更改其指令 · Tab：下一名佣兵 · 在放大的地图上右键点击：返回大陆 · Esc：取消瞄准 · 空格或回车：就绪！ · A：自动选择 · 将鼠标悬停在头像、卡牌、硬币或装备上可查看详情 · 选项：“快速战斗动画”以两倍速度播放回合
+MC_HELP_OVERVIEW_TITLE	悬赏如何进行
+MC_HELP_OVERVIEW	Mercenaries 以悬赏为单位进行。在|cff8a4a10旅行点|r选择一个区域；每个区域的终点都是它的首领。\n\n1. 你的六人佣兵小队沿着一条由站点组成的道路，从地图底部前往顶部的首领。在每个岔路口由你选择方向。\n2. 战斗中，你的三名佣兵上场对抗敌人。\n3. 每赢得一场战斗，一名佣兵会获得一件宝藏，并保留到悬赏结束。\n4. 击败首领即可完成悬赏：你将获得硬币，可能还有新装备。\n\n在悬赏之间，你可以在|cff8a4a10佣兵|r之书中提升、招募和强化佣兵。每一步之后都会保存——你可以在战斗中途关闭游戏，稍后继续。
+MC_HELP_ZONES_TITLE	悬赏与区域
+MC_HELP_ZONES	每个区域的等级范围与其经典区域相同。首领大约处于该范围的三分之二处，途中的敌人略低一些。\n\n所有区域从一开始就开放，但等级非常重要：敌人每比你的佣兵高一级，你就更容易失手，造成的伤害也更低。比你高十级或以上的敌人会显示骷髅——这样的悬赏无法获胜。\n\n每个敌人旁边的等级颜色与游戏中相同：灰色和绿色较容易，黄色势均力敌，橙色和红色很危险。\n\n|cff8a4a10英雄模式：|r击败一个区域的首领后，该区域的英雄模式就会开启。那里的所有敌人都是 60 级，而且强大得多——这是满级内容。英雄首领会掉落更多硬币和最好的装备。
+MC_HELP_PATH_TITLE	道路
+MC_HELP_PATH	悬赏地图上的硬币就是站点。发光的硬币是你接下来可以前往的站点；点击一个查看那里有什么，然后按下大按钮。\n\n|cff8a4a10战斗|r - 一组普通的敌人。\n|cff8a4a10精英|r - 四名更强的敌人，但之后的宝藏更好。\n|cff8a4a10灵魂医者|r - 复活一名阵亡的佣兵。\n|cff8a4a10祝福|r - 某一职责的所有佣兵在悬赏剩余时间内获得更多攻击力和生命值。\n|cff8a4a10神秘事件|r - 到达后才会揭晓（见“宝藏与事件”）。\n|cff8a4a10首领|r - 悬赏的终点。\n\n已访问的站点带有勾选标记。无法再到达的站点会变暗。你可以随时放弃悬赏；已获得的等级和硬币会保留。
+MC_HELP_BATTLE_TITLE	战斗
+MC_HELP_BATTLE	战斗开始时先选择哪三名佣兵上场；其余的在下方的替补席等待。\n\n每个回合分为两部分：\n1. |cff8a4a10指令：|r选择你的每名佣兵，并为其挑选一个技能（托盘中的卡牌）。如果技能需要目标，点击目标——一条线会显示你瞄准的对象。然后按下|cff8a4a10就绪！|r\n2. |cff8a4a10结算：|r双方所有技能按速度执行，|cff8a4a10数值越小越先|r。你只有在敌人行动时才知道他们做了什么；头像上方的数字显示顺序。\n\n有些技能有冷却时间，并非每回合都可用。当一名佣兵阵亡时，你会在下一回合开始时从替补席派出另一名。没有敌人剩下时战斗胜利。从第 30 回合起，所有人每回合损失的生命值越来越多，因此没有战斗会永远持续。
+MC_HELP_ROLES_TITLE	职责与等级
+MC_HELP_ROLES	每名佣兵和敌人都有一个职责，由其边框颜色表示：\n\n|cffc03020守护者（红色）|r - 坚韧，保护队友。\n|cff2f8a20斗士（绿色）|r - 对单个敌人进行强力攻击。\n|cff2050c0施法者（蓝色）|r - 法术，常常针对多个敌人。\n\n职责之间循环克制：|cffc03020守护者|r对|cff2f8a20斗士|r造成双倍伤害，|cff2f8a20斗士|r对|cff2050c0施法者|r，|cff2050c0施法者|r对|cffc03020守护者|r。优势在战斗中表现为更大的数字。好的队伍会混合三种职责，并派出合适的佣兵对付合适的敌人。\n\n头像上的盾牌表示攻击力，水滴表示生命值。等级会提高两者，装备、宝藏和祝福也一样。中立敌人（灰色）既无优势也无弱点。
+MC_HELP_EFFECTS_TITLE	效果
+MC_HELP_EFFECTS	|cff8a4a10嘲讽|r - 敌人必须先攻击此单位。\n|cff8a4a10潜行|r - 在行动之前无法被选为目标。\n|cff8a4a10昏迷|r - 失去下一次行动。\n|cff8a4a10圣盾术|r（金色光芒） - 下一次攻击不造成伤害。\n|cff8a4a10吸收|r（生命值上方的数字） - 在生命值之前吸收伤害。\n|cff8a4a10持续伤害 / 持续治疗|r - 在每回合结束时生效。\n|cff8a4a10增益和减益|r - 在几个回合内改变攻击力、造成或受到的伤害或速度。\n|cff8a4a10荆棘|r - 攻击者会受到反伤。\n\n头像下边缘的小图标显示当前生效的效果。将鼠标悬停在头像上可查看其技能、数值和冷却时间。
+MC_HELP_MERCS_TITLE	强化佣兵
+MC_HELP_MERCS	|cff8a4a10经验：|r队伍中的每名佣兵在每场胜利的战斗中获得经验，最高 60 级。\n|cff8a4a10技能：|r第二个技能在 10 级学会，第三个在 30 级。\n|cff8a4a10硬币：|r每名佣兵都有自己的硬币。每场胜利的战斗给每名队员一枚硬币，击败首领则更多。每个区域的首领还会向特定佣兵支付硬币——这就是招募新佣兵的方式。\n|cff8a4a10招募：|r该佣兵的 50 枚硬币。\n|cff8a4a10等阶：|r技能可以提升到二阶（30 枚硬币）和三阶（80 枚硬币）。\n|cff8a4a10装备：|r每名佣兵有三件装备。第一件一开始就有，第二件由区域首领在普通模式掉落，第三件在英雄模式掉落。将鼠标悬停在装备上可查看掉落地点；点击即可装备。\n\n队伍在书中组建：点击右侧的栏位，然后点击一名佣兵。
+MC_HELP_TREASURES_TITLE	宝藏与事件
+MC_HELP_TREASURES	|cff8a4a10宝藏：|r赢得一场战斗后，一名佣兵可以从三件宝藏中选择一件，并保留到悬赏结束。精英战斗提供更强的宝藏。\n|cff8a4a10被诅咒的宝藏|r非常强大，但每一件都会在悬赏剩余时间内降低整个队伍的生命值。\n\n神秘事件：\n|cff8a4a10陌生人|r - 复制你的一名佣兵已携带的宝藏。\n|cff8a4a10破坏|r - 下一场战斗的敌人开场时生命值更少。\n|cff8a4a10传送门|r - 让你跳过一个站点。\n|cff8a4a10被诅咒的宝箱|r - 从被诅咒的宝藏中选择。\n|cff8a4a10额外战利品|r - 首领多支付一半的硬币。\n|cff8a4a10新兵|r - 一名你可能还没有的佣兵以客人身份加入，直到悬赏结束。\n\n|cff8a4a10得分：|r每场胜利的战斗得分为敌人等级的十倍；精英多一半，首领三倍，英雄悬赏翻倍。
+MC_HELP_CONTROLS_TITLE	操作
+MC_OPT_FAST	快速战斗动画
+MC_OPT_FAST_TIP	以大约两倍的速度播放 Mercenaries 的回合。
+MC_ROLE_protector	守护者
+MC_ROLE_fighter	斗士
+MC_ROLE_caster	施法者
+MC_ROLE_neutral	中立
+MC_DMG_physical	点物理伤害
+MC_DMG_fire	点火焰伤害
+MC_DMG_frost	点冰霜伤害
+MC_DMG_nature	点自然伤害
+MC_DMG_shadow	点暗影伤害
+MC_DMG_holy	点神圣伤害
+MC_DMG_arcane	点奥术伤害
+MC_FX_DAMAGE	造成 %d %s
+MC_TIMES	，%d 次
+MC_TO_ALL	，对所有敌人
+MC_TO_ADJACENT	，对相邻的敌人
+MC_TO_RANDOM	，对一名随机敌人
+MC_FX_ATTACK	攻击，造成 %d
+MC_FX_ATTACK_PLAIN	攻击
+MC_FX_ATTACK_BONUS	攻击，额外 +%d
+MC_FX_ATTACK_ALL	打击所有敌人，造成 %d
+MC_FX_ATTACK_ALL_PLAIN	打击所有敌人
+MC_FX_HEAL	恢复 %d 点生命值
+MC_TO_HEAL_SELF	（自身）
+MC_TO_HEAL_ALLIES	（所有盟友）
+MC_TO_HEAL_LOWEST	（伤势最重的盟友）
+MC_FX_SHIELD	给予圣盾术
+MC_FX_ABSORB	护盾 %d
+MC_TO_BUFF_SELF
+MC_TO_BUFF_ALLIES	（所有盟友）
+MC_TO_BUFF_ALL	（所有敌人）
+MC_FX_TAUNT	嘲讽（%s）
+MC_FX_STEALTH	进入潜行
+MC_FX_STUN	使目标昏迷
+MC_FX_DOT	每回合 %d %s，持续 %s
+MC_FX_HOT	每回合恢复 %d 点生命值，持续 %s
+MC_FX_MAXHP	最大生命值 +%d
+MC_FX_CLEANSE	移除有害效果
+MC_BUFF_ATK	攻击力 %+d
+MC_BUFF_ATKPCT	攻击力 %+d%%
+MC_BUFF_DMG	造成的伤害 %+d%%
+MC_BUFF_TAKEN	受到的伤害 %+d%%
+MC_BUFF_SPEED	速度 %+d
+MC_BUFF_THORNS	荆棘 %d
+MC_BUFF_AMBUSH	下一个技能造成 %+d%% 伤害
+MC_FOR	，持续 %s
+MC_ONE_TURN	1 回合
+MC_TURNS	%d 回合
+MC_SPEED	速度 %d
+MC_COOLDOWN	冷却 %d
+MC_ABILITY_N	技能 %d
+MC_MOD_ABIL_VALUE	%s：效果 +%d%%
+MC_MOD_ABIL_SPEED	%s：速度 %+d
+MC_MOD_ABIL_CD	%s：冷却 %+d
+MC_MOD_SCHOOL	+%d%% %s
+MC_MOD_STARTSHIELD	每场战斗开始时获得圣盾术
+MC_MOD_READYSTART	战斗开始时所有技能就绪
+MC_MOD_THORNS	对攻击者造成 %d 点伤害
+MC_MOD_SPEED	所有技能：速度 %+d
+MC_MOD_ATKPCT	攻击力 +%d%%
+MC_MOD_HPPCT	生命值 +%d%%
+MC_MOD_DMGPCT	伤害 +%d%%
+MC_MOD_TAKENPCT	受到的伤害降低 %d%%
+MC_MOD_HEALPCT	治疗效果 +%d%%
+MC_MOD_LIFESTEAL	治疗相当于造成伤害 %d%% 的生命值
+MC_MOD_REGENPCT	每回合恢复 %d%% 的生命值
+MC_MOD_CRITCHANCE	%d%% 几率造成双倍伤害
+MC_MOD_EXECUTEPCT	对生命值低于 30%% 的敌人伤害 +%d%%
+MC_MOD_VENGEANCE	每当一名盟友阵亡，攻击力 +%d%%
+MC_NODE_FIGHT	战斗
+MC_NODE_ELITE	精英战斗
+MC_NODE_BOSS	首领
+MC_NODE_HEALER	灵魂医者
+MC_NODE_BOON	祝福
+MC_NODE_MYSTERY	神秘事件
+MC_PARTY	队伍
+MC_FALLEN	阵亡
+MC_BOON_LINE	%s +%d%%
+MC_CURSE_LINE	诅咒：生命值 -%d%%
+MC_SABOTAGE_LINE	下一批敌人被削弱
+MC_PORTAL_LINE	传送门开启：跳过一个站点
+MC_ABANDON	放弃悬赏
+MC_FIGHT	战斗！
+MC_TRAVEL	出发
+MC_ELITE_INFO	四名比平时更强的敌人——但宝藏更好。
+MC_BOON_INFO	所有%s在本次悬赏剩余时间内获得 +%d%% 攻击力和生命值。
+MC_MYSTERY_INFO	这里有什么，只有到达后才会知道。
+MC_MYSTERY_STRANGER	陌生人
+MC_MYSTERY_SABOTAGE	破坏
+MC_MYSTERY_PORTAL	传送门
+MC_MYSTERY_CURSED	被诅咒的宝箱
+MC_MYSTERY_BONUS	额外战利品
+MC_MYSTERY_RECRUIT	新兵
+MC_HEALER_INFO	复活一名阵亡的佣兵。
+MC_NO_TREASURES	尚无宝藏
+MC_LEVEL_SKULL	等级 ??
+MC_EVENT_BOON	祝福：所有%s +%d%%
+MC_EVENT_SABOTAGE	破坏！下一批敌人开场被削弱。
+MC_EVENT_PORTAL	传送门：你可以跳过下一个站点。
+MC_EVENT_BONUS	额外战利品：首领会掉落更多硬币。
+MC_EVENT_RECRUIT	%s加入了你的队伍，参与本次悬赏。
+MC_GUEST	客人
+MC_WARN_LEVEL	队伍等级 %d - 此区域需要 %d 级！
+MC_GUEST_INFO	仅参与本次悬赏；不获得经验和硬币。
+MC_EVENT_HEALER_IDLE	没有人需要灵魂医者。
+MC_READY	就绪！
+MC_AUTO	自动选择
+MC_TURN	第 %d 回合
+MC_RESERVE	后备 +%d
+MC_BENCH	替补：%d
+MC_HINT_DEPLOY	选择 %d |4名:名; 佣兵参加战斗。
+MC_HINT_TARGET	选择一个目标。
+MC_HINT_CHOOSE	为每名佣兵选择一个技能。
+MC_HINT_READY	一切就绪——就绪！
+MC_TRAY_KEYS	按键 1-3 选择技能，Tab 切换下一名佣兵。
+MC_BENCH_TITLE	替补
+MC_ADVANTAGE	优势！
+MC_MISS	未命中
+MC_STUNNED	昏迷
+MC_FIZZLE	没有目标
+MC_ELITE	精英
+MC_READY_IN	%d |4回合:回合;后就绪
+MC_SAVED	你的悬赏已保存。
+MC_TREASURE_TITLE	宝藏
+MC_TREASURE_SUB	为%s选择一件宝藏。
+MC_CURSED_TITLE	被诅咒的宝藏
+MC_CURSED_SUB	给%s的被诅咒宝藏——但每名佣兵在悬赏剩余时间内损失 %d%% 的生命值。
+MC_DECLINE	放弃
+MC_HEALER_TITLE	灵魂医者
+MC_HEALER_SUB	谁应该回来？
+MC_CONTINUE	继续
+MC_STRANGER_TITLE	神秘的陌生人
+MC_STRANGER_SUB	“我可以复制你的一件宝藏。谨慎选择。”
+MC_ABANDON_TITLE	放弃悬赏？
+MC_ABANDON_TEXT	悬赏在此结束。已获得的经验会保留，宝藏将会失去。
+MC_TO_CAMP	返回营地
+MC_LEVEL_UP	升级！
+MC_STAT_FIGHTS	胜利的战斗
+MC_STAT_XP	经验
+MC_STAT_SCORE	得分
+MC_COMPLETE	悬赏完成！
+MC_DEFEAT	失败
+MC_FIRST_CLEAR	首次通关：硬币翻倍！
+MC_COINS_EARNED	硬币：%s
+MC_GEAR_UNLOCKED	新装备：%s（%s）
+MC_HEROIC_UNLOCKED	此区域的英雄模式已解锁！
+MC_FIGHTS_WON	胜利的战斗：%d
+MC_XP_EARNED	经验：%s
+MC_LEVEL_UPS	升级：%s
+MC_STAGE	站点 %d / %d
+MC_PARTY_LEVEL	队伍等级 %d
+MC_HEROIC	英雄
+MC_NORMAL	普通
+MC_SHARE	在 Mercenaries 悬赏中获得了 %s 分：%s！
+MC_CONTINUE_RUN	继续悬赏
+MC_ENCOUNTER	遭遇
+MC_TRAVEL_POINT	旅行点
+MC_OVERVIEW	返回大陆
+MC_BOSS_INFO	悬赏
+MC_CHOOSE	选择
+MC_REGION_LORDAERON	洛丹伦
+MC_REGION_KHAZMODAN	卡兹莫丹
+MC_REGION_AZEROTH	艾泽拉斯王国
+MC_REGION_NORTHKAL	卡利姆多北部
+MC_REGION_CENTRALKAL	卡利姆多中部
+MC_REGION_ZEPHRAS	泽弗拉斯岛
+MC_REGION_SOUTHLANDS	南方之地
+MC_REGION_SOUTHKAL	卡利姆多南部
+MC_PAGE	第 %d 页
+MC_CAN_RECRUIT	可以招募！
+MC_DONE	完成
+MC_SCHOOL_physical	物理
+MC_SCHOOL_fire	火焰
+MC_SCHOOL_frost	冰霜
+MC_SCHOOL_nature	自然
+MC_SCHOOL_shadow	暗影
+MC_SCHOOL_holy	神圣
+MC_SCHOOL_arcane	奥术
+MC_ZD_thousandneedles	在石柱之间，加拉克半人马劫掠商队，而%s正集结他的部族对抗牛头人。
+MC_ZD_alterac	辛迪加在奥特兰克的废墟中继续密谋——为首的是叛徒国王的继承人%s。
+MC_ZD_arathi	食人魔和巨魔在高地上游荡，而在山丘之下，大地之灵%s正等待冲破它的牢笼。
+MC_ZD_desolace	半人马部族与恶魔争夺这片荒芜之地，而在玛拉顿深处，%s正在毒害大地。
+MC_ZD_shendralas	在凄凉之地以南，辛德拉守护着他们的秘密。玛格拉姆半人马唤起死者——率领他们的是%s。
+MC_ZD_riverglades	克洛多克的食人魔和暮光之锤占领了河谷之地。最强大的食人魔%s统治着这里。
+MC_ZD_stranglethorn	在丛林中，巨魔与库尔森的叛军互相厮杀——而巨虎%s猎杀他们所有人。
+MC_ZD_badlands	食人魔和黑铁矮人搜寻着焦土，而在奥达曼，%s正在苏醒。
+MC_ZD_swampofsorrows	鱼人潜伏在泥沼中，而在阿塔哈卡神庙的沉没废墟里，%s散播着梦魇。
+MC_ZD_dustwallow	黑龙族在沼泽中集结。在她的巢穴里，死亡之翼之女%s等待着勇者。
+MC_ZD_feralas	戈杜尼食人魔统治着埃尔德拉斯的废墟，而在厄运之槌，%s坐在他的王座上。
+MC_ZD_tanaris	强盗、海盗和沙怒巨魔肆虐沙漠。在祖尔法拉克，九头蛇%s从圣池中升起。
+MC_ZD_hinterlands	邪枝巨魔占据着辛特兰的金萨洛尔，%s在那里召唤黑暗之神。
+MC_ZD_searinggorge	黑铁矮人驱赶着奴隶穿过燃烧的峡谷，为%s效力。
+MC_ZD_azshara	纳迦和幽灵出没于陨落的艾萨拉海岸，而%s守护着那里的魔法。
+MC_ZD_blastedlands	恶魔和暗誓者在黑暗之门前集结。%s统领着燃烧军团的大军。
+MC_ZD_felwood	腐化的费伍德森林在加德纳尔隐藏着暗影议会，由%s统治。
+MC_ZD_ungoro	在蒸腾的环形山中游荡着巨兽——没有一只比%s更强大。
+MC_ZD_burningsteppes	黑石兽人行进在燃烧平原上，由来自黑石塔的%s率领。
+MC_ZD_westernplaguelands	天灾军团占据着瘟疫肆虐的田野。在通灵学院，%s教授死灵法术。
+MC_ZD_easternplaguelands	亡灵大军守卫着斯坦索姆的废墟，%s在那里统治。
+MC_ZD_winterspring	在白雪覆盖的山谷中，冬泉熊怪敌视所有外来者——率领他们的是%s。
+MC_ZD_silithus	异种虫群从安其拉涌出。在深处，上古之神%s蠢蠢欲动。
+MC_ZD_hyjal	在世界之树曾经燃烧的地方，%s依然回荡——那是陨落于海加尔山的恶魔领主。
+MC_ZD_elwynn	豺狼人和狗头人在宁静的森林中作乱——豺狼人%s是他们的首领。
+MC_ZD_dunmorogh	在丹莫罗的雪地里，穴居人和霜鬃巨魔四处游荡。地下的诺莫瑞根已落入%s之手。
+MC_ZD_tirisfal	亡灵在提瑞斯法林地徘徊，而由%s率领的血色十字军焚烧一切他们认为不洁的东西。
+MC_ZD_teldrassil	在世界之树下，堕落的生物聚集在邪火岩周围，%s在那里密谋。
+MC_ZD_durotar	杜隆塔尔的红色峡谷庇护着部落——还有巫医%s，他控制着回音群岛。
+MC_ZD_mulgore	在莫高雷的平原上，巨型科多兽%s践踏着前方的一切。
+MC_ZD_zephras	在云层之上，天生者之岛在%s的风暴下颤抖。
+MC_ZD_westfall	迪菲亚兄弟会从死亡矿井统治着西部荒野的田野。%s在下面等待。
+MC_ZD_lochmodan	碎石穴居人在他们的首领%s的带领下涌入洛克莫丹的山丘。
+MC_ZD_silverpine	狼人在银松森林中嚎叫，它们受到来自影牙城堡的%s的召唤。
+MC_ZD_darkshore	灰雾部族的鱼人在可怕的%s率领下劫掠黑海岸。
+MC_ZD_barrens	半人马和野猪人争夺尘土飞扬的贫瘠之地。%s率领着科尔卡的袭击。
+MC_ZD_redridge	黑石兽人和豺狼人威胁着湖畔镇。他们的督军：%s。
+MC_ZD_stonetalon	风险投资公司在贪婪的%s带领下砍伐石爪山脉的古老森林。
+MC_ZD_ashenvale	灰谷海岸之下是黑暗深渊，远古巨兽%s的巢穴。
+MC_ZD_duskwood	在永恒的黑夜中，暮色森林的亡灵复活了——憎恶%s正向夜色镇进军。
+MC_ZD_wetlands	龙喉氏族在%s的统治下占据着湿地。
+MC_ZD_hillsbrad	希尔斯布莱德丘陵被战火撕裂；%s竭尽全力保卫小镇。
+MC_BOUNTIES_SUB	在艾泽拉斯地图上选择一个区域。
+MC_COLLECTION_SUB	已招募 %d / %d
+MC_NO_SCORE	尚未完成任何悬赏
+MC_WANTED	通缉
+MC_PICK_ZONE	在地图上选择一个悬赏。
+MC_BOSS_LEVEL	首领 %d
+MC_REWARD	奖励：
+MC_PARTY_PICK	现在点击一张佣兵卡牌。
+MC_IN_PARTY	在队伍中
+MC_ABILITIES	技能
+MC_MAX_LEVEL	最高等级
+MC_RECRUIT_COST	招募（%d 枚硬币）
+MC_BOUNTIES	悬赏
+MC_COLLECTION	佣兵
+MC_RUN_ACTIVE	进行中的悬赏：%s
+MC_CONTINENT_EK	东部王国
+MC_CONTINENT_KAL	卡利姆多
+MC_CONTINENT_ZEPHRAS	泽弗拉斯岛
+MC_LEVEL_RANGE	等级 %d-%d
+MC_DONE_NORMAL	普通已通关
+MC_DONE_HEROIC	英雄已通关
+MC_HEROIC_LOCKED	先在普通模式中击败此区域的首领。
+MC_PARTY_LOCKED	悬赏进行中无法更换队伍。
+MC_PARTY_HINT	点击一个栏位，然后点击一名佣兵进行替换。
+MC_COINS_PROGRESS	%d / %d 枚硬币
+MC_RECRUIT	招募
+MC_XP	经验 %s / %s
+MC_COINS	%d 枚硬币
+MC_UNLOCKS_AT	%d 级解锁
+MC_RANK_UP	等阶 %s（%d）
+MC_EQUIPMENT	装备
+MC_GEAR_FROM	由%s掉落，%s（%s）
+MC_STAT_ZONES	完成的悬赏
+MC_STAT_HEROIC	完成的英雄悬赏
+MC_STAT_MERCS	招募的佣兵
+MC_STAT_LEVEL	最高等级
+MC_STAT_FIGHTS	胜利的战斗
+MC_ACH_FIRST	第一滴血
+MC_ACH_FIRST_DESC	赢得一场战斗。
+MC_ACH_BOUNTY	赏金猎人
+MC_ACH_BOUNTY_DESC	完成一个悬赏。
+MC_ACH_RECRUIT	新鲜血液
+MC_ACH_RECRUIT_DESC	招募一名佣兵。
+MC_ACH_RANK	精益求精
+MC_ACH_RANK_DESC	将一个技能提升到三阶。
+MC_ACH_STARTER	另辟蹊径
+MC_ACH_STARTER_DESC	通关所有起始区域，包括泽弗拉斯岛。
+MC_ACH_HEROIC	英雄事迹
+MC_ACH_HEROIC_DESC	完成一个英雄悬赏。
+MC_ACH_FLAWLESS	一个都不能少
+MC_ACH_FLAWLESS_DESC	在没有佣兵阵亡的情况下完成一个悬赏。
+MC_ACH_FEW	最后的坚守者
+MC_ACH_FEW_DESC	在仅剩三名或更少佣兵时击败一名首领。
+MC_ACH_FLIGHT	云中的契约
+MC_ACH_FLIGHT_DESC	在飞行中完成一个于飞行途中开始的悬赏。
+MC_ACH_LEVEL30	老兵
+MC_ACH_LEVEL30_DESC	将一名佣兵提升到 30 级。
+MC_ACH_GEAR	装备精良
+MC_ACH_GEAR_DESC	解锁 10 件装备。
+MC_ACH_STAGE1	从艾尔文到希尔斯布莱德
+MC_ACH_STAGE1_DESC	通关 30 级以内的所有区域。
+MC_ACH_COLLECTION	全员到齐
+MC_ACH_COLLECTION_DESC	招募所有佣兵。
+MC_ACH_HEROIC10	艾泽拉斯传奇
+MC_ACH_HEROIC10_DESC	在英雄模式中通关 10 个不同的区域。
+MC_ACH_LEVEL60	登峰造极
+MC_ACH_LEVEL60_DESC	将一名佣兵提升到 60 级。
+MC_ACH_HEROIC_FLAWLESS	无懈可击
+MC_ACH_HEROIC_FLAWLESS_DESC	在没有佣兵阵亡的情况下完成一个英雄悬赏。
+MC_A_saurfang_1	复仇
+MC_A_saurfang_2	集结呐喊
+MC_A_saurfang_3	破釜沉舟
+MC_A_windsor_1	盾牌猛击
+MC_A_windsor_2	暴风城战旗
+MC_A_windsor_3	坚守阵线
+MC_A_jorach_1	背刺
+MC_A_jorach_2	肾击
+MC_A_jorach_3	剑刃乱舞
+MC_A_natpagle_1	鱼叉
+MC_A_natpagle_2	新鲜渔获
+MC_A_natpagle_3	渔网
+MC_A_fandral_1	月火术
+MC_A_fandral_2	荆棘术
+MC_A_fandral_3	飓风
+MC_A_drekthar_1	冰霜震击
+MC_A_drekthar_2	治疗波
+MC_A_drekthar_3	冰霜图腾
+MC_G_saurfang_1	库卡隆战斧
+MC_G_saurfang_2	大领主战甲
+MC_G_saurfang_3	部落的战利品
+MC_G_windsor_1	监狱之盾
+MC_G_windsor_2	联盟战旗
+MC_G_windsor_3	元帅头盔
+MC_G_jorach_1	拉文霍德匕首
+MC_G_jorach_2	刺客之刃
+MC_G_jorach_3	暗影斗篷
+MC_G_natpagle_1	纳特的幸运鱼竿
+MC_G_natpagle_2	烤鱿鱼
+MC_G_natpagle_3	钓鱼大师的渔获
+MC_G_fandral_1	大德鲁伊之杖
+MC_G_fandral_2	泰达希尔之枝
+MC_G_fandral_3	月光石宝珠
+MC_G_drekthar_1	霜狼法杖
+MC_G_drekthar_2	元素之戒
+MC_G_drekthar_3	霜狼护符
+MC_A_cairne_1	蹄击
+MC_A_cairne_2	战争践踏
+MC_A_cairne_3	大地母亲之誓
+MC_A_bolvar_1	正义打击
+MC_A_bolvar_2	圣盾术
+MC_A_bolvar_3	暴风城集结
+MC_A_magni_1	风暴之锤
+MC_A_magni_2	石像形态
+MC_A_magni_3	山丘之王的怒吼
+MC_A_tirion_1	十字军打击
+MC_A_tirion_2	制裁之锤
+MC_A_tirion_3	圣疗术
+MC_A_eitrigg_1	致死打击
+MC_A_eitrigg_2	盾墙
+MC_A_eitrigg_3	顺劈斩
+MC_A_taelan_1	神圣打击
+MC_A_taelan_2	奉献
+MC_A_taelan_3	虔诚光环
+MC_A_rexxar_1	米莎的槌击
+MC_A_rexxar_2	狂野怒火
+MC_A_rexxar_3	多重射击
+MC_A_sylvanas_1	瞄准射击
+MC_A_sylvanas_2	凋零之箭
+MC_A_sylvanas_3	女妖之嚎
+MC_A_voljin_1	掷矛
+MC_A_voljin_2	妖术
+MC_A_voljin_3	治疗波
+MC_A_shandris_1	哨兵之箭
+MC_A_shandris_2	猎人印记
+MC_A_shandris_3	乱射
+MC_A_mankrik_1	复仇打击
+MC_A_mankrik_2	激怒
+MC_A_mankrik_3	旋风斩
+MC_A_renzik_1	邪恶攻击
+MC_A_renzik_2	凿击
+MC_A_renzik_3	消失
+MC_A_jaina_1	火球术
+MC_A_jaina_2	寒冰箭
+MC_A_jaina_3	暴风雪
+MC_A_thrall_1	闪电链
+MC_A_thrall_2	闪电之盾
+MC_A_thrall_3	风怒图腾
+MC_A_tyrande_1	星辰碎片
+MC_A_tyrande_2	治疗术
+MC_A_tyrande_3	治疗祷言
+MC_A_magatha_1	闪电箭
+MC_A_magatha_2	虚弱诅咒
+MC_A_magatha_3	灼热图腾
+MC_A_benedictus_1	惩击
+MC_A_benedictus_2	真言术：盾
+MC_A_benedictus_3	神圣新星
+MC_A_hamuul_1	愤怒
+MC_A_hamuul_2	回春术
+MC_A_hamuul_3	纠缠根须
+MC_A_e_strike	打击
+MC_A_e_bite	撕咬
+MC_A_e_claw	撕裂
+MC_A_e_slam	猛击
+MC_A_e_cleave	顺劈斩
+MC_A_e_frenzy	狂乱
+MC_A_e_shieldbash	盾击
+MC_A_e_enrage	激怒
+MC_A_e_rally	战斗怒吼
+MC_A_e_guard	防御
+MC_A_e_harden	硬化
+MC_A_e_web	蛛网
+MC_A_e_poison	毒药
+MC_A_e_firebolt	火焰箭
+MC_A_e_frostbolt	寒冰箭
+MC_A_e_shadowbolt	暗影箭
+MC_A_e_lightning	闪电箭
+MC_A_e_holyfire	神圣之火
+MC_A_e_drain	吸取生命
+MC_A_e_curse	虚弱诅咒
+MC_A_e_heal	治疗术
+MC_A_e_renew	恢复
+MC_A_e_dive	俯冲
+MC_A_e_howl	嚎叫
+MC_A_e_trample	冲锋
+MC_A_e_explode	爆炸
+MC_A_e_net	网
+MC_A_e_plague	瘟疫云雾
+MC_A_e_wave	潮汐巨浪
+MC_A_e_fireball	火球术
+MC_A_e_volley	暗影箭雨
+MC_A_e_thunderclap	雷霆一击
+MC_A_e_chainlight	闪电链
+MC_A_e_sunder	破甲攻击
+MC_A_e_bloodlust	嗜血
+MC_A_e_shadowword	暗言术：痛
+MC_A_e_flamestrike	烈焰风暴
+MC_A_arnak_1	恐怖图腾重击
+MC_A_arnak_2	地缚图腾
+MC_A_arnak_3	石肤
+MC_A_arnak_h	灼热图腾
+MC_A_perenolde_1	暗影箭
+MC_A_perenolde_2	辛迪加的召唤
+MC_A_perenolde_3	奥特兰克诅咒
+MC_A_perenolde_h	支配
+MC_A_myzrael_1	大地震击
+MC_A_myzrael_2	地震术
+MC_A_myzrael_3	棱彩结界
+MC_A_myzrael_h	粉碎碎片
+MC_A_theradras_1	巨石
+MC_A_theradras_2	尘土之地
+MC_A_theradras_3	厌恶凝视
+MC_A_theradras_h	大地之心
+MC_A_necrokhan_1	死灵箭
+MC_A_necrokhan_2	白骨护甲
+MC_A_necrokhan_3	坟墓瘟疫
+MC_A_necrokhan_h	死亡缠绕
+MC_A_clugfist_1	食人魔棍棒
+MC_A_clugfist_2	雷鸣猛击
+MC_A_clugfist_3	食人魔之怒
+MC_A_clugfist_h	碎颅
+MC_A_bangalash_1	槌击
+MC_A_bangalash_2	撕裂
+MC_A_bangalash_3	兽群的召唤
+MC_A_bangalash_h	突袭
+MC_A_archaedas_1	地面震颤
+MC_A_archaedas_2	唤醒土灵
+MC_A_archaedas_3	泰坦守护
+MC_A_archaedas_h	石台
+MC_A_eranikus_1	梦魇箭
+MC_A_eranikus_2	酸性吐息
+MC_A_eranikus_3	深度沉睡
+MC_A_eranikus_h	翡翠梦魇
+MC_A_onyxia_1	火焰吐息
+MC_A_onyxia_2	龙翼打击
+MC_A_onyxia_3	深呼吸
+MC_A_onyxia_h	低沉咆哮
+MC_A_gordok_1	致死打击
+MC_A_gordok_2	战争践踏
+MC_A_gordok_3	破甲攻击
+MC_A_gordok_h	戈多克之怒
+MC_A_gahzrilla_1	冰锥
+MC_A_gahzrilla_2	冰冻
+MC_A_gahzrilla_3	加兹瑞拉猛击
+MC_A_gahzrilla_h	九头蛇再生
+MC_A_hexx_1	暗影箭
+MC_A_hexx_2	妖术
+MC_A_hexx_3	黑暗治愈
+MC_A_hexx_h	邪枝诅咒
+MC_A_thaurissan_1	索瑞森之手
+MC_A_thaurissan_2	烈焰化身
+MC_A_thaurissan_3	大帝的命令
+MC_A_thaurissan_h	火焰新星
+MC_A_azuregos_1	冰霜吐息
+MC_A_azuregos_2	奥术真空
+MC_A_azuregos_3	法力风暴
+MC_A_azuregos_h	反射
+MC_A_kazzak_1	顺劈斩
+MC_A_kazzak_2	暗影箭雨
+MC_A_kazzak_3	卡扎克印记
+MC_A_kazzak_h	捕获灵魂
+MC_A_banehollow_1	暗影箭
+MC_A_banehollow_2	沉睡
+MC_A_banehollow_3	腐臭虫群
+MC_A_banehollow_h	恐惧魔王的饥渴
+MC_A_mosh_1	魔暴龙撕咬
+MC_A_mosh_2	践踏
+MC_A_mosh_3	恐惧咆哮
+MC_A_mosh_h	王者之怒
+MC_A_rend_1	顺劈斩
+MC_A_rend_2	旋风斩
+MC_A_rend_3	酋长的祝福
+MC_A_rend_h	致死打击
+MC_A_gandling_1	奥术飞弹
+MC_A_gandling_2	暗影护盾
+MC_A_gandling_3	黑暗院长的诅咒
+MC_A_gandling_h	暗影传送门
+MC_A_rivendare_1	致死打击
+MC_A_rivendare_2	邪恶光环
+MC_A_rivendare_3	亡者复生
+MC_A_rivendare_h	死亡契约
+MC_A_winterfall_1	熊怪打击
+MC_A_winterfall_2	冰霜图腾
+MC_A_winterfall_3	集结嚎叫
+MC_A_winterfall_h	冬泉之怒
+MC_A_cthun_1	眼棱
+MC_A_cthun_2	黑暗凝视
+MC_A_cthun_3	精神鞭笞
+MC_A_cthun_h	触须崛起
+MC_A_archimonde_1	死亡之指
+MC_A_archimonde_2	厄运之火
+MC_A_archimonde_3	空气爆裂
+MC_A_archimonde_h	军团之握
+MC_A_hogger_1	霍格的槌击
+MC_A_hogger_2	群体呼唤
+MC_A_hogger_3	暴怒
+MC_A_hogger_h	厚皮
+MC_A_thermaplugg_1	投掷炸弹
+MC_A_thermaplugg_2	麻风爆破
+MC_A_thermaplugg_3	蒸汽护甲
+MC_A_thermaplugg_h	电击线圈
+MC_A_whitemane_1	惩击
+MC_A_whitemane_2	快速治疗
+MC_A_whitemane_3	血色尖啸
+MC_A_whitemane_h	血色复活
+MC_A_melenas_1	暗影箭
+MC_A_melenas_2	腐蚀术
+MC_A_melenas_3	死亡缠绕
+MC_A_melenas_h	绝望诅咒
+MC_A_zalazane_1	痛苦妖术
+MC_A_zalazane_2	巫毒妖术
+MC_A_zalazane_3	治疗波
+MC_A_zalazane_h	巫毒狂乱
+MC_A_arrachea_1	顶刺
+MC_A_arrachea_2	战争践踏
+MC_A_arrachea_3	重击
+MC_A_arrachea_h	野性狂怒
+MC_A_lorthuna_1	风暴召唤
+MC_A_lorthuna_2	旋风
+MC_A_lorthuna_3	复苏之风
+MC_A_lorthuna_h	暴风
+MC_A_vancleef_1	弯刀打击
+MC_A_vancleef_2	伏击
+MC_A_vancleef_3	战斗号召
+MC_A_vancleef_h	疾跑
+MC_A_galgosh_1	粉碎打击
+MC_A_galgosh_2	地缚
+MC_A_galgosh_3	岩石之肤
+MC_A_galgosh_h	地震术
+MC_A_arugal_1	暗影箭
+MC_A_arugal_2	暗影传送
+MC_A_arugal_3	暗影之痛
+MC_A_arugal_h	阿鲁高的诅咒
+MC_A_murkdeep_1	潮汐之矛
+MC_A_murkdeep_2	拍岸巨浪
+MC_A_murkdeep_3	鱼人之网
+MC_A_murkdeep_h	姆尔格尔尔格尔！
+MC_A_kodobane_1	科尔卡打击
+MC_A_kodobane_2	践踏
+MC_A_kodobane_3	风暴鞭笞
+MC_A_kodobane_h	暴怒
+MC_A_gathilzogg_1	顺劈斩
+MC_A_gathilzogg_2	黑石战吼
+MC_A_gathilzogg_3	冲锋
+MC_A_gathilzogg_h	盾墙
+MC_A_gerenzo_1	火箭射击
+MC_A_gerenzo_2	地精炸弹
+MC_A_gerenzo_3	快速修理
+MC_A_gerenzo_h	超载
+MC_A_akumai_1	撕裂
+MC_A_akumai_2	毒云
+MC_A_akumai_3	甲壳护盾
+MC_A_akumai_h	冰霜吐息
+MC_A_stitches_1	粉碎打击
+MC_A_stitches_2	瘟疫恶臭
+MC_A_stitches_3	狂乱
+MC_A_stitches_h	防腐之皮
+MC_A_nekrosh_1	龙喉顺劈
+MC_A_nekrosh_2	火球术
+MC_A_nekrosh_3	战吼
+MC_A_nekrosh_h	龙焰
+MC_A_burnside_1	惩击
+MC_A_burnside_2	保护祝福
+MC_A_burnside_3	治疗祷言
+MC_A_burnside_h	制裁之锤
+MC_T_might	力量
+MC_T_vigor	活力
+MC_T_haste	迅捷
+MC_T_aegis	庇护
+MC_T_leech	吸血獠牙
+MC_T_thorns	荆棘披风
+MC_T_renewal	复苏
+MC_T_readiness	准备就绪
+MC_T_precision	精准
+MC_T_bulwark	壁垒
+MC_T_execution	处决者
+MC_T_vengeance	复仇
+MC_T_devotion	虔诚
+MC_T_focus1	熟练打击
+MC_T_focus2	熟练技艺
+MC_T_focus3	熟练精通
+MC_T_quick1	迅捷打击
+MC_T_quick2	迅捷技艺
+MC_T_quick3	迅捷精通
+MC_T_fire	余烬护符
+MC_T_frost	冰霜水晶
+MC_T_nature	风暴图腾
+MC_T_shadow	暗影神像
+MC_T_holy	神圣遗物
+MC_T_arcane	奥术聚焦器
+MC_T_physical	磨刀石
+MC_T_titan	泰坦的祝福
+MC_T_zeal	狂热
+MC_T_overflow	永恒沙漏
+MC_T_champion	勇士的战旗
+MC_T_lifebloom	生命绽放
+MC_T_cursedblade	被诅咒的刀刃
+MC_T_cursedmail	被诅咒的锁甲
+MC_T_cursedrelic	被诅咒的遗物
+MC_G_cairne_1	大地母亲护符
+MC_G_cairne_2	血蹄战甲
+MC_G_cairne_3	平原符文之矛
+MC_G_bolvar_1	雄狮纹章之盾
+MC_G_bolvar_2	暴风城军旗
+MC_G_bolvar_3	大领主之刃
+MC_G_magni_1	铜须图章
+MC_G_magni_2	铁炉堡战锤
+MC_G_magni_3	山丘之王的王冠
+MC_G_tirion_1	希望圣契
+MC_G_tirion_2	白银之手战锤
+MC_G_tirion_3	圣光之愿护甲
+MC_G_eitrigg_1	老兵之斧
+MC_G_eitrigg_2	奥格瑞玛壁垒
+MC_G_eitrigg_3	酋长的恩宠
+MC_G_taelan_1	大领主图章
+MC_G_taelan_2	壁炉谷庇护
+MC_G_taelan_3	弗丁的圣契
+MC_G_rexxar_1	米莎的项圈
+MC_G_rexxar_2	莫克纳萨战斧
+MC_G_rexxar_3	兽王箭袋
+MC_G_sylvanas_1	风行者长弓
+MC_G_sylvanas_2	女妖面纱
+MC_G_sylvanas_3	黑暗女士的箭袋
+MC_G_voljin_1	暗矛之矛
+MC_G_voljin_2	暗影猎手面具
+MC_G_voljin_3	森金神像
+MC_G_shandris_1	哨兵长弓
+MC_G_shandris_2	羽月斗篷
+MC_G_shandris_3	月刃
+MC_G_mankrik_1	复仇者之斧
+MC_G_mankrik_2	贫瘠之地战具
+MC_G_mankrik_3	奥尔格拉的挂坠
+MC_G_renzik_1	军情七处匕首
+MC_G_renzik_2	毒液瓶
+MC_G_renzik_3	暗影斗篷
+MC_G_jaina_1	塞拉摩法杖
+MC_G_jaina_2	库尔提拉斯挂坠
+MC_G_jaina_3	大法师的聚焦器
+MC_G_thrall_1	毁灭之锤握柄
+MC_G_thrall_2	大地护符
+MC_G_thrall_3	酋长的肩铠
+MC_G_tyrande_1	月银头饰
+MC_G_tyrande_2	艾露恩之泪
+MC_G_tyrande_3	月之战刃
+MC_G_magatha_1	恐怖图腾法杖
+MC_G_magatha_2	长者的神像
+MC_G_magatha_3	阴燃图腾
+MC_G_benedictus_1	大教堂香炉
+MC_G_benedictus_2	圣光法衣
+MC_G_benedictus_3	大主教法冠
+MC_G_hamuul_1	符文图腾法杖
+MC_G_hamuul_2	月光林地鹿角
+MC_G_hamuul_3	塞纳里奥种子
