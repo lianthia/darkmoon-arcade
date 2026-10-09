@@ -57,6 +57,16 @@ MC.Mercs = {
         G("INV_Shield_04", { startShield = true }),
         G("INV_Relics_LibramofTruth", { healPct = 0.4 }),
     }),
+    saurfang = Merc("saurfang", "protector", "orc", 14720, 14732, 90, 9, {
+        G("INV_Axe_12", { thorns = 5 }),
+        G("INV_Chest_Plate10", { abil2_cd = -1 }),
+        G("INV_Misc_Head_Orc_01", { atkPct = 0.25 }),
+    }),
+    windsor = Merc("windsor", "protector", "human", 9682, 9052, 86, 7, {
+        G("INV_Shield_10", { startShield = true }),
+        G("INV_BannerPVP_02", { abil2_value = 0.5 }),
+        G("INV_Helmet_05", { hpPct = 0.2 }),
+    }),
     -- Fighters
     rexxar = Merc("rexxar", "fighter", "orc", 10182, 11660, 75, 10, {
         G("INV_Misc_Pelt_Bear_03", { abil2_cd = -1 }),
@@ -88,6 +98,16 @@ MC.Mercs = {
         G("INV_Potion_19", { abil1_value = 0.4 }),
         G("INV_Misc_Cape_11", { abil3_cd = -1 }),
     }),
+    jorach = Merc("jorach", "fighter", "human", 6768, 6572, 60, 9, {
+        G("INV_Weapon_ShortBlade_14", { critChance = 0.2 }),
+        G("INV_Sword_23", { executePct = 0.5 }),
+        G("INV_Misc_Cape_20", { abil2_cd = -1 }),
+    }),
+    natpagle = Merc("natpagle", "fighter", "human", 12919, 13099, 68, 8, {
+        G("INV_Fishingpole_02", { abil1_value = 0.4 }),
+        G("INV_Misc_Food_06", { abil2_value = 0.5 }),
+        G("INV_Misc_Fish_03", { regenPct = 0.06 }),
+    }),
     -- Casters
     jaina = Merc("jaina", "caster", "human", 4968, 2970, 56, 4, {
         G("INV_Staff_13", { school_fire = 0.3 }),
@@ -114,6 +134,16 @@ MC.Mercs = {
         G("INV_Chest_Cloth_11", { regenPct = 0.06 }),
         G("INV_Helmet_29", { abil3_cd = -1 }),
     }),
+    fandral = Merc("fandral", "caster", "nightelf", 15382, 15421, 60, 4, {
+        G("INV_Staff_17", { school_arcane = 0.3 }),
+        G("INV_Misc_Branch_01", { abil2_cd = -1 }),
+        G("INV_Misc_Orb_02", { abil3_cd = -1 }),
+    }),
+    drekthar = Merc("drekthar", "caster", "orc", 11946, 11894, 64, 5, {
+        G("INV_Staff_20", { school_frost = 0.3 }),
+        G("INV_Jewelry_Ring_14", { healPct = 0.3 }),
+        G("INV_Jewelry_Talisman_08", { abil3_cd = -1 }),
+    }),
     hamuul = Merc("hamuul", "caster", "tauren", 5769, 4519, 62, 5, {
         G("INV_Staff_06", { abil2_value = 0.5 }),
         G("INV_Misc_Horn_01", { abil3_cd = -1 }),
@@ -123,7 +153,7 @@ MC.Mercs = {
 
 -- Collection order: by role, then as listed here.
 MC.MERC_ORDER = {
-    "cairne", "bolvar", "magni", "tirion", "eitrigg", "taelan",
-    "rexxar", "sylvanas", "voljin", "shandris", "mankrik", "renzik",
-    "jaina", "thrall", "tyrande", "magatha", "benedictus", "hamuul",
+    "cairne", "bolvar", "magni", "tirion", "eitrigg", "taelan", "saurfang", "windsor",
+    "rexxar", "sylvanas", "voljin", "shandris", "mankrik", "renzik", "jorach", "natpagle",
+    "jaina", "thrall", "tyrande", "magatha", "benedictus", "hamuul", "fandral", "drekthar",
 }

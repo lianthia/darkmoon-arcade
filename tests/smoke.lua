@@ -445,6 +445,8 @@ for _ = 1, 600 do
     elseif current == "healer" then
         local b = mc.healerButtons[1]
         if b._shown then b._scripts.OnClick(b) else mc.healerSkip._scripts.OnClick(mc.healerSkip) end
+    elseif current == "event" then
+        mc.eventContinue._scripts.OnClick(mc.eventContinue)
     elseif current == "stranger" then
         mc.strangerButtons[1]._scripts.OnClick(mc.strangerButtons[1])
     elseif run.phase == "map" then

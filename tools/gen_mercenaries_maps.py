@@ -27,6 +27,13 @@ ZONES = {
     "teldrassil": (1438, "kal"), "durotar": (1411, "kal"), "mulgore": (1412, "kal"), "darkshore": (1439, "kal"),
     "barrens": (1413, "kal"), "stonetalon": (1442, "kal"), "ashenvale": (1440, "kal"), "hyjal": (2482, "kal"),
     "shendralas": (2652, "kal"), "zephras": (2521, None),
+    # Stage 2 and 3
+    "thousandneedles": (1441, "kal"), "desolace": (1443, "kal"), "dustwallow": (1445, "kal"), "feralas": (1444, "kal"),
+    "tanaris": (1446, "kal"), "azshara": (1447, "kal"), "felwood": (1448, "kal"), "ungoro": (1449, "kal"),
+    "silithus": (1451, "kal"), "winterspring": (1452, "kal"),
+    "alterac": (1416, "ek"), "arathi": (1417, "ek"), "badlands": (1418, "ek"), "blastedlands": (1419, "ek"),
+    "westernplaguelands": (1422, "ek"), "easternplaguelands": (1423, "ek"), "hinterlands": (1425, "ek"),
+    "searinggorge": (1427, "ek"), "burningsteppes": (1428, "ek"), "stranglethorn": (1434, "ek"), "swampofsorrows": (1435, "ek"),
 }
 
 

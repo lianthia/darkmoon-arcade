@@ -72,6 +72,14 @@ Define("taelan_1", "Spell_Holy_HolyBolt", "holy", 5, 0, "enemy", { E("attack", 2
 Define("taelan_2", "Spell_Holy_InnerFire", "holy", 6, 2, "none", { E("damage", 5, "all") }, { harmful = true })
 Define("taelan_3", "Spell_Holy_DevotionAura", "holy", 3, 3, "none", { E("buff", "taken", -0.25, 3, "allies") })
 
+Define("saurfang_1", "Ability_Warrior_Revenge", "physical", 5, 0, "enemy", { E("attack", 5) })
+Define("saurfang_2", "Ability_Warrior_RallyingCry", "physical", 3, 2, "none", { E("maxhp", 8, "allies"), E("buff", "atk", 2, nil, "allies") })
+Define("saurfang_3", "Ability_Warrior_DefensiveStance", "physical", 2, 3, "none", { E("taunt", 2), E("heal", 20, "self") })
+
+Define("windsor_1", "INV_Shield_05", "physical", 4, 0, "enemy", { E("attack", 3), E("buff", "dmg", -0.2, 2) })
+Define("windsor_2", "INV_BannerPVP_02", "holy", 3, 2, "none", { E("absorb", 8, "allies") })
+Define("windsor_3", "Ability_Defend", "physical", 1, 3, "none", { E("taunt", 2), E("buff", "taken", -0.3, 2, "self") })
+
 -- Fighters -------------------------------------------------------------------------------
 
 Define("rexxar_1", "Ability_Druid_Maul", "physical", 5, 0, "enemy", { E("attack", 4) })
@@ -98,6 +106,14 @@ Define("renzik_1", "Spell_Shadow_RitualOfSacrifice", "physical", 3, 0, "enemy", 
 Define("renzik_2", "Ability_Gouge", "physical", 2, 3, "enemy", { E("damage", 4), E("stun") })
 Define("renzik_3", "Ability_Vanish", "shadow", 1, 2, "none", { E("stealth"), E("buff", "ambush", 1.0, nil, "self") })
 
+Define("jorach_1", "Ability_BackStab", "physical", 3, 0, "enemy", { E("damage", 10) })
+Define("jorach_2", "Ability_Rogue_KidneyShot", "physical", 2, 3, "enemy", { E("damage", 3), E("stun") })
+Define("jorach_3", "Ability_Warrior_PunishingBlow", "physical", 5, 2, "enemy", { E("damage", 7), E("damage", 5, "adjacent") })
+
+Define("natpagle_1", "INV_Spear_02", "physical", 5, 0, "enemy", { E("damage", 9) })
+Define("natpagle_2", "INV_Misc_Fish_14", "nature", 4, 1, "ally", { E("heal", 12) })
+Define("natpagle_3", "Ability_Ensnare", "physical", 3, 2, "none", { E("damage", 2, "all"), E("buff", "speed", 4, 2, "all") }, { harmful = true })
+
 -- Casters --------------------------------------------------------------------------------
 
 Define("jaina_1", "Spell_Fire_FlameBolt", "fire", 6, 0, "enemy", { E("damage", 10), E("dot", 2, 2) })
@@ -123,6 +139,14 @@ Define("benedictus_3", "Spell_Holy_HolyNova", "holy", 6, 1, "none", { E("damage"
 Define("hamuul_1", "Spell_Nature_AbolishMagic", "nature", 4, 0, "enemy", { E("damage", 9) })
 Define("hamuul_2", "Spell_Nature_Rejuvenation", "nature", 3, 0, "ally", { E("hot", 6, 3) })
 Define("hamuul_3", "Spell_Nature_StrangleVines", "nature", 5, 3, "enemy", { E("stun"), E("dot", 4, 2) })
+
+Define("fandral_1", "Spell_Nature_StarFall", "arcane", 5, 0, "enemy", { E("damage", 7), E("dot", 3, 2) })
+Define("fandral_2", "Spell_Nature_Thorns", "nature", 2, 1, "ally", { E("buff", "thorns", 5, 3) })
+Define("fandral_3", "Spell_Nature_Cyclone", "nature", 7, 2, "none", { E("damage", 5, "all"), E("buff", "speed", 2, 2, "all") }, { harmful = true })
+
+Define("drekthar_1", "Spell_Frost_FrostShock", "frost", 4, 0, "enemy", { E("damage", 8), E("buff", "speed", 2, 2) })
+Define("drekthar_2", "Spell_Nature_HealingWaveGreater", "nature", 5, 1, "ally", { E("heal", 14) })
+Define("drekthar_3", "Spell_Frost_FrostWard", "frost", 6, 2, "none", { E("damage", 5, "all"), E("buff", "dmg", -0.2, 2, "all") }, { harmful = true })
 
 -- Creatures --------------------------------------------------------------------------------
 -- Shared by the zone foes; `ai` weights how often the enemy picks it.
@@ -156,6 +180,15 @@ Define("e_explode", "Spell_Fire_SelfDestruct", "fire", 8, 3, "none", { E("damage
 Define("e_net", "Ability_Ensnare", "physical", 2, 3, "enemy", { E("buff", "speed", 4, 2), E("damage", 3) }, { ai = 0.6 })
 Define("e_plague", "Spell_Shadow_CallofBone", "shadow", 6, 2, "none", { E("dot", 3, 3, "all") }, { harmful = true, ai = 0.7 })
 Define("e_wave", "Spell_Frost_SummonWaterElemental", "frost", 6, 2, "none", { E("damage", 4, "all") }, { harmful = true, ai = 0.7 })
+
+Define("e_fireball", "Spell_Fire_FlameBolt", "fire", 6, 1, "enemy", { E("damage", 8), E("dot", 2, 2) })
+Define("e_volley", "Spell_Shadow_ShadowBolt", "shadow", 7, 2, "none", { E("damage", 4, "all") }, { harmful = true, ai = 0.7 })
+Define("e_thunderclap", "Ability_ThunderClap", "physical", 6, 2, "none", { E("damage", 4, "all"), E("buff", "speed", 2, 2, "all") }, { harmful = true, ai = 0.7 })
+Define("e_chainlight", "Spell_Nature_ChainLightning", "nature", 6, 1, "enemy", { E("damage", 6), E("damage", 3, "adjacent") })
+Define("e_sunder", "Ability_Warrior_Sunder", "physical", 4, 2, "enemy", { E("attack", 1), E("buff", "taken", 0.25, 2) }, { ai = 0.7 })
+Define("e_bloodlust", "Spell_Nature_BloodLust", "nature", 2, 3, "none", { E("buff", "speed", -2, 2, "allies"), E("buff", "dmg", 0.15, 2, "allies") }, { ai = 0.6 })
+Define("e_shadowword", "Spell_Shadow_ShadowWordPain", "shadow", 4, 1, "enemy", { E("dot", 5, 3) })
+Define("e_flamestrike", "Spell_Fire_SelfDestruct", "fire", 8, 2, "none", { E("damage", 3, "all"), E("dot", 2, 2, "all") }, { harmful = true, ai = 0.7 })
 
 -- Bosses ----------------------------------------------------------------------------------------
 -- Every boss has three abilities; heroic adds the fourth.
@@ -249,3 +282,123 @@ Define("burnside_1", "Spell_Holy_HolySmite", "holy", 5, 0, "enemy", { E("damage"
 Define("burnside_2", "Spell_Holy_SealOfProtection", "holy", 2, 2, "ally", { E("shield") }, { ai = 0.8 })
 Define("burnside_3", "Spell_Holy_PrayerOfHealing02", "holy", 7, 2, "none", { E("heal", 10, "allies") }, { ai = 0.8 })
 Define("burnside_h", "Spell_Holy_SealOfMight", "holy", 3, 3, "enemy", { E("damage", 5), E("stun") })
+
+Define("arnak_1", "Ability_WarStomp", "physical", 6, 0, "enemy", { E("attack", 5) })
+Define("arnak_2", "Spell_Nature_EarthBindTotem", "nature", 3, 2, "none", { E("damage", 4, "all"), E("buff", "speed", 2, 2, "all") }, { harmful = true })
+Define("arnak_3", "Spell_Nature_StoneSkinTotem", "nature", 2, 3, "none", { E("taunt", 2), E("absorb", 18, "self") }, { ai = 0.7 })
+Define("arnak_h", "Spell_Fire_SearingTotem", "fire", 5, 2, "none", { E("dot", 4, 3, "all") }, { harmful = true })
+
+Define("perenolde_1", "Spell_Shadow_ShadowBolt", "shadow", 5, 0, "enemy", { E("damage", 9) })
+Define("perenolde_2", "Ability_Warrior_BattleShout", "physical", 4, 2, "none", { E("buff", "atk", 3, nil, "allies"), E("heal", 10, "self") }, { ai = 0.7 })
+Define("perenolde_3", "Spell_Shadow_CurseOfTounges", "shadow", 3, 2, "none", { E("buff", "dmg", -0.3, 2, "all") }, { harmful = true, ai = 0.7 })
+Define("perenolde_h", "Spell_Shadow_Possession", "shadow", 2, 3, "enemy", { E("stun"), E("damage", 5) })
+
+Define("myzrael_1", "Spell_Nature_EarthShock", "nature", 5, 0, "enemy", { E("damage", 9) })
+Define("myzrael_2", "Spell_Nature_Earthquake", "nature", 7, 2, "none", { E("damage", 6, "all") }, { harmful = true })
+Define("myzrael_3", "Spell_Holy_PowerWordShield", "arcane", 3, 3, "none", { E("absorb", 10, "allies") }, { ai = 0.7 })
+Define("myzrael_h", "Spell_Nature_StoneClawTotem", "nature", 4, 3, "none", { E("damage", 4, "all"), E("stun", "random") }, { harmful = true })
+
+Define("theradras_1", "Spell_Nature_Earthquake", "physical", 6, 0, "enemy", { E("attack", 6) })
+Define("theradras_2", "Spell_Nature_Acid_01", "nature", 5, 2, "none", { E("damage", 5, "all"), E("buff", "dmg", -0.2, 2, "all") }, { harmful = true })
+Define("theradras_3", "Spell_Shadow_Charm", "nature", 3, 3, "enemy", { E("stun"), E("taunt", 1, "self") }, { ai = 0.7 })
+Define("theradras_h", "Spell_Nature_Regeneration", "nature", 1, 3, "none", { E("heal", 28, "self") })
+
+Define("necrokhan_1", "Spell_Shadow_ShadowBolt", "shadow", 5, 0, "enemy", { E("damage", 8), E("heal", 4, "self") })
+Define("necrokhan_2", "Spell_Shadow_RaiseDead", "shadow", 3, 3, "none", { E("absorb", 10, "allies") }, { ai = 0.7 })
+Define("necrokhan_3", "Spell_Shadow_CallofBone", "shadow", 6, 2, "none", { E("dot", 4, 3, "all") }, { harmful = true })
+Define("necrokhan_h", "Spell_Shadow_DeathCoil", "shadow", 4, 3, "enemy", { E("damage", 7), E("stun") })
+
+Define("clugfist_1", "INV_Mace_01", "physical", 6, 0, "enemy", { E("attack", 6) })
+Define("clugfist_2", "Ability_WarStomp", "physical", 7, 2, "none", { E("damage", 6, "all") }, { harmful = true })
+Define("clugfist_3", "Spell_Shadow_UnholyFrenzy", "physical", 2, 2, "none", { E("buff", "atkPct", 0.5, 2, "self"), E("taunt", 1) }, { ai = 0.7 })
+Define("clugfist_h", "Ability_Warrior_PunishingBlow", "physical", 4, 3, "enemy", { E("damage", 6), E("stun") })
+
+Define("bangalash_1", "Ability_Druid_Rake", "physical", 4, 0, "enemy", { E("attack", 6) })
+Define("bangalash_2", "Ability_Druid_Ravage", "physical", 5, 1, "enemy", { E("dot", 5, 3) })
+Define("bangalash_3", "Ability_Hunter_Pet_Cat", "physical", 3, 2, "none", { E("buff", "dmg", 0.3, 2, "allies") }, { ai = 0.7 })
+Define("bangalash_h", "Ability_Druid_SupriseAttack", "physical", 2, 3, "enemy", { E("damage", 6), E("stun") })
+
+Define("archaedas_1", "Spell_Nature_Earthquake", "physical", 6, 0, "enemy", { E("attack", 5) })
+Define("archaedas_2", "Spell_Nature_StoneClawTotem", "nature", 3, 3, "none", { E("absorb", 12, "allies") }, { ai = 0.7 })
+Define("archaedas_3", "Ability_Warrior_DefensiveStance", "physical", 2, 2, "none", { E("taunt", 2), E("buff", "taken", -0.4, 2, "self") }, { ai = 0.7 })
+Define("archaedas_h", "Spell_Nature_EarthShock", "nature", 7, 3, "none", { E("damage", 6, "all"), E("stun", "random") }, { harmful = true })
+
+Define("eranikus_1", "Spell_Shadow_ShadowBolt", "shadow", 5, 0, "enemy", { E("damage", 10) })
+Define("eranikus_2", "Spell_Nature_Acid_01", "nature", 7, 2, "none", { E("damage", 6, "all") }, { harmful = true })
+Define("eranikus_3", "Spell_Nature_Sleep", "nature", 3, 3, "none", { E("stun", "random"), E("damage", 3, "all") }, { harmful = true })
+Define("eranikus_h", "Spell_Shadow_ShadowWordPain", "shadow", 4, 2, "none", { E("dot", 4, 3, "all") }, { harmful = true })
+
+Define("onyxia_1", "Spell_Fire_Fire", "fire", 5, 0, "enemy", { E("damage", 10) })
+Define("onyxia_2", "Ability_Warrior_PunishingBlow", "physical", 6, 2, "none", { E("damage", 5, "all") }, { harmful = true })
+Define("onyxia_3", "Spell_Fire_SelfDestruct", "fire", 9, 3, "none", { E("damage", 9, "all") }, { harmful = true })
+Define("onyxia_h", "Spell_Shadow_UnholyFrenzy", "physical", 3, 3, "none", { E("damage", 4, "all"), E("stun", "random") }, { harmful = true })
+
+Define("gordok_1", "Ability_Warrior_SavageBlow", "physical", 5, 0, "enemy", { E("attack", 7) })
+Define("gordok_2", "Ability_WarStomp", "physical", 6, 2, "none", { E("damage", 5, "all"), E("buff", "speed", 2, 2, "all") }, { harmful = true })
+Define("gordok_3", "Ability_Warrior_Sunder", "physical", 3, 2, "enemy", { E("attack", 2), E("buff", "taken", 0.3, 3) }, { ai = 0.7 })
+Define("gordok_h", "Spell_Shadow_UnholyFrenzy", "physical", 2, 3, "none", { E("buff", "atkPct", 0.5, 3, "allies") })
+
+Define("gahzrilla_1", "Spell_Frost_FrostBolt02", "frost", 5, 0, "enemy", { E("damage", 9), E("buff", "speed", 2, 2) })
+Define("gahzrilla_2", "Spell_Frost_Glacier", "frost", 3, 3, "enemy", { E("stun"), E("damage", 4) })
+Define("gahzrilla_3", "Ability_Warrior_PunishingBlow", "physical", 7, 2, "none", { E("damage", 7, "all") }, { harmful = true })
+Define("gahzrilla_h", "Spell_Nature_Regeneration", "nature", 1, 3, "none", { E("heal", 30, "self") })
+
+Define("hexx_1", "Spell_Shadow_ShadowBolt", "shadow", 5, 0, "enemy", { E("damage", 10) })
+Define("hexx_2", "Spell_Nature_Drowsy", "nature", 3, 3, "enemy", { E("stun"), E("buff", "dmg", -0.3, 2) })
+Define("hexx_3", "Spell_Holy_FlashHeal", "holy", 6, 1, "none", { E("heal", 18, "lowest") }, { ai = 0.8 })
+Define("hexx_h", "Spell_Shadow_ShadowWordPain", "shadow", 4, 2, "none", { E("dot", 4, 3, "all") }, { harmful = true })
+
+Define("thaurissan_1", "Spell_Fire_FlameShock", "fire", 5, 0, "enemy", { E("damage", 10) })
+Define("thaurissan_2", "Spell_Fire_Immolation", "fire", 7, 2, "none", { E("damage", 5, "all"), E("dot", 2, 2, "all") }, { harmful = true })
+Define("thaurissan_3", "Spell_Fire_FireArmor", "fire", 3, 2, "none", { E("buff", "dmg", 0.3, 2, "allies") }, { ai = 0.7 })
+Define("thaurissan_h", "Spell_Fire_SealOfFire", "fire", 8, 3, "none", { E("damage", 8, "all") }, { harmful = true })
+
+Define("azuregos_1", "Spell_Frost_FrostNova", "frost", 5, 0, "enemy", { E("damage", 9), E("buff", "speed", 2, 2) })
+Define("azuregos_2", "Spell_Arcane_PortalUnderCity", "arcane", 6, 2, "none", { E("damage", 6, "all") }, { harmful = true })
+Define("azuregos_3", "Spell_Nature_StormReach", "arcane", 4, 2, "none", { E("dot", 4, 3, "all") }, { harmful = true })
+Define("azuregos_h", "Spell_Arcane_Blink", "arcane", 1, 3, "none", { E("absorb", 25, "self") })
+
+Define("kazzak_1", "Ability_Warrior_Cleave", "physical", 6, 0, "enemy", { E("attack", 5), E("damage", 5, "adjacent") })
+Define("kazzak_2", "Spell_Shadow_ShadowBolt", "shadow", 7, 2, "none", { E("damage", 7, "all") }, { harmful = true })
+Define("kazzak_3", "Spell_Shadow_AntiShadow", "shadow", 3, 2, "enemy", { E("dot", 6, 3) })
+Define("kazzak_h", "Spell_Shadow_SoulLeech_3", "shadow", 2, 3, "none", { E("heal", 30, "self") })
+
+Define("banehollow_1", "Spell_Shadow_ShadowBolt", "shadow", 5, 0, "enemy", { E("damage", 11) })
+Define("banehollow_2", "Spell_Nature_Sleep", "shadow", 3, 3, "none", { E("stun", "random") }, { harmful = true })
+Define("banehollow_3", "Spell_Shadow_CarrionSwarm", "shadow", 6, 2, "none", { E("damage", 6, "all"), E("buff", "dmg", -0.2, 2, "all") }, { harmful = true })
+Define("banehollow_h", "Spell_Shadow_SiphonMana", "shadow", 4, 2, "enemy", { E("damage", 8), E("heal", 10, "self") })
+
+Define("mosh_1", "Ability_Hunter_Pet_Raptor", "physical", 4, 0, "enemy", { E("attack", 8) })
+Define("mosh_2", "Ability_WarStomp", "physical", 7, 2, "none", { E("damage", 7, "all") }, { harmful = true })
+Define("mosh_3", "Ability_Warrior_WarCry", "physical", 3, 2, "none", { E("buff", "dmg", -0.3, 2, "all") }, { harmful = true, ai = 0.7 })
+Define("mosh_h", "Spell_Shadow_UnholyFrenzy", "physical", 2, 3, "none", { E("buff", "atkPct", 0.6, 3, "self") })
+
+Define("rend_1", "Ability_Warrior_Cleave", "physical", 6, 0, "enemy", { E("attack", 5), E("damage", 4, "adjacent") })
+Define("rend_2", "Ability_Whirlwind", "physical", 7, 2, "none", { E("attack", 0, "all", true) }, { harmful = true })
+Define("rend_3", "Ability_Warrior_BattleShout", "physical", 3, 2, "none", { E("buff", "atk", 4, nil, "allies") }, { ai = 0.7 })
+Define("rend_h", "Ability_Warrior_DecisiveStrike", "physical", 5, 3, "enemy", { E("damage", 14) })
+
+Define("gandling_1", "Spell_Arcane_StarFire", "arcane", 5, 0, "enemy", { E("damage", 10) })
+Define("gandling_2", "Spell_Shadow_AntiShadow", "shadow", 2, 3, "none", { E("absorb", 25, "self") }, { ai = 0.7 })
+Define("gandling_3", "Spell_Shadow_CurseOfMannoroth", "shadow", 4, 2, "none", { E("dot", 5, 3, "all") }, { harmful = true })
+Define("gandling_h", "Spell_Shadow_SealOfKings", "shadow", 3, 3, "enemy", { E("stun"), E("damage", 6) })
+
+Define("rivendare_1", "Ability_Warrior_SavageBlow", "physical", 5, 0, "enemy", { E("attack", 7) })
+Define("rivendare_2", "Spell_Shadow_DeathPact", "shadow", 6, 2, "none", { E("dot", 3, 3, "all") }, { harmful = true })
+Define("rivendare_3", "Spell_Shadow_RaiseDead", "shadow", 3, 3, "none", { E("absorb", 12, "allies"), E("taunt", 1) }, { ai = 0.7 })
+Define("rivendare_h", "Spell_Shadow_UnholyFrenzy", "shadow", 1, 3, "none", { E("heal", 30, "self") })
+
+Define("winterfall_1", "Ability_Druid_Rake", "physical", 5, 0, "enemy", { E("attack", 6) })
+Define("winterfall_2", "Spell_Frost_FrostShock", "frost", 6, 2, "none", { E("damage", 5, "all"), E("buff", "speed", 2, 2, "all") }, { harmful = true })
+Define("winterfall_3", "Spell_Nature_Purge", "nature", 3, 2, "none", { E("buff", "atk", 4, nil, "allies") }, { ai = 0.7 })
+Define("winterfall_h", "Spell_Shadow_UnholyFrenzy", "physical", 2, 3, "none", { E("buff", "atkPct", 0.5, 3, "self"), E("heal", 15, "self") })
+
+Define("cthun_1", "INV_Misc_Eye_01", "shadow", 5, 0, "enemy", { E("damage", 11), E("damage", 5, "adjacent") })
+Define("cthun_2", "Spell_Shadow_Charm", "shadow", 9, 3, "none", { E("damage", 9, "all") }, { harmful = true })
+Define("cthun_3", "Spell_Shadow_MindFlay", "shadow", 3, 2, "enemy", { E("stun"), E("dot", 4, 2) })
+Define("cthun_h", "Spell_Shadow_GatherShadows", "shadow", 2, 3, "none", { E("absorb", 15, "allies"), E("damage", 4, "all") }, { harmful = true })
+
+Define("archimonde_1", "Spell_Shadow_Teleport", "shadow", 8, 0, "enemy", { E("damage", 14) })
+Define("archimonde_2", "Spell_Fire_Incinerate", "fire", 5, 2, "none", { E("dot", 5, 3, "all") }, { harmful = true })
+Define("archimonde_3", "Spell_Shadow_Shadowfury", "shadow", 6, 2, "none", { E("damage", 6, "all"), E("stun", "random") }, { harmful = true })
+Define("archimonde_h", "Spell_Shadow_CurseOfAchimonde", "shadow", 3, 3, "none", { E("buff", "dmg", -0.4, 2, "all"), E("dot", 3, 2, "all") }, { harmful = true })

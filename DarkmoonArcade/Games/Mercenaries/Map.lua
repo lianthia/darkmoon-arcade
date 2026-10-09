@@ -26,6 +26,7 @@ local MYSTERY_ICON = {
     portal = "Interface\\Icons\\Spell_Arcane_PortalIronForge", cursed = "Interface\\Icons\\Spell_Shadow_CurseOfSargeras",
     bonus = "Interface\\Icons\\INV_Misc_Coin_02", recruit = "Interface\\Icons\\Achievement_Character_Human_Male",
 }
+MC.MYSTERY_ICON = MYSTERY_ICON
 local NODE_METAL = { boss = "gold", elite = "gold", fight = "bronze", healer = "silver", boon = "silver", mystery = "silver" }
 
 local function DarkPanel(parent, x, y, w, h)

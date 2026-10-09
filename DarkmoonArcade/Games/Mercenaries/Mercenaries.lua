@@ -190,16 +190,28 @@ function Module:Travel(layer, index)
     local run = store.run
     if not run or not Bounty.Travel(store, run, layer, index) then return end
     local node = Bounty.Node(run)
+    -- What happened at the stop is shown in a window that waits for the player.
+    local event
     if node.type == "boon" then
-        self:MapEvent(L.MC_EVENT_BOON:format(Describe.RoleName(node.role), Bounty.BoonTier(run) * 10))
-    elseif node.type == "mystery" and node.mystery == "recruit" and run.phase == "map" then
-        self:MapEvent(run.guestJoined and L.MC_EVENT_RECRUIT:format(Describe.MercName(run.guestJoined)) or L.MC_EVENT_BONUS)
+        event = { icon = MC.Tex("role_" .. node.role), title = L.MC_NODE_BOON,
+            text = L.MC_EVENT_BOON:format(Describe.RoleName(node.role), Bounty.BoonTier(run) * 10) }
     elseif node.type == "mystery" and run.phase == "map" then
-        self:MapEvent(L["MC_EVENT_" .. node.mystery:upper()])
+        local kind = node.mystery
+        local text = L["MC_EVENT_" .. kind:upper()]
+        if kind == "recruit" then
+            if run.guestJoined then
+                text = L.MC_EVENT_RECRUIT:format(Describe.MercName(run.guestJoined))
+            else
+                kind, text = "bonus", L.MC_EVENT_BONUS
+            end
+        end
+        event = { icon = MC.MYSTERY_ICON[kind], title = L["MC_MYSTERY_" .. kind:upper()], text = text,
+            merc = kind == "recruit" and run.guestJoined or nil }
     elseif node.type == "healer" and run.phase == "map" then
-        self:MapEvent(L.MC_EVENT_HEALER_IDLE)
+        event = { icon = "Interface\\Icons\\Spell_Holy_Resurrection", title = L.MC_NODE_HEALER, text = L.MC_EVENT_HEALER_IDLE }
     end
     self:Route()
+    if event and self:Store().run.phase == "map" then self.overlay:Show("event", event) end
 end
 
 -- Called by the battle view once the last animation of a finished battle has played.
@@ -402,6 +414,37 @@ function Module:CreatePages()
         decline:SetShown(cursed)
     end
 
+    -- An event on the way: what the stop brought, until the player moves on.
+    local eventPage = overlay:AddPage("event")
+    local card = OptionButton(eventPage, 320, 170)
+    card:SetPoint("CENTER", 0, 20)
+    card:EnableMouse(false)
+    MC.Kit.NoHover(card)
+    card.name:SetFont(Media.FontFile(), 18, "")
+    card.desc:SetFont(Media.FontFile(), 13, "")
+    local eventToken = MC.CreateToken(eventPage)
+    eventToken:SetScale(0.7)
+    eventToken:SetPoint("BOTTOM", card, "TOP", 0, -30 / 0.7)
+    eventToken:EnableMouse(false)
+    local eventGo = MC.Kit.Button(eventPage, 180, 30, "MC_CONTINUE", function() self.overlay:Hide() end, "blue")
+    eventGo:SetPoint("TOP", card, "BOTTOM", 0, -16)
+    self.eventContinue = eventGo
+    eventPage.refresh = function(ev)
+        if not ev then return end
+        card.icon:SetTexture(ev.icon)
+        card.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+        card.name:SetText(ev.title)
+        card.desc:SetText(ev.text)
+        eventToken:SetShown(ev.merc ~= nil)
+        if ev.merc then
+            local run = self:Store().run
+            local member = run and run.party[#run.party]
+            local unit = MC.PreviewUnit(self:Store(), ev.merc, member and member.guest)
+            unit.side = "ally"
+            eventToken:SetData(unit)
+        end
+    end
+
     -- Spirit healer: bring one fallen mercenary back.
     local healer = overlay:AddPage("healer")
     Widgets.PageTitle(healer, "MC_HEALER_TITLE", -60)
@@ -432,6 +475,8 @@ function Module:CreatePages()
         local run = self:Store().run
         if not run then return end
         local dead = Bounty.DeadMembers(run)
+        -- The healer only waits when someone has fallen; one of them must be brought back.
+        hSkip:SetShown(#dead == 0)
         for i, b in ipairs(hButtons) do
             local idx = dead[i]
             b:SetShown(idx ~= nil)

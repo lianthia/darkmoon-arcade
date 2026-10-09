@@ -671,6 +671,8 @@ function Bounty.Revive(run, memberIdx)
     if member then
         if not member.dead then return false end
         member.dead = false
+    elseif #Bounty.DeadMembers(run) > 0 then
+        return false -- someone has to be brought back
     end
     run.phase = "map"
     return true

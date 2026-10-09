@@ -189,3 +189,9 @@ if run then
     Tick(4)
     if Want("result") then Snap("result") end
 end
+
+-- An event window, as a mystery shows it.
+if Want("event") then
+    mc.overlay:Show("event", { icon = MC.MYSTERY_ICON.sabotage, title = ns.L.MC_MYSTERY_SABOTAGE, text = ns.L.MC_EVENT_SABOTAGE })
+    Snap("event")
+end

@@ -43,19 +43,29 @@ local BOSS_ICON = {
     murkdeep = "INV_Misc_Head_Murloc_01", kodobane = "INV_Spear_02", gathilzogg = "INV_Misc_Head_Orc_01",
     gerenzo = "INV_Misc_Bomb_08", stitches = "Spell_Shadow_RaiseDead", nekrosh = "INV_Misc_Head_Dragon_Black",
     burnside = "Spell_Holy_SealOfWisdom",
+    arnak = "INV_Misc_Head_Tauren_01", perenolde = "INV_Misc_Bag_11", myzrael = "Spell_Nature_Earthquake",
+    theradras = "INV_Misc_Root_01", necrokhan = "Spell_Shadow_RaiseDead", clugfist = "INV_Mace_01",
+    bangalash = "Ability_Hunter_Pet_Cat", archaedas = "INV_Misc_StoneTablet_04", eranikus = "INV_Misc_Head_Dragon_Green",
+    onyxia = "INV_Misc_Head_Dragon_01", gordok = "INV_Crown_02", gahzrilla = "Spell_Frost_Glacier",
+    hexx = "Spell_Shadow_ShadowWordPain", thaurissan = "Spell_Fire_FlameShock", azuregos = "INV_Misc_Head_Dragon_Blue",
+    kazzak = "Spell_Shadow_SummonFelGuard", banehollow = "Spell_Shadow_CarrionSwarm", mosh = "Ability_Hunter_Pet_Raptor",
+    rend = "INV_Misc_Head_Orc_01", gandling = "Spell_Arcane_StarFire", rivendare = "Spell_Shadow_DeathPact",
+    winterfall = "Spell_Frost_FrostShock", cthun = "INV_Misc_Eye_01", archimonde = "Spell_Shadow_CurseOfAchimonde",
 }
 MC.BOSS_ART, MC.BOSS_ICON = BOSS_ART, BOSS_ICON
 
 -- Regions of each continent the travel point zooms into.
 local REGIONS = {
     ek = {
-        { key = "lordaeron", zones = { "tirisfal", "silverpine", "hillsbrad" } },
-        { key = "khazmodan", zones = { "dunmorogh", "lochmodan", "wetlands" } },
-        { key = "azeroth", zones = { "elwynn", "westfall", "redridge", "duskwood" } },
+        { key = "lordaeron", zones = { "tirisfal", "silverpine", "hillsbrad", "alterac", "arathi", "hinterlands", "westernplaguelands", "easternplaguelands" } },
+        { key = "khazmodan", zones = { "dunmorogh", "lochmodan", "wetlands", "badlands", "searinggorge" } },
+        { key = "azeroth", zones = { "elwynn", "westfall", "redridge", "duskwood", "burningsteppes", "riverglades" } },
+        { key = "southlands", zones = { "stranglethorn", "swampofsorrows", "blastedlands" } },
     },
     kal = {
-        { key = "northkal", zones = { "teldrassil", "darkshore", "ashenvale" } },
-        { key = "centralkal", zones = { "stonetalon", "barrens", "durotar", "mulgore" } },
+        { key = "northkal", zones = { "teldrassil", "darkshore", "ashenvale", "felwood", "azshara", "winterspring", "hyjal" } },
+        { key = "centralkal", zones = { "stonetalon", "barrens", "durotar", "mulgore", "desolace", "shendralas", "dustwallow", "thousandneedles" } },
+        { key = "southkal", zones = { "feralas", "tanaris", "ungoro", "silithus" } },
     },
     zephras = {
         { key = "zephras", zones = { "zephras" } },
@@ -93,9 +103,15 @@ local function RegionView(region)
     return FitView(l, r, t, b, 0.03)
 end
 
+-- The whole continent: every zone of it with a little room round.
 local function ContinentView(continent)
     if continent == "zephras" then return 0.05, 0.95, 0.03, 0.97 end
-    return FitView(0.36, 0.66, 0.06, 0.86, 0.02)
+    local l, r, t, b = 1, 0, 1, 0
+    for _, region in ipairs(REGIONS[continent]) do
+        local rl, rr, rt, rb = RegionBounds(region)
+        l, r, t, b = math.min(l, rl), math.max(r, rr), math.min(t, rt), math.max(b, rb)
+    end
+    return FitView(l, r, t, b, 0.02)
 end
 
 -- What the collection shows of a mercenary: its level, equipment and ranks applied.
