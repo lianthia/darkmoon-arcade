@@ -135,7 +135,7 @@ def tint(img, color, alpha, desat):
     return Image.merge("RGBA", (r, g, b, a))
 
 
-COLOR_CODE = re.compile(r"\|c([0-9a-fA-F]{8})|\|r|\|T.-\|t")
+COLOR_CODE = re.compile(r"\|c([0-9a-fA-F]{8})|\|r|\|T.*?\|t")
 
 
 def draw_item(canvas, item, assets):
@@ -284,6 +284,7 @@ def main():
     header = smoke[:smoke.index("\nlocal ns = {}")]
     script = header + "\n" + (ROOT / "tests" / "render_mock.lua").read_text(encoding="utf-8") + "\n" + \
         (ROOT / "tests" / "render.lua").read_text(encoding="utf-8")
+    g.print = lambda *a: __builtins__.print(*a)
     try:
         lua.execute(script)
     finally:

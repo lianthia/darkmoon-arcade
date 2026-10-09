@@ -1,5 +1,5 @@
--- The bounty map: coins on the zone's own map from the start at the bottom to the boss at the top,
--- joined by dashed paths. The party waits on the left, the chosen encounter on the right.
+-- The bounty map: coins on a parchment from the start at the bottom to the boss at the top, joined
+-- by dashed paths. The party waits on the left, the chosen encounter on the right.
 
 local _, ns = ...
 local MC = ns.Mercenaries
@@ -10,7 +10,7 @@ local W, H = MC.W, MC.H
 
 local MAP_LEFT, MAP_RIGHT = 206, 634
 local MAP_CX = (MAP_LEFT + MAP_RIGHT) / 2
-local MAP_TOP, MAP_BOTTOM = 84, H - 48
+local MAP_TOP, MAP_BOTTOM = 124, H - 48
 local NODE, ELITE_NODE, BOSS_NODE, NODE_GAP = 48, 56, 76, 108
 local MAX_NODES = 32
 local DASH_GAP = 13
@@ -44,18 +44,20 @@ function Module:BuildMap()
     local wood = Kit.Wood(view, W, H, true)
     wood:SetPoint("TOPLEFT")
 
-    -- The zone's own map under the path, in a gold rim.
-    local art = MC.CreateMapCanvas(view, MAP_RIGHT - MAP_LEFT, H - 20)
+    -- A sheet of parchment under the path, in a gold rim.
+    local art = CreateFrame("Frame", nil, view)
+    art:SetSize(MAP_RIGHT - MAP_LEFT, H - 20)
     art:SetPoint("TOPLEFT", MAP_LEFT, -10)
-    Widgets.Rim(view, art)
-    view.art = art
-    local edge = CreateFrame("Frame", nil, art)
-    edge:SetAllPoints()
-    edge:SetFrameLevel(art:GetFrameLevel() + 2)
-    local vignette = edge:CreateTexture(nil, "ARTWORK")
+    local paper = art:CreateTexture(nil, "BACKGROUND")
+    paper:SetAllPoints()
+    Kit.Atlas(paper, "spellbook-page-left-c60", MC.Tex("poster"))
+    paper:SetTexCoord(0.17, 0.83, 0, 1)
+    local vignette = art:CreateTexture(nil, "BORDER")
     vignette:SetAllPoints()
     vignette:SetTexture(MC.Tex("vignette"))
-    vignette:SetAlpha(0.65)
+    vignette:SetAlpha(0.45)
+    Widgets.Rim(view, art)
+    view.art = art
 
     local dashes = CreateFrame("Frame", nil, view)
     dashes:SetAllPoints()
@@ -69,10 +71,6 @@ function Module:BuildMap()
     self.mapNodes = {}
     for i = 1, MAX_NODES do
         local b = Kit.Coin(nodes, NODE)
-        b.check = b:CreateTexture(nil, "OVERLAY", nil, 3)
-        b.check:SetTexture("Interface\\RaidFrame\\ReadyCheck-Ready")
-        b.check:SetSize(18, 18)
-        b.check:SetPoint("BOTTOMRIGHT", 2, -2)
         b.here = b:CreateTexture(nil, "OVERLAY", nil, 4)
         b.here:SetSize(26, 26)
         b.here:SetPoint("BOTTOM", b, "TOP", 0, -6)
@@ -83,7 +81,7 @@ function Module:BuildMap()
             self:SelectNode(b.layer, b.index, true)
             self:TravelSelected()
         end)
-        b:HookScript("OnEnter", function() self:ShowNodeInfo(b.layer, b.index) end)
+        b:HookScript("OnEnter", function() if b.open then self:ShowNodeInfo(b.layer, b.index) end end)
         b:HookScript("OnLeave", function() self:ShowNodeInfo() end)
         Kit.Hover(b, { grow = 1.14, sound = false })
         b:Hide()
@@ -214,8 +212,7 @@ end
 function Module:NodeIcon(run, node, visited)
     if node.type == "boss" then
         local boss = MC.Zones[run.zone].boss
-        if MC.BOSS_ART[boss] then return MC.BOSS_ART[boss], true end
-        return "Interface\\Icons\\" .. (MC.BOSS_ICON[boss] or "INV_Misc_Bone_HumanSkull_01")
+        return "Interface\\Icons\\" .. (MC.BOSS_ICON[boss] or "INV_Misc_Bone_HumanSkull_01"), MC.Enemies[boss].display
     end
     if node.type == "boon" then return MC.Tex("role_" .. node.role) end
     if node.type == "mystery" and visited then return MYSTERY_ICON[node.mystery] or NODE_ICON.mystery end
@@ -228,14 +225,26 @@ function Module:RefreshMap()
     local view = self.views.map
     if not run then return end
     self:SetScene(nil)
-    local u0, u1, v0, v1 = MC.ZoneView((MAP_RIGHT - MAP_LEFT) / (H - 20))
-    view.art:SetMap(run.zone, u0, u1, v0, v1)
-    view.art:SetTint(0.95, 0.92, 0.86)
+    -- Keep the selection on a reachable stop.
+    if not self.mapSelection or not self:IsReachable(run, self.mapSelection.layer, self.mapSelection.index) then
+        local first = Bounty.Choices(run)[1]
+        self.mapSelection = first and { layer = first.layer, index = first.index } or nil
+    end
     view.title:SetText(Describe.ZoneName(run.zone) .. (run.heroic and (" (" .. L.MC_HEROIC .. ")") or ""))
 
     local visited = {}
     for _, key in ipairs(run.visited) do visited[key] = true end
     local layers = run.map.layers
+    -- Stops that can still be reached: the next choices and everything their paths lead to.
+    local ahead = {}
+    for _, c in ipairs(Bounty.Choices(run)) do ahead[c.layer .. ":" .. c.index] = true end
+    for l, row in ipairs(layers) do
+        for i, node in ipairs(row) do
+            if ahead[l .. ":" .. i] then
+                for _, j in ipairs(node.links) do ahead[(l + 1) .. ":" .. j] = true end
+            end
+        end
+    end
     local used, dashCount = 0, 0
     for l, row in ipairs(layers) do
         for i, node in ipairs(row) do
@@ -244,20 +253,27 @@ function Module:RefreshMap()
             local x, y = self:NodePoint(run, l, i)
             local size = NodeSize(node)
             local key = l .. ":" .. i
-            Kit.SetBaseScale(b, size / NODE)
             Kit.Place(b, x, y, self.nodeLayer)
             b.layer, b.index = l, i
-            local icon, portrait = self:NodeIcon(run, node, visited[key])
-            b.icon:SetTexture(icon)
-            if portrait then b.icon:SetTexCoord(0.1, 0.6, 0, 1) else b.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93) end
+            local icon, display = self:NodeIcon(run, node, visited[key])
+            if not (display and b:SetCreature(display)) then b:SetIcon(icon) end
             b:SetMetal(NODE_METAL[node.type])
             local reachable = self:IsReachable(run, l, i)
             local current = run.layer == l and run.index == i
-            b.reachable = reachable
-            b.icon:SetDesaturated(not reachable and not current and not visited[key])
-            b.check:SetShown(visited[key] and not current)
+            local done = visited[key] and not current
+            local open = ahead[key] or false
+            b.reachable, b.open = reachable, open
+            -- Finished stops get a check, stops left behind fade; neither reacts to the mouse.
+            b.icon:SetDesaturated(done or not (open or current))
+            b:SetAlpha((open or current or done) and 1 or 0.45)
+            b.check:SetShown(done)
             b.here:SetShown(current)
-            Kit.SetSelected(b, reachable, true)
+            b:EnableMouse(open)
+            Kit.SetHoverEnabled(b, open)
+            local selected = self.mapSelection and self.mapSelection.layer == l and self.mapSelection.index == i
+            Kit.SetSelected(b, reachable and selected or false, true)
+            Kit.SetPulse(b, (reachable and not selected) and 0.5 or nil)
+            Kit.SetBaseScale(b, size / NODE * (selected and 1.12 or 1))
             b:Show()
             for _, j in ipairs(node.links) do
                 local x2, y2 = self:NodePoint(run, l + 1, j)
@@ -299,11 +315,6 @@ function Module:RefreshMap()
     if run.portal then effects[#effects + 1] = L.MC_PORTAL_LINE end
     view.effects:SetText(table.concat(effects, "\n"))
 
-    -- Keep the selection on a reachable stop.
-    if not self.mapSelection or not self:IsReachable(run, self.mapSelection.layer, self.mapSelection.index) then
-        local first = Bounty.Choices(run)[1]
-        self.mapSelection = first and { layer = first.layer, index = first.index } or nil
-    end
     self.partyReference = reference
     self:ShowNodeInfo()
 end
@@ -314,6 +325,8 @@ function Module:SelectNode(layer, index, clicked)
     if clicked and self:IsReachable(run, layer, index) then
         self.mapSelection = { layer = layer, index = index }
         MC.Sound("select")
+        self:RefreshMap()
+        return
     end
     self:ShowNodeInfo(layer, index)
 end

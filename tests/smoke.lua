@@ -422,6 +422,8 @@ travel.regions[1]._scripts.OnClick(travel.regions[1])
 Tick(1)
 travel.overview._scripts.OnClick(travel.overview)
 Tick(1)
+travel.regions[3]._scripts.OnClick(travel.regions[3])
+Tick(1)
 local elwynnPin
 for _, pin in ipairs(travel.pins) do
     if pin.zone == "elwynn" then elwynnPin = pin end

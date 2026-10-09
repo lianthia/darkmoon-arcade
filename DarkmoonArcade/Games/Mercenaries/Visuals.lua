@@ -170,7 +170,8 @@ function MC.CreateToken(parent)
     for k, fn in pairs(Token) do f[k] = fn end
     -- Position and animation state, read before the first layout.
     f.x, f.y, f.tx, f.ty = false, false, false, false
-    f.shake, f.nudge, f.fadeIn = 0, 0, false
+    f.shake, f.fadeIn, f.flashT, f.lunge = 0, false, 0, false
+    f.hovered, f.clickable, f.pulse, f.base, f.cur = false, false, false, 1, 1
     f.uid, f.unitKey, f.data = false, false, false
 
     -- Light round the token's outline: targets, bench picks and the selected mercenary.
@@ -203,6 +204,7 @@ function MC.CreateToken(parent)
     f.divine:SetTexture(MC.Tex("divine"))
     f.divine:SetAllPoints()
     f.divine:SetBlendMode("ADD")
+    f.divine:SetAlpha(0.55)
     f.divine:Hide()
     -- The selected mercenary: a bright gold ring round its portrait.
     f.select = top:CreateTexture(nil, "OVERLAY", nil, 0)

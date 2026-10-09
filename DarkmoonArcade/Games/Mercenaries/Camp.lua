@@ -301,13 +301,10 @@ function Module:BuildTravel()
     -- Zone coins.
     view.pins = {}
     for i = 1, 24 do
-        local pin = Kit.Coin(layer, 46)
-        pin.label = Kit.Ink(pin, 11, { 1, 0.95, 0.8 }, "OUTLINE")
-        pin.label:SetPoint("TOP", pin, "BOTTOM", 0, 2)
-        pin.check = pin:CreateTexture(nil, "OVERLAY", nil, 3)
-        pin.check:SetTexture("Interface\\RaidFrame\\ReadyCheck-Ready")
-        pin.check:SetSize(16, 16)
-        pin.check:SetPoint("BOTTOMRIGHT", 2, -2)
+        local pin = Kit.Coin(layer, 50)
+        pin.plate = Kit.Banner(pin, 128, 26, 10)
+        pin.plate:SetPoint("TOP", pin, "BOTTOM", 0, 6)
+        pin.label = pin.plate.text
         pin:SetScript("OnClick", function()
             MC.Sound("select")
             if not self.travelRegion then
@@ -318,7 +315,6 @@ function Module:BuildTravel()
             end
         end)
         pin:HookScript("OnEnter", function()
-            pin.label:Show()
             local zone = MC.Zones[pin.zone]
             GameTooltip:SetOwner(pin, "ANCHOR_RIGHT")
             GameTooltip:SetText(Describe.ZoneName(pin.zone), 1, 0.82, 0)
@@ -326,10 +322,7 @@ function Module:BuildTravel()
             GameTooltip:AddLine(L["MC_E_" .. zone.boss], 0.8, 0.8, 0.8)
             GameTooltip:Show()
         end)
-        pin:HookScript("OnLeave", function()
-            pin.label:SetShown(self.travelRegion ~= nil)
-            GameTooltip:Hide()
-        end)
+        pin:HookScript("OnLeave", GameTooltip_Hide)
         Kit.Hover(pin, { grow = 1.18, sound = false })
         pin:Hide()
         view.pins[i] = pin
@@ -366,34 +359,39 @@ function Module:BuildBossPanel(view)
     panel.pictureMap:SetPoint("TOPLEFT")
     Widgets.Rim(frame, frame)
 
-    panel.token = MC.CreateToken(panel)
-    panel.token:SetPoint("CENTER", panel, "TOP", 0, -194)
+    panel.token = Kit.Coin(panel, 96)
+    panel.token:SetPoint("CENTER", frame, "BOTTOM", 0, -4)
+    panel.token:SetFrameLevel(frame:GetFrameLevel() + 4)
     panel.token:EnableMouse(false)
-    panel.name = Kit.Banner(panel, 200, 38, 13)
-    panel.name:SetPoint("TOP", panel.token, "BOTTOM", 0, 8)
+    panel.level = MC.Badge(panel.token, "level", 28, 12)
+    panel.level:SetPoint("CENTER", panel.token, "TOP", 0, -4)
+    panel.name = Kit.Banner(panel, 210, 36, 14)
+    panel.name:SetPoint("TOP", panel.token, "BOTTOM", 0, 6)
     panel.levels = Widgets.Text(panel, 11, "white")
-    panel.levels:SetPoint("TOP", panel.name, "BOTTOM", 0, 0)
+    panel.levels:SetPoint("TOP", panel.name, "BOTTOM", 0, -2)
 
     local note = CreateFrame("Frame", nil, panel)
-    note:SetSize(214, 86)
-    note:SetPoint("TOP", panel.levels, "BOTTOM", 0, -4)
-    Kit.Parchment(note, "islands-queue-card-namescroll")
-    panel.story = Kit.Ink(note, 10, INK)
-    panel.story:SetPoint("TOPLEFT", 14, -10)
-    panel.story:SetPoint("BOTTOMRIGHT", -14, 8)
+    note:SetSize(214, 92)
+    note:SetPoint("TOP", panel.levels, "BOTTOM", 0, -8)
+    Kit.Parchment(note)
+    Widgets.Rim(note, note)
+    panel.story = Kit.Ink(note, 11, INK)
+    panel.story:SetPoint("TOPLEFT", 10, -8)
+    panel.story:SetPoint("BOTTOMRIGHT", -10, 8)
     panel.story:SetJustifyV("MIDDLE")
+    panel.story:SetSpacing(2)
     panel.note = note
 
     panel.normal = Kit.Button(panel, 104, 26, "MC_NORMAL", function()
         self.travelHeroic = false
         self:RefreshBossPanel()
     end)
-    panel.normal:SetPoint("TOPLEFT", note, "BOTTOMLEFT", 0, -2)
+    panel.normal:SetPoint("TOPLEFT", note, "BOTTOMLEFT", 0, -8)
     panel.heroic = Kit.Button(panel, 104, 26, "MC_HEROIC", function()
         self.travelHeroic = true
         self:RefreshBossPanel()
     end)
-    panel.heroic:SetPoint("TOPRIGHT", note, "BOTTOMRIGHT", 0, -2)
+    panel.heroic:SetPoint("TOPRIGHT", note, "BOTTOMRIGHT", 0, -8)
     panel.heroic:HookScript("OnEnter", function(b)
         if not b:IsEnabled() then
             GameTooltip:SetOwner(b, "ANCHOR_TOP")
@@ -477,26 +475,29 @@ function Module:RefreshTravel(resetView)
         b:SetShown(region ~= nil and not zoomed)
         if region then
             b.index = i
-            b.text:SetText(L["MC_REGION_" .. region.key:upper()])
+            local done = 0
+            for _, zid in ipairs(region.zones) do
+                if MC.Zones[zid] and Bounty.ZoneState(store, zid).normal > 0 then done = done + 1 end
+            end
+            b.text:SetText(L["MC_REGION_" .. region.key:upper()] .. "  |cff6a4a20" .. done .. "/" .. #region.zones .. "|r")
         end
     end
 
     local used = 0
     for ri, region in ipairs(regions) do
         for _, zid in ipairs(region.zones) do
-            if MC.Zones[zid] and (not zoomed or ri == self.travelRegion) then
+            if MC.Zones[zid] and zoomed and ri == self.travelRegion then
                 used = used + 1
                 local pin = view.pins[used]
                 pin.zone, pin.region = zid, ri
                 local state = Bounty.ZoneState(store, zid)
                 local boss = MC.Zones[zid].boss
-                pin.icon:SetTexture(BOSS_ART[boss] or ("Interface\\Icons\\" .. (BOSS_ICON[boss] or "INV_Misc_Bone_HumanSkull_01")))
-                if BOSS_ART[boss] then pin.icon:SetTexCoord(0.1, 0.6, 0, 1) else pin.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93) end
+                if not pin:SetCreature(MC.Enemies[boss].display) then
+                    pin:SetIcon("Interface\\Icons\\" .. (BOSS_ICON[boss] or "INV_Misc_Bone_HumanSkull_01"))
+                end
                 pin:SetMetal(state.heroic > 0 and "gold" or (state.normal > 0 and "silver" or "bronze"))
                 pin.check:SetShown(state.normal > 0)
                 pin.label:SetText(Describe.ZoneName(zid))
-                pin.label:SetShown(zoomed)
-                Kit.SetBaseScale(pin, zoomed and 1.15 or 0.7)
                 Kit.SetSelected(pin, self.travelZone == zid, true)
                 pin:Show()
             end
@@ -533,11 +534,13 @@ function Module:RefreshBossPanel()
     end
     local def = MC.Enemies[zone.boss]
     local bossLevel = Bounty.BossLevel(zone, self.travelHeroic)
-    panel.token:SetData({ kind = "boss", id = zone.boss, side = "enemy", role = def.role, level = bossLevel,
-        atk = def.atk, hp = def.hp }, math.floor(Bounty.PartyLevel(store) + 0.5))
-    panel.token.attack:Hide()
-    panel.token.health:Hide()
-    panel.token.name:SetText("")
+    if not panel.token:SetCreature(def.display) then
+        panel.token:SetIcon("Interface\\Icons\\" .. (BOSS_ICON[zone.boss] or "INV_Misc_Bone_HumanSkull_01"))
+    end
+    panel.token:SetMetal(self.travelHeroic and "gold" or "silver")
+    local reference = math.floor(Bounty.PartyLevel(store) + 0.5)
+    panel.level.text:SetText(MC.LevelText(bossLevel, reference))
+    panel.level.text:SetTextColor(MC.ConColor(bossLevel, reference))
     panel.name.text:SetText(L["MC_E_" .. zone.boss])
     panel.levels:SetText(Describe.ZoneName(zid) .. "  ·  " .. L.MC_LEVEL_RANGE:format(zone.min, zone.max))
     panel.story:SetText(L["MC_ZD_" .. zid])

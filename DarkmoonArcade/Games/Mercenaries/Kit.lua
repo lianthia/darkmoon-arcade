@@ -140,6 +140,16 @@ function Kit.NoHover(f)
     State(f).hover = false
 end
 
+-- Switches hover effects on or off; off also drops a hover that is showing.
+function Kit.SetHoverEnabled(f, on)
+    local a = State(f)
+    a.hover = on
+    if not on then
+        a.scaleTarget, a.liftTarget = a.base, 0
+        a.glowTarget = a.selected and 1 or 0
+    end
+end
+
 function Kit.SetBaseScale(f, scale)
     local a = State(f)
     a.base, a.scale, a.scaleTarget = scale, scale, scale
@@ -628,7 +638,7 @@ function Kit.AbilityCard(parent)
         local rank = unit and unit.abilities and unit.abilities[slot] and unit.abilities[slot].rank or 1
         self.rank:SetText(ROMAN[rank] or "")
         self.footer:SetText(cd > 0 and L.MC_COOLDOWN:format(cd) or L["MC_SCHOOL_" .. (def.school or "physical")])
-        self.waiting = cdLeft and cdLeft > 0
+        self.waiting = (cdLeft and cdLeft > 0) or false
         self.cooldown:SetText(self.waiting and cdLeft or "")
         self:SetLocked(nil)
     end
