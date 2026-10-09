@@ -57,10 +57,8 @@ def fetch(url):
         try:
             with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=30) as r:
                 raw = r.read()
-            try:
-                return raw.decode("utf-8")
-            except UnicodeDecodeError:
-                return raw.decode("cp1252", "replace")
+            # Pages are UTF-8 with the odd broken byte; replacing those keeps the umlauts intact.
+            return raw.decode("utf-8", "replace")
         except OSError as exc:  # network hiccups and rate limits are retried
             if attempt == 2:
                 raise

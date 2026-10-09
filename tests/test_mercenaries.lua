@@ -81,9 +81,16 @@ test("data references resolve", function()
         for _, e in ipairs(zone.pool) do assert(MC.Enemies[e], zid .. " pool " .. e) end
         for _, e in ipairs(zone.adds) do assert(MC.Enemies[e], zid .. " add " .. e) end
         for _, m in ipairs(zone.loot) do assert(MC.Mercs[m], zid .. " loot " .. m) end
-        assert(not normalGear[zone.gear.normal], "normal gear twice: " .. zone.gear.normal)
-        assert(not heroicGear[zone.gear.heroic], "heroic gear twice: " .. zone.gear.heroic)
-        normalGear[zone.gear.normal], heroicGear[zone.gear.heroic] = true, true
+        -- Not every zone drops equipment; those that do drop each piece only once.
+        local gn, gh = zone.gear.normal, zone.gear.heroic
+        if gn then
+            assert(not normalGear[gn], "normal gear twice: " .. gn)
+            normalGear[gn] = true
+        end
+        if gh then
+            assert(not heroicGear[gh], "heroic gear twice: " .. gh)
+            heroicGear[gh] = true
+        end
     end
     for id in pairs(MC.Mercs) do
         assert(normalGear[id] and heroicGear[id], id .. " has no gear drop")

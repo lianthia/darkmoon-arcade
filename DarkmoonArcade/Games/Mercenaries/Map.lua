@@ -236,6 +236,9 @@ function Module:RefreshMap()
     local visited = {}
     for _, key in ipairs(run.visited) do visited[key] = true end
     local layers = run.map.layers
+    -- Long paths put the stops closer together; the coins shrink so they never touch.
+    local spacing = (MAP_BOTTOM - MAP_TOP) / math.max(1, #layers - 1)
+    local fit = math.min(1, (spacing - 8) / NODE)
     -- Stops that can still be reached: the next choices and everything their paths lead to.
     local ahead = {}
     for _, c in ipairs(Bounty.Choices(run)) do ahead[c.layer .. ":" .. c.index] = true end
@@ -252,7 +255,7 @@ function Module:RefreshMap()
             used = used + 1
             local b = self.mapNodes[used]
             local x, y = self:NodePoint(run, l, i)
-            local size = NodeSize(node)
+            local size = NodeSize(node) * fit
             local key = l .. ":" .. i
             Kit.Place(b, x, y, self.nodeLayer)
             b.layer, b.index = l, i
@@ -281,7 +284,7 @@ function Module:RefreshMap()
                 local walked = visited[key] and visited[(l + 1) .. ":" .. j]
                 local open = (current or (run.layer == 0 and false)) and self:IsReachable(run, l + 1, j)
                 local color = walked and { 0.35, 0.85, 0.35, 1 } or (open and { 1, 0.92, 0.6, 1 } or { 0.25, 0.16, 0.08, 0.75 })
-                dashCount = self:DrawPath(dashCount, x, y, x2, y2, size / 2, NodeSize(layers[l + 1][j]) / 2, color)
+                dashCount = self:DrawPath(dashCount, x, y, x2, y2, size / 2, NodeSize(layers[l + 1][j]) * fit / 2, color)
             end
         end
     end
