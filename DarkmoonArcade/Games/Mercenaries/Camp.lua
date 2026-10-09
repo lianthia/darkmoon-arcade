@@ -165,8 +165,8 @@ function Module:BuildCamp()
     dusk:SetAlpha(0.85)
 
     local logo = view:CreateTexture(nil, "ARTWORK")
-    logo:SetSize(380, 380 * 302 / 1024)
-    logo:SetPoint("TOP", 0, -10)
+    logo:SetSize(250, 250 * 302 / 1024)
+    logo:SetPoint("TOP", 0, -14)
     logo:SetTexture(MC.Tex("logo"))
     logo:SetTexCoord(0, 1, 0, 302 / 512)
 
@@ -231,6 +231,12 @@ function Module:RefreshCamp()
             Kit.FitText(slot.plate.text, Describe.MercName(id), (CAMP_GAP + 8) * 0.78 - 2, 12, 9)
         end
     end
+    -- All names share the size of the one that needed the smallest font.
+    local size = 12
+    for i, slot in ipairs(self.campSlots) do
+        if store.party[i] then size = math.min(size, select(2, slot.plate.text:GetFont()) or 12) end
+    end
+    for _, slot in ipairs(self.campSlots) do slot.plate.text:SetFont(ns.Media.FontFile(), size, "") end
     view.travel.plaque.text:SetText(run and L.MC_CONTINUE_RUN or L.MC_TRAVEL_POINT)
     view.travel.sub:SetText(run and (Describe.ZoneName(run.zone) .. (run.heroic and (" (" .. L.MC_HEROIC .. ")") or "")) or L.MC_BOUNTIES_SUB)
     view.travel.marker:SetShown(run ~= nil)

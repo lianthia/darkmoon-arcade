@@ -168,6 +168,7 @@ function M:SetFontObject(font)
         if font._fcolor then self._textColor = font._fcolor end
     end
 end
+function M:GetFont() return "font", self._size, self._flags end
 function M:SetText(t) self._text = t ~= nil and tostring(t) or nil end
 function M:SetFormattedText(fmt, ...) self._text = fmt:format(...) end
 function M:GetText() return self._text end
