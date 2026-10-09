@@ -49,8 +49,11 @@ function News:Create()
     surface:SetPoint("BOTTOMRIGHT", -2, 3)
     surface:SetTexture(Media.Tex("hub_background"))
 
-    -- The arcade's logo crowns the window, as on the main frame.
-    local logo = f:CreateTexture(nil, "OVERLAY")
+    -- The arcade's logo crowns the window, as on the main frame; its own frame lifts it above the border.
+    local logoFrame = CreateFrame("Frame", nil, f)
+    logoFrame:SetAllPoints()
+    logoFrame:SetFrameLevel(f:GetFrameLevel() + 1000)
+    local logo = logoFrame:CreateTexture(nil, "OVERLAY")
     logo:SetSize(150, 97)
     logo:SetPoint("BOTTOM", f, "TOP", 0, -48)
     logo:SetTexture(Media.Tex("logo"))
