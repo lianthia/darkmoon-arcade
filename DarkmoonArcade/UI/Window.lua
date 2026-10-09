@@ -39,6 +39,14 @@ local SIDEBAR_SCORES = 5
 local SIDEBAR_INTERVAL = 0.25
 local RIM_COLOR = { 0.86, 0.66, 0.3, 0.9 }
 
+-- The packaged version; an unpackaged copy still carries the packager's placeholder.
+function ns.Version()
+    local version = C_AddOns and C_AddOns.GetAddOnMetadata and C_AddOns.GetAddOnMetadata(ADDON, "Version")
+        or GetAddOnMetadata and GetAddOnMetadata(ADDON, "Version") or "?"
+    if version:find("@") then version = "dev" end
+    return version
+end
+
 -- Games are listed by `rank`, the most popular first.
 function Arcade.RegisterGame(game)
     Arcade.games[game.id] = game
@@ -360,10 +368,7 @@ function Window:CreateFooter()
     help:SetPoint("RIGHT", achievements, "LEFT", -8, 0)
     self.helpButton = help
 
-    local version = C_AddOns and C_AddOns.GetAddOnMetadata and C_AddOns.GetAddOnMetadata(ADDON, "Version")
-        or GetAddOnMetadata and GetAddOnMetadata(ADDON, "Version") or "?"
-    -- The packager fills in the version; an unpackaged copy still shows its placeholder.
-    if version:find("@") then version = "dev" end
+    local version = ns.Version()
     self.versionText = Widgets.Text(chrome, 10, "gray")
     self.versionText:SetPoint("BOTTOMLEFT", INSET_SIDE, 19)
     Widgets.OnRefresh(function() self.versionText:SetText(L.VERSION:format(version)) end)

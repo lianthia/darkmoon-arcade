@@ -11,7 +11,7 @@ MC.W, MC.H = W, H
 
 local Module = {
     id = "mercenaries",
-    rank = 3,
+    rank = 0,
     fieldWidth = W,
     fieldHeight = H,
     nameKey = "MC_NAME",

@@ -56,6 +56,7 @@ Fire("PLAYER_LOGIN")
 if RENDER_LANG then
     ns.SetLanguage(RENDER_LANG)
     ns.Media.ApplyLanguageFonts()
+    ns.Widgets.RefreshAll()
 end
 SlashCmdList.DARKMOONARCADE("mercenaries")
 local Window = ns.Window
@@ -73,6 +74,13 @@ local function Want(name)
     return false
 end
 
+if Want("news") then
+    ns.News:Show()
+    Tick(0.6)
+    local items, w, h = RenderDump(ns.News.frame)
+    Shots[#Shots + 1] = { name = "news", items = items, w = w, h = h }
+    ns.News.frame:Hide()
+end
 if Want("camp") then Snap("camp") end
 mc:ShowView("collection")
 if Want("collection") then

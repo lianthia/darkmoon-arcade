@@ -59,6 +59,7 @@ events:SetScript("OnEvent", function(_, event, arg1)
         ns.SafeCall("Settings", ns.Settings.Register, ns.Settings)
         ns.SafeCall("Flight", Flight.Init, Flight)
         ns.SafeCall("Toast", ns.Toast.Create, ns.Toast)
+        ns.SafeCall("News", ns.News.Create, ns.News)
         events:UnregisterEvent("ADDON_LOADED")
     elseif event == "PLAYER_LOGIN" then
         -- The minimap has its final size only once the UI layout is applied.
@@ -66,6 +67,10 @@ events:SetScript("OnEvent", function(_, event, arg1)
         ns.SafeCall("Guild", ns.Guild.Init)
         ns.Print(L.LOADED)
         CheckTaxi()
+        -- After a first install or an update, once the loading screen is gone.
+        C_Timer.After(3, function()
+            if not InCombatLockdown() then ns.SafeCall("News", ns.News.ShowIfNew, ns.News) end
+        end)
     elseif event == "PLAYER_ENTERING_WORLD" then
         ns.Minimap:Update()
     elseif event == "PLAYER_REGEN_DISABLED" then

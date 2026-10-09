@@ -21,6 +21,7 @@ UI\Widgets.lua
 UI\Window.lua
 UI\Minimap.lua
 UI\Toast.lua
+UI\News.lua
 UI\Settings.lua
 UI\OptionsView.lua
 UI\StatsView.lua

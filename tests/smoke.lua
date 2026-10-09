@@ -9,7 +9,7 @@ local chat = {}
 
 local NUMBER_GETTERS = {
     GetLeft = 100, GetTop = 600, GetEffectiveScale = 1, GetScale = 1, GetFrameLevel = 1,
-    GetWidth = 100, GetHeight = 100, GetAlpha = 1, GetStringWidth = 50,
+    GetWidth = 100, GetHeight = 100, GetAlpha = 1, GetStringWidth = 50, GetStringHeight = 12,
 }
 
 local methods = {
@@ -257,9 +257,29 @@ assert(DarkmoonArcadeDB.flightGame == "murlocblast", "defaults")
 
 local Window, Arcade = ns.Window, ns.Arcade
 assert(#Arcade.order == 7, "seven games registered")
-assert(Arcade.order[1] == "spellbounce", "most popular game first")
+assert(Arcade.order[1] == "mercenaries", "newest game first")
+assert(Arcade.order[2] == "spellbounce", "then the most popular game")
+
+-- The news show once after login; "Okay" retires them for this version.
+local News = ns.News
+assert(not News.frame._shown, "news wait for the loading screen")
+Tick(4)
+assert(News.frame._shown, "news after a fresh install")
+News.okButton._scripts.OnClick(News.okButton)
+assert(not News.frame._shown and DarkmoonArcadeDB.newsSeen == ns.Version(), "okay retires the news")
+assert(not Window.frame._shown, "okay leaves the arcade closed")
+News:ShowIfNew()
+assert(not News.frame._shown, "news only once per version")
+
 SlashCmdList.DARKMOONARCADE("")
 assert(Window.frame._shown, "window should be shown")
+Window.frame:Hide()
+DarkmoonArcadeDB.newsSeen = "1.0.0"
+News:ShowIfNew()
+assert(News.frame._shown, "news after an update")
+News.showButton._scripts.OnClick(News.showButton)
+assert(not News.frame._shown and DarkmoonArcadeDB.newsSeen == ns.Version(), "the arcade button retires the news")
+assert(Window.frame._shown and Window.hub._shown, "the arcade button opens the main menu")
 
 local results = { murloc = 0, flappy = 0, jewels = 0, slots = 0, spell = 0, deck = 0, clicks = 0, best = 0 }
 local seed = 42
