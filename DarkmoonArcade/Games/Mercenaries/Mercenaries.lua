@@ -18,8 +18,6 @@ local Module = {
     descKey = "MC_DESC",
     helpKey = "MC_HELP",
     tile = "tiles/mercenaries",
-    -- Still growing: no stable release may ship it before every zone is done (tools/release_check.py).
-    preview = true,
     defaults = { fast = false },
 }
 MC.Module = Module
