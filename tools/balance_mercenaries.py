@@ -175,6 +175,19 @@ if PROGRESS:
     print("total runs:", runs)
     sys.exit(0)
 
+if "--heroic" in sys.argv:
+    # Heroic report: the bot at level 59 and 60 without ranks or gear; tuned for about 40 % at 59.
+    print(f"{'zone':12} {'59':>7} {'60':>7}")
+    failures = []
+    for zid in order:
+        r59 = g.WinRate(zid, 59, True, RUNS)[0]
+        r60 = g.WinRate(zid, 60, True, RUNS)[0]
+        print(f"{zid:12} {r59 * 100:6.1f}% {r60 * 100:6.1f}%")
+        if not 0.3 <= r59 <= 0.5:
+            failures.append(f"{zid}: {r59:.0%} heroic at 59 (want 30-50 %)")
+    print("\n".join(failures) if failures else "all heroic criteria met")
+    sys.exit(1 if failures else 0)
+
 print(f"{'zone':12} {'boss':>4} {'-10':>7} {'-5':>7} {'boss-3':>7} {'boss-1':>7} {'boss+2':>7}  fights@boss-1")
 failures = []
 for zid in order:
