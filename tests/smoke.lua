@@ -666,6 +666,23 @@ for _, id in ipairs(Arcade.order) do
 end
 Window:OpenHub()
 
+-- Roadmap: its own page from the hub's footer, with every milestone filled in every language.
+assert(Window.roadmapButton._shown, "roadmap button in the hub")
+Window.roadmapButton._scripts.OnClick(Window.roadmapButton)
+assert(ns.RoadmapView.view._shown and not Window.hub._shown, "roadmap shown instead of the hub")
+assert(not Window.roadmapButton._shown and Window.gamesButton._shown, "roadmap leads back to the main menu")
+for _, language in ipairs({ "enUS", "deDE", "frFR", "esES", "ruRU", "zhCN" }) do
+    ns.SetLanguage(language)
+    for i = 1, 5 do
+        assert(ns.L["ROADMAP_" .. i .. "_TEXT"]:find("•"), language .. " roadmap " .. i)
+    end
+end
+ns.SetLanguage(DarkmoonArcadeDB.language)
+Window:OpenStats()
+assert(not ns.RoadmapView.view._shown, "statistics replace the roadmap")
+Window:OpenHub()
+assert(Window.roadmapButton._shown and not ns.RoadmapView.view._shown, "hub hides the roadmap")
+
 -- Settings callbacks and dropdown contents.
 for _, name in ipairs({ "DarkmoonArcade_language", "DarkmoonArcade_scale", "DarkmoonArcade_flightGame",
         "DarkmoonArcade_mercenaries_fast" }) do

@@ -81,6 +81,17 @@ if Want("news") then
     Shots[#Shots + 1] = { name = "news", items = items, w = w, h = h }
     ns.News.frame:Hide()
 end
+if Want("roadmap") then
+    ns.Window:OpenRoadmap()
+    Tick(0.6)
+    local items, w, h = RenderDump(ns.RoadmapView.view)
+    Shots[#Shots + 1] = { name = "roadmap", items = items, w = w, h = h }
+    -- The renderer skips scroll children; the content on its own shows the text layout.
+    ns.RoadmapView.content:SetPoint("TOPLEFT", ns.RoadmapView.view, "TOPLEFT", 70, -50)
+    items, w, h = RenderDump(ns.RoadmapView.content)
+    Shots[#Shots + 1] = { name = "roadmap_content", items = items, w = w, h = h }
+    SlashCmdList.DARKMOONARCADE("mercenaries")
+end
 if Want("camp") then Snap("camp") end
 mc:ShowView("collection")
 if Want("collection") then

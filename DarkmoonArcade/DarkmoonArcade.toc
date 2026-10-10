@@ -25,6 +25,7 @@ UI\News.lua
 UI\Settings.lua
 UI\OptionsView.lua
 UI\StatsView.lua
+UI\RoadmapView.lua
 
 Games\MurlocBlast\Locale.lua
 Games\MurlocBlast\Grid.lua

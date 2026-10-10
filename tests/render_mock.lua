@@ -179,7 +179,17 @@ function M:SetWordWrap(w) self._wrap = w end
 function M:SetShadowOffset(x, y) self._shadow = (x ~= 0 or y ~= 0) end
 function M:SetSpacing(s) self._spacing = s end
 function M:GetStringWidth() return #(self._text or "") * self._size * 0.52 end
-function M:GetStringHeight() return self._size end
+-- Wrapped texts: a rough line count per paragraph from the set width (UTF-8 characters, ~0.5 em each).
+function M:GetStringHeight()
+    local text, size = self._text or "", self._size or 12
+    if not (self._w and self._w > 0) then return size end
+    local lines = 0
+    for para in (text .. "\n"):gmatch("(.-)\n") do
+        local chars = select(2, para:gsub("[^\128-\191]", ""))
+        lines = lines + math.max(1, math.ceil(chars * size * 0.5 / self._w))
+    end
+    return lines * size * 1.15 + (lines - 1) * (self._spacing or 0)
+end
 function M:SetMaxLines(n) self._maxLines = n end
 
 -- Status bars and models -------------------------------------------------------------------------
