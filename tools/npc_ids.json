@@ -4,7 +4,13 @@
   "display": 2837,
   "id": 4829,
   "info": "Aku'mai is a level 28 Elite NPC. The location of this NPC is unknown.",
-  "name": "Aku'mai"
+  "name": "Aku'mai",
+  "names": {
+   "esES": "Aku'mai",
+   "frFR": "Aku'mai",
+   "ruRU": "Аку'май",
+   "zhCN": "阿库麦尔"
+  }
  },
  "Anetheron": null,
  "Anubisath Sentinel": {
@@ -12,84 +18,156 @@
   "display": 15347,
   "id": 15264,
   "info": "Anubisath Sentinel is a level 60 - 61 Elite NPC. The location of this NPC is unknown.",
-  "name": "Anubisath Sentinel"
+  "name": "Anubisath Sentinel",
+  "names": {
+   "esES": "Centinela Anubisath",
+   "frFR": "Sentinelle Anubisath",
+   "ruRU": "Анубисат-часовой",
+   "zhCN": "阿努比萨斯哨兵"
+  }
  },
  "Anvilrage Guardsman": {
   "de": "Gardist der Zorneshämmer",
   "display": 8750,
   "id": 8891,
   "info": "Anvilrage Guardsman is a level 50 - 51 Elite NPC. The location of this NPC is unknown.",
-  "name": "Anvilrage Guardsman"
+  "name": "Anvilrage Guardsman",
+  "names": {
+   "esES": "Custodio de Yunque Colérico",
+   "frFR": "Garde Ragenclume",
+   "ruRU": "Охранник из клана Ярости Горна",
+   "zhCN": "铁怒卫士"
+  }
  },
  "Arch Druid Hamuul Runetotem": {
   "de": "Erzdruide Hamuul Runetotem",
   "display": 4519,
   "id": 5769,
   "info": "Arch Druid Hamuul Runetotem is a level 62 NPC. The location of this NPC is unknown.",
-  "name": "Arch Druid Hamuul Runetotem"
+  "name": "Arch Druid Hamuul Runetotem",
+  "names": {
+   "esES": "Archidruida Hamuul Runatótem",
+   "frFR": "Archidruide Hamuul Runetotem",
+   "ruRU": "Верховный друид Хамуул Рунический Тотем",
+   "zhCN": "大德鲁伊哈缪尔·符文图腾"
+  }
  },
  "Archaedas": {
   "de": "Archaedas",
   "display": 5988,
   "id": 2748,
   "info": "Archaedas is a level 47 Elite NPC. The location of this NPC is unknown.",
-  "name": "Archaedas"
+  "name": "Archaedas",
+  "names": {
+   "esES": "Archaedas",
+   "frFR": "Archaedas",
+   "ruRU": "Аркедас",
+   "zhCN": "阿扎达斯"
+  }
  },
  "Archbishop Benedictus": {
   "de": "Erzbischof Benedictus",
   "display": 5072,
   "id": 1284,
   "info": "Archbishop Benedictus is a boss. The location of this NPC is unknown.",
-  "name": "Archbishop Benedictus"
+  "name": "Archbishop Benedictus",
+  "names": {
+   "esES": "Arzobispo Benedictus",
+   "frFR": "Archevêque Benedictus",
+   "ruRU": "Архиепископ Бенедикт",
+   "zhCN": "大主教本尼迪塔斯"
+  }
  },
  "Archimonde": {
   "de": "Archimondes Echo",
   "display": 12990,
   "id": 13083,
   "info": "The location of this NPC is unknown.",
-  "name": "Echo of Archimonde"
+  "name": "Echo of Archimonde",
+  "names": {
+   "esES": "Eco de Archimonde",
+   "frFR": "Echo d'Archimonde",
+   "ruRU": "Эхо Архимонда",
+   "zhCN": "阿克蒙德的回响"
+  }
  },
  "Archmage Arugal": {
   "de": "Erzmagier Arugal",
   "display": 2353,
   "id": 4275,
   "info": "Archmage Arugal is a level 26 Elite NPC. The location of this NPC is unknown.",
-  "name": "Archmage Arugal"
+  "name": "Archmage Arugal",
+  "names": {
+   "esES": "Archimago Arugal",
+   "frFR": "Archimage Arugal",
+   "ruRU": "Верховный маг Аругал",
+   "zhCN": "大法师阿鲁高"
+  }
  },
  "Archmage Xylem": {
   "de": "Erzmagier Xylem",
   "display": 7591,
   "id": 8379,
   "info": "Archmage Xylem is a level 60 NPC. The location of this NPC is unknown.",
-  "name": "Archmage Xylem"
+  "name": "Archmage Xylem",
+  "names": {
+   "esES": "Archimago Xylem",
+   "frFR": "Archimage Xylem",
+   "ruRU": "Верховный маг Ксилем",
+   "zhCN": "大法师克希雷姆"
+  }
  },
  "Arnak Grimtotem": {
   "de": "Arnak Grimmtotem",
   "display": 10243,
   "id": 10896,
   "info": "Arnak Grimtotem is a level 29 NPC. The location of this NPC is unknown.",
-  "name": "Arnak Grimtotem"
+  "name": "Arnak Grimtotem",
+  "names": {
+   "esES": "Arnak Tótem Siniestro",
+   "frFR": "Arnak Grimtotem",
+   "ruRU": "Арнак Зловещий Тотем",
+   "zhCN": "阿纳克·恐怖图腾"
+  }
  },
  "Arra'chea": {
   "de": "Arra'chea",
   "display": 10916,
   "id": 3058,
   "info": "Arra'chea is a level 11 NPC. The location of this NPC is unknown.",
-  "name": "Arra'chea"
+  "name": "Arra'chea",
+  "names": {
+   "esES": "Arra'chea",
+   "frFR": "Arra'chea",
+   "ruRU": "Арра'чея",
+   "zhCN": "阿兰其亚"
+  }
  },
  "Atal'ai Priest": {
   "de": "Priester der Atal'ai",
   "display": 4776,
   "id": 5269,
   "info": "Atal'ai Priest is a level 46 - 47 Elite NPC. The location of this NPC is unknown.",
-  "name": "Atal'ai Priest"
+  "name": "Atal'ai Priest",
+  "names": {
+   "esES": "Sacerdote Atal'ai",
+   "frFR": "Prêtre atal'ai",
+   "ruRU": "Жрец племени Атал'ай",
+   "zhCN": "阿塔莱祭司"
+  }
  },
  "Atal'ai Warrior": {
   "de": "Krieger der Atal'ai",
   "display": 7709,
   "id": 5256,
   "info": "Atal'ai Warrior is a level 48 - 49 Elite NPC. The location of this NPC is unknown.",
-  "name": "Atal'ai Warrior"
+  "name": "Atal'ai Warrior",
+  "names": {
+   "esES": "Guerrero Atal'ai",
+   "frFR": "Guerrier atal'ai",
+   "ruRU": "Воин из племени Атал'ай",
+   "zhCN": "阿塔莱战士"
+  }
  },
  "Azgalor": null,
  "Azuregos": {
@@ -97,574 +175,1066 @@
   "display": 11460,
   "id": 6109,
   "info": "Azuregos is a boss. The location of this NPC is unknown.",
-  "name": "Azuregos"
+  "name": "Azuregos",
+  "names": {
+   "esES": "Azuregos",
+   "frFR": "Azuregos",
+   "ruRU": "Азурегос",
+   "zhCN": "艾索雷葛斯"
+  }
  },
  "Barak Kodobane": {
   "de": "Barak Kodobann",
   "display": 4874,
   "id": 3394,
   "info": "Barak Kodobane is a level 16 NPC. The location of this NPC is unknown.",
-  "name": "Barak Kodobane"
+  "name": "Barak Kodobane",
+  "names": {
+   "esES": "Barak Aterrakodos",
+   "frFR": "Barak Kodobane",
+   "ruRU": "Барак Кодобой",
+   "zhCN": "巴拉克·科多班恩"
+  }
  },
  "Baron Rivendare": {
   "de": "Baron Rivendare",
   "display": 10729,
   "id": 10440,
   "info": "Baron Rivendare is a level 62 Elite NPC. The location of this NPC is unknown.",
-  "name": "Baron Rivendare"
+  "name": "Baron Rivendare",
+  "names": {
+   "esES": "Barón Osahendido",
+   "frFR": "Baron Rivendare",
+   "ruRU": "Барон Ривендер",
+   "zhCN": "瑞文戴尔男爵"
+  }
  },
  "Black Broodling": {
   "de": "Schwarzer Brutling",
   "display": 397,
   "id": 7047,
   "info": "Black Broodling is a level 51 - 52 NPC. The location of this NPC is unknown.",
-  "name": "Black Broodling"
+  "name": "Black Broodling",
+  "names": {
+   "esES": "Cachorrillo negro",
+   "frFR": "Rejeton noir",
+   "ruRU": "Детеныш черного дракона",
+   "zhCN": "黑色小龙"
+  }
  },
  "Blackfathom Myrmidon": {
   "de": "Blackfathom-Myrmidone",
   "display": 4762,
   "id": 4807,
   "info": "Blackfathom Myrmidon is a level 22 - 25 Elite NPC. The location of this NPC is unknown.",
-  "name": "Blackfathom Myrmidon"
+  "name": "Blackfathom Myrmidon",
+  "names": {
+   "esES": "Mirmidón Brazanegra",
+   "frFR": "Myrmidon de Brassenoire",
+   "ruRU": "Мирмидон Непроглядной Пучины",
+   "zhCN": "黑暗深渊仆从"
+  }
  },
  "Blackfathom Tide Priestess": {
   "de": "Blackfathom-Gezeitenpriesterin",
   "display": 4983,
   "id": 4802,
   "info": "Blackfathom Tide Priestess is a level 20 - 21 Elite NPC. The location of this NPC is unknown.",
-  "name": "Blackfathom Tide Priestess"
+  "name": "Blackfathom Tide Priestess",
+  "names": {
+   "esES": "Sacerdote de las mareas Brazanegra",
+   "frFR": "Prêtresse des marées de Brassenoire",
+   "ruRU": "Жрица прилива из Непроглядной Пучины",
+   "zhCN": "黑暗深渊海潮祭司"
+  }
  },
  "Blackhand Summoner": {
   "de": "Blackhand-Beschwörer",
   "display": 9849,
   "id": 9818,
   "info": "Blackhand Summoner is a level 59 - 60 Elite NPC. The location of this NPC is unknown.",
-  "name": "Blackhand Summoner"
+  "name": "Blackhand Summoner",
+  "names": {
+   "esES": "Invocador Puño Negro",
+   "frFR": "Invocateur Blackhand",
+   "ruRU": "Призыватель из легиона Чернорука",
+   "zhCN": "黑手召唤师"
+  }
  },
  "Blackhand Veteran": {
   "de": "Blackhand-Veteran",
   "display": 9686,
   "id": 9819,
   "info": "Blackhand Veteran is a level 59 - 60 Elite NPC. The location of this NPC is unknown.",
-  "name": "Blackhand Veteran"
+  "name": "Blackhand Veteran",
+  "names": {
+   "esES": "Veterano Puño Negro",
+   "frFR": "Vétéran Blackhand",
+   "ruRU": "Ветеран легиона Чернорука",
+   "zhCN": "黑手老兵"
+  }
  },
  "Blackrock Grunt": {
   "de": "Grunzer der Blackrock",
   "display": 6033,
   "id": 440,
   "info": "Blackrock Grunt is a level 19 - 20 NPC. The location of this NPC is unknown.",
-  "name": "Blackrock Grunt"
+  "name": "Blackrock Grunt",
+  "names": {
+   "esES": "Bruto Roca Negra",
+   "frFR": "Grunt Blackrock",
+   "ruRU": "Рубака из клана Черной Горы",
+   "zhCN": "黑石步兵"
+  }
  },
  "Blackrock Shadowcaster": {
   "de": "Schattenzauberer der Blackrock",
   "display": 6039,
   "id": 436,
   "info": "Blackrock Shadowcaster is a level 22 - 23 Elite NPC. The location of this NPC is unknown.",
-  "name": "Blackrock Shadowcaster"
+  "name": "Blackrock Shadowcaster",
+  "names": {
+   "esES": "Nigromante Roca Negra",
+   "frFR": "Exhalombre Blackrock",
+   "ruRU": "Темный чародей из клана Черной Горы",
+   "zhCN": "黑石暗影法师"
+  }
  },
  "Blackrock Soldier": {
   "de": "Soldat der Blackrock",
   "display": 6045,
   "id": 7025,
   "info": "Blackrock Soldier is a level 55 - 56 NPC. The location of this NPC is unknown.",
-  "name": "Blackrock Soldier"
+  "name": "Blackrock Soldier",
+  "names": {
+   "esES": "Soldado Roca Negra",
+   "frFR": "Soldat Blackrock",
+   "ruRU": "Солдат из клана Черной Горы",
+   "zhCN": "黑石士兵"
+  }
  },
  "Blackrock Warlock": {
   "de": "Hexenmeister der Blackrock",
   "display": 6048,
   "id": 7028,
   "info": "Blackrock Warlock is a level 56 - 57 NPC. The location of this NPC is unknown.",
-  "name": "Blackrock Warlock"
+  "name": "Blackrock Warlock",
+  "names": {
+   "esES": "Brujo Roca Negra",
+   "frFR": "Démoniste Blackrock",
+   "ruRU": "Чернокнижник клана Черной Горы",
+   "zhCN": "黑石术士"
+  }
  },
  "Blackrock Worg": {
   "de": "Worg der Blackrock",
   "display": 741,
   "id": 7055,
   "info": "Blackrock Worg is a level 54 - 55 NPC. The location of this NPC is unknown.",
-  "name": "Blackrock Worg"
+  "name": "Blackrock Worg",
+  "names": {
+   "esES": "Lupo Roca Negra",
+   "frFR": "Worg Blackrock",
+   "ruRU": "Ворг из клана Черной Горы",
+   "zhCN": "黑石座狼"
+  }
  },
  "Blackwood Pathfinder": {
   "de": "Pfadfinder der Schwarzfelle",
   "display": 1010,
   "id": 2167,
   "info": "Blackwood Pathfinder is a level 12 - 13 NPC. The location of this NPC is unknown.",
-  "name": "Blackwood Pathfinder"
+  "name": "Blackwood Pathfinder",
+  "names": {
+   "esES": "Abrecaminos Bosque Negro",
+   "frFR": "Guide Noirbois",
+   "ruRU": "Землепроходец из племени Чернолесья",
+   "zhCN": "黑木探路者"
+  }
  },
  "Blademaster Kaijo": {
   "de": "Klingenmeister Kaijo",
   "display": 143515,
   "id": 263071,
   "info": "Blademaster Kaijo is a level 42 Elite NPC. The location of this NPC is unknown.",
-  "name": "Blademaster Kaijo"
+  "name": "Blademaster Kaijo",
+  "names": {
+   "esES": "Blademaster Kaijo",
+   "frFR": "Blademaster Kaijo",
+   "ruRU": "Blademaster Kaijo",
+   "zhCN": "Blademaster Kaijo"
+  }
  },
  "Bleakheart Satyr": {
   "de": "Satyr der Herzschinder",
   "display": 2007,
   "id": 3765,
   "info": "Bleakheart Satyr is a level 26 - 27 NPC. The location of this NPC is unknown.",
-  "name": "Bleakheart Satyr"
+  "name": "Bleakheart Satyr",
+  "names": {
+   "esES": "Sátiro Lobrecuore",
+   "frFR": "Satyre Mornecoeur",
+   "ruRU": "Сатир из племени Каменного Сердца",
+   "zhCN": "冷心萨特"
+  }
  },
  "Blighted Horror": {
   "de": "Verseuchter Schrecken",
   "display": 11171,
   "id": 8521,
   "info": "Blighted Horror is a level 56 - 57 NPC. The location of this NPC is unknown.",
-  "name": "Blighted Horror"
+  "name": "Blighted Horror",
+  "names": {
+   "esES": "Horror apestado",
+   "frFR": "Horreur corrompue",
+   "ruRU": "Зачумленный ужас",
+   "zhCN": "荒芜水元素"
+  }
  },
  "Blind Screecher": {
   "de": "Blind Screecher",
   "display": 11032,
   "id": 255174,
   "info": "Blind Screecher is a level 41 - 42 NPC. The location of this NPC is unknown.",
-  "name": "Blind Screecher"
+  "name": "Blind Screecher",
+  "names": {
+   "esES": "Blind Screecher",
+   "frFR": "Blind Screecher",
+   "ruRU": "Blind Screecher",
+   "zhCN": "Blind Screecher"
+  }
  },
  "Bloodfen Raptor": {
   "de": "Blutsumpfraptor",
   "display": 2571,
   "id": 4351,
   "info": "Bloodfen Raptor is a level 35 - 36 NPC. The location of this NPC is unknown.",
-  "name": "Bloodfen Raptor"
+  "name": "Bloodfen Raptor",
+  "names": {
+   "esES": "Raptor Faucerroja",
+   "frFR": "Raptor Rougefange",
+   "ruRU": "Ящер Кровавой Топи",
+   "zhCN": "血沼迅猛龙"
+  }
  },
  "Bloodfury Harpy": {
   "de": "Harpyie der Blutfurien",
   "display": 3022,
   "id": 4022,
   "info": "Bloodfury Harpy is a level 23 - 24 NPC. The location of this NPC is unknown.",
-  "name": "Bloodfury Harpy"
+  "name": "Bloodfury Harpy",
+  "names": {
+   "esES": "Arpía Furia Sangrienta",
+   "frFR": "Harpie Rougefurie",
+   "ruRU": "Гарпия из стаи Кровавой Ярости",
+   "zhCN": "血怒鹰身人"
+  }
  },
  "Bloodscalp Shaman": {
   "de": "Schamane der Bloodscalp",
   "display": 4573,
   "id": 697,
   "info": "Bloodscalp Shaman is a level 33 - 34 NPC. The location of this NPC is unknown.",
-  "name": "Bloodscalp Shaman"
+  "name": "Bloodscalp Shaman",
+  "names": {
+   "esES": "Chamán Cabellesangre",
+   "frFR": "Chaman Bloodscalp",
+   "ruRU": "Шаман из племени Кровавого Скальпа",
+   "zhCN": "血顶萨满祭司"
+  }
  },
  "Bloodscalp Warrior": {
   "de": "Krieger der Bloodscalp",
   "display": 4570,
   "id": 587,
   "info": "Bloodscalp Warrior is a level 33 - 34 NPC. The location of this NPC is unknown.",
-  "name": "Bloodscalp Warrior"
+  "name": "Bloodscalp Warrior",
+  "names": {
+   "esES": "Guerrero Cabellesangre",
+   "frFR": "Guerrier Bloodscalp",
+   "ruRU": "Воин из племени Кровавого Скальпа",
+   "zhCN": "血顶战士"
+  }
  },
  "Bluegill Murloc": {
   "de": "Murloc der Blaukiemen",
   "display": 486,
   "id": 1024,
   "info": "Bluegill Murloc is a level 20 - 21 NPC. The location of this NPC is unknown.",
-  "name": "Bluegill Murloc"
+  "name": "Bluegill Murloc",
+  "names": {
+   "esES": "Múrloc Branquiazul",
+   "frFR": "Murloc Branchie-bleue",
+   "ruRU": "Мурлок из племени Синежабрых",
+   "zhCN": "蓝腮鱼人"
+  }
  },
  "Bolder'ok Brute": {
   "de": "Bolder'ok Brute",
   "display": 11545,
   "id": 255850,
   "info": "Bolder'ok Brute is a level 42 - 44 NPC. The location of this NPC is unknown.",
-  "name": "Bolder'ok Brute"
+  "name": "Bolder'ok Brute",
+  "names": {
+   "esES": "Bolder'ok Brute",
+   "frFR": "Brute de Bolder'ok",
+   "ruRU": "Bolder'ok Brute",
+   "zhCN": "Bolder'ok Brute"
+  }
  },
  "Bone Chewer": {
   "de": "Knochenkauer",
   "display": 570,
   "id": 210,
   "info": "Bone Chewer is a level 26 - 27 NPC. The location of this NPC is unknown.",
-  "name": "Bone Chewer"
+  "name": "Bone Chewer",
+  "names": {
+   "esES": "Masticahuesos Oseral",
+   "frFR": "Mâcheur d'os",
+   "ruRU": "Костеглод",
+   "zhCN": "噬骨者"
+  }
  },
  "Boss Galgosh": {
   "de": "Boss Galgosh",
   "display": 1194,
   "id": 1398,
   "info": "Boss Galgosh is a level 22 Rare NPC. The location of this NPC is unknown.",
-  "name": "Boss Galgosh"
+  "name": "Boss Galgosh",
+  "names": {
+   "esES": "Jefe Vayachi",
+   "frFR": "Boss Galgosh",
+   "ruRU": "Главарь Галгош",
+   "zhCN": "大头目加尔高什"
+  }
  },
  "Boulderfist Ogre": {
   "de": "Oger der Felsfäuste",
   "display": 1052,
   "id": 2562,
   "info": "Boulderfist Ogre is a level 32 - 33 NPC. The location of this NPC is unknown.",
-  "name": "Boulderfist Ogre"
+  "name": "Boulderfist Ogre",
+  "names": {
+   "esES": "Ogro Puño de Roca",
+   "frFR": "Ogre Rochepoing",
+   "ruRU": "Огр из клана Тяжелого Кулака",
+   "zhCN": "石拳食人魔"
+  }
  },
  "Bristleback Quilboar": {
   "de": "Stacheleber der Borstennacken",
   "display": 1967,
   "id": 2952,
   "info": "Bristleback Quilboar is a level 3 - 4 NPC. The location of this NPC is unknown.",
-  "name": "Bristleback Quilboar"
+  "name": "Bristleback Quilboar",
+  "names": {
+   "esES": "Jabaespín Lomopelo",
+   "frFR": "Huran Dos-hirsute",
+   "ruRU": "Дыбогривый свинобраз",
+   "zhCN": "刺背野猪人"
+  }
  },
  "Bristleback Skullcrusher": {
   "de": "Schädelbrecher der Borstennacken",
   "display": 4757,
   "id": 253526,
   "info": "Bristleback Skullcrusher is a level 42 - 43 NPC. The location of this NPC is unknown.",
-  "name": "Bristleback Skullcrusher"
+  "name": "Bristleback Skullcrusher",
+  "names": {
+   "esES": "Rompecráneos Lomopelo",
+   "frFR": "Brise-têtes dos-hirsute",
+   "ruRU": "Череполом из племени Дыбогривов",
+   "zhCN": "Bristleback Skullcrusher"
+  }
  },
  "Burning Blade Summoner": {
   "de": "Beschwörer der Burning Blade",
   "display": 4709,
   "id": 4668,
   "info": "Burning Blade Summoner is a level 38 - 39 NPC. The location of this NPC is unknown.",
-  "name": "Burning Blade Summoner"
+  "name": "Burning Blade Summoner",
+  "names": {
+   "esES": "Invocador Filo Ardiente",
+   "frFR": "Invocateur de la Lame ardente",
+   "ruRU": "Призыватель из клана Пылающего Клинка",
+   "zhCN": "火刃召唤师"
+  }
  },
  "Burning Exile": {
   "de": "Brennender Verbannter",
   "display": 2172,
   "id": 2760,
   "info": "Burning Exile is a level 38 - 39 NPC. The location of this NPC is unknown.",
-  "name": "Burning Exile"
+  "name": "Burning Exile",
+  "names": {
+   "esES": "Exiliado ardiente",
+   "frFR": "Exilé ardent",
+   "ruRU": "Пылающий изгой",
+   "zhCN": "烈焰流放者"
+  }
  },
  "C'Thun": {
   "de": "C'Thun",
   "display": 15787,
   "id": 15727,
   "info": "",
-  "name": "C'Thun"
+  "name": "C'Thun",
+  "names": {
+   "esES": "C'Thun",
+   "frFR": "C'Thun",
+   "ruRU": "К'Тун",
+   "zhCN": "克苏恩"
+  }
  },
  "Cairne Bloodhoof": {
   "de": "Cairne Bloodhoof",
   "display": 4307,
   "id": 3057,
   "info": "Cairne Bloodhoof is a boss. The location of this NPC is unknown.",
-  "name": "Cairne Bloodhoof"
+  "name": "Cairne Bloodhoof",
+  "names": {
+   "esES": "Cairne Pezuña de Sangre",
+   "frFR": "Cairne Bloodhoof",
+   "ruRU": "Кэрн Кровавое Копыто",
+   "zhCN": "凯恩·血蹄"
+  }
  },
  "Chieftain Nek'rosh": {
   "de": "Häuptling Nek'rosh",
   "display": 4915,
   "id": 2091,
   "info": "Chieftain Nek'rosh is a level 32 Elite NPC. The location of this NPC is unknown.",
-  "name": "Chieftain Nek'rosh"
+  "name": "Chieftain Nek'rosh",
+  "names": {
+   "esES": "Jefe Nek'rosh",
+   "frFR": "Chef Nek'rosh",
+   "ruRU": "Вождь Нек'рош",
+   "zhCN": "纳克罗什酋长"
+  }
  },
  "Chromatic Whelp": {
   "de": "Chromatischer Welpe",
   "display": 10095,
   "id": 10442,
   "info": "Chromatic Whelp is a level 57 - 58 NPC. The location of this NPC is unknown.",
-  "name": "Chromatic Whelp"
+  "name": "Chromatic Whelp",
+  "names": {
+   "esES": "Cría cromática",
+   "frFR": "Dragonnet chromatique",
+   "ruRU": "Хроматический дракончик",
+   "zhCN": "多彩雏龙"
+  }
  },
  "Chub'chob": {
   "de": "Chub'chob",
   "display": 10705,
   "id": 257059,
   "info": "Chub'chob is a level 45 Elite NPC. The location of this NPC is unknown.",
-  "name": "Chub'chob"
+  "name": "Chub'chob",
+  "names": {
+   "esES": "Chub'chob",
+   "frFR": "Chub'chob",
+   "ruRU": "Chub'chob",
+   "zhCN": "Chub'chob"
+  }
  },
  "Clugfist": {
   "de": "Clugfist",
   "display": 11565,
   "id": 255829,
   "info": "Clugfist is a level 50 Elite NPC. The location of this NPC is unknown.",
-  "name": "Clugfist"
+  "name": "Clugfist",
+  "names": {
+   "esES": "Clugfist",
+   "frFR": "Poing-Serré",
+   "ruRU": "Clugfist",
+   "zhCN": "Clugfist"
+  }
  },
  "Corpsefeeder": {
   "de": "Leichenfresser",
   "display": 137848,
   "id": 253394,
   "info": "Corpsefeeder is an Elite NPC. The location of this NPC is unknown.",
-  "name": "Corpsefeeder"
+  "name": "Corpsefeeder",
+  "names": {
+   "esES": "Comecarroña",
+   "frFR": "Nécrobi",
+   "ruRU": "Мертвоед",
+   "zhCN": "Corpsefeeder"
+  }
  },
  "Crag Coyote": {
   "de": "Klippenkojote",
   "display": 161,
   "id": 2727,
   "info": "Crag Coyote is a level 35 - 36 NPC. The location of this NPC is unknown.",
-  "name": "Crag Coyote"
+  "name": "Crag Coyote",
+  "names": {
+   "esES": "Coyote del risco",
+   "frFR": "Coyote des rochers",
+   "ruRU": "Скальный койот",
+   "zhCN": "峭壁山狗"
+  }
  },
  "Creeping Sludge": {
   "de": "Kriechender Schlamm",
   "display": 14350,
   "id": 12222,
   "info": "Creeping Sludge is a level 45 - 46 Elite NPC. The location of this NPC is unknown.",
-  "name": "Creeping Sludge"
+  "name": "Creeping Sludge",
+  "names": {
+   "esES": "Barroso trepador",
+   "frFR": "Vase rampante",
+   "ruRU": "Ползучий слякоч",
+   "zhCN": "爬行污泥怪"
+  }
  },
  "Cresting Exile": {
   "de": "Schäumender Verbannter",
   "display": 5561,
   "id": 2761,
   "info": "Cresting Exile is a level 38 - 39 NPC. The location of this NPC is unknown.",
-  "name": "Cresting Exile"
+  "name": "Cresting Exile",
+  "names": {
+   "esES": "Éxilu coronador",
+   "frFR": "Exilé grimpeur",
+   "ruRU": "Морской изгой",
+   "zhCN": "水浪流放者"
+  }
  },
  "Crushridge Mage": {
   "de": "Crushridge-Magier",
   "display": 6705,
   "id": 2255,
   "info": "Crushridge Mage is a level 37 - 38 Elite NPC. The location of this NPC is unknown.",
-  "name": "Crushridge Mage"
+  "name": "Crushridge Mage",
+  "names": {
+   "esES": "Mago Aplastacresta",
+   "frFR": "Mage Cassecrête",
+   "ruRU": "Маг из клана Раздробленного Хребта",
+   "zhCN": "破碎岭法师"
+  }
  },
  "Crushridge Ogre": {
   "de": "Crushridge-Oger",
   "display": 11567,
   "id": 2252,
   "info": "Crushridge Ogre is a level 34 - 35 NPC. The location of this NPC is unknown.",
-  "name": "Crushridge Ogre"
+  "name": "Crushridge Ogre",
+  "names": {
+   "esES": "Ogro Aplastacresta",
+   "frFR": "Ogre Cassecrête",
+   "ruRU": "Огр из клана Раздробленного Хребта",
+   "zhCN": "破碎岭食人魔"
+  }
  },
  "Crypt Walker": {
   "de": "Gruftwandler",
   "display": 11178,
   "id": 8556,
   "info": "Crypt Walker is a level 55 - 56 NPC. The location of this NPC is unknown.",
-  "name": "Crypt Walker"
+  "name": "Crypt Walker",
+  "names": {
+   "esES": "Caminante de la cripta",
+   "frFR": "Marcheur des cryptes",
+   "ruRU": "Некрорахнид-могильщик",
+   "zhCN": "地穴巡逻者"
+  }
  },
  "Cursed Mage": {
   "de": "Verfluchter Magier",
   "display": 11397,
   "id": 8524,
   "info": "Cursed Mage is a level 54 - 55 NPC. The location of this NPC is unknown.",
-  "name": "Cursed Mage"
+  "name": "Cursed Mage",
+  "names": {
+   "esES": "Mago maldito",
+   "frFR": "Mage maudit",
+   "ruRU": "Проклятый маг",
+   "zhCN": "诅咒法师"
+  }
  },
  "Dalaran Apprentice": {
   "de": "Lehrling von Dalaran",
   "display": 3767,
   "id": 1867,
   "info": "Dalaran Apprentice is a level 13 - 14 NPC. The location of this NPC is unknown.",
-  "name": "Dalaran Apprentice"
+  "name": "Dalaran Apprentice",
+  "names": {
+   "esES": "Aprendiz Dalaran",
+   "frFR": "Apprenti de Dalaran",
+   "ruRU": "Даларанский ученик",
+   "zhCN": "达拉然学徒"
+  }
  },
  "Dark Iron Dwarf": {
   "de": "Dunkeleisenzwerg",
   "display": 825,
   "id": 1051,
   "info": "Dark Iron Dwarf is a level 27 - 28 Elite NPC. The location of this NPC is unknown.",
-  "name": "Dark Iron Dwarf"
+  "name": "Dark Iron Dwarf",
+  "names": {
+   "esES": "Enano Hierro Negro",
+   "frFR": "Nain Sombrefer",
+   "ruRU": "Дворф из клана Черного Железа",
+   "zhCN": "黑铁矮人"
+  }
  },
  "Dark Iron Geologist": {
   "de": "Geologe der Dunkeleisenzwerge",
   "display": 7793,
   "id": 5839,
   "info": "Dark Iron Geologist is a level 43 - 44 NPC. The location of this NPC is unknown.",
-  "name": "Dark Iron Geologist"
+  "name": "Dark Iron Geologist",
+  "names": {
+   "esES": "Geólogo Hierro Negro",
+   "frFR": "Géologue Sombrefer",
+   "ruRU": "Геолог из клана Черного Железа",
+   "zhCN": "黑铁地质学家"
+  }
  },
  "Dark Iron Taskmaster": {
   "de": "Zuchtmeister der Dunkeleisenzwerge",
   "display": 7798,
   "id": 5846,
   "info": "Dark Iron Taskmaster is a level 47 - 48 NPC. The location of this NPC is unknown.",
-  "name": "Dark Iron Taskmaster"
+  "name": "Dark Iron Taskmaster",
+  "names": {
+   "esES": "Capataz Hierro Negro",
+   "frFR": "Sous-chef Sombrefer",
+   "ruRU": "Надсмотрщик из клана Черного Железа",
+   "zhCN": "黑铁工头"
+  }
  },
  "Darkhound": {
   "de": "Altersschwacher Schattenhund",
   "display": 9021,
   "id": 1547,
   "info": "Decrepit Darkhound is a level 5 - 6 NPC. The location of this NPC is unknown.",
-  "name": "Decrepit Darkhound"
+  "name": "Decrepit Darkhound",
+  "names": {
+   "esES": "Can oscuro decrépito",
+   "frFR": "Sombredogue décrépit",
+   "ruRU": "Дряхлый пес тьмы",
+   "zhCN": "衰老的黑暗犬"
+  }
  },
  "Darkmaster Gandling": {
   "de": "Dunkelmeister Gandling",
   "display": 11070,
   "id": 1853,
   "info": "Darkmaster Gandling is a level 61 Elite NPC. The location of this NPC is unknown.",
-  "name": "Darkmaster Gandling"
+  "name": "Darkmaster Gandling",
+  "names": {
+   "esES": "Maestro oscuro Gandling",
+   "frFR": "Sombre Maître Gandling",
+   "ruRU": "Темный магистр Гандлинг",
+   "zhCN": "黑暗院长加丁"
+  }
  },
  "Darkmist Spider": {
   "de": "Graunebelspinne",
   "display": 545,
   "id": 4376,
   "info": "Darkmist Spider is a level 35 - 36 NPC. The location of this NPC is unknown.",
-  "name": "Darkmist Spider"
+  "name": "Darkmist Spider",
+  "names": {
+   "esES": "Araña Niebla Negra",
+   "frFR": "Araignée de Sombrebrume",
+   "ruRU": "Паук Мглистой пещеры",
+   "zhCN": "黑雾蜘蛛"
+  }
  },
  "Darkshore Thresher": {
   "de": "Dunkelküstendrescher",
   "display": 992,
   "id": 2185,
   "info": "Darkshore Thresher is a level 12 - 14 NPC. The location of this NPC is unknown.",
-  "name": "Darkshore Thresher"
+  "name": "Darkshore Thresher",
+  "names": {
+   "esES": "Trillador de la Costa Oscura",
+   "frFR": "Batteur de Sombrivage",
+   "ruRU": "Крепкозуб Темного берега",
+   "zhCN": "黑海岸蛇颈龙"
+  }
  },
  "Deadwood Shaman": {
   "de": "Schamane der Totenwaldfelle",
   "display": 6746,
   "id": 7158,
   "info": "Deadwood Shaman is a level 53 - 54 NPC. The location of this NPC is unknown.",
-  "name": "Deadwood Shaman"
+  "name": "Deadwood Shaman",
+  "names": {
+   "esES": "Chamán Muertobosque",
+   "frFR": "Chaman Mort-bois",
+   "ruRU": "Шаман из племени Мертвого Леса",
+   "zhCN": "死木萨满祭司"
+  }
  },
  "Deadwood Warrior": {
   "de": "Krieger der Totenwaldfelle",
   "display": 2000,
   "id": 7153,
   "info": "Deadwood Warrior is a level 48 - 49 NPC. The location of this NPC is unknown.",
-  "name": "Deadwood Warrior"
+  "name": "Deadwood Warrior",
+  "names": {
+   "esES": "Guerrero Muertobosque",
+   "frFR": "Guerrier Mort-bois",
+   "ruRU": "Воин из племени Мертвого Леса",
+   "zhCN": "死木战士"
+  }
  },
  "Decrepit Pylon Protector": {
   "de": "Verfallener Pylonenbeschützer",
   "display": 137523,
   "id": 252711,
   "info": "Decrepit Pylon Protector is a level 42 - 43 NPC. The location of this NPC is unknown.",
-  "name": "Decrepit Pylon Protector"
+  "name": "Decrepit Pylon Protector",
+  "names": {
+   "esES": "Decrepit Pylon Protector",
+   "frFR": "Protecteur de pylône décrépit",
+   "ruRU": "Decrepit Pylon Protector",
+   "zhCN": "Decrepit Pylon Protector"
+  }
  },
  "Deepmoss Webspinner": {
   "de": "Kluftmoosnetzweber",
   "display": 1989,
   "id": 4006,
   "info": "Deepmoss Webspinner is a level 19 - 20 NPC. The location of this NPC is unknown.",
-  "name": "Deepmoss Webspinner"
+  "name": "Deepmoss Webspinner",
+  "names": {
+   "esES": "Tejerred Musgondo",
+   "frFR": "Tisseuse des mousses profondes",
+   "ruRU": "Моховой паук-вязальщик",
+   "zhCN": "深苔结网蛛"
+  }
  },
  "Defias Blackguard": {
   "de": "Lump der Defias",
   "display": 2314,
   "id": 636,
   "info": "Defias Blackguard is a level 19 - 20 Elite NPC. The location of this NPC is unknown.",
-  "name": "Defias Blackguard"
+  "name": "Defias Blackguard",
+  "names": {
+   "esES": "Guardanegro Defias",
+   "frFR": "Canaille défias",
+   "ruRU": "Черный страж из Братства Справедливости",
+   "zhCN": "迪菲亚黑衣卫兵"
+  }
  },
  "Defias Pillager": {
   "de": "Plünderer der Defias",
   "display": 2338,
   "id": 589,
   "info": "Defias Pillager is a level 14 - 15 NPC. The location of this NPC is unknown.",
-  "name": "Defias Pillager"
+  "name": "Defias Pillager",
+  "names": {
+   "esES": "Saqueador Defias",
+   "frFR": "Pilleur défias",
+   "ruRU": "Погромщик из Братства Справедливости",
+   "zhCN": "迪菲亚抢劫者"
+  }
  },
  "Defias Thug": {
   "de": "Rohling der Defias",
   "display": 129962,
   "id": 38,
   "info": "Defias Thug is a level 3 - 4 NPC. The location of this NPC is unknown.",
-  "name": "Defias Thug"
+  "name": "Defias Thug",
+  "names": {
+   "esES": "Matón Defias",
+   "frFR": "Nervi défias",
+   "ruRU": "Лиходей из Братства Справедливости",
+   "zhCN": "迪菲亚暴徒"
+  }
  },
  "Defias Trapper": {
   "de": "Fallensteller der Defias",
   "display": 2331,
   "id": 504,
   "info": "Defias Trapper is a level 12 - 13 NPC. The location of this NPC is unknown.",
-  "name": "Defias Trapper"
+  "name": "Defias Trapper",
+  "names": {
+   "esES": "Trampero Defias",
+   "frFR": "Trappeur défias",
+   "ruRU": "Зверолов из Братства Справедливости",
+   "zhCN": "迪菲亚捕兽者"
+  }
  },
  "Devilsaur": {
   "de": "Teufelssaurier",
   "display": 5239,
   "id": 6498,
   "info": "Devilsaur is a level 54 - 55 Elite NPC. The location of this NPC is unknown.",
-  "name": "Devilsaur"
+  "name": "Devilsaur",
+  "names": {
+   "esES": "Devilsaurio",
+   "frFR": "Diablosaure",
+   "ruRU": "Девизавр",
+   "zhCN": "魔暴龙"
+  }
  },
  "Diseased Wolf": {
   "de": "Kranker Wolf",
   "display": 4124,
   "id": 1817,
   "info": "Diseased Wolf is a level 53 - 54 NPC. The location of this NPC is unknown.",
-  "name": "Diseased Wolf"
+  "name": "Diseased Wolf",
+  "names": {
+   "esES": "Lobo malsano",
+   "frFR": "Loup malade",
+   "ruRU": "Больной волк",
+   "zhCN": "生病的狼"
+  }
  },
  "Doomguard Commander": {
   "de": "Kommandant der Verdammniswache",
   "display": 4426,
   "id": 12396,
   "info": "Doomguard Commander is a level 61 Elite NPC. The location of this NPC is unknown.",
-  "name": "Doomguard Commander"
+  "name": "Doomguard Commander",
+  "names": {
+   "esES": "Comandante guardia apocalíptico",
+   "frFR": "Commandant de la Garde funeste",
+   "ruRU": "Стражник ужаса: Командир",
+   "zhCN": "末日守卫指挥官"
+  }
  },
  "Dragonmaw Grunt": {
   "de": "Grunzer der Dragonmaw",
   "display": 4927,
   "id": 2102,
   "info": "Dragonmaw Grunt is a level 20 - 21 NPC. The location of this NPC is unknown.",
-  "name": "Dragonmaw Grunt"
+  "name": "Dragonmaw Grunt",
+  "names": {
+   "esES": "Bruto Faucedraco",
+   "frFR": "Grunt Dragonmaw",
+   "ruRU": "Рубака из клана Драконьей Пасти",
+   "zhCN": "龙喉步兵"
+  }
  },
  "Dragonmaw Shadowwarder": {
   "de": "Schattenwärter der Dragonmaw",
   "display": 4924,
   "id": 1038,
   "info": "Dragonmaw Shadowwarder is a level 28 - 29 NPC. The location of this NPC is unknown.",
-  "name": "Dragonmaw Shadowwarder"
+  "name": "Dragonmaw Shadowwarder",
+  "names": {
+   "esES": "Pastor Faucedraco",
+   "frFR": "Veilleur des ombres Dragonmaw",
+   "ruRU": "Хранитель теней из клана Драконьей Пасти",
+   "zhCN": "龙喉暗影守卫"
+  }
  },
  "Drek'Thar": {
   "de": "Drek'Thar",
   "display": 11894,
   "id": 11946,
   "info": "Drek'Thar is an Elite NPC. The location of this NPC is unknown.",
-  "name": "Drek'Thar"
+  "name": "Drek'Thar",
+  "names": {
+   "esES": "Drek'Thar",
+   "frFR": "Drek'Thar",
+   "ruRU": "Дрек'Тар",
+   "zhCN": "德雷克塔尔"
+  }
  },
  "Drowned Skyborne": {
   "de": "Drowned Skyborne",
   "display": 146360,
   "id": 270192,
   "info": "The location of this NPC is unknown.",
-  "name": "Drowned Skyborne"
+  "name": "Drowned Skyborne",
+  "names": {
+   "esES": "Drowned Skyborne",
+   "frFR": "Drowned Skyborne",
+   "ruRU": "Drowned Skyborne",
+   "zhCN": "Drowned Skyborne"
+  }
  },
  "Drywallow Crocolisk": {
   "de": "Staubsuhlerkrokilisk",
   "display": 1080,
   "id": 4341,
   "info": "Drywallow Crocolisk is a level 35 - 36 NPC. The location of this NPC is unknown.",
-  "name": "Drywallow Crocolisk"
+  "name": "Drywallow Crocolisk",
+  "names": {
+   "esES": "Crocolisco secorrón",
+   "frFR": "Crocilisque Sèchefange",
+   "ruRU": "Кроколиск-грязекуп",
+   "zhCN": "尘泥鳄鱼"
+  }
  },
  "Dune Smasher": {
   "de": "Dünenzerkracher",
   "display": 6910,
   "id": 5469,
   "info": "Dune Smasher is a level 48 - 49 Elite NPC. The location of this NPC is unknown.",
-  "name": "Dune Smasher"
+  "name": "Dune Smasher",
+  "names": {
+   "esES": "Quebrantador de las dunas",
+   "frFR": "Compresseur",
+   "ruRU": "Дюнный крушитель",
+   "zhCN": "沙丘重击者"
+  }
  },
  "Durotar Tiger": {
   "de": "Durotar-Tiger",
   "display": 598,
   "id": 3121,
   "info": "Durotar Tiger is a level 7 - 8 NPC. The location of this NPC is unknown.",
-  "name": "Durotar Tiger"
+  "name": "Durotar Tiger",
+  "names": {
+   "esES": "Tigre de Durotar",
+   "frFR": "Tigre de Durotar",
+   "ruRU": "Дуротарский тигр",
+   "zhCN": "杜隆塔尔猛虎"
+  }
  },
  "Dust Stormer": {
   "de": "Staubstürmer",
   "display": 8715,
   "id": 11744,
   "info": "Dust Stormer is a level 55 - 57 NPC. The location of this NPC is unknown.",
-  "name": "Dust Stormer"
+  "name": "Dust Stormer",
+  "names": {
+   "esES": "Sirocoso",
+   "frFR": "Tempétueux de poussière",
+   "ruRU": "Пылевихрь",
+   "zhCN": "灰尘风暴"
+  }
  },
  "Dustbelcher Mystic": {
   "de": "Mystiker der Staubspeier",
   "display": 1122,
   "id": 2907,
   "info": "Dustbelcher Mystic is a level 36 - 37 NPC. The location of this NPC is unknown.",
-  "name": "Dustbelcher Mystic"
+  "name": "Dustbelcher Mystic",
+  "names": {
+   "esES": "Místico Rotapolvo",
+   "frFR": "Mystique Crache-poussières",
+   "ruRU": "Мистик из клана Гнилобрюхов",
+   "zhCN": "火烟秘法师"
+  }
  },
  "Dustbelcher Ogre": {
   "de": "Oger der Staubspeier",
   "display": 10704,
   "id": 2701,
   "info": "Dustbelcher Ogre is a level 38 - 39 NPC. The location of this NPC is unknown.",
-  "name": "Dustbelcher Ogre"
+  "name": "Dustbelcher Ogre",
+  "names": {
+   "esES": "Ogro Rotapolvo",
+   "frFR": "Ogre Crache-poussières",
+   "ruRU": "Огр из клана Гнилобрюхов",
+   "zhCN": "火烟食人魔"
+  }
  },
  "Earthen Custodian": {
   "de": "Irdener Wärter",
   "display": 6025,
   "id": 7309,
   "info": "Earthen Custodian is a level 44 - 45 NPC. The location of this NPC is unknown.",
-  "name": "Earthen Custodian"
+  "name": "Earthen Custodian",
+  "names": {
+   "esES": "Custodio de tierra",
+   "frFR": "Protecteur terrestre",
+   "ruRU": "Глиняный комендант",
+   "zhCN": "土灵管理者"
+  }
  },
  "Eastsea Raider": {
   "de": "Eastsea Raider",
   "display": 140459,
   "id": 257915,
   "info": "Eastsea Raider is a level 44 - 45 NPC. The location of this NPC is unknown.",
-  "name": "Eastsea Raider"
+  "name": "Eastsea Raider",
+  "names": {
+   "esES": "Eastsea Raider",
+   "frFR": "Ecumeur des mers de l'Est",
+   "ruRU": "Eastsea Raider",
+   "zhCN": "Eastsea Raider"
+  }
  },
  "Echo of Archimonde": {
   "de": "Archimondes Echo",
   "display": 12990,
   "id": 13083,
   "info": "The location of this NPC is unknown.",
-  "name": "Echo of Archimonde"
+  "name": "Echo of Archimonde",
+  "names": {
+   "esES": "Eco de Archimonde",
+   "frFR": "Echo d'Archimonde",
+   "ruRU": "Эхо Архимонда",
+   "zhCN": "阿克蒙德的回响"
+  }
  },
  "Edwin VanCleef": {
   "de": "Edwin van Cleef",
   "display": 2029,
   "id": 639,
   "info": "Edwin VanCleef is a level 21 Elite NPC. The location of this NPC is unknown.",
-  "name": "Edwin VanCleef"
+  "name": "Edwin VanCleef",
+  "names": {
+   "esES": "Edwin VanCleef",
+   "frFR": "Edwin VanCleef",
+   "ruRU": "Эдвин ван Клиф",
+   "zhCN": "艾德温·范克里夫"
+  }
  },
  "Eitrigg": {
   "de": "Etrigg",
   "display": 1619,
   "id": 3144,
   "info": "Eitrigg is a level 20 NPC. The location of this NPC is unknown.",
-  "name": "Eitrigg"
+  "name": "Eitrigg",
+  "names": {
+   "esES": "Eitrigg",
+   "frFR": "Eitrigg",
+   "ruRU": "Эйтригг",
+   "zhCN": "伊崔格"
+  }
  },
  "Elder Stranglethorn Tiger": {
   "de": "Alter Schlingendorntiger",
   "display": 698,
   "id": 1085,
   "info": "Elder Stranglethorn Tiger is a level 34 - 35 NPC. The location of this NPC is unknown.",
-  "name": "Elder Stranglethorn Tiger"
+  "name": "Elder Stranglethorn Tiger",
+  "names": {
+   "esES": "Tigre de Tuercespina mayor",
+   "frFR": "Ancien tigre de Strangleronce",
+   "ruRU": "Старый тигр Тернистой долины",
+   "zhCN": "老年荆棘谷猛虎"
+  }
  },
  "Emperor Dagran Thaurissan": {
   "de": "Imperator Dagran Thaurissan",
   "display": 8807,
   "id": 9019,
   "info": "Emperor Dagran Thaurissan is a level 59 Elite NPC. The location of this NPC is unknown.",
-  "name": "Emperor Dagran Thaurissan"
+  "name": "Emperor Dagran Thaurissan",
+  "names": {
+   "esES": "Emperador Dagran Thaurissan",
+   "frFR": "Empereur Dagran Thaurissan",
+   "ruRU": "Император Дагран Тауриссан",
+   "zhCN": "达格兰·索瑞森大帝"
+  }
  },
  "Fandral Staghelm": {
   "de": "Fandral Staghelm",
   "display": 15421,
   "id": 15382,
   "info": "Fandral Staghelm is a boss. The location of this NPC is unknown.",
-  "name": "Fandral Staghelm"
+  "name": "Fandral Staghelm",
+  "names": {
+   "esES": "Fandral Corzocelada",
+   "frFR": "Fandral Staghelm",
+   "ruRU": "Фэндрал Олений Шлем",
+   "zhCN": "范达尔·鹿盔"
+  }
  },
  "Fel Rock Grell": null,
  "Felguard Elite": {
@@ -672,420 +1242,780 @@
   "display": 7970,
   "id": 8717,
   "info": "Felguard Elite is a level 61 Elite NPC. The location of this NPC is unknown.",
-  "name": "Felguard Elite"
+  "name": "Felguard Elite",
+  "names": {
+   "esES": "Élite guardia vil",
+   "frFR": "Gangregarde d'élite",
+   "ruRU": "Элитный страж Скверны",
+   "zhCN": "地狱卫士精英"
+  }
  },
  "Felguard Sentry": {
   "de": "Wachposten der Teufelswache",
   "display": 9017,
   "id": 6011,
   "info": "Felguard Sentry is a level 54 - 55 NPC. The location of this NPC is unknown.",
-  "name": "Felguard Sentry"
+  "name": "Felguard Sentry",
+  "names": {
+   "esES": "Argos guardia maldito",
+   "frFR": "Gangregarde sentinelle",
+   "ruRU": "Караульный-страж Скверны",
+   "zhCN": "地狱卫士斥候"
+  }
  },
  "Felhound": {
   "de": "Teufelshund",
   "display": 1913,
   "id": 6010,
   "info": "Felhound is a level 54 - 55 NPC. The location of this NPC is unknown.",
-  "name": "Felhound"
+  "name": "Felhound",
+  "names": {
+   "esES": "Can manáfago",
+   "frFR": "Gangrechien",
+   "ruRU": "Гончая Скверны",
+   "zhCN": "地狱巨犬"
+  }
  },
  "Fen Dweller": {
   "de": "Moorbewohner",
   "display": 713,
   "id": 1039,
   "info": "Fen Dweller is a level 20 - 26 NPC. The location of this NPC is unknown.",
-  "name": "Fen Dweller"
+  "name": "Fen Dweller",
+  "names": {
+   "esES": "Habitante del cubil",
+   "frFR": "Créature des tourbières",
+   "ruRU": "Болотный житель",
+   "zhCN": "沼泽定居者"
+  }
  },
  "Feral Scar Yeti": {
   "de": "Wildschrammyeti",
   "display": 3207,
   "id": 5292,
   "info": "Feral Scar Yeti is a level 43 - 44 NPC. The location of this NPC is unknown.",
-  "name": "Feral Scar Yeti"
+  "name": "Feral Scar Yeti",
+  "names": {
+   "esES": "Yeti Cicatriz Feral",
+   "frFR": "Yéti Griffe farouche",
+   "ruRU": "Йети со Свирепого Утеса",
+   "zhCN": "深痕雪人"
+  }
  },
  "Firegut Ogre": {
   "de": "Oger der Feuermägen",
   "display": 11549,
   "id": 7033,
   "info": "Firegut Ogre is a level 50 - 51 NPC. The location of this NPC is unknown.",
-  "name": "Firegut Ogre"
+  "name": "Firegut Ogre",
+  "names": {
+   "esES": "Ogro Pirontraña",
+   "frFR": "Ogre Brûlentrailles",
+   "ruRU": "Огр из клана Огненного Чрева",
+   "zhCN": "火腹食人魔"
+  }
  },
  "Firemane Ash Tail": {
   "de": "Aschenschweif der Feuermähnen",
   "display": 8249,
   "id": 4331,
   "info": "Firemane Ash Tail is a level 42 - 43 NPC. The location of this NPC is unknown.",
-  "name": "Firemane Ash Tail"
+  "name": "Firemane Ash Tail",
+  "names": {
+   "esES": "Ceniazote Pirocabello",
+   "frFR": "Queue-cendrée Crins-de-feu",
+   "ruRU": "Огнегривый пеплохвост",
+   "zhCN": "火鬃灰尾龙人"
+  }
  },
  "Firemane Scalebane": {
   "de": "Bannschuppe der Feuermähnen",
   "display": 8310,
   "id": 4328,
   "info": "Firemane Scalebane is a level 43 - 44 NPC. The location of this NPC is unknown.",
-  "name": "Firemane Scalebane"
+  "name": "Firemane Scalebane",
+  "names": {
+   "esES": "Horrocrusto Pirocabello",
+   "frFR": "Plaiedécaille Crins-de-feu",
+   "ruRU": "Огнегривый чешуйчатый губитель",
+   "zhCN": "火鬃守卫"
+  }
  },
  "Fleshripper": {
   "de": "Fleischreißer",
   "display": 2305,
   "id": 1109,
   "info": "Fleshripper is a level 13 - 14 NPC. The location of this NPC is unknown.",
-  "name": "Fleshripper"
+  "name": "Fleshripper",
+  "names": {
+   "esES": "Desgarrador",
+   "frFR": "Déchireur",
+   "ruRU": "Шкуродер",
+   "zhCN": "碎尸鸟"
+  }
  },
  "Foulweald Warrior": {
   "de": "Krieger der Fäulnisklauen",
   "display": 6824,
   "id": 3743,
   "info": "Foulweald Warrior is a level 23 - 24 NPC. The location of this NPC is unknown.",
-  "name": "Foulweald Warrior"
+  "name": "Foulweald Warrior",
+  "names": {
+   "esES": "Guerrero Maderiza",
+   "frFR": "Guerrier Vile-sylve",
+   "ruRU": "Воин из племени Гиблой Чащи",
+   "zhCN": "污林战士"
+  }
  },
  "Frenzied Pterrordax": {
   "de": "Rasender Pterrordax",
   "display": 8412,
   "id": 9167,
   "info": "Frenzied Pterrordax is a level 52 - 54 NPC. The location of this NPC is unknown.",
-  "name": "Frenzied Pterrordax"
+  "name": "Frenzied Pterrordax",
+  "names": {
+   "esES": "Pterrordáctilo demente",
+   "frFR": "Pterreurdactyle frénétique",
+   "ruRU": "Бесноватый жутедактиль",
+   "zhCN": "狂怒的翼手龙"
+  }
  },
  "Frostmane Seer": {
   "de": "Seher der Frostmane",
   "display": 5610,
   "id": 1397,
   "info": "Frostmane Seer is a level 8 - 9 NPC. The location of this NPC is unknown.",
-  "name": "Frostmane Seer"
+  "name": "Frostmane Seer",
+  "names": {
+   "esES": "Profeta Peloescarcha",
+   "frFR": "Prophète Frostmane",
+   "ruRU": "Ясновидец племени Мерзлогривов",
+   "zhCN": "霜鬃先知"
+  }
  },
  "Frostmane Troll Whelp": {
   "de": "Trollwelpe der Frostmane",
   "display": 5606,
   "id": 706,
   "info": "Frostmane Troll Whelp is a level 3 - 4 NPC. The location of this NPC is unknown.",
-  "name": "Frostmane Troll Whelp"
+  "name": "Frostmane Troll Whelp",
+  "names": {
+   "esES": "Cría de trol Peloescarcha",
+   "frFR": "Jeune troll Frostmane",
+   "ruRU": "Тролль-подросток из племени Мерзлогривов",
+   "zhCN": "霜鬃巨魔幼崽"
+  }
  },
  "Frostmaul Giant": {
   "de": "Frosthagelriese",
   "display": 6209,
   "id": 7428,
   "info": "Frostmaul Giant is a level 59 - 60 Elite NPC. The location of this NPC is unknown.",
-  "name": "Frostmaul Giant"
+  "name": "Frostmaul Giant",
+  "names": {
+   "esES": "Gigante Machacahielo",
+   "frFR": "Géant Cognegivre",
+   "ruRU": "Великан ледяного молота",
+   "zhCN": "霜槌巨人"
+  }
  },
  "Frostsaber Huntress": {
   "de": "Frostsäblerjägerin",
   "display": 11444,
   "id": 7433,
   "info": "Frostsaber Huntress is a level 58 - 59 NPC. The location of this NPC is unknown.",
-  "name": "Frostsaber Huntress"
+  "name": "Frostsaber Huntress",
+  "names": {
+   "esES": "Cazadora Sable de Hielo",
+   "frFR": "Chasseresse sabre-de-givre",
+   "ruRU": "Ледопард-охотница",
+   "zhCN": "霜刃雌豹"
+  }
  },
  "Gahz'rilla": {
   "de": "Gahz'rilla",
   "display": 7271,
   "id": 7273,
   "info": "Gahz'rilla is a level 46 Elite NPC. The location of this NPC is unknown.",
-  "name": "Gahz'rilla"
+  "name": "Gahz'rilla",
+  "names": {
+   "esES": "Gahz'rilla",
+   "frFR": "Gahz'rilla",
+   "ruRU": "Газ'рилла",
+   "zhCN": "加兹瑞拉"
+  }
  },
  "Galak Marauder": {
   "de": "Marodeur der Galak",
   "display": 9415,
   "id": 4099,
   "info": "Galak Marauder is a level 26 - 27 NPC. The location of this NPC is unknown.",
-  "name": "Galak Marauder"
+  "name": "Galak Marauder",
+  "names": {
+   "esES": "Maleante Galak",
+   "frFR": "Maraudeur galak",
+   "ruRU": "Мародер из племени Галак",
+   "zhCN": "加拉克掠夺者"
+  }
  },
  "Galak Windchaser": {
   "de": "Windhetzerin der Galak",
   "display": 9412,
   "id": 4096,
   "info": "Galak Windchaser is a level 24 - 25 NPC. The location of this NPC is unknown.",
-  "name": "Galak Windchaser"
+  "name": "Galak Windchaser",
+  "names": {
+   "esES": "Cazavientos Galak",
+   "frFR": "Chasse-vent galak",
+   "ruRU": "Ветроловка из племени Галак",
+   "zhCN": "加拉克逐风者"
+  }
  },
  "Gath'Ilzogg": {
   "de": "Gath'Ilzogg",
   "display": 6050,
   "id": 334,
   "info": "Gath'Ilzogg is a level 26 Elite NPC. The location of this NPC is unknown.",
-  "name": "Gath'Ilzogg"
+  "name": "Gath'Ilzogg",
+  "names": {
+   "esES": "Gath'Ilzogg",
+   "frFR": "Gath'Ilzogg",
+   "ruRU": "Гат'Илзогг",
+   "zhCN": "加塞尔佐格"
+  }
  },
  "Gelkis Earthcaller": {
   "de": "Erdenrufer der Gelkis",
   "display": 9424,
   "id": 4651,
   "info": "Gelkis Earthcaller is a level 34 - 35 NPC. The location of this NPC is unknown.",
-  "name": "Gelkis Earthcaller"
+  "name": "Gelkis Earthcaller",
+  "names": {
+   "esES": "Clamor de Tierra Gelkis",
+   "frFR": "Implorateur de la terre gelkis",
+   "ruRU": "Заклинательница земли из племени Гелкис",
+   "zhCN": "吉尔吉斯唤地者"
+  }
  },
  "Gerenzo Wrenchwhistle": {
   "de": "Gerenzo Wrenchwhistle",
   "display": 3885,
   "id": 4202,
   "info": "Gerenzo Wrenchwhistle is a level 27 NPC. The location of this NPC is unknown.",
-  "name": "Gerenzo Wrenchwhistle"
+  "name": "Gerenzo Wrenchwhistle",
+  "names": {
+   "esES": "Gerenzo Silbillave",
+   "frFR": "Gerenzo Wrenchwhistle",
+   "ruRU": "Геренцо Терминатрикс",
+   "zhCN": "格雷苏"
+  }
  },
  "Ghostmaw": {
   "de": "Geisterrachen",
   "display": 2850,
   "id": 263380,
   "info": "Ghostmaw is a level 42 Elite NPC. The location of this NPC is unknown.",
-  "name": "Ghostmaw"
+  "name": "Ghostmaw",
+  "names": {
+   "esES": "Ghostmaw",
+   "frFR": "Gueule-Fantôme",
+   "ruRU": "Ghostmaw",
+   "zhCN": "幽魂之颚"
+  }
  },
  "Gibbering Ghoul": {
   "de": "Jammernder Ghul",
   "display": 10487,
   "id": 8531,
   "info": "Gibbering Ghoul is a level 56 - 57 NPC. The location of this NPC is unknown.",
-  "name": "Gibbering Ghoul"
+  "name": "Gibbering Ghoul",
+  "names": {
+   "esES": "Necrófago tartamudo",
+   "frFR": "Goule bredouillante",
+   "ruRU": "Бормочущий вурдалак",
+   "zhCN": "喋喋不休的食尸鬼"
+  }
  },
  "Glassweb Spider": {
   "de": "Glasnetzspinne",
   "display": 4456,
   "id": 5856,
   "info": "Glassweb Spider is a level 43 - 45 NPC. The location of this NPC is unknown.",
-  "name": "Glassweb Spider"
+  "name": "Glassweb Spider",
+  "names": {
+   "esES": "Araña Cristalderma",
+   "frFR": "Araignée verrière",
+   "ruRU": "Хрустальный паук",
+   "zhCN": "晶网蜘蛛"
+  }
  },
  "Glutinous Ooze": {
   "de": "Klebriger Brühschlammer",
   "display": 1146,
   "id": 6559,
   "info": "Glutinous Ooze is a level 52 - 54 NPC. The location of this NPC is unknown.",
-  "name": "Glutinous Ooze"
+  "name": "Glutinous Ooze",
+  "names": {
+   "esES": "Moco pegajoso",
+   "frFR": "Limon gluant",
+   "ruRU": "Липкий слизнюк",
+   "zhCN": "粘稠的软泥怪"
+  }
  },
  "Gnarlpine Ursa": {
   "de": "Ursa der Knarzklauen",
   "display": 6798,
   "id": 2006,
   "info": "Gnarlpine Ursa is a level 5 - 6 NPC. The location of this NPC is unknown.",
-  "name": "Gnarlpine Ursa"
+  "name": "Gnarlpine Ursa",
+  "names": {
+   "esES": "Ursa Tuercepinos",
+   "frFR": "Ursa Pin-tordu",
+   "ruRU": "Ведмедь из племени Кривой Сосны",
+   "zhCN": "瘤背巨熊怪"
+  }
  },
  "Gordok Brute": {
   "de": "Schläger der Gordok",
   "display": 12473,
   "id": 11441,
   "info": "Gordok Brute is a level 56 - 58 Elite NPC. The location of this NPC is unknown.",
-  "name": "Gordok Brute"
+  "name": "Gordok Brute",
+  "names": {
+   "esES": "Tosco Gordok",
+   "frFR": "Brute Gordok",
+   "ruRU": "Громила из клана Гордок",
+   "zhCN": "戈多克蛮兵"
+  }
  },
  "Gordok Mage-Lord": {
   "de": "Magierlord der Gordok",
   "display": 11537,
   "id": 11444,
   "info": "Gordok Mage-Lord is a level 57 - 58 Elite NPC. The location of this NPC is unknown.",
-  "name": "Gordok Mage-Lord"
+  "name": "Gordok Mage-Lord",
+  "names": {
+   "esES": "Señor de la Magia Gordok",
+   "frFR": "Seigneur-mage Gordok",
+   "ruRU": "Маг-лорд из клана Гордок",
+   "zhCN": "戈多克大法师"
+  }
  },
  "Gordunni Ogre": {
   "de": "Oger der Gordunni",
   "display": 597,
   "id": 5229,
   "info": "Gordunni Ogre is a level 40 - 41 NPC. The location of this NPC is unknown.",
-  "name": "Gordunni Ogre"
+  "name": "Gordunni Ogre",
+  "names": {
+   "esES": "Ogro Gordunni",
+   "frFR": "Ogre Gordunni",
+   "ruRU": "Огр из клана Гордунни",
+   "zhCN": "戈杜尼食人魔"
+  }
  },
  "Gordunni Shaman": {
   "de": "Schamane der Gordunni",
   "display": 11559,
   "id": 5236,
   "info": "Gordunni Shaman is a level 44 - 45 NPC. The location of this NPC is unknown.",
-  "name": "Gordunni Shaman"
+  "name": "Gordunni Shaman",
+  "names": {
+   "esES": "Chamán Gordunni",
+   "frFR": "Chaman Gordunni",
+   "ruRU": "Шаман из клана Гордунни",
+   "zhCN": "戈杜尼萨满祭司"
+  }
  },
  "Grakna": {
   "de": "Grakna",
   "display": 139413,
   "id": 255993,
   "info": "Grakna is a level 55 Elite NPC. The location of this NPC is unknown.",
-  "name": "Grakna"
+  "name": "Grakna",
+  "names": {
+   "esES": "Grakna",
+   "frFR": "Grakna",
+   "ruRU": "Grakna",
+   "zhCN": "格拉克纳"
+  }
  },
  "Gray Bear": {
   "de": "Graubär",
   "display": 806,
   "id": 2351,
   "info": "Gray Bear is a level 21 - 22 NPC. The location of this NPC is unknown.",
-  "name": "Gray Bear"
+  "name": "Gray Bear",
+  "names": {
+   "esES": "Oso gris",
+   "frFR": "Ours gris",
+   "ruRU": "Серый медведь",
+   "zhCN": "灰熊"
+  }
  },
  "Grellkin": {
   "de": "Grellkin",
   "display": 3023,
   "id": 1989,
   "info": "Grellkin is a level 3 - 4 NPC. The location of this NPC is unknown.",
-  "name": "Grellkin"
+  "name": "Grellkin",
+  "names": {
+   "esES": "Grellín",
+   "frFR": "Grellide",
+   "ruRU": "Греллид",
+   "zhCN": "劣魔"
+  }
  },
  "Greymist Coastrunner": {
   "de": "Küstenläufer der Grauflossen",
   "display": 3619,
   "id": 2202,
   "info": "Greymist Coastrunner is a level 12 - 13 NPC. The location of this NPC is unknown.",
-  "name": "Greymist Coastrunner"
+  "name": "Greymist Coastrunner",
+  "names": {
+   "esES": "Correcostas Brumagris",
+   "frFR": "Cours-la-côte Grisebrume",
+   "ruRU": "Береговик из племени Серой Мглы",
+   "zhCN": "灰雾滩行者"
+  }
  },
  "Greymist Seer": {
   "de": "Seher der Grauflossen",
   "display": 3940,
   "id": 2203,
   "info": "Greymist Seer is a level 13 - 14 NPC. The location of this NPC is unknown.",
-  "name": "Greymist Seer"
+  "name": "Greymist Seer",
+  "names": {
+   "esES": "Profeta Brumagris",
+   "frFR": "Prophète Grisebrume",
+   "ruRU": "Ясновидец из племени Серой Мглы",
+   "zhCN": "灰雾先知"
+  }
  },
  "Grimtotem Geomancer": {
   "de": "Geomant der Grimmtotem",
   "display": 10227,
   "id": 10760,
   "info": "Grimtotem Geomancer is a level 25 - 27 NPC. The location of this NPC is unknown.",
-  "name": "Grimtotem Geomancer"
+  "name": "Grimtotem Geomancer",
+  "names": {
+   "esES": "Geomántico Tótem Siniestro",
+   "frFR": "Géomancien du Totem sinistre",
+   "ruRU": "Геомант племени Зловещего Тотема",
+   "zhCN": "恐怖图腾地卜师"
+  }
  },
  "Grimtotem Naturalist": {
   "de": "Naturalist der Grimmtotem",
   "display": 6831,
   "id": 7726,
   "info": "Grimtotem Naturalist is a level 41 - 42 NPC. The location of this NPC is unknown.",
-  "name": "Grimtotem Naturalist"
+  "name": "Grimtotem Naturalist",
+  "names": {
+   "esES": "Naturalista Tótem Siniestro",
+   "frFR": "Naturaliste du Totem sinistre",
+   "ruRU": "Натуралист племени Зловещего Тотема",
+   "zhCN": "恐怖图腾博学者"
+  }
  },
  "Grimtotem Ruffian": {
   "de": "Grobian der Grimmtotem",
   "display": 11878,
   "id": 11910,
   "info": "Grimtotem Ruffian is a level 14 - 15 NPC. The location of this NPC is unknown.",
-  "name": "Grimtotem Ruffian"
+  "name": "Grimtotem Ruffian",
+  "names": {
+   "esES": "Rufián Tótem Siniestro",
+   "frFR": "Forban du Totem sinistre",
+   "ruRU": "Бузотер из племени Зловещего Тотема",
+   "zhCN": "恐怖图腾恶徒"
+  }
  },
  "Grimtotem Stomper": {
   "de": "Donnerstampfer der Grimmtotem",
   "display": 10238,
   "id": 10759,
   "info": "Grimtotem Stomper is a level 26 - 27 NPC. The location of this NPC is unknown.",
-  "name": "Grimtotem Stomper"
+  "name": "Grimtotem Stomper",
+  "names": {
+   "esES": "Vapuleador Tótem Siniestro",
+   "frFR": "Marteleur du Totem sinistre",
+   "ruRU": "Топотун из племени Зловещего Тотема",
+   "zhCN": "恐怖图腾践踏者"
+  }
  },
  "Harvest Golem": {
   "de": "Erntegolem",
   "display": 367,
   "id": 36,
   "info": "Harvest Golem is a level 11 - 12 NPC. The location of this NPC is unknown.",
-  "name": "Harvest Golem"
+  "name": "Harvest Golem",
+  "names": {
+   "esES": "Gólem de la cosecha",
+   "frFR": "Golem des moissons",
+   "ruRU": "Уборочный голем",
+   "zhCN": "麦田傀儡"
+  }
  },
  "Hatecrest Siren": {
   "de": "Sirene der Hasskämme",
   "display": 11259,
   "id": 5337,
   "info": "Hatecrest Siren is a level 42 - 43 NPC. The location of this NPC is unknown.",
-  "name": "Hatecrest Siren"
+  "name": "Hatecrest Siren",
+  "names": {
+   "esES": "Sirena Crestafuria",
+   "frFR": "Sirène Hainecrête",
+   "ruRU": "Сирена из клана Гребень Ненависти",
+   "zhCN": "憎世海妖"
+  }
  },
  "Hatefury Felsworn": {
   "de": "Teufelsanbeter der Zornsäer",
   "display": 2014,
   "id": 4672,
   "info": "Hatefury Felsworn is a level 31 - 32 NPC. The location of this NPC is unknown.",
-  "name": "Hatefury Felsworn"
+  "name": "Hatefury Felsworn",
+  "names": {
+   "esES": "Jurapenas Odio Feroz",
+   "frFR": "Lige de la corruption Fielfurie",
+   "ruRU": "Скверноподданный из племени Ярой Ненависти",
+   "zhCN": "怨怒魔仆"
+  }
  },
  "Heavy War Golem": {
   "de": "Schwerer Kriegsgolem",
   "display": 10801,
   "id": 5854,
   "info": "Heavy War Golem is a level 47 - 49 NPC. The location of this NPC is unknown.",
-  "name": "Heavy War Golem"
+  "name": "Heavy War Golem",
+  "names": {
+   "esES": "Gólem de guerra pesado",
+   "frFR": "Golem de guerre lourd",
+   "ruRU": "Тяжелый боевой голем",
+   "zhCN": "重型作战傀儡"
+  }
  },
  "High Chief Winterfall": {
   "de": "Oberhäuptling der Winterfelle",
   "display": 9491,
   "id": 10738,
   "info": "High Chief Winterfall is a level 59 Elite NPC. The location of this NPC is unknown.",
-  "name": "High Chief Winterfall"
+  "name": "High Chief Winterfall",
+  "names": {
+   "esES": "Gran Jefe Nevada",
+   "frFR": "Grand chef Tombe-hiver",
+   "ruRU": "Верховный вождь племени Зимней Спячки",
+   "zhCN": "冬泉酋长"
+  }
  },
  "High Inquisitor Whitemane": {
   "de": "Hochinquisitor Whitemane",
   "display": 2043,
   "id": 3977,
   "info": "High Inquisitor Whitemane is a level 42 Elite NPC. The location of this NPC is unknown.",
-  "name": "High Inquisitor Whitemane"
+  "name": "High Inquisitor Whitemane",
+  "names": {
+   "esES": "Alta Inquisidora Melenablanca",
+   "frFR": "Grand Inquisiteur Whitemane",
+   "ruRU": "Верховный инквизитор Вайтмейн",
+   "zhCN": "大检察官怀特迈恩"
+  }
  },
  "High Overlord Saurfang": {
   "de": "Hochfürst Saurfang",
   "display": 14732,
   "id": 14720,
   "info": "High Overlord Saurfang is a level 62 Elite NPC. The location of this NPC is unknown.",
-  "name": "High Overlord Saurfang"
+  "name": "High Overlord Saurfang",
+  "names": {
+   "esES": "Alto señor supremo Colmillosauro",
+   "frFR": "Haut seigneur Saurfang",
+   "ruRU": "Верховный воевода Саурфанг",
+   "zhCN": "萨鲁法尔大王"
+  }
  },
  "High Priestess Lorthuna": {
   "de": "Hohepriesterin Lorthuna",
   "display": 137682,
   "id": 264712,
   "info": "The location of this NPC is unknown.",
-  "name": "High Priestess Lorthuna"
+  "name": "High Priestess Lorthuna",
+  "names": {
+   "esES": "Suma sacerdotisa Lorthuna",
+   "frFR": "Grande prêtresse Lorthuna",
+   "ruRU": "Верховная жрица Лортуна",
+   "zhCN": "高阶女祭司洛苏娜"
+  }
  },
  "Highborne Apparition": {
   "de": "Erscheinung einer Hochgeborenen",
   "display": 10702,
   "id": 6116,
   "info": "Highborne Apparition is a level 45 - 46 NPC. The location of this NPC is unknown.",
-  "name": "Highborne Apparition"
+  "name": "Highborne Apparition",
+  "names": {
+   "esES": "Aparición de Altonato",
+   "frFR": "Apparition bien-née",
+   "ruRU": "Тень высокорожденной",
+   "zhCN": "上层精灵的幻影"
+  }
  },
  "Highland Strider": {
   "de": "Hochlandschreiter",
   "display": 11316,
   "id": 2559,
   "info": "Highland Strider is a level 30 - 31 NPC. The location of this NPC is unknown.",
-  "name": "Highland Strider"
+  "name": "Highland Strider",
+  "names": {
+   "esES": "Zancudo de las Tierras Altas",
+   "frFR": "Arpenteur des hautes-terres",
+   "ruRU": "Долгоног нагорья",
+   "zhCN": "高地阔步龙"
+  }
  },
  "Highlord Bolvar Fordragon": {
   "de": "Hochlord Bolvar Fordragon",
   "display": 5566,
   "id": 1748,
   "info": "Highlord Bolvar Fordragon is a boss. The location of this NPC is unknown.",
-  "name": "Highlord Bolvar Fordragon"
+  "name": "Highlord Bolvar Fordragon",
+  "names": {
+   "esES": "Alto Señor Bolvar Fordragon",
+   "frFR": "Généralissime Bolvar Fordragon",
+   "ruRU": "Верховный лорд Болвар Фордрагон",
+   "zhCN": "伯瓦尔·弗塔根公爵"
+  }
  },
  "Highlord Taelan Fordring": {
   "de": "Hochlord Taelan Fordring",
   "display": 10341,
   "id": 1842,
   "info": "Highlord Taelan Fordring is an Elite NPC. The location of this NPC is unknown.",
-  "name": "Highlord Taelan Fordring"
+  "name": "Highlord Taelan Fordring",
+  "names": {
+   "esES": "Alto señor Taelan Vadín",
+   "frFR": "Généralissime Taelan Fordring",
+   "ruRU": "Верховный лорд Телан Фордринг",
+   "zhCN": "大领主泰兰·弗丁"
+  }
  },
  "Hillsbrad Councilman": {
   "de": "Ratsherr von Hillsbrad",
   "display": 3628,
   "id": 2387,
   "info": "Hillsbrad Councilman is a level 25 - 26 NPC. The location of this NPC is unknown.",
-  "name": "Hillsbrad Councilman"
+  "name": "Hillsbrad Councilman",
+  "names": {
+   "esES": "Consejero de Trabalomas",
+   "frFR": "Conseiller d'Hillsbrad",
+   "ruRU": "Член совета Хилсбрада",
+   "zhCN": "希尔斯布莱德议员"
+  }
  },
  "Hillsbrad Farmer": {
   "de": "Bauer von Hillsbrad",
   "display": 3612,
   "id": 2266,
   "info": "Hillsbrad Farmer is a level 23 - 24 NPC. The location of this NPC is unknown.",
-  "name": "Hillsbrad Farmer"
+  "name": "Hillsbrad Farmer",
+  "names": {
+   "esES": "Granjero de Trabalomas",
+   "frFR": "Fermier d'Hillsbrad",
+   "ruRU": "Хилсбрадский фермер",
+   "zhCN": "希尔斯布莱德农夫"
+  }
  },
  "Hillsbrad Footman": {
   "de": "Fußsoldat von Hillsbrad",
   "display": 4125,
   "id": 2268,
   "info": "Hillsbrad Footman is a level 25 - 26 NPC. The location of this NPC is unknown.",
-  "name": "Hillsbrad Footman"
+  "name": "Hillsbrad Footman",
+  "names": {
+   "esES": "Lacayo de Trabalomas",
+   "frFR": "Fantassin d'Hillsbrad",
+   "ruRU": "Хилсбрадский пехотинец",
+   "zhCN": "希尔斯布莱德步兵"
+  }
  },
  "Hive'Ashi Drone": {
   "de": "Drohne des Ashischwarms",
   "display": 2303,
   "id": 13136,
   "info": "Hive'Ashi Drone is a level 57 - 58 NPC. The location of this NPC is unknown.",
-  "name": "Hive'Ashi Drone"
+  "name": "Hive'Ashi Drone",
+  "names": {
+   "esES": "Zángano Colmen'Ashi",
+   "frFR": "Bourdon de la Ruche'Ashi",
+   "ruRU": "Трутень из улья Аши",
+   "zhCN": "亚什雄蝎"
+  }
  },
  "Hive'Zora Wasp": {
   "de": "Wespe des Zoraschwarms",
   "display": 11088,
   "id": 11727,
   "info": "Hive'Zora Wasp is a level 58 - 59 NPC. The location of this NPC is unknown.",
-  "name": "Hive'Zora Wasp"
+  "name": "Hive'Zora Wasp",
+  "names": {
+   "esES": "Avispa Colmen'Zora",
+   "frFR": "Guêpe de la Ruche'Zora",
+   "ruRU": "Оса из улья Зора",
+   "zhCN": "佐拉巨蜂"
+  }
  },
  "Hogger": {
   "de": "Hogger",
   "display": 384,
   "id": 448,
   "info": "Hogger is a level 11 Elite NPC. The location of this NPC is unknown.",
-  "name": "Hogger"
+  "name": "Hogger",
+  "names": {
+   "esES": "Hogger",
+   "frFR": "Lardeur",
+   "ruRU": "Дробитель",
+   "zhCN": "霍格"
+  }
  },
  "Ice Claw Bear": {
   "de": "Eisklauenbär",
   "display": 8840,
   "id": 1196,
   "info": "Ice Claw Bear is a level 7 - 8 NPC. The location of this NPC is unknown.",
-  "name": "Ice Claw Bear"
+  "name": "Ice Claw Bear",
+  "names": {
+   "esES": "Oso zarpahelada",
+   "frFR": "Ours Griffeglace",
+   "ruRU": "Медведь-ледолап",
+   "zhCN": "冰爪熊"
+  }
  },
  "Ice Thistle Yeti": {
   "de": "Eisdistelyeti",
   "display": 10579,
   "id": 7458,
   "info": "Ice Thistle Yeti is a level 55 - 56 NPC. The location of this NPC is unknown.",
-  "name": "Ice Thistle Yeti"
+  "name": "Ice Thistle Yeti",
+  "names": {
+   "esES": "Yeti Cardo Nevado",
+   "frFR": "Yéti Chardon de glace",
+   "ruRU": "Йети с Холмов ледополоха",
+   "zhCN": "冰蓟雪人"
+  }
  },
  "Infernal Bodyguard": {
   "de": "Höllenbestienleibwache",
   "display": null,
   "id": 7135,
   "info": "Infernal Bodyguard is a level 53 - 54 Elite NPC. The location of this NPC is unknown.",
-  "name": "Infernal Bodyguard"
+  "name": "Infernal Bodyguard",
+  "names": {
+   "esES": "Guardaespaldas Infernal",
+   "frFR": "Garde du corps infernal",
+   "ruRU": "Инфернал-телохранитель",
+   "zhCN": "地狱火保镖"
+  }
  },
  "Infernal Juggernaut": null,
  "Infernal Sentry": {
@@ -1093,49 +2023,91 @@
   "display": null,
   "id": 7136,
   "info": "Infernal Sentry is a level 52 - 53 Elite NPC. The location of this NPC is unknown.",
-  "name": "Infernal Sentry"
+  "name": "Infernal Sentry",
+  "names": {
+   "esES": "Argos Infernal",
+   "frFR": "Infernal Sentinelle",
+   "ruRU": "Караульный-инфернал",
+   "zhCN": "地狱火哨兵"
+  }
  },
  "Jaedenar Adept": {
   "de": "Adept von Jaedenar",
   "display": 6390,
   "id": 7115,
   "info": "Jaedenar Adept is a level 51 - 52 NPC. The location of this NPC is unknown.",
-  "name": "Jaedenar Adept"
+  "name": "Jaedenar Adept",
+  "names": {
+   "esES": "Adepto Jaedenar",
+   "frFR": "Adepte de Jaedenar",
+   "ruRU": "Джеденарский адепт",
+   "zhCN": "加德纳尔精兵"
+  }
  },
  "Jaedenar Cultist": {
   "de": "Kultist von Jaedenar",
   "display": 6389,
   "id": 7112,
   "info": "Jaedenar Cultist is a level 51 - 52 NPC. The location of this NPC is unknown.",
-  "name": "Jaedenar Cultist"
+  "name": "Jaedenar Cultist",
+  "names": {
+   "esES": "Fiel Jaedenar",
+   "frFR": "Sectateur de Jaedenar",
+   "ruRU": "Джеденаский сектант",
+   "zhCN": "加德纳尔祭司"
+  }
  },
  "Jaedenar Darkweaver": {
   "de": "Dunkelwirker von Jaedenar",
   "display": 6393,
   "id": 7118,
   "info": "Jaedenar Darkweaver is a level 53 - 59 NPC. The location of this NPC is unknown.",
-  "name": "Jaedenar Darkweaver"
+  "name": "Jaedenar Darkweaver",
+  "names": {
+   "esES": "Tejeoscuro Jaedenar",
+   "frFR": "Tisseur d'ombre de Jaedenar",
+   "ruRU": "Джеденар темноплет",
+   "zhCN": "加德纳尔暗法师"
+  }
  },
  "Jaedenar Guardian": {
   "de": "Wächter von Jaedenar",
   "display": 6399,
   "id": 7113,
   "info": "Jaedenar Guardian is a level 50 - 51 NPC. The location of this NPC is unknown.",
-  "name": "Jaedenar Guardian"
+  "name": "Jaedenar Guardian",
+  "names": {
+   "esES": "Guardián Jaedenar",
+   "frFR": "Gardien de Jaedenar",
+   "ruRU": "Джеденарский страж",
+   "zhCN": "加德纳尔守护者"
+  }
  },
  "Jaedenar Hound": {
   "de": "Hund von Jaedenar",
   "display": 6172,
   "id": 7125,
   "info": "Jaedenar Hound is a level 50 - 51 NPC. The location of this NPC is unknown.",
-  "name": "Jaedenar Hound"
+  "name": "Jaedenar Hound",
+  "names": {
+   "esES": "Can de Jaedenar",
+   "frFR": "Molosse de Jaedenar",
+   "ruRU": "Джеденарская гончая",
+   "zhCN": "加德纳尔恶犬"
+  }
  },
  "Jaedenar Legionnaire": {
   "de": "Legionär von Jaedenar",
   "display": 9129,
   "id": 9862,
   "info": "Jaedenar Legionnaire is a level 55 - 60 NPC. The location of this NPC is unknown.",
-  "name": "Jaedenar Legionnaire"
+  "name": "Jaedenar Legionnaire",
+  "names": {
+   "esES": "Legionario Jaedenar",
+   "frFR": "Légionnaire de Jaedenar",
+   "ruRU": "Джеденарский легионер",
+   "zhCN": "加德纳尔军团士兵"
+  }
  },
  "Kaz'rogal": null,
  "King Bangalash": {
@@ -1143,392 +2115,728 @@
   "display": 616,
   "id": 731,
   "info": "King Bangalash is a level 43 Elite NPC. The location of this NPC is unknown.",
-  "name": "King Bangalash"
+  "name": "King Bangalash",
+  "names": {
+   "esES": "Rey Bangalash",
+   "frFR": "Roi Bangalash",
+   "ruRU": "Король Бангалаш",
+   "zhCN": "虎王邦加拉什"
+  }
  },
  "King Gordok": {
   "de": "König Gordok",
   "display": 11583,
   "id": 11501,
   "info": "King Gordok is a level 62 Elite NPC. The location of this NPC is unknown.",
-  "name": "King Gordok"
+  "name": "King Gordok",
+  "names": {
+   "esES": "Rey Gordok",
+   "frFR": "Roi Gordok",
+   "ruRU": "Король Гордок",
+   "zhCN": "戈多克大王"
+  }
  },
  "King Magni Bronzebeard": {
   "de": "König Magni Bronzebeard",
   "display": 3597,
   "id": 2784,
   "info": "King Magni Bronzebeard is a boss. The location of this NPC is unknown.",
-  "name": "King Magni Bronzebeard"
+  "name": "King Magni Bronzebeard",
+  "names": {
+   "esES": "Rey Magni Barbabronce",
+   "frFR": "Roi Magni Bronzebeard",
+   "ruRU": "Король Магни Бронзобород",
+   "zhCN": "国王麦格尼·铜须"
+  }
  },
  "King Mosh": {
   "de": "König Mosh",
   "display": 5305,
   "id": 6584,
   "info": "King Mosh is a level 60 Rare Elite NPC. The location of this NPC is unknown.",
-  "name": "King Mosh"
+  "name": "King Mosh",
+  "names": {
+   "esES": "Rey Mosh",
+   "frFR": "Roi Mosh",
+   "ruRU": "Король Мош",
+   "zhCN": "暴龙之王摩什"
+  }
  },
  "Kobold Tunneler": {
   "de": "Koboldtunnelgräber",
   "display": 139,
   "id": 475,
   "info": "Kobold Tunneler is a level 5 - 6 NPC. The location of this NPC is unknown.",
-  "name": "Kobold Tunneler"
+  "name": "Kobold Tunneler",
+  "names": {
+   "esES": "Tunelador kóbold",
+   "frFR": "Tunnelier kobold",
+   "ruRU": "Кобольд-проходчик",
+   "zhCN": "狗头人隧道工"
+  }
  },
  "Kobold Vermin": {
   "de": "Koboldgezücht",
   "display": 127670,
   "id": 6,
   "info": "Kobold Vermin is a level 1 - 2 NPC. The location of this NPC is unknown.",
-  "name": "Kobold Vermin"
+  "name": "Kobold Vermin",
+  "names": {
+   "esES": "Alimaña kóbold",
+   "frFR": "Vermine kobold",
+   "ruRU": "Кобольд-вредитель",
+   "zhCN": "狗头人歹徒"
+  }
  },
  "Kolkar Stormer": {
   "de": "Sturmruferin der Kolkar",
   "display": 9443,
   "id": 3273,
   "info": "Kolkar Stormer is a level 13 - 14 NPC. The location of this NPC is unknown.",
-  "name": "Kolkar Stormer"
+  "name": "Kolkar Stormer",
+  "names": {
+   "esES": "Tormento Kolkar",
+   "frFR": "Légion-tempête kolkar",
+   "ruRU": "Буревестница из племени Колкар",
+   "zhCN": "科卡尔召雷师"
+  }
  },
  "Kolkar Wrangler": {
   "de": "Zänker der Kolkar",
   "display": 9442,
   "id": 3272,
   "info": "Kolkar Wrangler is a level 12 - 13 NPC. The location of this NPC is unknown.",
-  "name": "Kolkar Wrangler"
+  "name": "Kolkar Wrangler",
+  "names": {
+   "esES": "Vaquero Kolkar",
+   "frFR": "Querelleur kolkar",
+   "ruRU": "Пастух из племени Колкар",
+   "zhCN": "科卡尔牧民"
+  }
  },
  "Komuk": {
   "de": "Komuk",
   "display": 10169,
   "id": 259056,
   "info": "Komuk is a level 45 Elite NPC. The location of this NPC is unknown.",
-  "name": "Komuk"
+  "name": "Komuk",
+  "names": {
+   "esES": "Komuk",
+   "frFR": "Komuk",
+   "ruRU": "Komuk",
+   "zhCN": "Komuk"
+  }
  },
  "Kul Tiras Sailor": {
   "de": "Matrose von Kul Tiras",
   "display": 3734,
   "id": 3128,
   "info": "Kul Tiras Sailor is a level 5 - 6 NPC. The location of this NPC is unknown.",
-  "name": "Kul Tiras Sailor"
+  "name": "Kul Tiras Sailor",
+  "names": {
+   "esES": "Navegante Kul Tiras",
+   "frFR": "Marin de Kul Tiras",
+   "ruRU": "Моряк Кул-Тираса",
+   "zhCN": "库尔提拉斯水手"
+  }
  },
  "Kurzen Jungle Fighter": {
   "de": "Kurzens Dschungelkämpfer",
   "display": 4443,
   "id": 937,
   "info": "Kurzen Jungle Fighter is a level 32 - 33 NPC. The location of this NPC is unknown.",
-  "name": "Kurzen Jungle Fighter"
+  "name": "Kurzen Jungle Fighter",
+  "names": {
+   "esES": "Jíbaro Kurzen",
+   "frFR": "Guerrier de la jungle de Kurzen",
+   "ruRU": "Партизан Курцена",
+   "zhCN": "库尔森丛林战士"
+  }
  },
  "Lady Jaina Proudmoore": {
   "de": "Lady Jaina Proudmoore",
   "display": 2970,
   "id": 4968,
   "info": "Lady Jaina Proudmoore is a boss. The location of this NPC is unknown.",
-  "name": "Lady Jaina Proudmoore"
+  "name": "Lady Jaina Proudmoore",
+  "names": {
+   "esES": "Lady Jaina Valiente",
+   "frFR": "Dame Jaina Proudmoore",
+   "ruRU": "Леди Джайна Праудмур",
+   "zhCN": "吉安娜·普罗德摩尔"
+  }
  },
  "Lady Sylvanas Windrunner": {
   "de": "Fürstin Sylvanas Windrunner",
   "display": 11657,
   "id": 10181,
   "info": "Lady Sylvanas Windrunner is a boss. The location of this NPC is unknown.",
-  "name": "Lady Sylvanas Windrunner"
+  "name": "Lady Sylvanas Windrunner",
+  "names": {
+   "esES": "Lady Sylvanas Brisaveloz",
+   "frFR": "Dame Sylvanas Windrunner",
+   "ruRU": "Леди Сильвана Ветрокрылая",
+   "zhCN": "希尔瓦娜斯·风行者"
+  }
  },
  "Legashi Satyr": {
   "de": "Satyr der Legashi",
   "display": 2878,
   "id": 6200,
   "info": "Legashi Satyr is a level 51 - 52 NPC. The location of this NPC is unknown.",
-  "name": "Legashi Satyr"
+  "name": "Legashi Satyr",
+  "names": {
+   "esES": "Sátiro Legashi",
+   "frFR": "Satyre Legashi",
+   "ruRU": "Сатир из племени Легаши",
+   "zhCN": "雷加斯萨特"
+  }
  },
  "Leper Gnome": {
   "de": "Lepragnom",
   "display": 6921,
   "id": 1211,
   "info": "Leper Gnome is a level 8 - 10 NPC. The location of this NPC is unknown.",
-  "name": "Leper Gnome"
+  "name": "Leper Gnome",
+  "names": {
+   "esES": "Gnomo paria",
+   "frFR": "Gnome lépreux",
+   "ruRU": "Лепрогном",
+   "zhCN": "麻疯侏儒"
+  }
  },
  "Lesser Infernal": {
   "de": "Geringe Höllenbestie",
   "display": null,
   "id": 4676,
   "info": "Lesser Infernal is a level 36 - 37 NPC. The location of this NPC is unknown.",
-  "name": "Lesser Infernal"
+  "name": "Lesser Infernal",
+  "names": {
+   "esES": "Infernal inferior",
+   "frFR": "Infernal mineur",
+   "ruRU": "Младший инфернал",
+   "zhCN": "次级地狱火"
+  }
  },
  "Lord Aliden Perenolde": {
   "de": "Lord Aliden Perenolde",
   "display": 1833,
   "id": 2423,
   "info": "Lord Aliden Perenolde is a level 41 NPC. The location of this NPC is unknown.",
-  "name": "Lord Aliden Perenolde"
+  "name": "Lord Aliden Perenolde",
+  "names": {
+   "esES": "Lord Aliden Perenolde",
+   "frFR": "Seigneur Aliden Perenolde",
+   "ruRU": "Лорд Алиден Перенольд",
+   "zhCN": "奥里登·匹瑞诺德领主"
+  }
  },
  "Lord Banehollow": {
   "de": "Lord Banehollow",
   "display": 8611,
   "id": 9516,
   "info": "Lord Banehollow is a level 59 Elite NPC. The location of this NPC is unknown.",
-  "name": "Lord Banehollow"
+  "name": "Lord Banehollow",
+  "names": {
+   "esES": "Lord Pesadilla",
+   "frFR": "Seigneur Banehollow",
+   "ruRU": "Лорд Гиблопуст",
+   "zhCN": "魔王贝恩霍勒"
+  }
  },
  "Lord Jorach Ravenholdt": {
   "de": "Lord Jorach Ravenholdt",
   "display": 6572,
   "id": 6768,
   "info": "Lord Jorach Ravenholdt is a level 60 NPC. The location of this NPC is unknown.",
-  "name": "Lord Jorach Ravenholdt"
+  "name": "Lord Jorach Ravenholdt",
+  "names": {
+   "esES": "Lord Jorach Ravenholdt",
+   "frFR": "Seigneur Jorach Ravenholdt",
+   "ruRU": "Лорд Джорах Черный Ворон",
+   "zhCN": "乔拉齐·拉文霍德公爵"
+  }
  },
  "Lord Kazzak": {
   "de": "Lord Kazzak",
   "display": 12449,
   "id": 12397,
   "info": "Lord Kazzak is a boss. The location of this NPC is unknown.",
-  "name": "Lord Kazzak"
+  "name": "Lord Kazzak",
+  "names": {
+   "esES": "Lord Kazzak",
+   "frFR": "Seigneur Kazzak",
+   "ruRU": "Владыка Каззак",
+   "zhCN": "卡扎克"
+  }
  },
  "Lord Melenas": {
   "de": "Lord Melenas",
   "display": 1013,
   "id": 2038,
   "info": "Lord Melenas is a level 8 NPC. The location of this NPC is unknown.",
-  "name": "Lord Melenas"
+  "name": "Lord Melenas",
+  "names": {
+   "esES": "Lord Melenis",
+   "frFR": "Seigneur Melenas",
+   "ruRU": "Лорд Меленас",
+   "zhCN": "迈雷纳斯"
+  }
  },
  "Magatha Grimtotem": {
   "de": "Magatha Grimmtotem",
   "display": 4510,
   "id": 4046,
   "info": "Magatha Grimtotem is a level 62 NPC. The location of this NPC is unknown.",
-  "name": "Magatha Grimtotem"
+  "name": "Magatha Grimtotem",
+  "names": {
+   "esES": "Magatha Tótem Siniestro",
+   "frFR": "Magatha Grimtotem",
+   "ruRU": "Магата Зловещий Тотем",
+   "zhCN": "玛加萨·恐怖图腾"
+  }
  },
  "Magistrate Burnside": {
   "de": "Magistrat Burnside",
   "display": 3637,
   "id": 2335,
   "info": "Magistrate Burnside is a level 30 NPC. The location of this NPC is unknown.",
-  "name": "Magistrate Burnside"
+  "name": "Magistrate Burnside",
+  "names": {
+   "esES": "Magistrado Ladoquemao",
+   "frFR": "Magistrat Burnside",
+   "ruRU": "Мировой судья Бернсайд",
+   "zhCN": "波恩塞德镇长"
+  }
  },
  "Magma Elemental": {
   "de": "Magmaelementar",
   "display": 2075,
   "id": 5855,
   "info": "Magma Elemental is a level 46 - 48 NPC. The location of this NPC is unknown.",
-  "name": "Magma Elemental"
+  "name": "Magma Elemental",
+  "names": {
+   "esES": "Elemental de magma",
+   "frFR": "Elémentaire de magma",
+   "ruRU": "Элементаль магмы",
+   "zhCN": "熔岩元素"
+  }
  },
  "Magram Marauder": {
   "de": "Marodeur der Magram",
   "display": 9432,
   "id": 4644,
   "info": "Magram Marauder is a level 35 - 36 NPC. The location of this NPC is unknown.",
-  "name": "Magram Marauder"
+  "name": "Magram Marauder",
+  "names": {
+   "esES": "Maleante Magram",
+   "frFR": "Maraudeur magram",
+   "ruRU": "Мародер из племени Маграм",
+   "zhCN": "玛格拉姆掠夺者"
+  }
  },
  "Magram Necrokhan": {
   "de": "Magram Necrokhan",
   "display": 9433,
   "id": 253274,
   "info": "Magram Necrokhan is a level 45 Elite NPC. The location of this NPC is unknown.",
-  "name": "Magram Necrokhan"
+  "name": "Magram Necrokhan",
+  "names": {
+   "esES": "Magram Necrokhan",
+   "frFR": "Magram Necrokhan",
+   "ruRU": "Magram Necrokhan",
+   "zhCN": "Magram Necrokhan"
+  }
  },
  "Magram Necromancer": {
   "de": "Totenbeschwörer der Magram",
   "display": 9433,
   "id": 253272,
   "info": "Magram Necromancer is a level 42 - 43 NPC. The location of this NPC is unknown.",
-  "name": "Magram Necromancer"
+  "name": "Magram Necromancer",
+  "names": {
+   "esES": "Magram Necromancer",
+   "frFR": "Nécromancien magram",
+   "ruRU": "Magram Necromancer",
+   "zhCN": "Magram Necromancer"
+  }
  },
  "Magram Wrangler": {
   "de": "Zänker der Magram",
   "display": 2293,
   "id": 4640,
   "info": "Magram Wrangler is a level 33 - 34 NPC. The location of this NPC is unknown.",
-  "name": "Magram Wrangler"
+  "name": "Magram Wrangler",
+  "names": {
+   "esES": "Vaquero Maggram",
+   "frFR": "Querelleur magram",
+   "ruRU": "Пастух из племени Маграм",
+   "zhCN": "玛格拉姆争斗者"
+  }
  },
  "Mankrik": {
   "de": "Mankrik",
   "display": 3855,
   "id": 3432,
   "info": "Mankrik is a level 15 NPC. The location of this NPC is unknown.",
-  "name": "Mankrik"
+  "name": "Mankrik",
+  "names": {
+   "esES": "Mankrik",
+   "frFR": "Mankrik",
+   "ruRU": "Манкрик",
+   "zhCN": "曼科里克"
+  }
  },
  "Marsh Flesheater": {
   "de": "Marschenfleischfresser",
   "display": 391,
   "id": 751,
   "info": "Marsh Flesheater is a level 43 - 44 NPC. The location of this NPC is unknown.",
-  "name": "Marsh Flesheater"
+  "name": "Marsh Flesheater",
+  "names": {
+   "esES": "Comecarnes del pantano",
+   "frFR": "Dévoreur des marais",
+   "ruRU": "Болотный трупоед",
+   "zhCN": "沼泽食腐鱼人"
+  }
  },
  "Marsh Inkspewer": {
   "de": "Marschentintenspucker",
   "display": 1995,
   "id": 750,
   "info": "Marsh Inkspewer is a level 42 - 43 NPC. The location of this NPC is unknown.",
-  "name": "Marsh Inkspewer"
+  "name": "Marsh Inkspewer",
+  "names": {
+   "esES": "Vomitatintas del pantano",
+   "frFR": "Cracheur des marais",
+   "ruRU": "Болотный чернильщик",
+   "zhCN": "沼泽喷墨鱼人"
+  }
  },
  "Marshal Reginald Windsor": {
   "de": "Marshal Reginald Windsor",
   "display": 9052,
   "id": 9682,
   "info": "Marshal Reginald Windsor is an Elite NPC. The location of this NPC is unknown.",
-  "name": "Marshal Reginald Windsor"
+  "name": "Marshal Reginald Windsor",
+  "names": {
+   "esES": "Alguacil Reginald Windsor",
+   "frFR": "Maréchal Reginald Windsor",
+   "ruRU": "Маршал Реджинальд Винздор",
+   "zhCN": "雷吉纳德·温德索尔元帅"
+  }
  },
  "Mekgineer Thermaplugg": {
   "de": "Robogenieur Thermaplugg",
   "display": 6980,
   "id": 7800,
   "info": "Mekgineer Thermaplugg is a level 34 Elite NPC. The location of this NPC is unknown.",
-  "name": "Mekgineer Thermaplugg"
+  "name": "Mekgineer Thermaplugg",
+  "names": {
+   "esES": "Mekigeniero Termochufe",
+   "frFR": "Mekgénieur Thermaplugg",
+   "ruRU": "Мекжинер Термоштепсель",
+   "zhCN": "机械师瑟玛普拉格"
+  }
  },
  "Mindless Zombie": {
   "de": "Hirnloser Zombie",
   "display": 10973,
   "id": 1501,
   "info": "Mindless Zombie is a level 1 NPC. The location of this NPC is unknown.",
-  "name": "Mindless Zombie"
+  "name": "Mindless Zombie",
+  "names": {
+   "esES": "Zombi descerebrado",
+   "frFR": "Zombie lunatique",
+   "ruRU": "Безмозглый зомби",
+   "zhCN": "无脑的僵尸"
+  }
  },
  "Mo'grosh Ogre": {
   "de": "Oger der Mo'grosh",
   "display": 1122,
   "id": 1178,
   "info": "Mo'grosh Ogre is a level 18 - 19 Elite NPC. The location of this NPC is unknown.",
-  "name": "Mo'grosh Ogre"
+  "name": "Mo'grosh Ogre",
+  "names": {
+   "esES": "Ogro Mo'grosh",
+   "frFR": "Ogre Mo'grosh",
+   "ruRU": "Огр из клана Мо'Грош",
+   "zhCN": "莫格罗什食人魔"
+  }
  },
  "Moonrage Whitescalp": {
   "de": "Moonrage-Weißskalp",
   "display": 11180,
   "id": 1769,
   "info": "Moonrage Whitescalp is a level 10 - 11 NPC. The location of this NPC is unknown.",
-  "name": "Moonrage Whitescalp"
+  "name": "Moonrage Whitescalp",
+  "names": {
+   "esES": "Canoso Furia Lunar",
+   "frFR": "Poil-blanc Ragelune",
+   "ruRU": "Белоголов Лунной Ярости",
+   "zhCN": "月怒白头狼人"
+  }
  },
  "Moonstalker": {
   "de": "Mondpirscher",
   "display": 321,
   "id": 2069,
   "info": "Moonstalker is a level 14 - 15 NPC. The location of this NPC is unknown.",
-  "name": "Moonstalker"
+  "name": "Moonstalker",
+  "names": {
+   "esES": "Acechalunas",
+   "frFR": "Traquelune",
+   "ruRU": "Лунопард",
+   "zhCN": "月夜猛虎"
+  }
  },
  "Mordent Evenshade": {
   "de": "Mordent Evenshade",
   "display": 30120,
   "id": 253471,
   "info": "Mordent Evenshade is an Elite NPC. The location of this NPC is unknown.",
-  "name": "Mordent Evenshade"
+  "name": "Mordent Evenshade",
+  "names": {
+   "esES": "Mordent Evenshade",
+   "frFR": "Mordent Evenshade",
+   "ruRU": "Mordent Evenshade",
+   "zhCN": "Mordent Evenshade"
+  }
  },
  "Mosshide Gnoll": {
   "de": "Gnoll der Moosfelle",
   "display": 3199,
   "id": 1007,
   "info": "Mosshide Gnoll is a level 20 - 21 NPC. The location of this NPC is unknown.",
-  "name": "Mosshide Gnoll"
+  "name": "Mosshide Gnoll",
+  "names": {
+   "esES": "Gnoll Pellejomusgo",
+   "frFR": "Gnoll Poil-moussu",
+   "ruRU": "Гнолл из стаи Мохошкуров",
+   "zhCN": "藓皮豺狼人"
+  }
  },
  "Mottled Boar": {
   "de": "Scheckiger Eber",
   "display": 503,
   "id": 3098,
   "info": "Mottled Boar is a level 1 - 2 NPC. The location of this NPC is unknown.",
-  "name": "Mottled Boar"
+  "name": "Mottled Boar",
+  "names": {
+   "esES": "Jabalí jaspeado",
+   "frFR": "Sanglier tacheté",
+   "ruRU": "Пятнистый вепрь",
+   "zhCN": "杂斑野猪"
+  }
  },
  "Mottled Raptor": {
   "de": "Scheckiger Raptor",
   "display": 960,
   "id": 1020,
   "info": "Mottled Raptor is a level 22 - 23 NPC. The location of this NPC is unknown.",
-  "name": "Mottled Raptor"
+  "name": "Mottled Raptor",
+  "names": {
+   "esES": "Raptor jaspeado",
+   "frFR": "Raptor tacheté",
+   "ruRU": "Крапчатый ящер",
+   "zhCN": "杂斑迅猛龙"
+  }
  },
  "Mountain Buzzard": {
   "de": "Bergbussard",
   "display": 410,
   "id": 1194,
   "info": "Mountain Buzzard is a level 15 - 16 NPC. The location of this NPC is unknown.",
-  "name": "Mountain Buzzard"
+  "name": "Mountain Buzzard",
+  "names": {
+   "esES": "Águila ratonera montés",
+   "frFR": "Busard des montagnes",
+   "ruRU": "Горный канюк",
+   "zhCN": "山鹫"
+  }
  },
  "Mountain Lion": {
   "de": "Berglöwe",
   "display": 1058,
   "id": 2406,
   "info": "Mountain Lion is a level 32 - 33 NPC. The location of this NPC is unknown.",
-  "name": "Mountain Lion"
+  "name": "Mountain Lion",
+  "names": {
+   "esES": "León montés",
+   "frFR": "Lion des montagnes",
+   "ruRU": "Горный лев",
+   "zhCN": "山地狮"
+  }
  },
  "Mudfin Oracle": {
   "de": "Orakel der Schlickflossen",
   "display": 2597,
   "id": 258573,
   "info": "Mudfin Oracle is a level 36 - 37 NPC. The location of this NPC is unknown.",
-  "name": "Mudfin Oracle"
+  "name": "Mudfin Oracle",
+  "names": {
+   "esES": "Mudfin Oracle",
+   "frFR": "Oracle aileron-fangeux",
+   "ruRU": "Илистый оракул",
+   "zhCN": "Mudfin Oracle"
+  }
  },
  "Murkdeep": {
   "de": "Gurgelbacke",
   "display": 1079,
   "id": 10323,
   "info": "Murkdeep is a level 19 NPC. The location of this NPC is unknown.",
-  "name": "Murkdeep"
+  "name": "Murkdeep",
+  "names": {
+   "esES": "Viscoso",
+   "frFR": "Fondeboue",
+   "ruRU": "Глубомрак",
+   "zhCN": "莫克迪普"
+  }
  },
  "Murloc Streamrunner": {
   "de": "Murlocbachläufer",
   "display": 527,
   "id": 735,
   "info": "Murloc Streamrunner is a level 6 - 7 NPC. The location of this NPC is unknown.",
-  "name": "Murloc Streamrunner"
+  "name": "Murloc Streamrunner",
+  "names": {
+   "esES": "Correcorrientes múrloc",
+   "frFR": "Ruisselier murloc",
+   "ruRU": "Речной мурлок-бегун",
+   "zhCN": "鱼人士兵"
+  }
  },
  "Myzrael": {
   "de": "Myzrael",
   "display": 1165,
   "id": 2755,
   "info": "Myzrael is a level 44 Elite NPC. The location of this NPC is unknown.",
-  "name": "Myzrael"
+  "name": "Myzrael",
+  "names": {
+   "esES": "Myzrael",
+   "frFR": "Myzrael",
+   "ruRU": "Мизраэль",
+   "zhCN": "密斯莱尔"
+  }
  },
  "Nat Pagle": {
   "de": "Nat Pagle",
   "display": 13099,
   "id": 12919,
   "info": "Nat Pagle is a level 45 NPC. The location of this NPC is unknown.",
-  "name": "Nat Pagle"
+  "name": "Nat Pagle",
+  "names": {
+   "esES": "Nat Pagle",
+   "frFR": "Nat Pagle",
+   "ruRU": "Нат Пэгл",
+   "zhCN": "纳特·帕格"
+  }
  },
  "Nightbane Shadow Weaver": {
   "de": "Schattenwirker der Nachtheuler",
   "display": 203,
   "id": 533,
   "info": "Nightbane Shadow Weaver is a level 27 - 28 NPC. The location of this NPC is unknown.",
-  "name": "Nightbane Shadow Weaver"
+  "name": "Nightbane Shadow Weaver",
+  "names": {
+   "esES": "Tejesombras Nocturno",
+   "frFR": "Tisseur d'ombre Plaie-de-nuit",
+   "ruRU": "Тенеткач Ночной Погибели",
+   "zhCN": "夜行织影狼人"
+  }
  },
  "Nightmare Wanderer": {
   "de": "Nachtmahrwanderer",
   "display": 181,
   "id": 5283,
   "info": "Nightmare Wanderer is a level 49 - 50 Elite NPC. The location of this NPC is unknown.",
-  "name": "Nightmare Wanderer"
+  "name": "Nightmare Wanderer",
+  "names": {
+   "esES": "Errante pesadilla",
+   "frFR": "Cavale de cauchemar errante",
+   "ruRU": "Бродяга кошмара",
+   "zhCN": "噩梦游荡者"
+  }
  },
  "Nightsaber": {
   "de": "Nachtsäbler",
   "display": 6805,
   "id": 2042,
   "info": "Nightsaber is a level 5 - 6 NPC. The location of this NPC is unknown.",
-  "name": "Nightsaber"
+  "name": "Nightsaber",
+  "names": {
+   "esES": "Sable de la Noche",
+   "frFR": "Sabre-de-nuit sauvage",
+   "ruRU": "Ночной саблезуб",
+   "zhCN": "夜刃豹"
+  }
  },
  "Onyxia": {
   "de": "Onyxia",
   "display": 8570,
   "id": 10184,
   "info": "Onyxia is a boss. The location of this NPC is unknown.",
-  "name": "Onyxia"
+  "name": "Onyxia",
+  "names": {
+   "esES": "Onyxia",
+   "frFR": "Onyxia",
+   "ruRU": "Ониксия",
+   "zhCN": "奥妮克希亚"
+  }
  },
  "Onyxian Warder": {
   "de": "Onyxias Wärter",
   "display": 8711,
   "id": 12129,
   "info": "Onyxian Warder is a level 60 - 63 Elite NPC. The location of this NPC is unknown.",
-  "name": "Onyxian Warder"
+  "name": "Onyxian Warder",
+  "names": {
+   "esES": "Depositario de Onyxia",
+   "frFR": "Gardien onyxien",
+   "ruRU": "Хранитель Ониксии",
+   "zhCN": "奥妮克希亚守卫"
+  }
  },
  "Onyxian Whelp": {
   "de": "Onyxiawelpe",
   "display": 397,
   "id": 11262,
   "info": "Onyxian Whelp is a level 56 - 60 NPC. The location of this NPC is unknown.",
-  "name": "Onyxian Whelp"
+  "name": "Onyxian Whelp",
+  "names": {
+   "esES": "Cría de Onyxia",
+   "frFR": "Dragonnet onyxien",
+   "ruRU": "Дракончик Ониксии",
+   "zhCN": "奥妮克希亚雏龙"
+  }
  },
  "Outcast Marauder": {
   "de": "Outcast Marauder",
   "display": 9425,
   "id": 254284,
   "info": "Outcast Marauder is a level 43 NPC. The location of this NPC is unknown.",
-  "name": "Outcast Marauder"
+  "name": "Outcast Marauder",
+  "names": {
+   "esES": "Outcast Marauder",
+   "frFR": "Outcast Marauder",
+   "ruRU": "Outcast Marauder",
+   "zhCN": "Outcast Marauder"
+  }
  },
  "Outcast Necrokhan": {
   "de": "Outcast Necrokhan",
   "display": 9441,
   "id": 253275,
   "info": "Outcast Necrokhan is an Elite NPC. The location of this NPC is unknown.",
-  "name": "Outcast Necrokhan"
+  "name": "Outcast Necrokhan",
+  "names": {
+   "esES": "Outcast Necrokhan",
+   "frFR": "Outcast Necrokhan",
+   "ruRU": "Outcast Necrokhan",
+   "zhCN": "Outcast Necrokhan"
+  }
  },
  "Overlord Mugg": null,
  "Overlord Saurfang": {
@@ -1536,77 +2844,143 @@
   "display": 14732,
   "id": 14720,
   "info": "High Overlord Saurfang is a level 62 Elite NPC. The location of this NPC is unknown.",
-  "name": "High Overlord Saurfang"
+  "name": "High Overlord Saurfang",
+  "names": {
+   "esES": "Alto señor supremo Colmillosauro",
+   "frFR": "Haut seigneur Saurfang",
+   "ruRU": "Верховный воевода Саурфанг",
+   "zhCN": "萨鲁法尔大王"
+  }
  },
  "Palemane Tanner": {
   "de": "Gerber der Bleichmähnen",
   "display": 550,
   "id": 2949,
   "info": "Palemane Tanner is a level 5 - 6 NPC. The location of this NPC is unknown.",
-  "name": "Palemane Tanner"
+  "name": "Palemane Tanner",
+  "names": {
+   "esES": "Peletero Crines Pálidos",
+   "frFR": "Tanneur crin-pâle",
+   "ruRU": "Дубильщик из стаи Бледногривов",
+   "zhCN": "白鬃制革工"
+  }
  },
  "Plague Spreader": {
   "de": "Seuchenverbreiter",
   "display": 519,
   "id": 604,
   "info": "Plague Spreader is a level 27 - 28 NPC. The location of this NPC is unknown.",
-  "name": "Plague Spreader"
+  "name": "Plague Spreader",
+  "names": {
+   "esES": "Propagador de la Peste",
+   "frFR": "Répandeur de peste",
+   "ruRU": "Распространитель чумы",
+   "zhCN": "瘟疫食尸鬼"
+  }
  },
  "Plaguehound": {
   "de": "Seuchenhund",
   "display": 7891,
   "id": 8597,
   "info": "Plaguehound is a level 55 - 56 NPC. The location of this NPC is unknown.",
-  "name": "Plaguehound"
+  "name": "Plaguehound",
+  "names": {
+   "esES": "Can de la Peste",
+   "frFR": "Chien pestiféré",
+   "ruRU": "Чумной пес",
+   "zhCN": "瘟疫犬"
+  }
  },
  "Plainstrider": {
   "de": "Ebenenschreiter",
   "display": 1219,
   "id": 2955,
   "info": "Plainstrider is a level 1 - 2 NPC. The location of this NPC is unknown.",
-  "name": "Plainstrider"
+  "name": "Plainstrider",
+  "names": {
+   "esES": "Zancudo de llanura",
+   "frFR": "Trotteur des plaines",
+   "ruRU": "Равнинный долгоног",
+   "zhCN": "平原陆行鸟"
+  }
  },
  "Prairie Wolf": {
   "de": "Präriewolf",
   "display": 1100,
   "id": 2958,
   "info": "Prairie Wolf is a level 5 - 6 NPC. The location of this NPC is unknown.",
-  "name": "Prairie Wolf"
+  "name": "Prairie Wolf",
+  "names": {
+   "esES": "Lobo de pradera",
+   "frFR": "Loup des prairies",
+   "ruRU": "Волк прерий",
+   "zhCN": "草原狼"
+  }
  },
  "Primordial Behemoth": {
   "de": "Urzeitliches Ungetüm",
   "display": 12309,
   "id": 12206,
   "info": "Primordial Behemoth is a level 48 - 49 Elite NPC. The location of this NPC is unknown.",
-  "name": "Primordial Behemoth"
+  "name": "Primordial Behemoth",
+  "names": {
+   "esES": "Behemoth primario",
+   "frFR": "Béhémoth primordial",
+   "ruRU": "Доисторическое чудище",
+   "zhCN": "原始巨兽"
+  }
  },
  "Prince Tortheldrin": {
   "de": "Prinz Tortheldrin",
   "display": 11256,
   "id": 11486,
   "info": "Prince Tortheldrin is a level 61 Elite NPC. The location of this NPC is unknown.",
-  "name": "Prince Tortheldrin"
+  "name": "Prince Tortheldrin",
+  "names": {
+   "esES": "Príncipe Tortheldrin",
+   "frFR": "Prince Tortheldrin",
+   "ruRU": "Принц Тортелдрин",
+   "zhCN": "托塞德林王子"
+  }
  },
  "Princess Theradras": {
   "de": "Prinzessin Theradras",
   "display": 12292,
   "id": 12201,
   "info": "Princess Theradras is a level 51 Elite NPC. The location of this NPC is unknown.",
-  "name": "Princess Theradras"
+  "name": "Princess Theradras",
+  "names": {
+   "esES": "Princesa Theradras",
+   "frFR": "Princesse Theradras",
+   "ruRU": "Принцесса Терадрас",
+   "zhCN": "瑟莱德丝公主"
+  }
  },
  "Prowler": {
   "de": "Streuner",
   "display": 11415,
   "id": 118,
   "info": "Prowler is a level 9 - 10 NPC. The location of this NPC is unknown.",
-  "name": "Prowler"
+  "name": "Prowler",
+  "names": {
+   "esES": "Merodeador",
+   "frFR": "Rôdeur",
+   "ruRU": "Лесной хищник",
+   "zhCN": "觅食的灰狼"
+  }
  },
  "Qiraji Mindslayer": {
   "de": "Qiraji Mindslayer",
   "display": 15740,
   "id": 234762,
   "info": "Qiraji Mindslayer is a level 61 Elite NPC. The location of this NPC is unknown.",
-  "name": "Qiraji Mindslayer"
+  "name": "Qiraji Mindslayer",
+  "names": {
+   "esES": "Qiraji Mindslayer",
+   "frFR": "Qiraji Mindslayer",
+   "ruRU": "Qiraji Mindslayer",
+   "zhCN": "Qiraji Mindslayer"
+  }
  },
  "Rage Winterchill": null,
  "Raging Agam'ar": {
@@ -1614,112 +2988,208 @@
   "display": 2453,
   "id": 4514,
   "info": "Raging Agam'ar is a level 25 - 26 Elite NPC. The location of this NPC is unknown.",
-  "name": "Raging Agam'ar"
+  "name": "Raging Agam'ar",
+  "names": {
+   "esES": "Agam'ar enfurecido",
+   "frFR": "Agam'ar enragé",
+   "ruRU": "Разъяренный Агам'ар",
+   "zhCN": "暴怒的阿迦玛"
+  }
  },
  "Rattlecage Skeleton": {
   "de": "Klapperndes Skelett",
   "display": 11400,
   "id": 1890,
   "info": "Rattlecage Skeleton is a level 2 - 3 NPC. The location of this NPC is unknown.",
-  "name": "Rattlecage Skeleton"
+  "name": "Rattlecage Skeleton",
+  "names": {
+   "esES": "Esqueleto armadóseo",
+   "frFR": "Squelette Cliquethorax",
+   "ruRU": "Скелет-костетряс",
+   "zhCN": "断骨骷髅"
+  }
  },
  "Ravasaur Hunter": {
   "de": "Ravasaurusjäger",
   "display": 5292,
   "id": 6507,
   "info": "Ravasaur Hunter is a level 49 - 50 NPC. The location of this NPC is unknown.",
-  "name": "Ravasaur Hunter"
+  "name": "Ravasaur Hunter",
+  "names": {
+   "esES": "Cazador Ravasaur",
+   "frFR": "Ravasaure chasseur",
+   "ruRU": "Равазавр-охотник",
+   "zhCN": "狩猎暴掠龙"
+  }
  },
  "Razormane Thornweaver": {
   "de": "Dornenwirker der Grimmhauer",
   "display": 6096,
   "id": 3268,
   "info": "Razormane Thornweaver is a level 10 - 11 NPC. The location of this NPC is unknown.",
-  "name": "Razormane Thornweaver"
+  "name": "Razormane Thornweaver",
+  "names": {
+   "esES": "Tejespina Crines de Acero",
+   "frFR": "Tisseuse d’épines Tranchecrin",
+   "ruRU": "Терноплет из племени Иглогривых",
+   "zhCN": "钢鬃织棘者"
+  }
  },
  "Redridge Mongrel": {
   "de": "Bastard der Rotkammgnolle",
   "display": 487,
   "id": 423,
   "info": "Redridge Mongrel is a level 15 - 16 NPC. The location of this NPC is unknown.",
-  "name": "Redridge Mongrel"
+  "name": "Redridge Mongrel",
+  "names": {
+   "esES": "Bastardo de Crestagrana",
+   "frFR": "Bâtard des Carmines",
+   "ruRU": "Полукровка из стаи Красногорья",
+   "zhCN": "混血赤脊山豺狼人"
+  }
  },
  "Redridge Mystic": {
   "de": "Mystiker der Rotkammgnolle",
   "display": 10789,
   "id": 430,
   "info": "Redridge Mystic is a level 18 - 19 NPC. The location of this NPC is unknown.",
-  "name": "Redridge Mystic"
+  "name": "Redridge Mystic",
+  "names": {
+   "esES": "Místico de Crestagrana",
+   "frFR": "Mystique des Carmines",
+   "ruRU": "Мистик из стаи Красногорья",
+   "zhCN": "赤脊山秘法师"
+  }
  },
  "Redstone Basilisk": {
   "de": "Rotsteinbasilisk",
   "display": 2743,
   "id": 5990,
   "info": "Redstone Basilisk is a level 47 - 48 NPC. The location of this NPC is unknown.",
-  "name": "Redstone Basilisk"
+  "name": "Redstone Basilisk",
+  "names": {
+   "esES": "Basilisco Rocarroja",
+   "frFR": "Basilic Rougepierre",
+   "ruRU": "Краснокаменный василиск",
+   "zhCN": "红石蜥蜴"
+  }
  },
  "Renzik \"The Shiv\"": {
   "de": "Renzik \"Das Messer\"",
   "display": 7613,
   "id": 6946,
   "info": "Renzik \"The Shiv\" is a level 40 NPC. The location of this NPC is unknown.",
-  "name": "Renzik \"The Shiv\""
+  "name": "Renzik \"The Shiv\"",
+  "names": {
+   "esES": "Renzik \"Cuchillo\"",
+   "frFR": "Renzik \"le kriss\"",
+   "ruRU": "Рензик Нож",
+   "zhCN": "“剃刀”雷吉克"
+  }
  },
  "Rexxar": {
   "de": "Rexxar",
   "display": 11660,
   "id": 10182,
   "info": "Rexxar is an Elite NPC. The location of this NPC is unknown.",
-  "name": "Rexxar"
+  "name": "Rexxar",
+  "names": {
+   "esES": "Rexxar",
+   "frFR": "Rexxar",
+   "ruRU": "Рексар",
+   "zhCN": "雷克萨"
+  }
  },
  "Ridge Huntress": {
   "de": "Kammjägerin",
   "display": 1055,
   "id": 2732,
   "info": "Ridge Huntress is a level 38 - 39 NPC. The location of this NPC is unknown.",
-  "name": "Ridge Huntress"
+  "name": "Ridge Huntress",
+  "names": {
+   "esES": "Cazadora de la cresta",
+   "frFR": "Chasseresse des récifs",
+   "ruRU": "Горная охотница",
+   "zhCN": "山脊雌豹"
+  }
  },
  "Risen Guard": {
   "de": "Auferstandene Wache",
   "display": 7848,
   "id": 10489,
   "info": "Risen Guard is a level 57 - 59 Elite NPC. The location of this NPC is unknown.",
-  "name": "Risen Guard"
+  "name": "Risen Guard",
+  "names": {
+   "esES": "Guarda resucitado",
+   "frFR": "Garde ressuscité",
+   "ruRU": "Восставший стражник",
+   "zhCN": "复活的卫兵"
+  }
  },
  "Riverpaw Gnoll": {
   "de": "Gnoll der Flusspfoten",
   "display": 175,
   "id": 117,
   "info": "Riverpaw Gnoll is a level 11 - 12 NPC. The location of this NPC is unknown.",
-  "name": "Riverpaw Gnoll"
+  "name": "Riverpaw Gnoll",
+  "names": {
+   "esES": "Gnoll Zarparrío",
+   "frFR": "Gnoll Rivepatte",
+   "ruRU": "Гнолл из стаи Речной Лапы",
+   "zhCN": "河爪豺狼人"
+  }
  },
  "Riverpaw Outrunner": {
   "de": "Kundschafter der Flusspfoten",
   "display": 512,
   "id": 478,
   "info": "Riverpaw Outrunner is a level 9 - 10 NPC. The location of this NPC is unknown.",
-  "name": "Riverpaw Outrunner"
+  "name": "Riverpaw Outrunner",
+  "names": {
+   "esES": "Avanzado Zarparrío",
+   "frFR": "Estafette Rivepatte",
+   "ruRU": "Гонец стаи Речной Лапы",
+   "zhCN": "河爪豺狼人前锋"
+  }
  },
  "Rockjaw Trogg": {
   "de": "Trogg der Felsenkiefer",
   "display": 606,
   "id": 707,
   "info": "Rockjaw Trogg is a level 1 - 2 NPC. The location of this NPC is unknown.",
-  "name": "Rockjaw Trogg"
+  "name": "Rockjaw Trogg",
+  "names": {
+   "esES": "Trogg Mentueso",
+   "frFR": "Trogg Mâcheroc",
+   "ruRU": "Трогг из племени Каменной Челюсти",
+   "zhCN": "石腭穴居人"
+  }
  },
  "Rot Hide Gnoll": {
   "de": "Gnoll der Moderfelle",
   "display": 10852,
   "id": 1674,
   "info": "Rot Hide Gnoll is a level 6 - 7 NPC. The location of this NPC is unknown.",
-  "name": "Rot Hide Gnoll"
+  "name": "Rot Hide Gnoll",
+  "names": {
+   "esES": "Gnoll Putrepellejo",
+   "frFR": "Gnoll Poil-Putride",
+   "ruRU": "Гнолл из стаи Гнилошкуров",
+   "zhCN": "腐皮豺狼人"
+  }
  },
  "Rotting Ghoul": {
   "de": "Faulender Ghul",
   "display": 137,
   "id": 1793,
   "info": "Rotting Ghoul is a level 54 - 55 NPC. The location of this NPC is unknown.",
-  "name": "Rotting Ghoul"
+  "name": "Rotting Ghoul",
+  "names": {
+   "esES": "Necrófago putrefacto",
+   "frFR": "Goule purulente",
+   "ruRU": "Гниющий вурдалак",
+   "zhCN": "腐烂的食尸鬼"
+  }
  },
  "Rotting Horror": null,
  "Saltstone Basilisk": {
@@ -1727,245 +3197,455 @@
   "display": 12340,
   "id": 4147,
   "info": "Saltstone Basilisk is a level 30 - 31 NPC. The location of this NPC is unknown.",
-  "name": "Saltstone Basilisk"
+  "name": "Saltstone Basilisk",
+  "names": {
+   "esES": "Basilisco Gapo Salino",
+   "frFR": "Basilic du sel gemme",
+   "ruRU": "Просоленный василиск",
+   "zhCN": "盐石蜥蜴"
+  }
  },
  "Sandfury Blood Drinker": {
   "de": "Bluttrinker der Sandfury",
   "display": 6423,
   "id": 5649,
   "info": "Sandfury Blood Drinker is a level 44 - 45 Elite NPC. The location of this NPC is unknown.",
-  "name": "Sandfury Blood Drinker"
+  "name": "Sandfury Blood Drinker",
+  "names": {
+   "esES": "Bebesangre Furiarena",
+   "frFR": "Buveur de sang Sandfury",
+   "ruRU": "Кровопийца из племени Песчаной Бури",
+   "zhCN": "沙怒饮血者"
+  }
  },
  "Sandfury Hideskinner": {
   "de": "Balgabzieher der Sandfury",
   "display": 6413,
   "id": 5645,
   "info": "Sandfury Hideskinner is a level 42 - 43 Elite NPC. The location of this NPC is unknown.",
-  "name": "Sandfury Hideskinner"
+  "name": "Sandfury Hideskinner",
+  "names": {
+   "esES": "Desollador Furiarena",
+   "frFR": "Dépeceur Sandfury",
+   "ruRU": "Шкуродер из племени Песчаной Бури",
+   "zhCN": "沙怒剥皮者"
+  }
  },
  "Sandfury Shadowcaster": {
   "de": "Schattenzauberer der Sandfury",
   "display": 6419,
   "id": 5648,
   "info": "Sandfury Shadowcaster is a level 43 - 44 Elite NPC. The location of this NPC is unknown.",
-  "name": "Sandfury Shadowcaster"
+  "name": "Sandfury Shadowcaster",
+  "names": {
+   "esES": "Taumaturgo umbrío Furiarena",
+   "frFR": "Exhalombre Sandfury",
+   "ruRU": "Темный чародей из племени Песчаной Бури",
+   "zhCN": "沙怒暗影法师"
+  }
  },
  "Sandfury Soul Eater": {
   "de": "Seelenfresser der Sandfury",
   "display": 6427,
   "id": 7247,
   "info": "Sandfury Soul Eater is a level 45 - 46 Elite NPC. The location of this NPC is unknown.",
-  "name": "Sandfury Soul Eater"
+  "name": "Sandfury Soul Eater",
+  "names": {
+   "esES": "Comealmas Furiarena",
+   "frFR": "Mangeur d'âmes Sandfury",
+   "ruRU": "Пожиратель душ из племени Песчаной Бури",
+   "zhCN": "沙怒噬魂者"
+  }
  },
  "Savannah Huntress": {
   "de": "Savannenjägerin",
   "display": 1056,
   "id": 3415,
   "info": "Savannah Huntress is a level 11 - 12 NPC. The location of this NPC is unknown.",
-  "name": "Savannah Huntress"
+  "name": "Savannah Huntress",
+  "names": {
+   "esES": "Cazadora de la savana",
+   "frFR": "Chasseresse des savanes",
+   "ruRU": "Охотница саванны",
+   "zhCN": "雌性草原狮"
+  }
  },
  "Sawtooth Crocolisk": {
   "de": "Sägezahnkrokilisk",
   "display": 807,
   "id": 1082,
   "info": "Sawtooth Crocolisk is a level 38 - 39 NPC. The location of this NPC is unknown.",
-  "name": "Sawtooth Crocolisk"
+  "name": "Sawtooth Crocolisk",
+  "names": {
+   "esES": "Crocolisto Denteserra",
+   "frFR": "Crocilisque Dents-de-scie",
+   "ruRU": "Острозубый кроколиск",
+   "zhCN": "盐齿鳄鱼"
+  }
  },
  "Scarlet Convert": {
   "de": "Scharlachroter Konvertit",
   "display": 2403,
   "id": 1506,
   "info": "Scarlet Convert is a level 3 NPC. The location of this NPC is unknown.",
-  "name": "Scarlet Convert"
+  "name": "Scarlet Convert",
+  "names": {
+   "esES": "Convertido Escarlata",
+   "frFR": "Converti écarlate",
+   "ruRU": "Новообращенный из Алого ордена",
+   "zhCN": "血色信徒"
+  }
  },
  "Scarlet Knight": {
   "de": "Scharlachroter Ritter",
   "display": 10291,
   "id": 1833,
   "info": "Scarlet Knight is a level 54 - 55 NPC. The location of this NPC is unknown.",
-  "name": "Scarlet Knight"
+  "name": "Scarlet Knight",
+  "names": {
+   "esES": "Caballero Escarlata",
+   "frFR": "Chevalier écarlate",
+   "ruRU": "Рыцарь из Алого ордена",
+   "zhCN": "血色骑士"
+  }
  },
  "Scarlet Mage": {
   "de": "Scharlachroter Magier",
   "display": 10286,
   "id": 1826,
   "info": "Scarlet Mage is a level 55 - 56 NPC. The location of this NPC is unknown.",
-  "name": "Scarlet Mage"
+  "name": "Scarlet Mage",
+  "names": {
+   "esES": "Mago Escarlata",
+   "frFR": "Mage écarlate",
+   "ruRU": "Маг из Алого ордена",
+   "zhCN": "血色法师"
+  }
  },
  "Scarlet Missionary": {
   "de": "Scharlachroter Missionar",
   "display": 2468,
   "id": 1536,
   "info": "Scarlet Missionary is a level 7 - 8 NPC. The location of this NPC is unknown.",
-  "name": "Scarlet Missionary"
+  "name": "Scarlet Missionary",
+  "names": {
+   "esES": "Misionero Escarlata",
+   "frFR": "Missionnaire écarlate",
+   "ruRU": "Миссионер из Алого ордена",
+   "zhCN": "血色传教士"
+  }
  },
  "Scarlet Monk": {
   "de": "Scharlachroter Mönch",
   "display": 2603,
   "id": 4540,
   "info": "Scarlet Monk is a level 35 - 36 Elite NPC. The location of this NPC is unknown.",
-  "name": "Scarlet Monk"
+  "name": "Scarlet Monk",
+  "names": {
+   "esES": "Monje Escarlata",
+   "frFR": "Moine écarlate",
+   "ruRU": "Монах из Алого ордена",
+   "zhCN": "血色僧侣"
+  }
  },
  "Scholomance Dark Summoner": {
   "de": "Dunkler Beschwörer aus Scholomance",
   "display": 11163,
   "id": 11582,
   "info": "Scholomance Dark Summoner is a level 58 - 59 Elite NPC. The location of this NPC is unknown.",
-  "name": "Scholomance Dark Summoner"
+  "name": "Scholomance Dark Summoner",
+  "names": {
+   "esES": "Invocador Oscuro de Scholomance",
+   "frFR": "Invocateur des ténèbres de Scholomance",
+   "ruRU": "Призыватель Тьмы Некроситета",
+   "zhCN": "通灵学院黑暗召唤师"
+  }
  },
  "Scholomance Necromancer": {
   "de": "Totenbeschwörer aus Scholomance",
   "display": 11163,
   "id": 10477,
   "info": "Scholomance Necromancer is a level 58 - 59 Elite NPC. The location of this NPC is unknown.",
-  "name": "Scholomance Necromancer"
+  "name": "Scholomance Necromancer",
+  "names": {
+   "esES": "Necromántico de Scholomance",
+   "frFR": "Nécromancien Scholomance",
+   "ruRU": "Некромант Некроситета",
+   "zhCN": "通灵学院亡灵法师"
+  }
  },
  "Scorpashi Venomlash": {
   "de": "Skorpashigiftpeitscher",
   "display": 2766,
   "id": 4699,
   "info": "Scorpashi Venomlash is a level 38 - 39 NPC. The location of this NPC is unknown.",
-  "name": "Scorpashi Venomlash"
+  "name": "Scorpashi Venomlash",
+  "names": {
+   "esES": "Lativenenoso Scorpashi",
+   "frFR": "Empoisonneur scorpashi",
+   "ruRU": "Ядохлыст cкорпаши",
+   "zhCN": "荒土毒尾蝎"
+  }
  },
  "Scorpid Worker": {
   "de": "Skorpidarbeiter",
   "display": 2485,
   "id": 3124,
   "info": "Scorpid Worker is a level 3 NPC. The location of this NPC is unknown.",
-  "name": "Scorpid Worker"
+  "name": "Scorpid Worker",
+  "names": {
+   "esES": "Trabajador escórpido",
+   "frFR": "Scorpide ouvrier",
+   "ruRU": "Рабочий скорпид",
+   "zhCN": "蝎子"
+  }
  },
  "Scourge Soldier": {
   "de": "Soldat der Geißel",
   "display": 5231,
   "id": 8523,
   "info": "Scourge Soldier is a level 53 - 54 NPC. The location of this NPC is unknown.",
-  "name": "Scourge Soldier"
+  "name": "Scourge Soldier",
+  "names": {
+   "esES": "Soldado de la Plaga",
+   "frFR": "Soldat du Fléau",
+   "ruRU": "Солдат Плети",
+   "zhCN": "天灾士兵"
+  }
  },
  "Shade of Eranikus": {
   "de": "Eranikus' Schemen",
   "display": 7806,
   "id": 5709,
   "info": "Shade of Eranikus is a level 55 Elite NPC. The location of this NPC is unknown.",
-  "name": "Shade of Eranikus"
+  "name": "Shade of Eranikus",
+  "names": {
+   "esES": "Sombra de Eranikus",
+   "frFR": "Ombre d'Eranikus",
+   "ruRU": "Тень Эраникуса",
+   "zhCN": "伊兰尼库斯的阴影"
+  }
  },
  "Shadowfang Moonwalker": {
   "de": "Shadowfang-Mondwandler",
   "display": 729,
   "id": 3853,
   "info": "Shadowfang Moonwalker is a level 19 - 20 Elite NPC. The location of this NPC is unknown.",
-  "name": "Shadowfang Moonwalker"
+  "name": "Shadowfang Moonwalker",
+  "names": {
+   "esES": "Caminalunas Colmillo Oscuro",
+   "frFR": "Marche-lune d'Ombrecroc",
+   "ruRU": "Лунолюб Серого Клыка",
+   "zhCN": "影牙夜行者"
+  }
  },
  "Shadowforge Flame Keeper": {
   "de": "Flammenbewahrer der Schattenschmiede",
   "display": 9309,
   "id": 9956,
   "info": "Shadowforge Flame Keeper is a level 54 - 55 NPC. The location of this NPC is unknown.",
-  "name": "Shadowforge Flame Keeper"
+  "name": "Shadowforge Flame Keeper",
+  "names": {
+   "esES": "Vigilante de la Llama Forjatiniebla",
+   "frFR": "Gardien des flammes Ombreforge",
+   "ruRU": "Тенегорнский хранитель огня",
+   "zhCN": "暗炉持火者"
+  }
  },
  "Shadowgale Manticore": {
   "de": "Shadowgale Manticore",
   "display": 136598,
   "id": 251247,
   "info": "The location of this NPC is unknown.",
-  "name": "Shadowgale Manticore"
+  "name": "Shadowgale Manticore",
+  "names": {
+   "esES": "Shadowgale Manticore",
+   "frFR": "Shadowgale Manticore",
+   "ruRU": "Shadowgale Manticore",
+   "zhCN": "Shadowgale Manticore"
+  }
  },
  "Shadowgale Shrieker": {
   "de": "Schattenwindkreischer",
   "display": 139498,
   "id": 256108,
   "info": "Shadowgale Shrieker is a level 10 NPC. The location of this NPC is unknown.",
-  "name": "Shadowgale Shrieker"
+  "name": "Shadowgale Shrieker",
+  "names": {
+   "esES": "Aullador ventosombra",
+   "frFR": "Hurleuse trombenoire",
+   "ruRU": "Теневейный крикун",
+   "zhCN": "Shadowgale Shrieker"
+  }
  },
  "Shadowgale Shriekling": {
   "de": "Schattenwindkreischling",
   "display": 142400,
   "id": 256092,
   "info": "Shadowgale Shriekling is a level 10 - 11 NPC. The location of this NPC is unknown.",
-  "name": "Shadowgale Shriekling"
+  "name": "Shadowgale Shriekling",
+  "names": {
+   "esES": "Chilladora ventosombra",
+   "frFR": "Criailleuse trombenoire",
+   "ruRU": "Теневейный визгун",
+   "zhCN": "Shadowgale Shriekling"
+  }
  },
  "Shadowgale Ursera": {
   "de": "Schattenwindursera",
   "display": 136605,
   "id": 250927,
   "info": "Shadowgale Ursera is a level 10 - 11 NPC. The location of this NPC is unknown.",
-  "name": "Shadowgale Ursera"
+  "name": "Shadowgale Ursera",
+  "names": {
+   "esES": "Ursera ventosombra",
+   "frFR": "Ursera trombenoire",
+   "ruRU": "Теневейная медвера",
+   "zhCN": "Shadowgale Ursera"
+  }
  },
  "Shadowhide Brute": {
   "de": "Schläger der Schattenfelle",
   "display": 1887,
   "id": 432,
   "info": "Shadowhide Brute is a level 23 - 24 NPC. The location of this NPC is unknown.",
-  "name": "Shadowhide Brute"
+  "name": "Shadowhide Brute",
+  "names": {
+   "esES": "Tosco Pielsombra",
+   "frFR": "Brute Sombrepoil",
+   "ruRU": "Громила из стаи Темношкуров",
+   "zhCN": "暗皮蛮兵"
+  }
  },
  "Shadowsworn Cultist": {
   "de": "Kultist der Schattenanbeter",
   "display": 7838,
   "id": 6004,
   "info": "Shadowsworn Cultist is a level 51 - 52 NPC. The location of this NPC is unknown.",
-  "name": "Shadowsworn Cultist"
+  "name": "Shadowsworn Cultist",
+  "names": {
+   "esES": "Fiel Sombraída",
+   "frFR": "Sectateur lige d'ombre",
+   "ruRU": "Сектант Культа Приверженцев Тени",
+   "zhCN": "魔誓祭司"
+  }
  },
  "Shadowsworn Thug": {
   "de": "Rohling der Schattenanbeter",
   "display": 6793,
   "id": 6005,
   "info": "Shadowsworn Thug is a level 52 - 53 NPC. The location of this NPC is unknown.",
-  "name": "Shadowsworn Thug"
+  "name": "Shadowsworn Thug",
+  "names": {
+   "esES": "Matón Sombraída",
+   "frFR": "Nervi lige d'ombre",
+   "ruRU": "Лиходей Культа Приверженцев Тени",
+   "zhCN": "魔誓暴徒"
+  }
  },
  "Shandris Feathermoon": {
   "de": "Shandris Feathermoon",
   "display": 2035,
   "id": 3936,
   "info": "Shandris Feathermoon is a level 62 NPC. The location of this NPC is unknown.",
-  "name": "Shandris Feathermoon"
+  "name": "Shandris Feathermoon",
+  "names": {
+   "esES": "Shandris Plumaluna",
+   "frFR": "Shandris Feathermoon",
+   "ruRU": "Шандриса Оперенная Луна",
+   "zhCN": "珊蒂斯·羽月"
+  }
  },
  "Silvermane Stalker": {
   "de": "Silbermähnenpirscher",
   "display": 11418,
   "id": 2926,
   "info": "Silvermane Stalker is a level 47 - 48 NPC. The location of this NPC is unknown.",
-  "name": "Silvermane Stalker"
+  "name": "Silvermane Stalker",
+  "names": {
+   "esES": "Acechador melenargenta",
+   "frFR": "Traqueur Crins-d'argent",
+   "ruRU": "Среброгривый бродяга",
+   "zhCN": "银鬃捕猎者"
+  }
  },
  "Skeletal Berserker": {
   "de": "Skelettberserker",
   "display": 9784,
   "id": 10391,
   "info": "Skeletal Berserker is a level 56 - 57 NPC. The location of this NPC is unknown.",
-  "name": "Skeletal Berserker"
+  "name": "Skeletal Berserker",
+  "names": {
+   "esES": "Rabioso esquelético",
+   "frFR": "Berserker squelettique",
+   "ruRU": "Скелет-берсерк",
+   "zhCN": "骷髅狂战士"
+  }
  },
  "Skeletal Flayer": {
   "de": "Skelettschinder",
   "display": 733,
   "id": 1783,
   "info": "Skeletal Flayer is a level 50 - 51 NPC. The location of this NPC is unknown.",
-  "name": "Skeletal Flayer"
+  "name": "Skeletal Flayer",
+  "names": {
+   "esES": "Despellejador esquelético",
+   "frFR": "Ecorcheur Squelette",
+   "ruRU": "Скелет-живодер",
+   "zhCN": "骷髅剥皮者"
+  }
  },
  "Skeletal Warrior": {
   "de": "Skelettkrieger",
   "display": 200,
   "id": 48,
   "info": "Skeletal Warrior is a level 21 - 22 NPC. The location of this NPC is unknown.",
-  "name": "Skeletal Warrior"
+  "name": "Skeletal Warrior",
+  "names": {
+   "esES": "Guerrero esquelético",
+   "frFR": "Guerrier squelette",
+   "ruRU": "Скелет-воин",
+   "zhCN": "骷髅战士"
+  }
  },
  "Skullsplitter Hunter": {
   "de": "Jäger der Skullsplitter",
   "display": 4628,
   "id": 669,
   "info": "Skullsplitter Hunter is a level 41 - 42 NPC. The location of this NPC is unknown.",
-  "name": "Skullsplitter Hunter"
+  "name": "Skullsplitter Hunter",
+  "names": {
+   "esES": "Cazador Machacacráneos",
+   "frFR": "Chasseur Skullsplitter",
+   "ruRU": "Охотник из племени Дробителей Черепов",
+   "zhCN": "劈颅猎人"
+  }
  },
  "Snickerfang Hyena": {
   "de": "Kicherfanghyäne",
   "display": 2714,
   "id": 5985,
   "info": "Snickerfang Hyena is a level 49 - 50 NPC. The location of this NPC is unknown.",
-  "name": "Snickerfang Hyena"
+  "name": "Snickerfang Hyena",
+  "names": {
+   "esES": "Hiena risitas",
+   "frFR": "Hyène Raillecroc",
+   "ruRU": "Хохочущая гиена",
+   "zhCN": "弯牙土狼"
+  }
  },
  "Son of Arugal": {
   "de": "Sohn von Arugal",
   "display": 1098,
   "id": 203139,
   "info": "Son of Arugal is a level 24 - 25 Elite NPC. The location of this NPC is unknown.",
-  "name": "Son of Arugal"
+  "name": "Son of Arugal",
+  "names": {
+   "esES": "Hijo de Arugal",
+   "frFR": "Fils d'Arugal",
+   "ruRU": "Сын Аругала",
+   "zhCN": "阿鲁高之子"
+  }
  },
  "Sonya Darkhallow": null,
  "Southsea Pirate": {
@@ -1973,210 +3653,390 @@
   "display": 6944,
   "id": 7855,
   "info": "Southsea Pirate is a level 44 - 45 NPC. The location of this NPC is unknown.",
-  "name": "Southsea Pirate"
+  "name": "Southsea Pirate",
+  "names": {
+   "esES": "Pirata del Mar del Sur",
+   "frFR": "Pirate des Mers du sud",
+   "ruRU": "Пират Южных морей",
+   "zhCN": "南海海盗"
+  }
  },
  "Spitelash Siren": {
   "de": "Sirene der Grollflossen",
   "display": 11266,
   "id": 6195,
   "info": "Spitelash Siren is a level 51 - 52 NPC. The location of this NPC is unknown.",
-  "name": "Spitelash Siren"
+  "name": "Spitelash Siren",
+  "names": {
+   "esES": "Sirena Látigo de Ira",
+   "frFR": "Sirène Fouette-bile",
+   "ruRU": "Сирена из клана Бича Злобы",
+   "zhCN": "恶鞭海妖"
+  }
  },
  "Spitelash Warrior": {
   "de": "Krieger der Grollflossen",
   "display": 6747,
   "id": 6190,
   "info": "Spitelash Warrior is a level 46 - 47 NPC. The location of this NPC is unknown.",
-  "name": "Spitelash Warrior"
+  "name": "Spitelash Warrior",
+  "names": {
+   "esES": "Guerrera Látigo de Ira",
+   "frFR": "Guerrier Fouette-bile",
+   "ruRU": "Воин из клана Бича Злобы",
+   "zhCN": "恶鞭战士"
+  }
  },
  "Stegodon": {
   "de": "Stegodon",
   "display": 5241,
   "id": 6501,
   "info": "Stegodon is a level 52 - 53 Elite NPC. The location of this NPC is unknown.",
-  "name": "Stegodon"
+  "name": "Stegodon",
+  "names": {
+   "esES": "Stegodon",
+   "frFR": "Stégodon",
+   "ruRU": "Стегодон",
+   "zhCN": "剑龙"
+  }
  },
  "Stitches": {
   "de": "Kleiner",
   "display": 1693,
   "id": 412,
   "info": "Stitches is a level 35 Elite NPC. The location of this NPC is unknown.",
-  "name": "Stitches"
+  "name": "Stitches",
+  "names": {
+   "esES": "Tiritas",
+   "frFR": "Balafré",
+   "ruRU": "Стежок",
+   "zhCN": "缝合怪"
+  }
  },
  "Stone Keeper": {
   "de": "Steinbewahrer",
   "display": 10805,
   "id": 4857,
   "info": "Stone Keeper is a level 46 Elite NPC. The location of this NPC is unknown.",
-  "name": "Stone Keeper"
+  "name": "Stone Keeper",
+  "names": {
+   "esES": "Vigilante de piedra",
+   "frFR": "Gardien des pierres",
+   "ruRU": "Каменный хранитель",
+   "zhCN": "石头看守者"
+  }
  },
  "Stonelash Pincer": {
   "de": "Steinpanzerzange",
   "display": 15384,
   "id": 11736,
   "info": "Stonelash Pincer is a level 56 NPC. The location of this NPC is unknown.",
-  "name": "Stonelash Pincer"
+  "name": "Stonelash Pincer",
+  "names": {
+   "esES": "Tnazario Latigosólido",
+   "frFR": "Pinceur Cinglepierre",
+   "ruRU": "Камнехвостый клешневик",
+   "zhCN": "石鞭巨钳蝎"
+  }
  },
  "Stonesplinter Seer": {
   "de": "Seher der Splittersteintroggs",
   "display": 764,
   "id": 1166,
   "info": "Stonesplinter Seer is a level 13 - 14 NPC. The location of this NPC is unknown.",
-  "name": "Stonesplinter Seer"
+  "name": "Stonesplinter Seer",
+  "names": {
+   "esES": "Profeta Rompecantos",
+   "frFR": "Prophète Brisepierre",
+   "ruRU": "Ясновидец из племени Камнедробов",
+   "zhCN": "碎石怪先知"
+  }
  },
  "Stonesplinter Trogg": {
   "de": "Splittersteintrogg",
   "display": 763,
   "id": 1161,
   "info": "Stonesplinter Trogg is a level 11 - 12 NPC. The location of this NPC is unknown.",
-  "name": "Stonesplinter Trogg"
+  "name": "Stonesplinter Trogg",
+  "names": {
+   "esES": "Trogg Rompecantos",
+   "frFR": "Trogg Brisepierre",
+   "ruRU": "Трогг из племени Камнедробов",
+   "zhCN": "碎石穴居人"
+  }
  },
  "Stonevault Seer": {
   "de": "Seher der Steingrufttroggs",
   "display": 722,
   "id": 2892,
   "info": "Stonevault Seer is a level 39 - 40 Elite NPC. The location of this NPC is unknown.",
-  "name": "Stonevault Seer"
+  "name": "Stonevault Seer",
+  "names": {
+   "esES": "Profeta Grutacanto",
+   "frFR": "Prophète Cavepierre",
+   "ruRU": "Ясновидец из племени Каменного Свода",
+   "zhCN": "石窟先知"
+  }
  },
  "Stranglethorn Tigress": {
   "de": "Schlingendorntigerin",
   "display": 614,
   "id": 772,
   "info": "Stranglethorn Tigress is a level 37 - 38 NPC. The location of this NPC is unknown.",
-  "name": "Stranglethorn Tigress"
+  "name": "Stranglethorn Tigress",
+  "names": {
+   "esES": "Tigresa de Tuercespina",
+   "frFR": "Tigresse de Strangleronce",
+   "ruRU": "Тигрица Тернистой долины",
+   "zhCN": "荆棘谷雌虎"
+  }
  },
  "Syndicate Sentry": {
   "de": "Wachposten des Syndikats",
   "display": 3721,
   "id": 2243,
   "info": "Syndicate Sentry is a level 36 - 37 NPC. The location of this NPC is unknown.",
-  "name": "Syndicate Sentry"
+  "name": "Syndicate Sentry",
+  "names": {
+   "esES": "Argos del Sindicato",
+   "frFR": "Sentinelle du Syndicat",
+   "ruRU": "Караульный Синдиката",
+   "zhCN": "辛迪加哨兵"
+  }
  },
  "Syndicate Thief": {
   "de": "Dieb des Syndikats",
   "display": 3709,
   "id": 2241,
   "info": "Syndicate Thief is a level 33 - 34 NPC. The location of this NPC is unknown.",
-  "name": "Syndicate Thief"
+  "name": "Syndicate Thief",
+  "names": {
+   "esES": "Ladrón del Sindicato",
+   "frFR": "Larron du Syndicat",
+   "ruRU": "Вор Синдиката",
+   "zhCN": "辛迪加窃贼"
+  }
  },
  "Syndicate Wizard": {
   "de": "Hexer des Syndikats",
   "display": 3712,
   "id": 2319,
   "info": "Syndicate Wizard is a level 34 - 35 NPC. The location of this NPC is unknown.",
-  "name": "Syndicate Wizard"
+  "name": "Syndicate Wizard",
+  "names": {
+   "esES": "Zahorí del Sindicato",
+   "frFR": "Sorcier du Syndicat",
+   "ruRU": "Волшебник Синдиката",
+   "zhCN": "辛迪加巫师"
+  }
  },
  "Tar Creeper": {
   "de": "Teerkriecher",
   "display": 3018,
   "id": 6527,
   "info": "Tar Creeper is a level 51 - 52 NPC. The location of this NPC is unknown.",
-  "name": "Tar Creeper"
+  "name": "Tar Creeper",
+  "names": {
+   "esES": "Trepador Tar",
+   "frFR": "Rampeur du goudron",
+   "ruRU": "Смоляной ползун",
+   "zhCN": "焦油爬行者"
+  }
  },
  "Thrall": {
   "de": "Thrall",
   "display": 4527,
   "id": 4949,
   "info": "Thrall is a boss. The location of this NPC is unknown.",
-  "name": "Thrall"
+  "name": "Thrall",
+  "names": {
+   "esES": "Thrall",
+   "frFR": "Thrall",
+   "ruRU": "Тралл",
+   "zhCN": "萨尔"
+  }
  },
  "Thunderhead Hippogryph": {
   "de": "Donnerkopfhippogryph",
   "display": 6757,
   "id": 6375,
   "info": "Thunderhead Hippogryph is a level 46 - 48 NPC. The location of this NPC is unknown.",
-  "name": "Thunderhead Hippogryph"
+  "name": "Thunderhead Hippogryph",
+  "names": {
+   "esES": "Hipógrifo tronador",
+   "frFR": "Hippogryphe Tête-tonnerre",
+   "ruRU": "Громоголовый гиппогриф",
+   "zhCN": "雷首角鹰兽"
+  }
  },
  "Thundering Exile": {
   "de": "Donnernder Verbannter",
   "display": 5490,
   "id": 2762,
   "info": "Thundering Exile is a level 38 - 39 NPC. The location of this NPC is unknown.",
-  "name": "Thundering Exile"
+  "name": "Thundering Exile",
+  "names": {
+   "esES": "Exiliado tronador",
+   "frFR": "Exilé foudroyant",
+   "ruRU": "Грохочущий изгнанник",
+   "zhCN": "雷霆流放者"
+  }
  },
  "Thuzadin Necromancer": {
   "de": "Thuzadintotenbeschwörer",
   "display": 10539,
   "id": 10400,
   "info": "Thuzadin Necromancer is a level 60 - 61 Elite NPC. The location of this NPC is unknown.",
-  "name": "Thuzadin Necromancer"
+  "name": "Thuzadin Necromancer",
+  "names": {
+   "esES": "Necromántico Thuzadin",
+   "frFR": "Nécromancien Thuzadin",
+   "ruRU": "Тузадинский некромант",
+   "zhCN": "图萨丁亡灵法师"
+  }
  },
  "Timberling": {
   "de": "Bäumling",
   "display": 3033,
   "id": 2022,
   "info": "Timberling is a level 5 - 6 NPC. The location of this NPC is unknown.",
-  "name": "Timberling"
+  "name": "Timberling",
+  "names": {
+   "esES": "Brezomadera",
+   "frFR": "Sylvain",
+   "ruRU": "Древесник",
+   "zhCN": "林精"
+  }
  },
  "Tirion Fordring": {
   "de": "Tirion Fordring",
   "display": 9477,
   "id": 1855,
   "info": "Tirion Fordring is a level 61 Elite NPC. The location of this NPC is unknown.",
-  "name": "Tirion Fordring"
+  "name": "Tirion Fordring",
+  "names": {
+   "esES": "Tirión Vadín",
+   "frFR": "Tirion Fordring",
+   "ruRU": "Тирион Фордринг",
+   "zhCN": "提里奥·弗丁"
+  }
  },
  "Torn Fin Tidehunter": {
   "de": "Gezeitenjäger der Fetzenflossen",
   "display": 1079,
   "id": 2377,
   "info": "Torn Fin Tidehunter is a level 31 - 32 NPC. The location of this NPC is unknown.",
-  "name": "Torn Fin Tidehunter"
+  "name": "Torn Fin Tidehunter",
+  "names": {
+   "esES": "Cazamareas Rompeanca",
+   "frFR": "Chasse-marée Aileron déchiré",
+   "ruRU": "Волнолов из племени Порванного Плавника",
+   "zhCN": "碎鳍潮行鱼人"
+  }
  },
  "Toxic Horror": {
   "de": "Toxinschrecken",
   "display": 5498,
   "id": 7132,
   "info": "Toxic Horror is a level 53 - 54 NPC. The location of this NPC is unknown.",
-  "name": "Toxic Horror"
+  "name": "Toxic Horror",
+  "names": {
+   "esES": "Horror tóxico",
+   "frFR": "Horreur toxique",
+   "ruRU": "Ядовитый ужас",
+   "zhCN": "剧毒之水"
+  }
  },
  "Tunnel Rat Kobold": {
   "de": "Kobold der Tunnelratten",
   "display": 26,
   "id": 1202,
   "info": "Tunnel Rat Kobold is a level 11 - 12 NPC. The location of this NPC is unknown.",
-  "name": "Tunnel Rat Kobold"
+  "name": "Tunnel Rat Kobold",
+  "names": {
+   "esES": "Kóbold Ratatúnel",
+   "frFR": "Kobold Rat des tunnels",
+   "ruRU": "Кобольд-туннельщик",
+   "zhCN": "坑道鼠狗头人"
+  }
  },
  "Twilight Acolyte": {
   "de": "Twilight-Akolyth",
   "display": 2882,
   "id": 4809,
   "info": "Twilight Acolyte is a level 24 - 25 Elite NPC. The location of this NPC is unknown.",
-  "name": "Twilight Acolyte"
+  "name": "Twilight Acolyte",
+  "names": {
+   "esES": "Acólito Crepuscular",
+   "frFR": "Acolyte du crépuscule",
+   "ruRU": "Служитель из культа Сумеречного Молота",
+   "zhCN": "暮光侍僧"
+  }
  },
  "Twilight Champion": {
   "de": "Twilight-Champion",
   "display": 139889,
   "id": 256799,
   "info": "Twilight Champion is a level 43 - 44 NPC. The location of this NPC is unknown.",
-  "name": "Twilight Champion"
+  "name": "Twilight Champion",
+  "names": {
+   "esES": "Twilight Champion",
+   "frFR": "Champion du Crépuscule",
+   "ruRU": "Сумеречный воитель",
+   "zhCN": "Twilight Champion"
+  }
  },
  "Twilight Fanatic": {
   "de": "Twilight-Fanatiker",
   "display": 147688,
   "id": 256795,
   "info": "Twilight Fanatic is a level 42 - 43 NPC. The location of this NPC is unknown.",
-  "name": "Twilight Fanatic"
+  "name": "Twilight Fanatic",
+  "names": {
+   "esES": "Twilight Fanatic",
+   "frFR": "Fanatique du Crépuscule",
+   "ruRU": "Twilight Fanatic",
+   "zhCN": "Twilight Fanatic"
+  }
  },
  "Twilight Geolord": {
   "de": "Geolord der Twilight",
   "display": 11819,
   "id": 11881,
   "info": "Twilight Geolord is a level 59 - 60 NPC. The location of this NPC is unknown.",
-  "name": "Twilight Geolord"
+  "name": "Twilight Geolord",
+  "names": {
+   "esES": "Geoseñor Crepuscular",
+   "frFR": "Géoseigneur du crépuscule",
+   "ruRU": "Геолорд из культа Сумеречного Молота",
+   "zhCN": "暮光地王"
+  }
  },
  "Tyrande Whisperwind": {
   "de": "Tyrande Whisperwind",
   "display": 7274,
   "id": 7999,
   "info": "Tyrande Whisperwind is a boss. The location of this NPC is unknown.",
-  "name": "Tyrande Whisperwind"
+  "name": "Tyrande Whisperwind",
+  "names": {
+   "esES": "Tyrande Susurravientos",
+   "frFR": "Tyrande Whisperwind",
+   "ruRU": "Тиранда Шелест Ветра",
+   "zhCN": "泰兰德·语风"
+  }
  },
  "Un'Goro Gorilla": {
   "de": "Un'Goro-Gorilla",
   "display": 844,
   "id": 6514,
   "info": "Un'Goro Gorilla is a level 50 - 51 NPC. The location of this NPC is unknown.",
-  "name": "Un'Goro Gorilla"
+  "name": "Un'Goro Gorilla",
+  "names": {
+   "esES": "Gorila de Un'Goro",
+   "frFR": "Gorille d'Un'Goro",
+   "ruRU": "Ун'горская горилла",
+   "zhCN": "安戈洛猩猩"
+  }
  },
  "Varok Saurfang": null,
  "Venom Web Spider": {
@@ -2184,188 +4044,350 @@
   "display": 955,
   "id": 217,
   "info": "Venom Web Spider is a level 19 - 20 NPC. The location of this NPC is unknown.",
-  "name": "Venom Web Spider"
+  "name": "Venom Web Spider",
+  "names": {
+   "esES": "Telarácnida venenosa",
+   "frFR": "Araignée Tisse-venin",
+   "ruRU": "Ядовитый кругопряд",
+   "zhCN": "结网毒蜘蛛"
+  }
  },
  "Venture Co. Laborer": {
   "de": "Hilfsarbeiter der Venture Co.",
   "display": 7244,
   "id": 2976,
   "info": "Venture Co. Laborer is a level 6 - 7 NPC. The location of this NPC is unknown.",
-  "name": "Venture Co. Laborer"
+  "name": "Venture Co. Laborer",
+  "names": {
+   "esES": "Obrero de Ventura y Cía.",
+   "frFR": "Travailleur de la KapitalRisk",
+   "ruRU": "Работник Торговой компании",
+   "zhCN": "风险投资公司苦力"
+  }
  },
  "Venture Co. Logger": {
   "de": "Holzarbeiter der Venture Co.",
   "display": 7228,
   "id": 3989,
   "info": "Venture Co. Logger is a level 18 - 19 NPC. The location of this NPC is unknown.",
-  "name": "Venture Co. Logger"
+  "name": "Venture Co. Logger",
+  "names": {
+   "esES": "Leñero de Ventura y Cía.",
+   "frFR": "Déboiseur de la KapitalRisk",
+   "ruRU": "Лесоруб Торговой компании",
+   "zhCN": "风险投资公司樵夫"
+  }
  },
  "Venture Co. Operator": {
   "de": "Maschinenführer der Venture Co.",
   "display": 7230,
   "id": 3988,
   "info": "Venture Co. Operator is a level 19 - 20 NPC. The location of this NPC is unknown.",
-  "name": "Venture Co. Operator"
+  "name": "Venture Co. Operator",
+  "names": {
+   "esES": "Operador de Ventura y Cía.",
+   "frFR": "Opérateur de la KapitalRisk",
+   "ruRU": "Оператор Торговой компании",
+   "zhCN": "风险投资公司操作员"
+  }
  },
  "Venture Co. Peon": {
   "de": "Peon der Venture Co.",
   "display": 7241,
   "id": 3285,
   "info": "Venture Co. Peon is a level 13 - 14 NPC. The location of this NPC is unknown.",
-  "name": "Venture Co. Peon"
+  "name": "Venture Co. Peon",
+  "names": {
+   "esES": "Peón de Ventura y Cía.",
+   "frFR": "Péon de la KapitalRisk",
+   "ruRU": "Батрак Торговой компании",
+   "zhCN": "风险投资公司雇工"
+  }
  },
  "Vile Familiar": {
   "de": "Übler Familiar",
   "display": 1185,
   "id": 3101,
   "info": "Vile Familiar is a level 3 - 4 NPC. The location of this NPC is unknown.",
-  "name": "Vile Familiar"
+  "name": "Vile Familiar",
+  "names": {
+   "esES": "Familiar vil",
+   "frFR": "Vil quasit",
+   "ruRU": "Злобный фамилиар",
+   "zhCN": "邪灵劣魔"
+  }
  },
  "Vile Priestess Hexx": {
   "de": "Üble Priesterin Hexx",
   "display": 7121,
   "id": 7995,
   "info": "Vile Priestess Hexx is a level 51 Elite NPC. The location of this NPC is unknown.",
-  "name": "Vile Priestess Hexx"
+  "name": "Vile Priestess Hexx",
+  "names": {
+   "esES": "Sacerdotisa Vil Hexx",
+   "frFR": "Vile prêtresse Maléficia",
+   "ruRU": "Коварная жрица Ведьмиса",
+   "zhCN": "邪恶祭司海克斯"
+  }
  },
  "Vilebranch Berserker": {
   "de": "Berserker der Vilebranch",
   "display": 6493,
   "id": 2643,
   "info": "Vilebranch Berserker is a level 47 - 48 Elite NPC. The location of this NPC is unknown.",
-  "name": "Vilebranch Berserker"
+  "name": "Vilebranch Berserker",
+  "names": {
+   "esES": "Rabioso Vilrama",
+   "frFR": "Berserker Vilebranch",
+   "ruRU": "Берсерк из племени Порочной Ветви",
+   "zhCN": "邪枝狂战士"
+  }
  },
  "Vilebranch Shadowcaster": {
   "de": "Schattenzauberer der Vilebranch",
   "display": 6514,
   "id": 2642,
   "info": "Vilebranch Shadowcaster is a level 47 - 48 Elite NPC. The location of this NPC is unknown.",
-  "name": "Vilebranch Shadowcaster"
+  "name": "Vilebranch Shadowcaster",
+  "names": {
+   "esES": "Nigromante Vilrama",
+   "frFR": "Exhalombre Vilebranch",
+   "ruRU": "Темный чародей из племени Порочной Ветви",
+   "zhCN": "邪枝暗影法师"
+  }
  },
  "Vol'jin": {
   "de": "Vol'jin",
   "display": 10357,
   "id": 10540,
   "info": "Vol'jin is a boss. The location of this NPC is unknown.",
-  "name": "Vol'jin"
+  "name": "Vol'jin",
+  "names": {
+   "esES": "Vol'jin",
+   "frFR": "Vol'jin",
+   "ruRU": "Вол'джин",
+   "zhCN": "沃金"
+  }
  },
  "Voodoo Troll": {
   "de": "Voodootroll",
   "display": 4076,
   "id": 3206,
   "info": "Voodoo Troll is a level 8 - 9 NPC. The location of this NPC is unknown.",
-  "name": "Voodoo Troll"
+  "name": "Voodoo Troll",
+  "names": {
+   "esES": "Trol de vudú",
+   "frFR": "Troll vaudou",
+   "ruRU": "Тролль-вудуист",
+   "zhCN": "巫毒巨魔"
+  }
  },
  "Warchief Rend Blackhand": {
   "de": "Kriegshäuptling Rend Blackhand",
   "display": 9778,
   "id": 10429,
   "info": "Warchief Rend Blackhand is a boss. The location of this NPC is unknown.",
-  "name": "Warchief Rend Blackhand"
+  "name": "Warchief Rend Blackhand",
+  "names": {
+   "esES": "Jefe de Guerra Desgarro Puño Negro",
+   "frFR": "Chef de guerre Rend Blackhand",
+   "ruRU": "Вождь Ренд Чернорук",
+   "zhCN": "大酋长雷德·黑手"
+  }
  },
  "Wastewander Bandit": {
   "de": "Bandit der Wüstenläufer",
   "display": 5568,
   "id": 5618,
   "info": "Wastewander Bandit is a level 41 - 42 NPC. The location of this NPC is unknown.",
-  "name": "Wastewander Bandit"
+  "name": "Wastewander Bandit",
+  "names": {
+   "esES": "Bandido Deambulador",
+   "frFR": "Bandit Bat-le-désert",
+   "ruRU": "Бандит из шайки Скитальцев Пустыни",
+   "zhCN": "废土强盗"
+  }
  },
  "Wastewander Shadow Mage": {
   "de": "Schattenmagier der Wüstenläufer",
   "display": 5530,
   "id": 5617,
   "info": "Wastewander Shadow Mage is a level 42 - 43 NPC. The location of this NPC is unknown.",
-  "name": "Wastewander Shadow Mage"
+  "name": "Wastewander Shadow Mage",
+  "names": {
+   "esES": "Mago oscuro Deambulador",
+   "frFR": "Mage de l'ombre Bat-le-désert",
+   "ruRU": "Темный маг из шайки Скитальцев Пустыни",
+   "zhCN": "废土暗法师"
+  }
  },
  "Webwood Spider": {
   "de": "Waldweberspinne",
   "display": 709,
   "id": 1986,
   "info": "Webwood Spider is a level 3 - 4 NPC. The location of this NPC is unknown.",
-  "name": "Webwood Spider"
+  "name": "Webwood Spider",
+  "names": {
+   "esES": "Araña Tejemadera",
+   "frFR": "Araignée Tissebois",
+   "ruRU": "Чащобный тенетник",
+   "zhCN": "树林蜘蛛"
+  }
  },
  "Wildplains Patriarch": {
   "de": "Wildebenenpatriarch",
   "display": 1977,
   "id": 259054,
   "info": "Wildplains Patriarch is a level 39 NPC. The location of this NPC is unknown.",
-  "name": "Wildplains Patriarch"
+  "name": "Wildplains Patriarch",
+  "names": {
+   "esES": "Wildplains Patriarch",
+   "frFR": "Patriarche des plaines sauvages",
+   "ruRU": "Wildplains Patriarch",
+   "zhCN": "狂野平原族长"
+  }
  },
  "Winterfall Den Watcher": {
   "de": "Höhlenbehüter der Winterfelle",
   "display": 6828,
   "id": 7440,
   "info": "Winterfall Den Watcher is a level 55 - 56 NPC. The location of this NPC is unknown.",
-  "name": "Winterfall Den Watcher"
+  "name": "Winterfall Den Watcher",
+  "names": {
+   "esES": "Vigilante del cubil Nevada",
+   "frFR": "Protecteur Tombe-hiver",
+   "ruRU": "Дозорный из племени Зимней Спячки",
+   "zhCN": "冬泉巢穴守卫"
+  }
  },
  "Winterfall Shaman": {
   "de": "Schamane der Winterfelle",
   "display": 6830,
   "id": 7439,
   "info": "Winterfall Shaman is a level 56 - 57 NPC. The location of this NPC is unknown.",
-  "name": "Winterfall Shaman"
+  "name": "Winterfall Shaman",
+  "names": {
+   "esES": "Chamán Nevada",
+   "frFR": "Chaman Tombe-hiver",
+   "ruRU": "Шаман из племени Зимней Спячки",
+   "zhCN": "冬泉萨满祭司"
+  }
  },
  "Winterfall Ursa": {
   "de": "Ursa der Winterfelle",
   "display": 6829,
   "id": 7438,
   "info": "Winterfall Ursa is a level 57 - 58 NPC. The location of this NPC is unknown.",
-  "name": "Winterfall Ursa"
+  "name": "Winterfall Ursa",
+  "names": {
+   "esES": "Ursa Nevada",
+   "frFR": "Ursa Tombe-hiver",
+   "ruRU": "Ведмедь из племени Зимней Спячки",
+   "zhCN": "冬泉巨熊怪"
+  }
  },
  "Winterspring Screecher": {
   "de": "Winterspringkreischer",
   "display": 10833,
   "id": 7456,
   "info": "Winterspring Screecher is a level 57 - 59 NPC. The location of this NPC is unknown.",
-  "name": "Winterspring Screecher"
+  "name": "Winterspring Screecher",
+  "names": {
+   "esES": "Estridador invernal",
+   "frFR": "Hurleur du Berceau-de-l'Hiver",
+   "ruRU": "Крикун Зимних Ключей",
+   "zhCN": "冬泉鸣枭"
+  }
  },
  "Witchwing Harpy": {
   "de": "Harpyie der Hexenschwingen",
   "display": 3218,
   "id": 3276,
   "info": "Witchwing Harpy is a level 14 - 15 NPC. The location of this NPC is unknown.",
-  "name": "Witchwing Harpy"
+  "name": "Witchwing Harpy",
+  "names": {
+   "esES": "Arpía Alabruja",
+   "frFR": "Harpie Ensorçaile",
+   "ruRU": "Гарпия из стаи Зачарованного Крыла",
+   "zhCN": "巫翼鹰身人"
+  }
  },
  "Witherbark Scalper": {
   "de": "Skalpierer der Witherbark",
   "display": 6479,
   "id": 2649,
   "info": "Witherbark Scalper is a level 40 - 41 NPC. The location of this NPC is unknown.",
-  "name": "Witherbark Scalper"
+  "name": "Witherbark Scalper",
+  "names": {
+   "esES": "Arrancacabelleras Secacorteza",
+   "frFR": "Scalpeur Witherbark",
+   "ruRU": "Охотник за скальпами из племени Сухокожих",
+   "zhCN": "枯木割颅者"
+  }
  },
  "Witherbark Shadowcaster": {
   "de": "Schattenzauberer der Witherbark",
   "display": 3993,
   "id": 2553,
   "info": "Witherbark Shadowcaster is a level 31 - 32 NPC. The location of this NPC is unknown.",
-  "name": "Witherbark Shadowcaster"
+  "name": "Witherbark Shadowcaster",
+  "names": {
+   "esES": "Taumaturgo umbrío Secacorteza",
+   "frFR": "Exhalombre Witherbark",
+   "ruRU": "Темный чародей из племени Сухокожих",
+   "zhCN": "枯木暗影法师"
+  }
  },
  "Witherbark Troll": {
   "de": "Troll der Witherbark",
   "display": 3986,
   "id": 2552,
   "info": "Witherbark Troll is a level 30 - 31 NPC. The location of this NPC is unknown.",
-  "name": "Witherbark Troll"
+  "name": "Witherbark Troll",
+  "names": {
+   "esES": "Trol Secacorteza",
+   "frFR": "Troll Witherbark",
+   "ruRU": "Тролль из племени Сухокожих",
+   "zhCN": "枯木巨魔"
+  }
  },
  "Witherbark Witch Doctor": {
   "de": "Hexendoktor der Witherbark",
   "display": 3995,
   "id": 2555,
   "info": "Witherbark Witch Doctor is a level 33 - 34 NPC. The location of this NPC is unknown.",
-  "name": "Witherbark Witch Doctor"
+  "name": "Witherbark Witch Doctor",
+  "names": {
+   "esES": "Médico brujo Secacorteza",
+   "frFR": "Sorcier-docteur Witherbark",
+   "ruRU": "Знахарь из племени Сухокожих",
+   "zhCN": "枯木巫医"
+  }
  },
  "Woodpaw Mystic": {
   "de": "Mystiker der Waldpfoten",
   "display": 10794,
   "id": 5254,
   "info": "Woodpaw Mystic is a level 42 - 43 NPC. The location of this NPC is unknown.",
-  "name": "Woodpaw Mystic"
+  "name": "Woodpaw Mystic",
+  "names": {
+   "esES": "Místico Zarpaleña",
+   "frFR": "Mystique Griffebois",
+   "ruRU": "Мистик из стаи Древолапов",
+   "zhCN": "木爪秘法师"
+  }
  },
  "Zalazane": {
   "de": "Zalazane",
   "display": 4078,
   "id": 3205,
   "info": "Zalazane is a level 10 NPC. The location of this NPC is unknown.",
-  "name": "Zalazane"
+  "name": "Zalazane",
+  "names": {
+   "esES": "Zalazane",
+   "frFR": "Zalazane",
+   "ruRU": "Залазан",
+   "zhCN": "扎拉赞恩"
+  }
  }
 }

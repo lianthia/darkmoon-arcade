@@ -72,17 +72,44 @@ def area_names(lang):
     return {zid: rows.get(str(area)) for zid, area in AREAS.items()}
 
 
+# Titles the client puts before (or, in Chinese, after) a mercenary's name; longest first.
+TITLES = {
+    "frFR": ["Généralissime", "Archidruide", "Roi", "Dame"],
+    "esES": ["Alto Señor", "Alto señor", "Archidruida", "Rey", "Lady"],
+    "ruRU": ["Верховный лорд", "Верховный друид", "Король", "Леди"],
+    "zhCN": ["大德鲁伊", "大领主", "国王"],
+}
+TITLE_SUFFIXES = {"zhCN": ["公爵"]}
+
+
 def merc_names(lang):
     ids = json.loads((ROOT / "tools" / "npc_ids.json").read_text(encoding="utf-8"))
     by_npc = {v["id"]: v for v in ids.values() if v}
     mercs = re.findall(r'(\w+) = Merc\("\w+", "\w+", "\w+", (\d+),',
                        (ROOT / "DarkmoonArcade" / "Games" / "Mercenaries" / "Mercs.lua").read_text(encoding="utf-8"))
+    en_npc = {}
+    for key, value in ids.items():
+        if value:
+            en_npc.setdefault(value["id"], []).append(key)
+    locale = (ROOT / "DarkmoonArcade" / "Games" / "Mercenaries" / "Locale.lua").read_text(encoding="utf-8")
     out = {}
     for mid, npc in mercs:
         entry = by_npc.get(int(npc))
         name = entry and entry.get("names", {}).get(lang)
-        if name:
-            out[mid] = name
+        if not name:
+            continue
+        # The English card drops titles ("Highlord Bolvar Fordragon" -> "Bolvar Fordragon"); so do we.
+        shown = re.search(rf'MC_M_{mid} = "([^"]+)"', locale)
+        full = en_npc.get(int(npc), [])
+        if shown and shown.group(1) not in full and any(f.endswith(" " + shown.group(1)) for f in full):
+            for title in TITLES[lang]:
+                if name.startswith(title):
+                    name = name[len(title):].lstrip()
+                    break
+            for title in TITLE_SUFFIXES.get(lang, ()):
+                if name.endswith(title):
+                    name = name[:-len(title)].rstrip()
+        out[mid] = name
     return out
 
 
