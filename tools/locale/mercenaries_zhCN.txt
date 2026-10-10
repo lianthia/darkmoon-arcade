@@ -306,6 +306,25 @@ MC_ACH_STAGE2	穿越荒野
 MC_ACH_STAGE2_DESC	通关 45 级以内的所有区域。
 MC_ACH_STAGE3	海加尔山的胜利
 MC_ACH_STAGE3_DESC	通关所有区域，包括海加尔山。
+MC_ROADMAP	路线图
+MC_RM_MILESTONE	里程碑
+MC_RM_HINT	计划可能会有变动。有想法或建议？欢迎在 CurseForge 或 GitHub 上告诉我们。
+MC_RM_DONE	已发布
+MC_RM_NEXT	下次更新
+MC_RM_PLANNED	已计划
+MC_RM_IDEA	构想
+MC_RM_1_TITLE	1.3 版本
+MC_RM_1_TEXT	• 42 个区域，从艾尔文森林到海加尔山，每个区域都有自己的首领\n• 24 名佣兵，可招募、升至 60 级、提升等阶并装备\n• 英雄模式、宝藏、神秘事件和成就\n• 六种语言
+MC_RM_2_TITLE	打磨
+MC_RM_2_TEXT	• 更快的战斗：双倍速度，以及一键进行整个回合\n• 战斗记录：显示谁用什么攻击了谁\n• 根据你们的反馈调整平衡\n• WoW Forever 新角色的剩余翻译
+MC_RM_3_TITLE	任务与故事
+MC_RM_3_TEXT	• 每名佣兵都有一条任务链，奖励金币、等阶和新技能\n• 使用 WoW Forever 真实数据的辛德拉斯和 Riverglades\n• 来自 WoW Forever 的新佣兵
+MC_RM_4_TITLE	团队副本与终局内容
+MC_RM_4_TEXT	• 团队副本悬赏，例如熔火之心、黑翼之巢和纳克萨玛斯：连续挑战多个首领\n• 暗月挑战：越来越难的无尽模式，并附有排行榜\n• 每周变异规则，拥有特殊规则和独立排名
+MC_RM_5_TITLE	一起玩
+MC_RM_5_TEXT	• Mercenaries 的公会排行榜\n• 在聊天中分享你的队伍\n• 挑战公会成员的队伍
+MC_RM_6_TITLE	未来的构想
+MC_RM_6_TEXT	• 为相配的队伍提供加成，例如三名联盟英雄\n• 带有奖励的赛季，例如卡牌和头像边框
 MC_ACH_COLLECTION	全员到齐
 MC_ACH_COLLECTION_DESC	招募所有佣兵。
 MC_ACH_HEROIC10	艾泽拉斯传奇

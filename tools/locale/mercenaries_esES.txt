@@ -306,6 +306,25 @@ MC_ACH_STAGE2	A través de las tierras salvajes
 MC_ACH_STAGE2_DESC	Completa todas las zonas hasta el nivel 45.
 MC_ACH_STAGE3	Victoria en el Monte Hyjal
 MC_ACH_STAGE3_DESC	Completa todas las zonas, incluido el Monte Hyjal.
+MC_ROADMAP	Hoja de ruta
+MC_RM_MILESTONE	Hito
+MC_RM_HINT	Los planes pueden cambiar. ¿Ideas o deseos? Cuéntanoslo en CurseForge o GitHub.
+MC_RM_DONE	Publicado
+MC_RM_NEXT	Próxima actualización
+MC_RM_PLANNED	Previsto
+MC_RM_IDEA	Idea
+MC_RM_1_TITLE	Versión 1.3
+MC_RM_1_TEXT	• 42 zonas, del Bosque de Elwynn al Monte Hyjal, cada una con su jefe\n• 24 mercenarios para reclutar, subir hasta el nivel 60, mejorar y equipar\n• Modo heroico, tesoros, misterios y logros\n• Seis idiomas
+MC_RM_2_TITLE	Pulido
+MC_RM_2_TEXT	• Combates más rápidos: velocidad doble y un botón que juega una ronda entera\n• Un registro de combate que muestra quién golpeó a quién y con qué\n• Ajustes de equilibrio según vuestros comentarios\n• Las traducciones restantes de los nuevos personajes de WoW Forever
+MC_RM_3_TITLE	Tareas e historias
+MC_RM_3_TEXT	• Una cadena de tareas para cada mercenario con monedas, rangos y nuevas habilidades como recompensa\n• Shen'dralas y las Riverglades con los datos reales de WoW Forever\n• Nuevos mercenarios de WoW Forever
+MC_RM_4_TITLE	Bandas y contenido final
+MC_RM_4_TEXT	• Recompensas de banda como el Núcleo de Magma, la Guarida Alanegra y Naxxramas: varios jefes seguidos\n• Desafío de la Luna Negra: un modo infinito cada vez más difícil, con clasificación\n• Mutadores semanales con reglas especiales y su propia clasificación
+MC_RM_5_TITLE	Juntos
+MC_RM_5_TEXT	• Clasificaciones de hermandad para Mercenaries\n• Comparte tu grupo en el chat\n• Desafía al grupo de un miembro de tu hermandad
+MC_RM_6_TITLE	Ideas para más adelante
+MC_RM_6_TEXT	• Bonificaciones para grupos afines, p. ej. tres héroes de la Alianza\n• Temporadas con recompensas como marcos de cartas y retratos
 MC_ACH_COLLECTION	Plantilla completa
 MC_ACH_COLLECTION_DESC	Recluta a todos los mercenarios.
 MC_ACH_HEROIC10	Leyenda de Azeroth

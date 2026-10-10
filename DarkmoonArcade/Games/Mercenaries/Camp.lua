@@ -243,6 +243,16 @@ function Module:BuildCamp()
     view.scores.sub:SetWidth(90)
     view.scores.sub:SetJustifyH("LEFT")
     Kit.Place(view.scores, W / 2 - 112, H - 28)
+    -- What is planned next: a medallion of the same kind in the bottom right corner.
+    view.roadmap = Hotspot(view, "Interface\\Icons\\INV_Misc_Map_01", 46, function() self:ShowView("roadmap") end)
+    view.roadmap.plaque:ClearAllPoints()
+    view.roadmap.plaque:SetSize(150, 45)
+    view.roadmap.plaque:SetPoint("LEFT", view.roadmap, "RIGHT", -10, 0)
+    view.roadmap.plaque.text:SetWidth(105)
+    view.roadmap.sub:Hide()
+    view.roadmap.marker:Hide()
+    Widgets.OnRefresh(function() view.roadmap.plaque.text:SetText(L.MC_ROADMAP) end)
+    Kit.Place(view.roadmap, W - 196, H - 28)
 
     view.refresh = function() self:RefreshCamp() end
 end

@@ -306,6 +306,25 @@ MC_ACH_STAGE2	Through the Wilds
 MC_ACH_STAGE2_DESC	Clear every zone up to level 45.
 MC_ACH_STAGE3	Victory at Mount Hyjal
 MC_ACH_STAGE3_DESC	Clear every zone, Mount Hyjal included.
+MC_ROADMAP	Roadmap
+MC_RM_MILESTONE	Milestone
+MC_RM_HINT	Plans may change. Ideas or wishes? Tell us on CurseForge or GitHub.
+MC_RM_DONE	Released
+MC_RM_NEXT	Next update
+MC_RM_PLANNED	Planned
+MC_RM_IDEA	Idea
+MC_RM_1_TITLE	Release 1.3
+MC_RM_1_TEXT	• 42 zones from Elwynn Forest to Mount Hyjal, each with its own boss\n• 24 mercenaries to recruit, level up to 60, rank up and equip\n• Heroic mode, treasures, mysteries and achievements\n• Six languages
+MC_RM_2_TITLE	Polish
+MC_RM_2_TEXT	• Faster battles: double speed and a button that plays a whole round\n• A battle log that shows who hit whom with what\n• Balance tuning based on your feedback\n• The remaining translations of new WoW Forever characters
+MC_RM_3_TITLE	Tasks and stories
+MC_RM_3_TEXT	• A task chain for every mercenary with coins, ranks and new abilities as rewards\n• Shen'dralas and the Riverglades with the real WoW Forever data\n• New mercenaries from WoW Forever
+MC_RM_4_TITLE	Raids and endgame
+MC_RM_4_TEXT	• Raid bounties such as Molten Core, Blackwing Lair and Naxxramas: several bosses in a row\n• Darkmoon Challenge: an endless mode that grows harder floor by floor, with a leaderboard\n• Weekly mutators with special rules and their own ranking
+MC_RM_5_TITLE	Together
+MC_RM_5_TEXT	• Guild leaderboards for Mercenaries\n• Share your party in chat\n• Challenge the party of a guildmate
+MC_RM_6_TITLE	Ideas for later
+MC_RM_6_TEXT	• Bonuses for parties that belong together, e.g. three Alliance heroes\n• Seasons with rewards such as card and portrait frames
 MC_ACH_COLLECTION	Full Roster
 MC_ACH_COLLECTION_DESC	Recruit every mercenary.
 MC_ACH_HEROIC10	Legend of Azeroth

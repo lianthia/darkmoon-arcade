@@ -25,7 +25,6 @@ UI\News.lua
 UI\Settings.lua
 UI\OptionsView.lua
 UI\StatsView.lua
-UI\RoadmapView.lua
 
 Games\MurlocBlast\Locale.lua
 Games\MurlocBlast\Grid.lua
@@ -76,5 +75,6 @@ Games\Mercenaries\Map.lua
 Games\Mercenaries\Battle.lua
 Games\Mercenaries\Help.lua
 Games\Mercenaries\Result.lua
+Games\Mercenaries\Roadmap.lua
 
 Main.lua

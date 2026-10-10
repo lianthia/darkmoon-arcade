@@ -111,6 +111,7 @@ function Module:Build(container)
     self:BuildCamp()
     self:BuildTravel()
     self:BuildCollection()
+    self:BuildRoadmap()
     self:BuildMap()
     self:BuildBattle()
 
