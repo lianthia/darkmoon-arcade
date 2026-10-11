@@ -528,6 +528,12 @@ for _ = 1, 600 do
                 -- Key R: orders for everyone and the turn starts.
                 Window.frame._scripts.OnKeyDown(Window.frame, "R")
                 assert(mc.playing, "play turn started the turn")
+                if fights == 2 then
+                    -- The tray turns into the turn's timeline; the first action lights up.
+                    Tick(1.3)
+                    assert(mc.timeline._shown and #mc.timelineList > 0, "timeline shown while the turn plays")
+                    assert(mc.timelineCurrent >= 1, "timeline follows the actions")
+                end
             else
                 mc:PickAbility(1)
                 local enemy = mc.tokens[b.board.enemy[1]]
@@ -542,6 +548,10 @@ for _ = 1, 600 do
     end
 end
 assert(fights > 0, "mercenaries fought")
+assert(not mc.timeline._shown, "timeline gone after the turn")
+for id in pairs(MC.Abilities) do
+    assert(MC.ABILITY_SOUNDS[MC.AbilitySoundKey(id)], id .. " has a sound")
+end
 local logged = table.concat(mc.battleLogLines or {}, "\n")
 assert(logged:find("|cff8cc8ff", 1, true) and logged:find("|cffff8c7a", 1, true), "battle log names both sides")
 assert(logged:find("-%d"), "battle log lists damage")

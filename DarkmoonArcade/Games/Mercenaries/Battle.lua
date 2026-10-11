@@ -19,6 +19,9 @@ local MAX_DASHES = 40
 local FAST = 2
 local LOG_X, LOG_Y, LOG_W, LOG_H = W - 240, 44, 230, 360
 local ALLY_NAME, ENEMY_NAME, ABILITY_NAME = "|cff8cc8ff", "|cffff8c7a", "|cffffd100"
+-- The timeline of a turn in the tray: portrait coins, the ability on each, dashes in between.
+local TL_Y, TL_COIN, TL_ICON, TL_GAP = TRAY_Y - 10, 58, 30, 128
+local ALLY_RIM, ENEMY_RIM = { 0.5, 0.75, 1 }, { 1, 0.5, 0.4 }
 
 local SCHOOL_COLORS = {
     physical = { 1, 0.3, 0.25 }, fire = { 1, 0.5, 0.1 }, frost = { 0.5, 0.8, 1 }, nature = { 0.4, 1, 0.3 },
@@ -170,6 +173,7 @@ function Module:BuildBattle()
     self.logButton = Kit.Button(view, 150, 24, "MC_LOG", function() self:ToggleLog() end, "blue")
     Kit.Place(self.logButton, W - 172, 22)
     self:BuildBattleLog(view)
+    self:BuildTimeline(view)
 
     -- The aiming line from a mercenary to the target under the mouse.
     local fx = CreateFrame("Frame", nil, view)
@@ -568,8 +572,11 @@ function Module:PlayEvent(e)
             local token = self.tokens[item.uid]
             if token then token:SetBubble(item.ability, item.speed, i) end
         end
+        self.soundSrc = nil
+        self:ShowTimeline(e.list)
         return 1.0
     elseif t == "act" then
+        self:AdvanceTimeline(e.src)
         local token = self.tokens[e.src]
         if token then
             token:SetBubble(nil)
@@ -585,6 +592,7 @@ function Module:PlayEvent(e)
             local reach = math.min(70, len * 0.45)
             token.lunge = { t = 0, dx = dx / len * reach, dy = dy / len * reach }
             self:ShowBanner(e.ability)
+            self.soundSrc = MC.AbilitySound(e.ability) and e.src or nil
             local school = MC.Abilities[e.ability].school
             if e.dst and e.dst ~= e.src and school and school ~= "physical" then
                 self:Projectile(e.src, e.dst, school)
@@ -608,7 +616,7 @@ function Module:PlayEvent(e)
         local text = "-" .. e.amount .. (e.crit and "!" or "")
         self:Popup(x, y - 6, text, e.crit and 34 or (e.adv and 30 or 26), c[1], c[2], c[3], 1.0, 40)
         if e.adv then self:Popup(x, y + 34, L.MC_ADVANTAGE, 12, 1, 0.85, 0.3, 1.0, 12) end
-        MC.Sound("hit")
+        if e.dot or e.src ~= self.soundSrc then MC.Sound("hit") end
         return 0.35
     elseif t == "miss" then
         local x, y = self:TokenPoint(e.dst)
@@ -628,7 +636,7 @@ function Module:PlayEvent(e)
             end
             local x, y = self:TokenPoint(e.dst)
             self:Popup(x, y - 6, "+" .. e.amount, 26, 0.35, 1, 0.35, 1.0, 36)
-            MC.Sound("heal")
+            if e.src ~= self.soundSrc then MC.Sound("heal") end
         end
         return 0.3
     elseif t == "shield" or t == "shieldBreak" then
@@ -660,6 +668,7 @@ function Module:PlayEvent(e)
         end
         return 0.15
     elseif t == "stunned" then
+        self:AdvanceTimeline(e.src, L.MC_STUNNED)
         local d = disp[e.src]
         if d then
             d.stun = nil
@@ -714,6 +723,7 @@ function Module:PlayEvent(e)
         end
         return 0.35
     elseif t == "fizzle" then
+        self:AdvanceTimeline(e.src, L.MC_FIZZLE)
         local x, y = self:TokenPoint(e.src)
         self:Popup(x, y - 40, L.MC_FIZZLE, 14, 0.75, 0.75, 0.75, 0.9, 16)
         return 0.25
@@ -723,6 +733,7 @@ end
 
 function Module:EndPlayback()
     self.playing = false
+    self.timeline:Hide()
     self.queue, self.disp = nil, nil
     local b = self:Battle()
     for _, t in pairs(self.tokens) do t:SetBubble(nil) end
@@ -935,4 +946,133 @@ function Module:LogEvent(e)
     elseif t == "enter" then
         self:AddLog(L.MC_LOG_ENTER:format(LogName(b, e.dst)))
     end
+end
+
+-- Timeline -------------------------------------------------------------------------------------------
+
+-- While a turn plays, the tray shows its order: who acts with what, one after the other, the
+-- current action lit up and those done faded.
+function Module:BuildTimeline(view)
+    local tl = CreateFrame("Frame", nil, view)
+    tl:SetAllPoints()
+    tl:SetFrameLevel(view:GetFrameLevel() + 20)
+    tl:Hide()
+    self.timeline, self.timelineItems, self.timelineDashes = tl, {}, {}
+end
+
+function Module:TimelineItem(i)
+    local item = self.timelineItems[i]
+    if item then return item end
+    local tl = self.timeline
+    item = Kit.Coin(tl, TL_COIN)
+    item:EnableMouse(false)
+    item.spell = Kit.Coin(item, TL_ICON)
+    item.spell:SetPoint("CENTER", item, "BOTTOMRIGHT", -6, 6)
+    item.spell:SetFrameLevel(item:GetFrameLevel() + 3)
+    item.spell:EnableMouse(false)
+    item.speed = MC.Badge(item, "speed", 24, 11)
+    item.speed:SetPoint("CENTER", item, "TOPLEFT", 6, -6)
+    item.speed:SetFrameLevel(item:GetFrameLevel() + 3)
+    item.label = Kit.Ink(tl, 11, { 1, 0.86, 0.45 }, "OUTLINE")
+    item.label:SetWordWrap(false)
+    item.who = Kit.Ink(tl, 9, { 0.8, 0.8, 0.8 }, "OUTLINE")
+    item.who:SetWordWrap(false)
+    item.note = Kit.Ink(tl, 11, { 1, 0.9, 0.3 }, "OUTLINE")
+    self.timelineItems[i] = item
+    return item
+end
+
+function Module:ShowTimeline(list)
+    local b = self:Battle()
+    if not b then return end
+    local n = #list
+    local gap = math.min(TL_GAP, (W - 80) / math.max(1, n))
+    self.timelineList, self.timelineCurrent = list, 0
+    for i, entry in ipairs(list) do
+        local item = self:TimelineItem(i)
+        local u = b.units[entry.uid]
+        local x = W / 2 + (i - (n + 1) / 2) * gap
+        item.x = x
+        Kit.Place(item, x, TL_Y, self.timeline)
+        if not (u and item:SetCreature(MC.DisplayFor(u.kind, u.id))) then
+            item:SetIcon(MC.Abilities[entry.ability].icon)
+        end
+        item:SetMetal("silver")
+        local rim = (u and u.side == "ally") and ALLY_RIM or ENEMY_RIM
+        item.rim:SetVertexColor(rim[1], rim[2], rim[3])
+        item.spell:SetMetal("gold")
+        item.spell:SetIcon(MC.Abilities[entry.ability].icon)
+        item.speed.text:SetText(entry.speed)
+        item.label:ClearAllPoints()
+        item.label:SetPoint("TOP", self.timeline, "TOPLEFT", x, -(TL_Y + TL_COIN / 2 + 8))
+        item.label:SetWidth(gap - 8)
+        Kit.FitText(item.label, Describe.AbilityName(entry.ability), gap - 8, 11, 8, "OUTLINE")
+        item.who:ClearAllPoints()
+        item.who:SetPoint("TOP", item.label, "BOTTOM", 0, -2)
+        item.who:SetWidth(gap - 8)
+        Kit.FitText(item.who, u and Describe.UnitName(u.kind, u.id) or "", gap - 8, 9, 7, "OUTLINE")
+        item.note:ClearAllPoints()
+        item.note:SetPoint("CENTER", self.timeline, "TOPLEFT", x, -TL_Y)
+        item.note:SetText("")
+        item:Show()
+    end
+    for i = n + 1, #self.timelineItems do
+        local item = self.timelineItems[i]
+        item:Hide()
+        item.label:SetText("")
+        item.who:SetText("")
+        item.note:SetText("")
+    end
+    self:StyleTimeline()
+    self.timeline:Show()
+end
+
+-- Moves the light to the next entry of `uid`; `note` marks an action that did not happen.
+function Module:AdvanceTimeline(uid, note)
+    local list = self.timelineList
+    if not list then return end
+    for k = self.timelineCurrent + 1, #list do
+        if list[k].uid == uid then
+            self.timelineCurrent = k
+            if note then self.timelineItems[k].note:SetText(note) end
+            self:StyleTimeline()
+            return
+        end
+    end
+end
+
+function Module:StyleTimeline()
+    local list, current = self.timelineList or {}, self.timelineCurrent or 0
+    for i = 1, #list do
+        local item = self.timelineItems[i]
+        local done, now = i < current, i == current
+        Kit.SetSelected(item, now, true)
+        item:SetAlpha(done and 0.45 or 1)
+        item.icon:SetDesaturated(done or item.note:GetText() ~= nil and item.note:GetText() ~= "")
+        item.label:SetAlpha(done and 0.5 or 1)
+        item.who:SetAlpha(done and 0.5 or 1)
+    end
+    -- Dashes from coin to coin: gold up to the current action, faded beyond.
+    local count = 0
+    for i = 1, #list - 1 do
+        local x1, x2 = self.timelineItems[i].x + TL_COIN / 2 + 6, self.timelineItems[i + 1].x - TL_COIN / 2 - 6
+        local passed = i < current
+        local x = x1
+        while x < x2 - 4 do
+            count = count + 1
+            local d = self.timelineDashes[count]
+            if not d then
+                d = self.timeline:CreateTexture(nil, "ARTWORK")
+                d:SetTexture(MC.Tex("dash"))
+                d:SetSize(12, 6)
+                self.timelineDashes[count] = d
+            end
+            d:ClearAllPoints()
+            d:SetPoint("CENTER", self.timeline, "TOPLEFT", x + 5, -TL_Y)
+            if passed then d:SetVertexColor(1, 0.8, 0.35, 0.95) else d:SetVertexColor(0.6, 0.55, 0.45, 0.45) end
+            d:Show()
+            x = x + 13
+        end
+    end
+    for i = count + 1, #self.timelineDashes do self.timelineDashes[i]:Hide() end
 end
