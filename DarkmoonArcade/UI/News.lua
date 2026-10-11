@@ -91,9 +91,17 @@ function News:Create()
     headline:SetPoint("BOTTOM", 0, 12)
     headline:SetShadowOffset(1, -1)
 
-    self.text = Widgets.LocalizedText(f, 12, "white", "NEWS_TEXT")
-    self.text:SetPoint("TOP", art, "BOTTOM", 0, -16)
-    self.text:SetSize(TEXT_W, TEXT_H)
+    -- The text scrolls once the window would grow taller than the screen.
+    local scroll = CreateFrame("ScrollFrame", nil, f, "UIPanelScrollFrameTemplate")
+    scroll:SetPoint("TOPLEFT", art, "BOTTOMLEFT", 0, -16)
+    scroll:SetSize(TEXT_W, TEXT_H)
+    local content = CreateFrame("Frame", nil, scroll)
+    content:SetSize(TEXT_W, TEXT_H)
+    scroll:SetScrollChild(content)
+    self.scroll, self.content = scroll, content
+    self.text = Widgets.LocalizedText(content, 12, "white", "NEWS_TEXT")
+    self.text:SetPoint("TOPLEFT")
+    self.text:SetWidth(TEXT_W)
     self.text:SetJustifyH("LEFT")
     self.text:SetJustifyV("TOP")
     self.text:SetSpacing(4)
@@ -117,11 +125,20 @@ end
 
 function News:Show()
     self.version:SetText(L.VERSION:format(ns.Version()))
-    -- The window grows with the text of each release (at least the default size).
+    -- The window grows with the text of each release (at least the default size), up to the screen's
+    -- height; beyond that the text scrolls.
+    local chrome = TOP + 34 + ART_H + 16 + BOTTOM
     self.text:SetHeight(0)
     local height = math.max(TEXT_H, math.ceil(self.text:GetStringHeight() or 0))
+    local room = math.max(TEXT_H, math.floor((UIParent:GetHeight() or 768) * 0.9) - chrome)
+    local shown = math.min(height, room)
     self.text:SetHeight(height)
-    self.frame:SetHeight(TOP + 34 + ART_H + 16 + height + BOTTOM)
+    self.content:SetHeight(height)
+    self.scroll:SetHeight(shown)
+    self.scroll:SetVerticalScroll(0)
+    local bar = self.scroll.ScrollBar
+    if type(bar) == "table" then bar:SetShown(height > shown) end
+    self.frame:SetHeight(chrome + shown)
     self.frame:Show()
     PlaySound(SOUNDKIT.IG_MAINMENU_OPEN)
 end

@@ -79,6 +79,10 @@ if Want("news") then
     Tick(0.6)
     local items, w, h = RenderDump(ns.News.frame)
     Shots[#Shots + 1] = { name = "news", items = items, w = w, h = h }
+    -- The renderer skips scroll children; the text on its own shows its layout.
+    ns.News.content:SetPoint("TOPLEFT", ns.News.frame, "TOPLEFT", 40, -290)
+    items, w, h = RenderDump(ns.News.content)
+    Shots[#Shots + 1] = { name = "news_text", items = items, w = w, h = h }
     ns.News.frame:Hide()
 end
 if Want("camp") then Snap("camp") end
