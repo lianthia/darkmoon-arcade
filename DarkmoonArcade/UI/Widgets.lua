@@ -129,9 +129,11 @@ function Overlay:Show(name, data)
         page:SetShown(pageName == name)
     end
     self.current, self.data = name, data
+    -- Shown before it is filled: should a page fail, its buttons still lead on instead of leaving
+    -- the player stuck on the view below.
+    self.frame:Show()
     local page = self.pages[name]
     if page.refresh then page.refresh(data) end
-    self.frame:Show()
 end
 
 function Overlay:Refresh()
