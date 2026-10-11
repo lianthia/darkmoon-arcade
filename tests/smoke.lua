@@ -311,6 +311,12 @@ Window.newsButton._scripts.OnClick(Window.newsButton)
 assert(News.frame._shown, "the button works with the option set")
 News.okButton._scripts.OnClick(News.okButton)
 DarkmoonArcadeDB.newsNever = false
+-- "Never show by itself" from the window turns the same option on.
+DarkmoonArcadeDB.newsSeen = "1.0.0"
+News:ShowIfNew()
+News.neverButton._scripts.OnClick(News.neverButton)
+assert(not News.frame._shown and DarkmoonArcadeDB.newsNever, "never again from the window")
+DarkmoonArcadeDB.newsNever = false
 
 local results = { murloc = 0, flappy = 0, jewels = 0, slots = 0, spell = 0, deck = 0, clicks = 0, best = 0 }
 local seed = 42
