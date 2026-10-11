@@ -4,6 +4,11 @@ package-as: DarkmoonArcade
 move-folders:
   DarkmoonArcade/DarkmoonArcade: DarkmoonArcade
 
+# Changelog shown on CurseForge: the current release's notes (otherwise the packager lists the git log).
+manual-changelog:
+  filename: CHANGELOG.md
+  markup-type: markdown
+
 ignore:
   - art
   - docs
