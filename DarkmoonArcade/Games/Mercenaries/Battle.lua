@@ -17,6 +17,7 @@ local CARD_GAP, CARD_SCALE, CARD_X = 112, 0.78, 380
 local KEY_SLOT = { ["1"] = 1, ["2"] = 2, ["3"] = 3 }
 local MAX_DASHES = 40
 local FAST = 2
+local AUTO_PAUSE = 0.5   -- seconds between two turns of an automatic battle (shorter at double speed)
 local LOG_X, LOG_Y, LOG_W, LOG_H = W - 240, 44, 230, 360
 local ALLY_NAME, ENEMY_NAME, ABILITY_NAME = "|cff8cc8ff", "|cffff8c7a", "|cffffd100"
 -- The timeline of a turn in the tray: portrait coins, the ability on each, dashes in between.
@@ -160,8 +161,9 @@ function Module:BuildBattle()
 
     self.readyButton = Kit.BigButton(view, 92, "MC_READY", function() self:ResolveTurn() end)
     Kit.Place(self.readyButton, W - 66, TRAY_Y + 4)
-    self.autoButton = Kit.Button(view, 170, 28, "MC_AUTO", function() self:AutoChoose() end, "blue")
+    self.autoButton = Kit.Button(view, 170, 28, nil, function() self:ToggleAutoBattle() end, "blue")
     Kit.Place(self.autoButton, W - 214, TRAY_Y + 30)
+    Widgets.OnRefresh(function() self:UpdateAutoButton() end)
     -- One click for a whole turn: everyone picks automatically, then the turn plays.
     self.playButton = Kit.Button(view, 170, 28, "MC_PLAY_TURN", function() self:PlayTurn() end, "green")
     Kit.Place(self.playButton, W - 214, TRAY_Y - 6)
@@ -336,10 +338,13 @@ function Module:RefreshBattle()
         view.trayTitle:SetText("")
         view.trayText:SetText("")
     end
-    self.readyButton:SetShown(commanding)
+    -- A new battle starts by hand.
+    if self.autoBattleFor ~= b then self.autoBattle, self.autoBattleFor = false, b end
+    self.readyButton:SetShown(commanding and not self.autoBattle)
     self.readyButton:SetEnabled(Combat.Ready(b))
-    self.autoButton:SetShown(commanding)
-    self.playButton:SetShown(commanding)
+    self.autoButton:SetShown(commanding or deploying)
+    self.playButton:SetShown(commanding and not self.autoBattle)
+    self:UpdateAutoButton()
     self:StartBattleLog(b)
     local hint
     if deploying then
@@ -452,6 +457,38 @@ function Module:PlayTurn()
     self:ResolveTurn()
 end
 
+-- Plays turn after turn until the battle is over (fresh mercenaries from the bench included);
+-- pressed again, the player takes over after the current turn.
+function Module:ToggleAutoBattle()
+    local b = self:Battle()
+    if not b then return end
+    self.autoBattle = not self.autoBattle
+    self.autoWait = 0
+    if not self.autoBattle and not self.playing then self:RefreshBattle() end
+    self:UpdateAutoButton()
+    MC.Sound("select")
+end
+
+function Module:UpdateAutoButton()
+    if self.autoButton then self.autoButton:SetText(self.autoBattle and L.MC_STOP_AUTO or L.MC_PLAY_ALL) end
+end
+
+-- One step of an automatic battle: send in the healthiest from the bench, or play the turn.
+function Module:AutoBattleStep()
+    local b = self:Battle()
+    if not b then return end
+    if b.phase == "deploy" or b.phase == "replace" then
+        local best
+        for _, uid in ipairs(b.bench.ally) do
+            local u = b.units[uid]
+            if u and not u.dead and (not best or u.hp > best.hp) then best = u end
+        end
+        if best and Combat.Deploy(b, best.uid) then self:RefreshBattle() end
+    elseif b.phase == "command" then
+        self:PlayTurn()
+    end
+end
+
 function Module:ToggleSpeed()
     local settings = ns.Arcade.Settings(self)
     settings.fast = not settings.fast
@@ -500,7 +537,7 @@ function Module:ResolveTurn()
     self.pending = nil
     for _, card in ipairs(self.cards) do card:Hide() end
     self.readyButton:Hide()
-    self.autoButton:Hide()
+    self.autoButton:SetShown(self.autoBattle)
     self.playButton:Hide()
     local view = self.views.battle
     view.hint:SetText("")
@@ -819,6 +856,13 @@ function Module:UpdateBattle(dt)
         end
     end
     self:UpdateAim()
+    if self.autoBattle and not self.playing and not self.finishTimer and self.view == "battle" then
+        self.autoWait = (self.autoWait or 0) + dt * speed
+        if self.autoWait >= AUTO_PAUSE then
+            self.autoWait = 0
+            self:AutoBattleStep()
+        end
+    end
     local banner = self.views.battle.banner
     if self.bannerTime then
         self.bannerTime = self.bannerTime - dt * speed

@@ -491,7 +491,7 @@ assert(store.run and mc.view == "map", "bounty started on the map")
 -- A guest from the recruit mystery rides along to the result page (not in the collection).
 assert(MC.Bounty.AddGuest(store, store.run), "guest joined the party")
 mc:RefreshMap()
-local fights = 0
+local fights, autoTurns, autoBattle = 0, 0, nil
 for _ = 1, 600 do
     local run = store.run
     if not run or mc.overlay.current == "result" then break end
@@ -511,7 +511,10 @@ for _ = 1, 600 do
         mc.travelButton._scripts.OnClick(mc.travelButton)
     elseif run.phase == "battle" then
         local b = run.battle
-        if b.phase == "deploy" or b.phase == "replace" then
+        if mc.autoBattle then
+            -- "Play all turns" plays and sends in fresh mercenaries by itself.
+            autoTurns = autoTurns + 1
+        elseif b.phase == "deploy" or b.phase == "replace" then
             local token = mc.tokens[b.bench.ally[1]]
             token._scripts.OnClick(token, "LeftButton")
             token._scripts.OnEnter(token)
@@ -524,7 +527,12 @@ for _ = 1, 600 do
                 mc.logButton._scripts.OnClick(mc.logButton)
                 assert(mc.logPanel._shown, "battle log open")
             end
-            if fights % 2 == 0 then
+            if fights == 3 then
+                assert(mc.autoButton._shown, "play all turns offered")
+                mc.autoButton._scripts.OnClick(mc.autoButton)
+                assert(mc.autoBattle, "automatic battle on")
+                autoBattle = b
+            elseif fights % 2 == 0 then
                 -- Key R: orders for everyone and the turn starts.
                 Window.frame._scripts.OnKeyDown(Window.frame, "R")
                 assert(mc.playing, "play turn started the turn")
@@ -548,6 +556,8 @@ for _ = 1, 600 do
     end
 end
 assert(fights > 0, "mercenaries fought")
+assert(autoTurns > 0, "a battle played by itself")
+assert(not mc.autoBattle or mc.autoBattleFor == autoBattle, "the next battle starts by hand")
 assert(not mc.timeline._shown, "timeline gone after the turn")
 for id in pairs(MC.Abilities) do
     assert(MC.ABILITY_SOUNDS[MC.AbilitySoundKey(id)], id .. " has a sound")
