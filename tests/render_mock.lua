@@ -217,6 +217,24 @@ function CreateFrame(kind, name, parent)
     local f = NewFrame(kind == "PlayerModel" and "model" or "frame", parent)
     f._type = kind
     createdFrames[#createdFrames + 1] = f
+    if kind == "ScrollingMessageFrame" then
+        -- The newest lines at the bottom, as the client draws them (one font string is enough here).
+        local fs = f:CreateFontString(nil, "OVERLAY")
+        fs:SetAllPoints(f)
+        fs:SetJustifyV("BOTTOM")
+        fs:SetJustifyH("LEFT")
+        local lines = {}
+        f.AddMessage = function(_, text)
+            lines[#lines + 1] = text
+            fs:SetText(table.concat(lines, "\n", math.max(1, #lines - 24)))
+        end
+        f.Clear = function()
+            lines = {}
+            fs:SetText("")
+        end
+        f.SetFontObject = function(_, font) fs:SetFontObject(font) end
+        f.SetJustifyH = function(_, j) fs:SetJustifyH(j) end
+    end
     if name then _G[name] = f end
     return f
 end

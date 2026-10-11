@@ -502,11 +502,24 @@ for _ = 1, 600 do
             token._scripts.OnEnter(token)
         elseif b.phase == "command" and not mc.playing then
             fights = fights + 1
-            mc:PickAbility(1)
-            local enemy = mc.tokens[b.board.enemy[1]]
-            if enemy then enemy._scripts.OnClick(enemy, "LeftButton") end
-            Window.frame._scripts.OnKeyDown(Window.frame, "A")
-            Window.frame._scripts.OnKeyDown(Window.frame, "SPACE")
+            if fights == 1 then
+                -- Double speed and the log from the header, both while the turn plays.
+                mc.speedButton._scripts.OnClick(mc.speedButton)
+                assert(ns.Arcade.Settings(mc).fast, "double speed on")
+                mc.logButton._scripts.OnClick(mc.logButton)
+                assert(mc.logPanel._shown, "battle log open")
+            end
+            if fights % 2 == 0 then
+                -- Key R: orders for everyone and the turn starts.
+                Window.frame._scripts.OnKeyDown(Window.frame, "R")
+                assert(mc.playing, "play turn started the turn")
+            else
+                mc:PickAbility(1)
+                local enemy = mc.tokens[b.board.enemy[1]]
+                if enemy then enemy._scripts.OnClick(enemy, "LeftButton") end
+                Window.frame._scripts.OnKeyDown(Window.frame, "A")
+                Window.frame._scripts.OnKeyDown(Window.frame, "SPACE")
+            end
         end
         Tick(1.5)
     else
@@ -514,6 +527,12 @@ for _ = 1, 600 do
     end
 end
 assert(fights > 0, "mercenaries fought")
+local logged = table.concat(mc.battleLogLines or {}, "\n")
+assert(logged:find("|cff8cc8ff", 1, true) and logged:find("|cffff8c7a", 1, true), "battle log names both sides")
+assert(logged:find("-%d"), "battle log lists damage")
+mc.speedButton._scripts.OnClick(mc.speedButton)
+mc.logButton._scripts.OnClick(mc.logButton)
+assert(not ns.Arcade.Settings(mc).fast and not mc.logPanel._shown, "speed and log switched back")
 if mc.overlay.current ~= "result" then
     local run = store.run
     local errs = DarkmoonArcadeDB.errors and table.concat((function() local t = {} for k, v in pairs(DarkmoonArcadeDB.errors) do t[#t + 1] = tostring(k) .. "=" .. tostring(type(v) == "table" and (v.message or v[1]) or v) end return t end)(), " | ") or "none"

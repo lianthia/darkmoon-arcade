@@ -1,4 +1,11 @@
 MC_NAME	Mercenaries
+MC_PLAY_TURN	Jugar turno
+MC_PLAY_SPEED	Velocidad x%d
+MC_LOG	Registro de combate
+MC_LOG_DOT	con el tiempo
+MC_LOG_SHIELD	escudo roto
+MC_LOG_DEATH	%s ha sido derrotado.
+MC_LOG_ENTER	%s entra en combate.
 MC_DESC	Guía a los héroes de Azeroth de recompensa en recompensa: seis mercenarios, tres a la vez, cada habilidad resuelta según su velocidad.
 MC_TAGLINE	Héroes a sueldo, recompensas por todo Azeroth
 MC_RULES	Elige una recompensa en el punto de viaje: cada zona termina con su jefe, y tú eliges el camino. En combate, tres de tus seis mercenarios salen al tablero. Cada turno eliges una habilidad para cada uno; después, todas las habilidades de ambos bandos se resuelven según su velocidad: el número más bajo actúa primero. Los protectores (rojo) infligen el doble de daño a los luchadores (verde), los luchadores a los lanzadores (azul) y los lanzadores a los protectores. Los mercenarios caídos no se levantan hasta que un ángel de la resurrección los devuelve. Tras cada combate ganado, un mercenario recibe un tesoro para el resto de la recompensa. Los jefes sueltan monedas para reclutar y mejorar mercenarios y desbloquean equipo; vencer una zona abre su modo heroico. Los enemigos de nivel superior te fallan menos y tú les fallas más: sube de nivel antes de afrontar zonas más difíciles. El progreso se guarda tras cada paso, incluso en mitad de un combate.
@@ -10,7 +17,7 @@ MC_HELP_ZONES	Cada zona tiene el rango de niveles de su zona clásica. Su jefe e
 MC_HELP_PATH_TITLE	El camino
 MC_HELP_PATH	Las monedas del mapa de recompensa son las paradas. Las monedas iluminadas son las paradas a las que puedes viajar; haz clic en una para ver qué te espera y pulsa el botón grande.\n\n|cff8a4a10Combate|r: un grupo normal de enemigos.\n|cff8a4a10Élite|r: cuatro enemigos más fuertes, pero un tesoro mejor después.\n|cff8a4a10Ángel de la resurrección|r: devuelve a un mercenario caído.\n|cff8a4a10Bendición|r: todos los mercenarios de un rol ganan ataque y salud durante el resto de la recompensa.\n|cff8a4a10Misterio|r: se revela al llegar (ver Tesoros y sucesos).\n|cff8a4a10Jefe|r: el final de la recompensa.\n\nLas paradas visitadas llevan una marca. Las que ya no puedes alcanzar se atenúan. Puedes abandonar una recompensa cuando quieras; los niveles y monedas ganados se conservan.
 MC_HELP_BATTLE_TITLE	El combate
-MC_HELP_BATTLE	Un combate empieza eligiendo qué tres mercenarios salen al tablero; los demás esperan en el banquillo de abajo.\n\nCada turno tiene dos partes:\n1. |cff8a4a10Órdenes:|r selecciona a cada mercenario y elige una de sus habilidades (cartas de la bandeja). Si la habilidad necesita objetivo, haz clic en él: una línea muestra a quién apuntas. Luego pulsa |cff8a4a10¡Listo!|r\n2. |cff8a4a10Resolución:|r todas las habilidades de ambos bandos se ejecutan según su velocidad, |cff8a4a10el número más bajo primero|r. Solo sabes lo que hacen los enemigos cuando ocurre; los números sobre los retratos indican el orden.\n\nAlgunas habilidades tienen tiempo de reutilización y no están disponibles cada turno. Cuando cae un mercenario, envías otro del banquillo al inicio del turno siguiente. El combate se gana cuando no queda ningún enemigo. A partir del turno 30 todos pierden cada vez más salud por turno, para que ningún combate dure eternamente.
+MC_HELP_BATTLE	Un combate empieza eligiendo qué tres mercenarios salen al tablero; los demás esperan en el banquillo de abajo.\n\nCada turno tiene dos partes:\n1. |cff8a4a10Órdenes:|r selecciona a cada mercenario y elige una de sus habilidades (cartas de la bandeja). Si la habilidad necesita objetivo, haz clic en él: una línea muestra a quién apuntas. Luego pulsa |cff8a4a10¡Listo!|r\n2. |cff8a4a10Resolución:|r todas las habilidades de ambos bandos se ejecutan según su velocidad, |cff8a4a10el número más bajo primero|r. Solo sabes lo que hacen los enemigos cuando ocurre; los números sobre los retratos indican el orden.\n\nAlgunas habilidades tienen tiempo de reutilización y no están disponibles cada turno. Cuando cae un mercenario, envías otro del banquillo al inicio del turno siguiente. El combate se gana cuando no queda ningún enemigo. A partir del turno 30 todos pierden cada vez más salud por turno, para que ningún combate dure eternamente.\n\n|cff8a4a10Jugar turno|r (tecla R) elige por todos y empieza el turno al momento. Arriba a la derecha cambias la velocidad y abres el registro de combate, que muestra cada golpe, sanación y derrota.
 MC_HELP_ROLES_TITLE	Roles y niveles
 MC_HELP_ROLES	Cada mercenario y enemigo tiene un rol, indicado por el color de su marco:\n\n|cffc03020Protector (rojo)|r: resistente, protege a sus aliados.\n|cff2f8a20Luchador (verde)|r: ataques fuertes contra un solo enemigo.\n|cff2050c0Lanzador (azul)|r: hechizos, a menudo contra varios enemigos.\n\nLos roles se vencen en círculo: los |cffc03020protectores|r infligen el doble de daño a los |cff2f8a20luchadores|r, los |cff2f8a20luchadores|r a los |cff2050c0lanzadores|r y los |cff2050c0lanzadores|r a los |cffc03020protectores|r. La ventaja se ve en combate como un número mayor. Un buen grupo mezcla los tres roles y envía al mercenario adecuado contra el enemigo adecuado.\n\nEl escudo de un retrato indica el ataque y la gota la salud. Los niveles aumentan ambos, igual que el equipo, los tesoros y las bendiciones. Los enemigos neutrales (gris) no tienen fuerza ni debilidad.
 MC_HELP_EFFECTS_TITLE	Efectos
@@ -21,7 +28,7 @@ MC_HELP_TREASURES_TITLE	Tesoros y sucesos
 MC_HELP_TREASURES	|cff8a4a10Tesoros:|r tras un combate ganado, un mercenario puede elegir uno de tres tesoros. Lo conserva hasta el final de la recompensa. Los combates de élite ofrecen tesoros más fuertes.\n|cff8a4a10Los tesoros malditos|r son muy fuertes, pero cada uno reduce la salud de todo el grupo durante el resto de la recompensa.\n\nMisterios:\n|cff8a4a10Desconocido|r: copia un tesoro que ya lleva uno de tus mercenarios.\n|cff8a4a10Sabotaje|r: los enemigos del siguiente combate empiezan con menos salud.\n|cff8a4a10Portal|r: te permite saltar una parada.\n|cff8a4a10Cofre maldito|r: una selección de tesoros malditos.\n|cff8a4a10Botín extra|r: el jefe paga la mitad más de monedas.\n|cff8a4a10Recluta|r: un mercenario que quizá aún no tienes se une como invitado hasta el final de la recompensa.\n\n|cff8a4a10Puntuación:|r cada combate ganado puntúa diez veces el nivel de los enemigos; la élite vale la mitad más, los jefes el triple y las recompensas heroicas el doble.
 MC_HELP_CONTROLS_TITLE	Controles
 MC_OPT_FAST	Animaciones de combate rápidas
-MC_OPT_FAST_TIP	Reproduce los turnos de Mercenaries aproximadamente el doble de rápido.
+MC_OPT_FAST_TIP	Reproduce los turnos de Mercenaries el doble de rápido.
 MC_ROLE_protector	Protector
 MC_ROLE_fighter	Luchador
 MC_ROLE_caster	Lanzador
@@ -135,7 +142,7 @@ MC_HINT_DEPLOY	Elige %d |4mercenario:mercenarios; para el combate.
 MC_HINT_TARGET	Elige un objetivo.
 MC_HINT_CHOOSE	Elige una habilidad para cada mercenario.
 MC_HINT_READY	Todo listo: ¡Listo!
-MC_TRAY_KEYS	Teclas 1-3: habilidad; Tab: siguiente mercenario.
+MC_TRAY_KEYS	Teclas 1-3: habilidad, Tab: siguiente mercenario, R: jugar el turno.
 MC_BENCH_TITLE	Banquillo
 MC_ADVANTAGE	¡Ventaja!
 MC_MISS	Fallo
@@ -277,7 +284,6 @@ MC_STAT_ZONES	Recompensas completadas
 MC_STAT_HEROIC	Recompensas heroicas completadas
 MC_STAT_MERCS	Mercenarios reclutados
 MC_STAT_LEVEL	Nivel más alto
-MC_STAT_FIGHTS	Combates ganados
 MC_ACH_FIRST	Primera sangre
 MC_ACH_FIRST_DESC	Gana un combate.
 MC_ACH_BOUNTY	Cazarrecompensas

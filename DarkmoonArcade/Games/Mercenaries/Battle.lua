@@ -16,6 +16,9 @@ local BENCH_SPACING, BENCH_SCALE, BENCH_X = 100, 0.72, 360
 local CARD_GAP, CARD_SCALE, CARD_X = 112, 0.78, 380
 local KEY_SLOT = { ["1"] = 1, ["2"] = 2, ["3"] = 3 }
 local MAX_DASHES = 40
+local FAST = 2
+local LOG_X, LOG_Y, LOG_W, LOG_H = W - 240, 44, 230, 360
+local ALLY_NAME, ENEMY_NAME, ABILITY_NAME = "|cff8cc8ff", "|cffff8c7a", "|cffffd100"
 
 local SCHOOL_COLORS = {
     physical = { 1, 0.3, 0.25 }, fire = { 1, 0.5, 0.1 }, frost = { 0.5, 0.8, 1 }, nature = { 0.4, 1, 0.3 },
@@ -156,6 +159,17 @@ function Module:BuildBattle()
     Kit.Place(self.readyButton, W - 66, TRAY_Y + 4)
     self.autoButton = Kit.Button(view, 170, 28, "MC_AUTO", function() self:AutoChoose() end, "blue")
     Kit.Place(self.autoButton, W - 214, TRAY_Y + 30)
+    -- One click for a whole turn: everyone picks automatically, then the turn plays.
+    self.playButton = Kit.Button(view, 170, 28, "MC_PLAY_TURN", function() self:PlayTurn() end, "green")
+    Kit.Place(self.playButton, W - 214, TRAY_Y - 6)
+
+    -- Speed and the battle log sit in the header; both stay at hand while a turn plays.
+    self.speedButton = Kit.Button(view, 120, 24, nil, function() self:ToggleSpeed() end, "blue")
+    Kit.Place(self.speedButton, W - 316, 22)
+    Widgets.OnRefresh(function() self:UpdateSpeedButton() end)
+    self.logButton = Kit.Button(view, 150, 24, "MC_LOG", function() self:ToggleLog() end, "blue")
+    Kit.Place(self.logButton, W - 172, 22)
+    self:BuildBattleLog(view)
 
     -- The aiming line from a mercenary to the target under the mouse.
     local fx = CreateFrame("Frame", nil, view)
@@ -224,8 +238,12 @@ function Module:LayoutBattle(b, boards)
             t:Show()
         end
     end
-    Row(boards.enemy, ENEMY_Y, SPACING, 1)
-    Row(boards.ally, ALLY_Y, SPACING, 1)
+    local center = self:BoardCenter()
+    Row(boards.enemy, ENEMY_Y, SPACING, 1, center)
+    Row(boards.ally, ALLY_Y, SPACING, 1, center)
+    local view = self.views.battle
+    view.hint:SetPoint("CENTER", view, "TOPLEFT", center, -MID_Y)
+    view.banner:SetPoint("CENTER", view, "TOPLEFT", center, -MID_Y)
     if (b.phase == "deploy" or b.phase == "replace") and not self.playing then
         Row(b.bench.ally, TRAY_Y, BENCH_SPACING, BENCH_SCALE, BENCH_X)
     end
@@ -317,6 +335,8 @@ function Module:RefreshBattle()
     self.readyButton:SetShown(commanding)
     self.readyButton:SetEnabled(Combat.Ready(b))
     self.autoButton:SetShown(commanding)
+    self.playButton:SetShown(commanding)
+    self:StartBattleLog(b)
     local hint
     if deploying then
         hint = L.MC_HINT_DEPLOY:format(Combat.DeploySlots(b))
@@ -420,6 +440,24 @@ function Module:AutoChoose()
     self:RefreshBattle()
 end
 
+-- Orders for everyone, then the turn plays.
+function Module:PlayTurn()
+    local b = self:Battle()
+    if not b or self.playing or b.phase ~= "command" then return end
+    self:AutoChoose()
+    self:ResolveTurn()
+end
+
+function Module:ToggleSpeed()
+    local settings = ns.Arcade.Settings(self)
+    settings.fast = not settings.fast
+    self:UpdateSpeedButton()
+end
+
+function Module:UpdateSpeedButton()
+    if self.speedButton then self.speedButton:SetText(L.MC_PLAY_SPEED:format(ns.Arcade.Settings(self).fast and FAST or 1)) end
+end
+
 function Module:BattleKey(key)
     local b = self:Battle()
     if not b or self.playing then return false end
@@ -436,6 +474,9 @@ function Module:BattleKey(key)
         return true
     elseif key == "A" then
         self:AutoChoose()
+        return true
+    elseif key == "R" then
+        self:PlayTurn()
         return true
     elseif key == "ESCAPE" and self.pending then
         self.pending = nil
@@ -456,6 +497,7 @@ function Module:ResolveTurn()
     for _, card in ipairs(self.cards) do card:Hide() end
     self.readyButton:Hide()
     self.autoButton:Hide()
+    self.playButton:Hide()
     local view = self.views.battle
     view.hint:SetText("")
     view.trayTitle:SetText("")
@@ -465,6 +507,8 @@ function Module:ResolveTurn()
         t.glow:Hide()
         t.clickable = false
     end
+    self:AddLog(" ")
+    self:AddLog(ABILITY_NAME .. L.MC_TURN:format(b.turn) .. "|r")
     local events = Combat.Resolve(b)
     self.queue, self.queueIndex, self.queueWait = events, 0, 0.15
     self.playing = true
@@ -723,7 +767,7 @@ function Module:UpdateAim()
 end
 
 function Module:UpdateBattle(dt)
-    local speed = ns.Arcade.Settings(self).fast and 2.2 or 1
+    local speed = ns.Arcade.Settings(self).fast and FAST or 1
     local k = math.min(1, dt * 10)
     local pulse = 0.5 + 0.5 * math.sin(GetTime() * 5)
     for _, t in pairs(self.tokens) do
@@ -782,6 +826,7 @@ function Module:UpdateBattle(dt)
                 self:EndPlayback()
                 break
             end
+            self:LogEvent(e)
             self.queueWait = self.queueWait + self:PlayEvent(e)
         end
     end
@@ -795,5 +840,99 @@ function Module:UpdateBattle(dt)
             end
             self:FinishBattle()
         end
+    end
+end
+
+-- Battle log ----------------------------------------------------------------------------------------
+
+-- A panel on the right edge that lists what happened, filled while the turn plays so it never tells
+-- more than the board has shown. The mouse wheel scrolls back.
+function Module:BuildBattleLog(view)
+    local panel = CreateFrame("Frame", nil, view)
+    panel:SetSize(LOG_W, LOG_H)
+    panel:SetPoint("TOPLEFT", LOG_X, -LOG_Y)
+    panel:SetFrameLevel(view:GetFrameLevel() + 45)
+    local fill = panel:CreateTexture(nil, "BACKGROUND")
+    fill:SetAllPoints()
+    fill:SetColorTexture(0.05, 0.03, 0.02, 0.88)
+    Widgets.Rim(panel, panel)
+    local title = Kit.Plaque(panel, 170, "MC_LOG", 13)
+    title:SetPoint("TOP", 0, 6)
+    local list = CreateFrame("ScrollingMessageFrame", nil, panel)
+    list:SetPoint("TOPLEFT", 10, -40)
+    list:SetPoint("BOTTOMRIGHT", -8, 8)
+    list:SetFontObject(Media.Font(10, "white", ""))
+    list:SetJustifyH("LEFT")
+    list:SetFading(false)
+    list:SetMaxLines(500)
+    list:SetSpacing(2)
+    list:EnableMouseWheel(true)
+    list:SetScript("OnMouseWheel", function(f, delta)
+        if delta > 0 then f:ScrollUp() else f:ScrollDown() end
+    end)
+    panel:SetShown(ns.Arcade.Settings(self).log or false)
+    self.logPanel, self.logList = panel, list
+end
+
+-- With the log open, the board moves left so no token hides under it.
+function Module:BoardCenter()
+    return ns.Arcade.Settings(self).log and (LOG_X - 10) / 2 or W / 2
+end
+
+function Module:ToggleLog()
+    local settings = ns.Arcade.Settings(self)
+    settings.log = not settings.log
+    self.logPanel:SetShown(settings.log)
+    local b = self:Battle()
+    if b and self.view == "battle" then self:LayoutBattle(b) end
+end
+
+-- A new battle starts with an empty log.
+function Module:StartBattleLog(b)
+    if self.logBattle == b then return end
+    self.logBattle = b
+    self.battleLogLines = {}
+    self.logList:Clear()
+end
+
+function Module:AddLog(text)
+    self.battleLogLines = self.battleLogLines or {}
+    self.battleLogLines[#self.battleLogLines + 1] = text
+    self.logList:AddMessage(text)
+end
+
+local function LogName(b, uid)
+    local u = uid and b.units[uid]
+    if not u then return "?" end
+    return (u.side == "ally" and ALLY_NAME or ENEMY_NAME) .. Describe.UnitName(u.kind, u.id) .. "|r"
+end
+
+function Module:LogEvent(e)
+    local b = self:Battle()
+    if not b then return end
+    local t = e.t
+    local indent = "   "
+    if t == "act" then
+        local line = LogName(b, e.src) .. ": " .. ABILITY_NAME .. Describe.AbilityName(e.ability) .. "|r"
+        if e.dst and e.dst ~= e.src then line = line .. " » " .. LogName(b, e.dst) end
+        self:AddLog(line)
+    elseif t == "damage" then
+        local line = indent .. LogName(b, e.dst) .. " |cffff5040-" .. e.amount .. (e.crit and "!" or "") .. "|r"
+        if e.dot then line = line .. " (" .. L.MC_LOG_DOT .. ")" end
+        self:AddLog(line)
+    elseif t == "heal" and e.amount > 0 then
+        self:AddLog(indent .. LogName(b, e.dst) .. " |cff40ff40+" .. e.amount .. "|r")
+    elseif t == "miss" then
+        self:AddLog(indent .. LogName(b, e.dst) .. ": " .. L.MC_MISS)
+    elseif t == "shieldBreak" then
+        self:AddLog(indent .. LogName(b, e.dst) .. ": " .. L.MC_LOG_SHIELD)
+    elseif t == "death" then
+        self:AddLog(indent .. L.MC_LOG_DEATH:format(LogName(b, e.dst)))
+    elseif t == "stunned" then
+        self:AddLog(LogName(b, e.src) .. ": " .. L.MC_STUNNED)
+    elseif t == "fizzle" then
+        self:AddLog(LogName(b, e.src) .. ": " .. L.MC_FIZZLE)
+    elseif t == "enter" then
+        self:AddLog(L.MC_LOG_ENTER:format(LogName(b, e.dst)))
     end
 end

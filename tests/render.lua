@@ -168,6 +168,14 @@ for _ = 1, 200 do
             if Want("battle") then Snap("battle_target") end
             battleShots = 2
         end
+        if battleShots == 4 then
+            -- The second turn with the log open: the board moves left, the first turn is listed.
+            mc:ToggleLog()
+            Tick(0.8)
+            if Want("battle") then Snap("battle_log") end
+            mc:ToggleLog()
+            battleShots = 5
+        end
         mc:AutoChoose()
         if battleShots == 2 then
             if Want("battle") then Snap("battle_ready") end

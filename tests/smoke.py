@@ -20,6 +20,16 @@ def main() -> int:
                 if re.search(r"\bgoto\b|::\w+::", code):
                     print(f"{f}:{n}: goto/labels are not Lua 5.1")
                     return 1
+    # A key given twice in one language silently drops one of the texts.
+    for f in files:
+        if f.endswith(".lua") and ("Locale" in f or "Translations" in f or "EnemyNames" in f):
+            text = (ADDON / f).read_text(encoding="utf-8")
+            for block in re.split(r"ns\.AddStrings\(", text)[1:]:
+                keys = re.findall(r"^\s+(\w+) = ", block, re.M)
+                twice = sorted({k for k in keys if keys.count(k) > 1})
+                if twice:
+                    print(f"{f}: {block[:8]} has keys twice: {', '.join(twice)}")
+                    return 1
     # The dev copy in the client loads its own generated TOC; it must list the same files.
     dev = ADDON / "DarkmoonArcade_Dev.toc"
     if dev.exists():

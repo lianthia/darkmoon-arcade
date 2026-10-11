@@ -1,4 +1,11 @@
 MC_NAME	Mercenaries
+MC_PLAY_TURN	Jouer le tour
+MC_PLAY_SPEED	Vitesse x%d
+MC_LOG	Journal de combat
+MC_LOG_DOT	sur la durée
+MC_LOG_SHIELD	bouclier brisé
+MC_LOG_DEATH	%s est vaincu.
+MC_LOG_ENTER	%s entre en combat.
 MC_DESC	Menez les héros d'Azeroth de prime en prime : six mercenaires, trois à la fois, chaque technique résolue selon sa vitesse.
 MC_TAGLINE	Héros à louer, primes à travers Azeroth
 MC_RULES	Choisissez une prime au point de voyage : chaque zone se termine par son boss, et vous choisissez le chemin. En combat, trois de vos six mercenaires entrent sur le plateau. À chaque tour, vous choisissez une technique pour chacun, puis toutes les techniques des deux camps se résolvent selon leur vitesse - le plus petit nombre agit en premier. Les protecteurs (rouge) infligent le double de dégâts aux combattants (vert), les combattants aux lanceurs de sorts (bleu), les lanceurs de sorts aux protecteurs. Les mercenaires tombés restent à terre jusqu'à ce qu'un gardien des âmes les ramène. Après chaque combat gagné, un mercenaire reçoit un trésor pour le reste de la prime. Les boss donnent des pièces pour recruter et améliorer les mercenaires et débloquent de l'équipement ; vaincre une zone ouvre son mode héroïque. Les ennemis de niveau supérieur vous ratent moins et vous les ratez plus - montez de niveau avant d'affronter des zones plus dures. La progression est enregistrée après chaque étape, même au milieu d'un combat.
@@ -10,7 +17,7 @@ MC_HELP_ZONES	Chaque zone reprend la tranche de niveaux de sa zone classique. So
 MC_HELP_PATH_TITLE	Le chemin
 MC_HELP_PATH	Les pièces sur la carte de prime sont les étapes. Les pièces lumineuses sont les étapes accessibles ; cliquez-en une pour voir ce qui vous y attend, puis appuyez sur le grand bouton.\n\n|cff8a4a10Combat|r - un groupe d'ennemis ordinaire.\n|cff8a4a10Élite|r - quatre ennemis plus forts, mais un meilleur trésor ensuite.\n|cff8a4a10Gardien des âmes|r - ramène un mercenaire tombé.\n|cff8a4a10Bénédiction|r - tous les mercenaires d'un rôle gagnent de l'attaque et de la vie pour le reste de la prime.\n|cff8a4a10Mystère|r - se révèle à l'arrivée (voir Trésors et événements).\n|cff8a4a10Boss|r - la fin de la prime.\n\nLes étapes visitées portent une coche. Les étapes devenues inaccessibles s'estompent. Vous pouvez abandonner une prime à tout moment ; les niveaux et pièces déjà gagnés sont conservés.
 MC_HELP_BATTLE_TITLE	Le combat
-MC_HELP_BATTLE	Un combat commence par le choix des trois mercenaires qui entrent sur le plateau ; les autres attendent sur le banc en dessous.\n\nChaque tour a deux parties :\n1. |cff8a4a10Ordres :|r sélectionnez chacun de vos mercenaires et choisissez une de ses techniques (cartes du plateau). Si la technique demande une cible, cliquez dessus - une ligne montre qui vous visez. Puis appuyez sur |cff8a4a10Prêt !|r\n2. |cff8a4a10Résolution :|r toutes les techniques des deux camps s'exécutent selon leur vitesse, |cff8a4a10le plus petit nombre d'abord|r. Vous ne découvrez les actions des ennemis qu'au moment où elles ont lieu ; les numéros au-dessus des portraits indiquent l'ordre.\n\nCertaines techniques ont un temps de recharge et ne sont pas disponibles à chaque tour. Quand un mercenaire tombe, vous en envoyez un autre du banc au début du tour suivant. Le combat est gagné quand il ne reste plus d'ennemi. À partir du tour 30, tout le monde perd de plus en plus de vie à chaque tour, pour qu'aucun combat ne dure éternellement.
+MC_HELP_BATTLE	Un combat commence par le choix des trois mercenaires qui entrent sur le plateau ; les autres attendent sur le banc en dessous.\n\nChaque tour a deux parties :\n1. |cff8a4a10Ordres :|r sélectionnez chacun de vos mercenaires et choisissez une de ses techniques (cartes du plateau). Si la technique demande une cible, cliquez dessus - une ligne montre qui vous visez. Puis appuyez sur |cff8a4a10Prêt !|r\n2. |cff8a4a10Résolution :|r toutes les techniques des deux camps s'exécutent selon leur vitesse, |cff8a4a10le plus petit nombre d'abord|r. Vous ne découvrez les actions des ennemis qu'au moment où elles ont lieu ; les numéros au-dessus des portraits indiquent l'ordre.\n\nCertaines techniques ont un temps de recharge et ne sont pas disponibles à chaque tour. Quand un mercenaire tombe, vous en envoyez un autre du banc au début du tour suivant. Le combat est gagné quand il ne reste plus d'ennemi. À partir du tour 30, tout le monde perd de plus en plus de vie à chaque tour, pour qu'aucun combat ne dure éternellement.\n\n|cff8a4a10Jouer le tour|r (touche R) choisit pour tout le monde et lance le tour aussitôt. En haut à droite, vous changez la vitesse et ouvrez le journal de combat, qui liste chaque coup, soin et défaite.
 MC_HELP_ROLES_TITLE	Rôles et niveaux
 MC_HELP_ROLES	Chaque mercenaire et chaque ennemi a un rôle, indiqué par la couleur de son cadre :\n\n|cffc03020Protecteur (rouge)|r - robuste, protège ses alliés.\n|cff2f8a20Combattant (vert)|r - attaques puissantes contre un seul ennemi.\n|cff2050c0Lanceur de sorts (bleu)|r - sorts, souvent contre plusieurs ennemis.\n\nLes rôles se battent en cercle : les |cffc03020protecteurs|r infligent le double de dégâts aux |cff2f8a20combattants|r, les |cff2f8a20combattants|r aux |cff2050c0lanceurs de sorts|r et les |cff2050c0lanceurs de sorts|r aux |cffc03020protecteurs|r. L'avantage apparaît en combat sous forme d'un plus grand nombre. Un bon groupe mélange les trois rôles et envoie le bon mercenaire contre le bon ennemi.\n\nLe bouclier sur un portrait indique l'attaque, la goutte la vie. Les niveaux augmentent les deux, tout comme l'équipement, les trésors et les bénédictions. Les ennemis neutres (gris) n'ont ni force ni faiblesse.
 MC_HELP_EFFECTS_TITLE	Effets
@@ -21,7 +28,7 @@ MC_HELP_TREASURES_TITLE	Trésors et événements
 MC_HELP_TREASURES	|cff8a4a10Trésors :|r après un combat gagné, un mercenaire peut prendre un trésor parmi trois. Il le garde jusqu'à la fin de la prime. Les combats d'élite offrent des trésors plus forts.\n|cff8a4a10Les trésors maudits|r sont très puissants, mais chacun réduit la vie de tout le groupe pour le reste de la prime.\n\nMystères :\n|cff8a4a10Étranger|r - copie un trésor que l'un de vos mercenaires porte déjà.\n|cff8a4a10Sabotage|r - les ennemis du prochain combat commencent avec moins de vie.\n|cff8a4a10Portail|r - permet de sauter une étape.\n|cff8a4a10Coffre maudit|r - un choix de trésors maudits.\n|cff8a4a10Butin bonus|r - le boss paie moitié plus de pièces.\n|cff8a4a10Recrue|r - un mercenaire que vous ne possédez peut-être pas encore se joint à vous comme invité jusqu'à la fin de la prime.\n\n|cff8a4a10Score :|r chaque combat gagné rapporte dix fois le niveau des ennemis ; l'élite vaut moitié plus, les boss trois fois plus et les primes héroïques le double.
 MC_HELP_CONTROLS_TITLE	Commandes
 MC_OPT_FAST	Animations de combat rapides
-MC_OPT_FAST_TIP	Joue les tours de Mercenaries environ deux fois plus vite.
+MC_OPT_FAST_TIP	Joue les tours de Mercenaries deux fois plus vite.
 MC_ROLE_protector	Protecteur
 MC_ROLE_fighter	Combattant
 MC_ROLE_caster	Lanceur de sorts
@@ -135,7 +142,7 @@ MC_HINT_DEPLOY	Choisissez %d |4mercenaire:mercenaires; pour le combat.
 MC_HINT_TARGET	Choisissez une cible.
 MC_HINT_CHOOSE	Choisissez une technique pour chaque mercenaire.
 MC_HINT_READY	Tout est prêt - Prêt !
-MC_TRAY_KEYS	Touches 1-3 : technique, Tab : mercenaire suivant.
+MC_TRAY_KEYS	Touches 1-3 : technique, Tab : mercenaire suivant, R : jouer le tour.
 MC_BENCH_TITLE	Banc
 MC_ADVANTAGE	Avantage !
 MC_MISS	Raté
@@ -277,7 +284,6 @@ MC_STAT_ZONES	Primes accomplies
 MC_STAT_HEROIC	Primes héroïques accomplies
 MC_STAT_MERCS	Mercenaires recrutés
 MC_STAT_LEVEL	Niveau le plus élevé
-MC_STAT_FIGHTS	Combats gagnés
 MC_ACH_FIRST	Premier sang
 MC_ACH_FIRST_DESC	Gagner un combat.
 MC_ACH_BOUNTY	Chasseur de primes
