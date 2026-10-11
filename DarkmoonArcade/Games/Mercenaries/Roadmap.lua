@@ -15,21 +15,28 @@ local PATH_TOP, PATH_BOTTOM = 110, H - 64
 local NODE, BIG_NODE = 58, 70
 local DASH_GAP = 13
 
--- status: done, next, planned or idea; the offset winds the path left and right.
+-- status: done, ongoing (work that never quite ends), next, planned or idea; the offset winds the
+-- path left and right.
 local MILESTONES = {
     { status = "done", icon = "INV_Sword_04", offset = 0 },
-    { status = "next", icon = "Trade_Engineering", offset = -130 },
-    { status = "planned", icon = "INV_Scroll_03", offset = 120 },
-    { status = "planned", icon = "INV_Misc_Head_Dragon_01", offset = -110 },
-    { status = "planned", icon = "INV_Misc_GroupNeedMore", offset = 130 },
+    { status = "done", icon = "Trade_Engineering", offset = -130 },
+    { status = "ongoing", icon = "INV_Misc_Gear_01", offset = 120 },
+    { status = "planned", icon = "INV_Scroll_03", offset = -120 },
+    { status = "planned", icon = "INV_Misc_Head_Dragon_01", offset = 120 },
+    { status = "planned", icon = "INV_Misc_GroupNeedMore", offset = -120 },
     { status = "idea", icon = "INV_Misc_QuestionMark", offset = 0 },
 }
 MC.ROADMAP = MILESTONES
-local METAL = { done = "gold", next = "gold", planned = "silver", idea = "bronze" }
+-- Milestones being worked on: big gold coins that pulse; the path is gold up to them.
+local CURRENT = { next = true, ongoing = true }
+local METAL = { done = "gold", ongoing = "gold", next = "gold", planned = "silver", idea = "bronze" }
 local STATUS_COLOR = {
-    done = { 0.4, 1, 0.4 }, next = { 1, 0.82, 0.2 }, planned = { 0.85, 0.85, 0.85 }, idea = { 0.6, 0.8, 1 },
+    done = { 0.4, 1, 0.4 }, ongoing = { 1, 0.82, 0.2 }, next = { 1, 0.82, 0.2 }, planned = { 0.85, 0.85, 0.85 },
+    idea = { 0.6, 0.8, 1 },
 }
-local STATUS_KEY = { done = "MC_RM_DONE", next = "MC_RM_NEXT", planned = "MC_RM_PLANNED", idea = "MC_RM_IDEA" }
+local STATUS_KEY = {
+    done = "MC_RM_DONE", ongoing = "MC_RM_ONGOING", next = "MC_RM_NEXT", planned = "MC_RM_PLANNED", idea = "MC_RM_IDEA",
+}
 
 local function Point(i)
     local y = PATH_BOTTOM - (i - 1) * (PATH_BOTTOM - PATH_TOP) / (#MILESTONES - 1)
@@ -74,7 +81,8 @@ function Module:BuildRoadmap()
         local x2, y2 = Point(i + 1)
         local dx, dy = x2 - x1, y2 - y1
         local length = math.sqrt(dx * dx + dy * dy)
-        local ahead = MILESTONES[i + 1].status ~= "next" and MILESTONES[i].status ~= "done"
+        local upper = MILESTONES[i + 1].status
+        local ahead = upper ~= "done" and not CURRENT[upper]
         local d = BIG_NODE / 2 + 6
         while d < length - BIG_NODE / 2 - 4 do
             local t = dashes:CreateTexture(nil, "ARTWORK")
@@ -92,7 +100,7 @@ function Module:BuildRoadmap()
     nodes:SetFrameLevel(dashes:GetFrameLevel() + 2)
     self.roadmapNodes = {}
     for i, stone in ipairs(MILESTONES) do
-        local big = stone.status == "done" or stone.status == "next"
+        local big = stone.status == "done" or CURRENT[stone.status]
         local size = big and BIG_NODE or NODE
         local b = Kit.Coin(nodes, size)
         b:SetMetal(METAL[stone.status])
@@ -117,12 +125,16 @@ function Module:BuildRoadmap()
         Kit.Hover(b, { grow = 1.12, sound = false })
         self.roadmapNodes[i] = b
     end
-    -- "You are here": today's release.
+    -- "You are here": the latest release.
     local here = nodes:CreateTexture(nil, "OVERLAY", nil, 4)
     here:SetSize(26, 26)
     here:SetTexture("Interface\\Minimap\\MiniMap-QuestArrow")
     here:SetRotation(math.pi)
-    here:SetPoint("BOTTOM", self.roadmapNodes[1], "TOP", 0, -6)
+    local latest = 1
+    for i, stone in ipairs(MILESTONES) do
+        if stone.status == "done" then latest = i end
+    end
+    here:SetPoint("BOTTOM", self.roadmapNodes[latest], "TOP", 0, -6)
 
     local top = CreateFrame("Frame", nil, view)
     top:SetAllPoints()
@@ -162,7 +174,7 @@ function Module:RefreshRoadmap()
     self:SetScene(nil)
     local first = 1
     for i, stone in ipairs(MILESTONES) do
-        if stone.status == "next" then first = i end
+        if CURRENT[stone.status] and first == 1 then first = i end
     end
     self:SelectMilestone(self.roadmapSelection or first)
 end
@@ -171,7 +183,7 @@ function Module:SelectMilestone(i)
     self.roadmapSelection = i
     for k, b in ipairs(self.roadmapNodes) do
         Kit.SetSelected(b, k == i, true)
-        Kit.SetPulse(b, (k ~= i and MILESTONES[k].status == "next") and 0.5 or nil)
+        Kit.SetPulse(b, (k ~= i and CURRENT[MILESTONES[k].status]) and 0.5 or nil)
     end
     self:ShowMilestone(i)
 end
