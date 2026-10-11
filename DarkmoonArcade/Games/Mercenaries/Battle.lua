@@ -2,8 +2,10 @@
 -- selected mercenary's abilities (or the bench while choosing who fights). Nothing in the tray
 -- ever covers a token. A turn is resolved at once in Combat; this view plays its events back.
 
-local _, ns = ...
+local ADDON, ns = ...
 local MC = ns.Mercenaries
+-- "Play all turns" is a tool of the dev copy (DarkmoonArcade_Dev) only.
+MC.DEV = ADDON ~= "DarkmoonArcade"
 local Combat, Describe, Kit = MC.Combat, MC.Describe, MC.Kit
 local Widgets, Media, L = ns.Widgets, ns.Media, ns.L
 local Module = MC.Module
@@ -345,7 +347,7 @@ function Module:RefreshBattle()
     if self.autoBattleFor ~= b then self.autoBattle, self.autoBattleFor = false, b end
     self.readyButton:SetShown(commanding and not self.autoBattle)
     self.readyButton:SetEnabled(Combat.Ready(b))
-    self.autoButton:SetShown(commanding or deploying)
+    self.autoButton:SetShown(MC.DEV and (commanding or deploying))
     -- Below Play turn while giving orders; in Ready's corner while the bench fills the tray.
     if deploying then Kit.Place(self.autoButton, AUTO_PLAY_X, TL_Y) else Kit.Place(self.autoButton, AUTO_X, AUTO_Y) end
     self.playButton:SetShown(commanding and not self.autoBattle)
@@ -466,7 +468,7 @@ end
 -- pressed again, the player takes over after the current turn.
 function Module:ToggleAutoBattle()
     local b = self:Battle()
-    if not b then return end
+    if not b or not MC.DEV then return end
     self.autoBattle = not self.autoBattle
     self.autoWait = 0
     if not self.autoBattle and not self.playing then self:RefreshBattle() end

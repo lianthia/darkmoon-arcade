@@ -541,7 +541,11 @@ for _ = 1, 600 do
                 assert(mc.logPanel._shown, "battle log open")
             end
             if fights == 3 then
-                assert(mc.autoButton._shown, "play all turns offered")
+                -- "Play all turns" belongs to the dev copy only; as the dev copy, it plays the battle.
+                assert(not MC.DEV and not mc.autoButton._shown, "play all turns hidden in the release copy")
+                MC.DEV = true
+                mc:RefreshBattle()
+                assert(mc.autoButton._shown, "play all turns offered in the dev copy")
                 mc.autoButton._scripts.OnClick(mc.autoButton)
                 assert(mc.autoBattle, "automatic battle on")
                 autoBattle = b
@@ -570,6 +574,7 @@ for _ = 1, 600 do
 end
 assert(fights > 0, "mercenaries fought")
 assert(autoTurns > 0, "a battle played by itself")
+MC.DEV = false
 assert(not mc.autoBattle or mc.autoBattleFor == autoBattle, "the next battle starts by hand")
 assert(not mc.timeline._shown, "timeline gone after the turn")
 for id in pairs(MC.Abilities) do
