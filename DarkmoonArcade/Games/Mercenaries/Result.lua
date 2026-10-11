@@ -114,12 +114,13 @@ function Module:RefreshResult()
     end
 
     -- Who gained levels: against the levels at the start of the run (older saves: the last fight).
+    -- Guests are not in the collection and gain nothing.
     local gained = {}
     if run.startLevels then
         for _, member in ipairs(run.party) do
             local before = run.startLevels[member.id]
-            local now = store.mercs[member.id].level
-            if before and now > before then gained[member.id] = before end
+            local entry = not member.guest and store.mercs[member.id]
+            if before and entry and entry.level > before then gained[member.id] = before end
         end
     else
         for _, id in ipairs(run.levelUps or {}) do gained[id] = store.mercs[id].level - 1 end

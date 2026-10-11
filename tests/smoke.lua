@@ -488,6 +488,9 @@ travel.boss.heroic._scripts.OnClick(travel.boss.heroic)
 travel.boss.normal._scripts.OnClick(travel.boss.normal)
 travel.boss.choose._scripts.OnClick(travel.boss.choose)
 assert(store.run and mc.view == "map", "bounty started on the map")
+-- A guest from the recruit mystery rides along to the result page (not in the collection).
+assert(MC.Bounty.AddGuest(store, store.run), "guest joined the party")
+mc:RefreshMap()
 local fights = 0
 for _ = 1, 600 do
     local run = store.run
