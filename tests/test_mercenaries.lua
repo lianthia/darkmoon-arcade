@@ -381,4 +381,16 @@ test("replacement prefers the role that beats the foes", function()
     eq(b.units[Combat.BestReplacement(b).uid].role, "fighter", "fighter beats casters")
 end)
 
+test("the last blow is remembered", function()
+    local b = Combat.New({ Spec("hero", "fighter", 60) }, { Spec("foe", "caster", 1, nil, { hp = 1 }) }, 8)
+    Combat.Deploy(b, b.bench.ally[1])
+    AutoBattle(b)
+    eq(b.phase, "won", "the hero wins")
+    local hero, foe
+    for _, u in pairs(b.units) do
+        if u.side == "ally" then hero = u else foe = u end
+    end
+    eq(foe.killedBy, hero.uid, "killer recorded")
+end)
+
 return passed, failed

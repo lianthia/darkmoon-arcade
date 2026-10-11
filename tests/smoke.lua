@@ -607,6 +607,11 @@ if mc.overlay.current ~= "result" then
 end
 mc.resultClose._scripts.OnClick(mc.resultClose)
 assert(not store.run and mc.view == "camp", "back in camp")
+-- Elwynn is cleared: Hogger fell. Achievements also come afterwards, from the saved progress.
+assert(ns.Achievements.IsDone("mc_hogger"), "hogger achievement")
+DarkmoonArcadeDB.achievements.mc_hogger = nil
+mc:Enter()
+assert(ns.Achievements.IsDone("mc_hogger"), "achievements granted for earlier progress")
 -- A run survives a reload of the view: start one and route back into it.
 mc:StartBounty("dunmorogh", false)
 mc:Route()

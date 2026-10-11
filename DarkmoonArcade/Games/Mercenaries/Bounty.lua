@@ -508,6 +508,8 @@ local function Visit(store, run, node)
         run.phase = "map"
     elseif kind == "mystery" then
         local m = node.mystery
+        store.stats.mysteries = store.stats.mysteries or {}
+        store.stats.mysteries[m] = true
         if m == "stranger" then
             if #Bounty.StrangerOptions(run) > 0 then
                 run.phase = "stranger"

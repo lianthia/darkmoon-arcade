@@ -63,6 +63,25 @@ Achievements.Register("mercenaries", {
     { id = "mc_stage1", nameKey = "MC_ACH_STAGE1", descKey = "MC_ACH_STAGE1_DESC", icon = "Interface\\Icons\\Ability_Hunter_Pathfinding" },
     { id = "mc_stage2", nameKey = "MC_ACH_STAGE2", descKey = "MC_ACH_STAGE2_DESC", icon = "Interface\\Icons\\Spell_Nature_EarthBind" },
     { id = "mc_stage3", nameKey = "MC_ACH_STAGE3", descKey = "MC_ACH_STAGE3_DESC", icon = "Interface\\Icons\\Spell_Fire_FelFlameRing" },
+    { id = "mc_hogger", nameKey = "MC_ACH_HOGGER", descKey = "MC_ACH_HOGGER_DESC", icon = "Interface\\Icons\\INV_Misc_Head_Gnoll_01" },
+    { id = "mc_legends", nameKey = "MC_ACH_LEGENDS", descKey = "MC_ACH_LEGENDS_DESC", icon = "Interface\\Icons\\INV_Misc_Head_Dragon_Black" },
+    { id = "mc_hyjal_heroic", nameKey = "MC_ACH_HYJAL", descKey = "MC_ACH_HYJAL_DESC", icon = "Interface\\Icons\\Spell_Shadow_DemonicTactics" },
+    { id = "mc_eastern", nameKey = "MC_ACH_EASTERN", descKey = "MC_ACH_EASTERN_DESC", icon = "Interface\\Icons\\Achievement_Zone_EasternKingdoms_01" },
+    { id = "mc_kalimdor", nameKey = "MC_ACH_KALIMDOR", descKey = "MC_ACH_KALIMDOR_DESC", icon = "Interface\\Icons\\Achievement_Zone_Kalimdor_01" },
+    { id = "mc_newshores", nameKey = "MC_ACH_NEWSHORES", descKey = "MC_ACH_NEWSHORES_DESC", icon = "Interface\\Icons\\Spell_Arcane_TeleportTheramore" },
+    { id = "mc_fullgear", nameKey = "MC_ACH_FULLGEAR", descKey = "MC_ACH_FULLGEAR_DESC", icon = "Interface\\Icons\\INV_Helmet_03" },
+    { id = "mc_master", nameKey = "MC_ACH_MASTER", descKey = "MC_ACH_MASTER_DESC", icon = "Interface\\Icons\\Spell_Holy_SealOfWisdom" },
+    { id = "mc_underdog", nameKey = "MC_ACH_UNDERDOG", descKey = "MC_ACH_UNDERDOG_DESC", icon = "Interface\\Icons\\INV_Throwingknife_02" },
+    { id = "mc_blitz", nameKey = "MC_ACH_BLITZ", descKey = "MC_ACH_BLITZ_DESC", icon = "Interface\\Icons\\Ability_Warrior_Charge" },
+    { id = "mc_casters", nameKey = "MC_ACH_CASTERS", descKey = "MC_ACH_CASTERS_DESC", icon = "Interface\\Icons\\Spell_Holy_MagicalSentry" },
+    { id = "mc_protectors", nameKey = "MC_ACH_PROTECTORS", descKey = "MC_ACH_PROTECTORS_DESC", icon = "Interface\\Icons\\INV_Shield_06" },
+    { id = "mc_fighters", nameKey = "MC_ACH_FIGHTERS", descKey = "MC_ACH_FIGHTERS_DESC", icon = "Interface\\Icons\\Ability_DualWield" },
+    { id = "mc_mysteries", nameKey = "MC_ACH_MYSTERIES", descKey = "MC_ACH_MYSTERIES_DESC", icon = "Interface\\Icons\\INV_Misc_Ticket_Tarot_Furies" },
+    { id = "mc_cursed", nameKey = "MC_ACH_CURSED", descKey = "MC_ACH_CURSED_DESC", icon = "Interface\\Icons\\Spell_Shadow_CurseOfSargeras" },
+    { id = "mc_guest", nameKey = "MC_ACH_GUEST", descKey = "MC_ACH_GUEST_DESC", icon = "Interface\\Icons\\INV_Misc_GroupNeedMore" },
+    { id = "mc_veteran", nameKey = "MC_ACH_VETERAN", descKey = "MC_ACH_VETERAN_DESC", icon = "Interface\\Icons\\INV_BannerPVP_02" },
+    { id = "mc_heroic_all", nameKey = "MC_ACH_HEROIC_ALL", descKey = "MC_ACH_HEROIC_ALL_DESC", icon = "Interface\\Icons\\INV_Crown_02" },
+    { id = "mc_all60", nameKey = "MC_ACH_ALL60", descKey = "MC_ACH_ALL60_DESC", icon = "Interface\\Icons\\Achievement_Level_60" },
     { id = "mc_collection", nameKey = "MC_ACH_COLLECTION", descKey = "MC_ACH_COLLECTION_DESC", icon = "Interface\\Icons\\INV_Misc_Book_11" },
     { id = "mc_heroic10", nameKey = "MC_ACH_HEROIC10", descKey = "MC_ACH_HEROIC10_DESC", icon = "Interface\\Icons\\INV_Crown_01" },
     { id = "mc_level60", nameKey = "MC_ACH_LEVEL60", descKey = "MC_ACH_LEVEL60_DESC", icon = "Interface\\Icons\\INV_Misc_Book_07" },
@@ -191,6 +210,7 @@ function Module:Travel(layer, index)
     local run = store.run
     if not run or not Bounty.Travel(store, run, layer, index) then return end
     local node = Bounty.Node(run)
+    if node.type == "mystery" then self:CheckProgress() end
     -- What happened at the stop is shown in a window that waits for the player.
     local event
     if node.type == "boon" then
@@ -223,6 +243,19 @@ function Module:FinishBattle()
     local b = run.battle
     local won = b.phase == "won"
     local survivors = #b.board.ally + #b.bench.ally
+    if won then
+        if b.turn <= 2 then Achievements.Unlock("mc_blitz") end
+        local node = Bounty.Node(run)
+        if node and node.type == "boss" then
+            for _, u in pairs(b.units) do
+                if u.side == "enemy" and u.id == MC.Zones[run.zone].boss and u.killedBy then
+                    local killer = b.units[u.killedBy]
+                    local member = killer and killer.pidx and run.party[killer.pidx]
+                    if member and member.guest then run.guestFinisher = true end
+                end
+            end
+        end
+    end
     Bounty.AfterBattle(store, run)
     if won then
         store.stats.fights = store.stats.fights + 1
@@ -238,6 +271,8 @@ function Module:FinishBattle()
     self:Route()
 end
 
+local ROLE_ONLY = { caster = "mc_casters", protector = "mc_protectors", fighter = "mc_fighters" }
+
 function Module:OnBountyComplete(run, survivors)
     local store = self:Store()
     store.stats.bounties = store.stats.bounties + 1
@@ -250,33 +285,101 @@ function Module:OnBountyComplete(run, survivors)
         store.stats.heroics = store.stats.heroics + 1
         Achievements.Unlock("mc_heroic")
         if flawless then Achievements.Unlock("mc_heroic_flawless") end
-        local heroics = 0
-        for _, state in pairs(store.zones) do
-            if (state.heroic or 0) > 0 then heroics = heroics + 1 end
+    end
+    -- How the bounty was won: one role only, a party well below the boss, a cursed treasure, a guest
+    -- landing the last blow.
+    local roles, count, levels, cursed = {}, 0, 0, false
+    for _, member in ipairs(run.party) do
+        for _, treasure in ipairs(member.treasures or {}) do
+            if type(treasure) == "string" and treasure:find("^cursed") then cursed = true end
         end
-        if heroics >= 10 then Achievements.Unlock("mc_heroic10") end
+        local merc = MC.Mercs[member.id]
+        if not member.guest and merc then
+            roles[merc.role] = true
+            count = count + 1
+            levels = levels + ((run.startLevels and run.startLevels[member.id]) or Bounty.Entry(store, member.id).level)
+        end
     end
-    local starters = true
-    for _, zid in ipairs(STARTING_ZONES) do
-        if Bounty.ZoneState(store, zid).normal == 0 then starters = false end
+    local role = next(roles)
+    if role and next(roles, role) == nil and count >= 3 and ROLE_ONLY[role] then Achievements.Unlock(ROLE_ONLY[role]) end
+    if count > 0 and levels / count <= Bounty.BossLevel(MC.Zones[run.zone], run.heroic) - 3 then
+        Achievements.Unlock("mc_underdog")
     end
-    if starters then Achievements.Unlock("mc_starter") end
-    -- Stages: every zone up to level 30, up to level 45, and all of them.
-    local stages = { { 30, "mc_stage1" }, { 45, "mc_stage2" }, { MC.MAX_LEVEL, "mc_stage3" } }
-    for _, stage in ipairs(stages) do
-        local done = true
+    if cursed then Achievements.Unlock("mc_cursed") end
+    if run.guestFinisher then Achievements.Unlock("mc_guest") end
+    self:CheckProgress()
+end
+
+-- Achievements that follow from the saved progress alone. Checked after bounties and battles and
+-- whenever the game opens, so progress made before an achievement existed counts as well.
+function Module:CheckProgress()
+    local store = self:Store()
+    local function Cleared(zid, heroic)
+        local state = Bounty.ZoneState(store, zid)
+        return ((heroic and state.heroic or state.normal) or 0) > 0
+    end
+    local function All(list, heroic)
+        for _, zid in ipairs(list) do
+            if not Cleared(zid, heroic) then return false end
+        end
+        return true
+    end
+    local function Zones(test)
+        local list = {}
         for _, zid in ipairs(MC.ZONE_ORDER) do
-            if MC.Zones[zid].max <= stage[1] and Bounty.ZoneState(store, zid).normal == 0 then done = false end
+            if test(MC.Zones[zid]) then list[#list + 1] = zid end
         end
-        if done then Achievements.Unlock(stage[2]) end
+        return list
     end
-    local gears = 0
-    for _, entry in pairs(store.mercs) do
-        for i = 2, 3 do
-            if entry.gears[i] then gears = gears + 1 end
+    local function Unlock(id, done)
+        if done then Achievements.Unlock(id) end
+    end
+
+    Unlock("mc_starter", All(STARTING_ZONES))
+    -- Stages: every zone up to level 30, up to level 45, and all of them.
+    Unlock("mc_stage1", All(Zones(function(z) return z.max <= 30 end)))
+    Unlock("mc_stage2", All(Zones(function(z) return z.max <= 45 end)))
+    Unlock("mc_stage3", All(MC.ZONE_ORDER))
+    Unlock("mc_hogger", Cleared("elwynn"))
+    Unlock("mc_legends", All({ "dustwallow", "azshara", "blastedlands", "silithus" }))
+    Unlock("mc_hyjal_heroic", Cleared("hyjal", true))
+    Unlock("mc_eastern", All(Zones(function(z) return z.continent == "ek" end)))
+    Unlock("mc_kalimdor", All(Zones(function(z) return z.continent == "kal" end)))
+    Unlock("mc_newshores", All({ "zephras", "shendralas", "riverglades" }))
+    Unlock("mc_heroic_all", All(MC.ZONE_ORDER, true))
+    local heroics = 0
+    for _, zid in ipairs(MC.ZONE_ORDER) do
+        if Cleared(zid, true) then heroics = heroics + 1 end
+    end
+    Unlock("mc_heroic10", heroics >= 10)
+    Unlock("mc_veteran", (store.stats.bounties or 0) >= 100)
+
+    local gears, all60 = 0, true
+    for _, id in ipairs(MC.MERC_ORDER) do
+        local entry = store.mercs[id]
+        if entry then
+            local full = true
+            for i = 1, 3 do
+                if entry.gears[i] then
+                    if i > 1 then gears = gears + 1 end
+                else
+                    full = false
+                end
+            end
+            Unlock("mc_fullgear", full and entry.owned)
+            Unlock("mc_master", entry.owned and entry.ranks[1] >= 3 and entry.ranks[2] >= 3 and entry.ranks[3] >= 3)
         end
+        if not (entry and entry.owned and entry.level >= MC.MAX_LEVEL) then all60 = false end
     end
-    if gears >= 10 then Achievements.Unlock("mc_gear") end
+    Unlock("mc_gear", gears >= 10)
+    Unlock("mc_all60", all60)
+
+    local seen = store.stats.mysteries or {}
+    local everyMystery = true
+    for _, m in ipairs(Bounty.MYSTERIES) do
+        if not seen[m] then everyMystery = false end
+    end
+    Unlock("mc_mysteries", everyMystery)
 end
 
 function Module:CheckLevels()
@@ -292,6 +395,7 @@ function Module:CheckLevels()
     end
     if owned > #MC.STARTERS then Achievements.Unlock("mc_recruit") end
     if owned >= #MC.MERC_ORDER then Achievements.Unlock("mc_collection") end
+    self:CheckProgress()
 end
 
 -- Leaves the finished run: records the score and returns to the camp.
@@ -654,6 +758,8 @@ function Module:ShowHelp()
 end
 
 function Module:Enter()
+    -- Also grants achievements earned before they existed.
+    self:CheckLevels()
     self:Route()
 end
 

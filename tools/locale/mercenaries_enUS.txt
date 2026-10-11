@@ -320,6 +320,44 @@ MC_ACH_STAGE2	Through the Wilds
 MC_ACH_STAGE2_DESC	Clear every zone up to level 45.
 MC_ACH_STAGE3	Victory at Mount Hyjal
 MC_ACH_STAGE3_DESC	Clear every zone, Mount Hyjal included.
+MC_ACH_HOGGER	Hogger Must Go!
+MC_ACH_HOGGER_DESC	Defeat Hogger in Elwynn Forest.
+MC_ACH_LEGENDS	Legends of the Old World
+MC_ACH_LEGENDS_DESC	Defeat Onyxia, Azuregos, Lord Kazzak and C'Thun.
+MC_ACH_HYJAL	Summit of Hyjal
+MC_ACH_HYJAL_DESC	Defeat the boss of Mount Hyjal in heroic mode.
+MC_ACH_EASTERN	Eastward
+MC_ACH_EASTERN_DESC	Clear every zone of the Eastern Kingdoms.
+MC_ACH_KALIMDOR	Westward
+MC_ACH_KALIMDOR_DESC	Clear every zone of Kalimdor.
+MC_ACH_NEWSHORES	New Shores
+MC_ACH_NEWSHORES_DESC	Clear Zephras Isle, Shen'dralas and the Riverglades.
+MC_ACH_FULLGEAR	Fully Equipped
+MC_ACH_FULLGEAR_DESC	Unlock all three pieces of equipment for one mercenary.
+MC_ACH_MASTER	Master of the Craft
+MC_ACH_MASTER_DESC	Raise all three abilities of one mercenary to rank III.
+MC_ACH_UNDERDOG	David and Goliath
+MC_ACH_UNDERDOG_DESC	Defeat a boss with a party at least 3 levels below it on average.
+MC_ACH_BLITZ	Lightning Victory
+MC_ACH_BLITZ_DESC	Win a battle in a single turn.
+MC_ACH_CASTERS	Pure Sorcery
+MC_ACH_CASTERS_DESC	Complete a bounty with casters only.
+MC_ACH_PROTECTORS	Wall of Steel
+MC_ACH_PROTECTORS_DESC	Complete a bounty with protectors only.
+MC_ACH_FIGHTERS	Whirling Blades
+MC_ACH_FIGHTERS_DESC	Complete a bounty with fighters only.
+MC_ACH_MYSTERIES	Fortune Seeker
+MC_ACH_MYSTERIES_DESC	Encounter each of the six mysteries.
+MC_ACH_CURSED	Cursed and Content
+MC_ACH_CURSED_DESC	Complete a bounty while carrying a cursed treasure.
+MC_ACH_GUEST	Hospitality
+MC_ACH_GUEST_DESC	Complete a bounty in which the guest lands the last blow on the boss.
+MC_ACH_VETERAN	Veteran
+MC_ACH_VETERAN_DESC	Complete 100 bounties.
+MC_ACH_HEROIC_ALL	No Mercy
+MC_ACH_HEROIC_ALL_DESC	Clear all 42 zones in heroic mode.
+MC_ACH_ALL60	All Under One Roof
+MC_ACH_ALL60_DESC	Bring all 24 mercenaries to level 60.
 MC_ROADMAP	Roadmap
 MC_RM_MILESTONE	Milestone
 MC_RM_HINT	Plans may change. Ideas or wishes? Tell us on CurseForge or GitHub.

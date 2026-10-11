@@ -308,7 +308,11 @@ local function Hurt(b, src, tgt, dmg, school, info)
         for k, v in pairs(info) do e[k] = v end
     end
     Event(b, e)
-    if tgt.hp <= 0 then Kill(b, tgt) end
+    if tgt.hp <= 0 then
+        -- Who landed the last blow (the guest achievement asks).
+        tgt.killedBy = src and src.uid
+        Kill(b, tgt)
+    end
     return dmg
 end
 

@@ -320,6 +320,44 @@ MC_ACH_STAGE2	A través de las tierras salvajes
 MC_ACH_STAGE2_DESC	Completa todas las zonas hasta el nivel 45.
 MC_ACH_STAGE3	Victoria en el Monte Hyjal
 MC_ACH_STAGE3_DESC	Completa todas las zonas, incluido el Monte Hyjal.
+MC_ACH_HOGGER	¡Hogger debe caer!
+MC_ACH_HOGGER_DESC	Derrota a Hogger en el Bosque de Elwynn.
+MC_ACH_LEGENDS	Leyendas del viejo mundo
+MC_ACH_LEGENDS_DESC	Derrota a Onyxia, Azuregos, Lord Kazzak y C'Thun.
+MC_ACH_HYJAL	Cumbre de Hyjal
+MC_ACH_HYJAL_DESC	Derrota al jefe del Monte Hyjal en modo heroico.
+MC_ACH_EASTERN	Hacia el este
+MC_ACH_EASTERN_DESC	Completa todas las zonas de los Reinos del Este.
+MC_ACH_KALIMDOR	Hacia el oeste
+MC_ACH_KALIMDOR_DESC	Completa todas las zonas de Kalimdor.
+MC_ACH_NEWSHORES	Nuevas costas
+MC_ACH_NEWSHORES_DESC	Completa la Isla de Zephras, Shen'dralas y las Riverglades.
+MC_ACH_FULLGEAR	Equipo completo
+MC_ACH_FULLGEAR_DESC	Desbloquea las tres piezas de equipo de un mercenario.
+MC_ACH_MASTER	Maestro del oficio
+MC_ACH_MASTER_DESC	Sube las tres habilidades de un mercenario al rango III.
+MC_ACH_UNDERDOG	David contra Goliat
+MC_ACH_UNDERDOG_DESC	Derrota a un jefe con un grupo al menos 3 niveles por debajo de media.
+MC_ACH_BLITZ	Victoria relámpago
+MC_ACH_BLITZ_DESC	Gana un combate en un solo turno.
+MC_ACH_CASTERS	Pura hechicería
+MC_ACH_CASTERS_DESC	Completa una recompensa solo con lanzadores de hechizos.
+MC_ACH_PROTECTORS	Muro de acero
+MC_ACH_PROTECTORS_DESC	Completa una recompensa solo con protectores.
+MC_ACH_FIGHTERS	Torbellino de espadas
+MC_ACH_FIGHTERS_DESC	Completa una recompensa solo con luchadores.
+MC_ACH_MYSTERIES	Buscafortunas
+MC_ACH_MYSTERIES_DESC	Encuentra cada uno de los seis misterios.
+MC_ACH_CURSED	Maldito y contento
+MC_ACH_CURSED_DESC	Completa una recompensa llevando un tesoro maldito.
+MC_ACH_GUEST	Hospitalidad
+MC_ACH_GUEST_DESC	Completa una recompensa en la que el invitado asesta el golpe final al jefe.
+MC_ACH_VETERAN	Veterano
+MC_ACH_VETERAN_DESC	Completa 100 recompensas.
+MC_ACH_HEROIC_ALL	Sin piedad
+MC_ACH_HEROIC_ALL_DESC	Completa las 42 zonas en modo heroico.
+MC_ACH_ALL60	Todos bajo un mismo techo
+MC_ACH_ALL60_DESC	Sube a los 24 mercenarios al nivel 60.
 MC_ROADMAP	Hoja de ruta
 MC_RM_MILESTONE	Hito
 MC_RM_HINT	Los planes pueden cambiar. ¿Ideas o deseos? Cuéntanoslo en CurseForge o GitHub.

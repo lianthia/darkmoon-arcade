@@ -320,6 +320,44 @@ MC_ACH_STAGE2	Через дикие земли
 MC_ACH_STAGE2_DESC	Пройдите все зоны до 45 уровня.
 MC_ACH_STAGE3	Победа на горе Хиджал
 MC_ACH_STAGE3_DESC	Пройдите все зоны, включая гору Хиджал.
+MC_ACH_HOGGER	Хоггер должен уйти!
+MC_ACH_HOGGER_DESC	Победите Хоггера в Элвиннском лесу.
+MC_ACH_LEGENDS	Легенды старого мира
+MC_ACH_LEGENDS_DESC	Победите Ониксию, Азурегоса, владыку Каззака и К'Туна.
+MC_ACH_HYJAL	Вершина Хиджала
+MC_ACH_HYJAL_DESC	Победите босса горы Хиджал в героическом режиме.
+MC_ACH_EASTERN	На восток
+MC_ACH_EASTERN_DESC	Пройдите все зоны Восточных королевств.
+MC_ACH_KALIMDOR	На запад
+MC_ACH_KALIMDOR_DESC	Пройдите все зоны Калимдора.
+MC_ACH_NEWSHORES	Новые берега
+MC_ACH_NEWSHORES_DESC	Пройдите остров Зефрас, Шен'дралас и Riverglades.
+MC_ACH_FULLGEAR	Полное снаряжение
+MC_ACH_FULLGEAR_DESC	Откройте все три предмета снаряжения одного наемника.
+MC_ACH_MASTER	Мастер своего дела
+MC_ACH_MASTER_DESC	Повысьте все три способности одного наемника до ранга III.
+MC_ACH_UNDERDOG	Давид и Голиаф
+MC_ACH_UNDERDOG_DESC	Победите босса отрядом, который в среднем как минимум на 3 уровня ниже.
+MC_ACH_BLITZ	Молниеносная победа
+MC_ACH_BLITZ_DESC	Выиграйте бой за один ход.
+MC_ACH_CASTERS	Чистое колдовство
+MC_ACH_CASTERS_DESC	Выполните награду только заклинателями.
+MC_ACH_PROTECTORS	Стальная стена
+MC_ACH_PROTECTORS_DESC	Выполните награду только защитниками.
+MC_ACH_FIGHTERS	Вихрь клинков
+MC_ACH_FIGHTERS_DESC	Выполните награду только бойцами.
+MC_ACH_MYSTERIES	Искатель удачи
+MC_ACH_MYSTERIES_DESC	Встретьте каждую из шести тайн.
+MC_ACH_CURSED	Проклят и доволен
+MC_ACH_CURSED_DESC	Выполните награду с проклятым сокровищем.
+MC_ACH_GUEST	Гостеприимство
+MC_ACH_GUEST_DESC	Выполните награду, в которой гость наносит боссу последний удар.
+MC_ACH_VETERAN	Ветеран
+MC_ACH_VETERAN_DESC	Выполните 100 наград.
+MC_ACH_HEROIC_ALL	Без пощады
+MC_ACH_HEROIC_ALL_DESC	Пройдите все 42 зоны в героическом режиме.
+MC_ACH_ALL60	Все под одной крышей
+MC_ACH_ALL60_DESC	Поднимите всех 24 наемников до 60 уровня.
 MC_ROADMAP	Планы
 MC_RM_MILESTONE	Этап
 MC_RM_HINT	Планы могут измениться. Есть идеи или пожелания? Пишите нам на CurseForge или GitHub.

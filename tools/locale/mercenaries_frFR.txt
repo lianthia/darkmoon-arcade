@@ -320,6 +320,44 @@ MC_ACH_STAGE2	À travers les terres sauvages
 MC_ACH_STAGE2_DESC	Terminer toutes les zones jusqu'au niveau 45.
 MC_ACH_STAGE3	Victoire au mont Hyjal
 MC_ACH_STAGE3_DESC	Terminer toutes les zones, mont Hyjal compris.
+MC_ACH_HOGGER	Hogger doit partir !
+MC_ACH_HOGGER_DESC	Vaincre Hogger dans la forêt d'Elwynn.
+MC_ACH_LEGENDS	Légendes de l'ancien monde
+MC_ACH_LEGENDS_DESC	Vaincre Onyxia, Azuregos, seigneur Kazzak et C'Thun.
+MC_ACH_HYJAL	Sommet d'Hyjal
+MC_ACH_HYJAL_DESC	Vaincre le boss du mont Hyjal en mode héroïque.
+MC_ACH_EASTERN	Vers l'est
+MC_ACH_EASTERN_DESC	Terminer toutes les zones des royaumes de l'Est.
+MC_ACH_KALIMDOR	Vers l'ouest
+MC_ACH_KALIMDOR_DESC	Terminer toutes les zones de Kalimdor.
+MC_ACH_NEWSHORES	Nouveaux rivages
+MC_ACH_NEWSHORES_DESC	Terminer l'île de Zephras, Shen'dralas et les Riverglades.
+MC_ACH_FULLGEAR	Tout équipé
+MC_ACH_FULLGEAR_DESC	Débloquer les trois pièces d'équipement d'un mercenaire.
+MC_ACH_MASTER	Maître de son art
+MC_ACH_MASTER_DESC	Porter les trois techniques d'un mercenaire au rang III.
+MC_ACH_UNDERDOG	David contre Goliath
+MC_ACH_UNDERDOG_DESC	Vaincre un boss avec un groupe d'au moins 3 niveaux de moins en moyenne.
+MC_ACH_BLITZ	Victoire éclair
+MC_ACH_BLITZ_DESC	Remporter un combat en un seul tour.
+MC_ACH_CASTERS	Pure sorcellerie
+MC_ACH_CASTERS_DESC	Terminer une prime uniquement avec des lanceurs de sorts.
+MC_ACH_PROTECTORS	Mur d'acier
+MC_ACH_PROTECTORS_DESC	Terminer une prime uniquement avec des protecteurs.
+MC_ACH_FIGHTERS	Tourbillon de lames
+MC_ACH_FIGHTERS_DESC	Terminer une prime uniquement avec des combattants.
+MC_ACH_MYSTERIES	Chercheur de fortune
+MC_ACH_MYSTERIES_DESC	Rencontrer chacun des six mystères.
+MC_ACH_CURSED	Maudit et satisfait
+MC_ACH_CURSED_DESC	Terminer une prime en portant un trésor maudit.
+MC_ACH_GUEST	Hospitalité
+MC_ACH_GUEST_DESC	Terminer une prime où l'invité porte le dernier coup au boss.
+MC_ACH_VETERAN	Vétéran
+MC_ACH_VETERAN_DESC	Terminer 100 primes.
+MC_ACH_HEROIC_ALL	Sans pitié
+MC_ACH_HEROIC_ALL_DESC	Terminer les 42 zones en mode héroïque.
+MC_ACH_ALL60	Tous sous le même toit
+MC_ACH_ALL60_DESC	Amener les 24 mercenaires au niveau 60.
 MC_ROADMAP	Feuille de route
 MC_RM_MILESTONE	Étape
 MC_RM_HINT	Les projets peuvent changer. Des idées ou des souhaits ? Dites-le-nous sur CurseForge ou GitHub.
