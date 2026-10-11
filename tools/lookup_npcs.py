@@ -105,13 +105,19 @@ def local_name(npc_id, sub):
 
 
 def main():
-    if sys.argv[1:] == ["--locales"]:
+    if sys.argv[1:] in (["--locales"], ["--locales-retry"]):
         # Names in the other client languages, stored per NPC as "names": {"frFR": ...}.
+        # --locales-retry asks again for names that were still English (new characters).
+        retry = sys.argv[1] == "--locales-retry"
         cache = json.loads(CACHE.read_text(encoding="utf-8"))
         for name, entry in cache.items():
             if not entry:
                 continue
             names = entry.setdefault("names", {})
+            if retry:
+                if not names or any(v != name for v in names.values()):
+                    continue
+                names.clear()
             for sub, lang in LOCALES.items():
                 if lang in names:
                     continue
