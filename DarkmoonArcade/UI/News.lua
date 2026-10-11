@@ -111,7 +111,7 @@ end
 -- Shows the window unless this version's news were already seen.
 function News:ShowIfNew()
     local version = ns.Version()
-    if ns.db.newsSeen == version or not self.frame then return end
+    if ns.db.newsNever or ns.db.newsSeen == version or not self.frame then return end
     self:Show()
 end
 

@@ -9,6 +9,8 @@ function ns.AddStrings(language, values)
 end
 
 ns.AddStrings("enUS", {
+    OPT_NEWS_NEVER = "Never show \"What's new\" automatically",
+    OPT_NEWS_NEVER_TIP = "The \"What's new\" window no longer opens by itself after an update. The button in the main menu still shows it.",
     STATISTICS = "Statistics",
     STATS_ARCADE = "Arcade",
     STATS_TOTAL_TIME = "Total time played",
@@ -106,6 +108,8 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    OPT_NEWS_NEVER = "„Neuerungen“ nie automatisch anzeigen",
+    OPT_NEWS_NEVER_TIP = "Das Fenster „Neuerungen“ öffnet sich nach einem Update nicht mehr von selbst. Über den Knopf im Hauptmenü bleibt es erreichbar.",
     STATISTICS = "Statistiken",
     STATS_ARCADE = "Spielhalle",
     STATS_TOTAL_TIME = "Gesamte Spielzeit",
@@ -200,6 +204,8 @@ ns.AddStrings("deDE", {
 })
 
 ns.AddStrings("frFR", {
+    OPT_NEWS_NEVER = "Ne jamais afficher « Nouveautés » automatiquement",
+    OPT_NEWS_NEVER_TIP = "La fenêtre « Nouveautés » ne s'ouvre plus d'elle-même après une mise à jour. Le bouton du menu principal l'affiche toujours.",
     STATISTICS = "Statistiques",
     STATS_ARCADE = "Salle d'arcade",
     STATS_TOTAL_TIME = "Temps de jeu total",
@@ -295,6 +301,8 @@ ns.AddStrings("frFR", {
 })
 
 ns.AddStrings("esES", {
+    OPT_NEWS_NEVER = "No mostrar nunca «Novedades» automáticamente",
+    OPT_NEWS_NEVER_TIP = "La ventana «Novedades» ya no se abre sola tras una actualización. El botón del menú principal la sigue mostrando.",
     STATISTICS = "Estadísticas",
     STATS_ARCADE = "Sala recreativa",
     STATS_TOTAL_TIME = "Tiempo total de juego",
@@ -390,6 +398,8 @@ ns.AddStrings("esES", {
 })
 
 ns.AddStrings("ruRU", {
+    OPT_NEWS_NEVER = "Никогда не показывать «Что нового» автоматически",
+    OPT_NEWS_NEVER_TIP = "Окно «Что нового» больше не открывается само после обновления. Кнопка в главном меню по-прежнему его показывает.",
     STATISTICS = "Статистика",
     STATS_ARCADE = "Аркада",
     STATS_TOTAL_TIME = "Всего в игре",
@@ -486,6 +496,8 @@ ns.AddStrings("ruRU", {
 })
 
 ns.AddStrings("zhCN", {
+    OPT_NEWS_NEVER = "永不自动显示“新内容”",
+    OPT_NEWS_NEVER_TIP = "更新后“新内容”窗口不再自动打开。仍可通过主菜单中的按钮查看。",
     STATISTICS = "统计",
     STATS_ARCADE = "游乐厅",
     STATS_TOTAL_TIME = "总游戏时间",

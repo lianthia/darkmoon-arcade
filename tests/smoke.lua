@@ -286,6 +286,18 @@ assert(News.frame._shown, "news after an update")
 News.showButton._scripts.OnClick(News.showButton)
 assert(not News.frame._shown and DarkmoonArcadeDB.newsSeen == ns.Version(), "the arcade button retires the news")
 assert(Window.frame._shown and Window.hub._shown, "the arcade button opens the main menu")
+-- The main menu's button opens the news again; the option keeps them from opening by themselves.
+assert(Window.newsButton._shown, "news button in the main menu")
+Window.newsButton._scripts.OnClick(Window.newsButton)
+assert(News.frame._shown, "news button shows the news")
+News.okButton._scripts.OnClick(News.okButton)
+DarkmoonArcadeDB.newsSeen, DarkmoonArcadeDB.newsNever = "1.0.0", true
+News:ShowIfNew()
+assert(not News.frame._shown, "never show the news automatically")
+Window.newsButton._scripts.OnClick(Window.newsButton)
+assert(News.frame._shown, "the button works with the option set")
+News.okButton._scripts.OnClick(News.okButton)
+DarkmoonArcadeDB.newsNever = false
 
 local results = { murloc = 0, flappy = 0, jewels = 0, slots = 0, spell = 0, deck = 0, clicks = 0, best = 0 }
 local seed = 42
@@ -702,7 +714,7 @@ Window:OpenHub()
 
 -- Settings callbacks and dropdown contents.
 for _, name in ipairs({ "DarkmoonArcade_language", "DarkmoonArcade_scale", "DarkmoonArcade_flightGame",
-        "DarkmoonArcade_mercenaries_fast" }) do
+        "DarkmoonArcade_newsNever", "DarkmoonArcade_mercenaries_fast" }) do
     assert(registeredSettings[name], name .. " registered")
 end
 assert(ns.SafeCall("Settings again", ns.Settings.Register, ns.Settings), "taken setting names are skipped quietly")

@@ -29,6 +29,7 @@ function SettingsPage.Definitions()
             format = function(value) return ("%d%%"):format(value * 100 + 0.5) end },
         { kind = "check", tbl = db, key = "minimap", label = "OPT_MINIMAP", tip = "OPT_MINIMAP_TIP", default = true,
             onChange = function() ns.Minimap:Update() end },
+        { kind = "check", tbl = db, key = "newsNever", label = "OPT_NEWS_NEVER", tip = "OPT_NEWS_NEVER_TIP", default = false },
 
         { kind = "section", label = "OPT_SECTION_SOUND" },
         { kind = "check", tbl = db, key = "sound", label = "OPT_SOUND", tip = "OPT_SOUND_TIP", default = true },

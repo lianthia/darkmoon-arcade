@@ -357,6 +357,10 @@ function Window:CreateFooter()
     local stats = Widgets.Button(chrome, 124, 26, "STATISTICS", function() self:OpenStats() end)
     stats:SetPoint("RIGHT", options, "LEFT", -8, 0)
     self.statsButton = stats
+    -- The news of this version, for everyone who closed them too early.
+    local news = Widgets.Button(chrome, 124, 26, "NEWS_TITLE", function() ns.News:Show() end)
+    news:SetPoint("RIGHT", stats, "LEFT", -8, 0)
+    self.newsButton = news
     local achievements = Widgets.Button(chrome, 124, 26, "ACHIEVEMENTS", function()
         if self.activeGame then self.activeGame:ShowAchievements() end
     end)
@@ -595,6 +599,7 @@ function Window:OpenHub()
     self.helpButton:Hide()
     self.optionsButton:Show()
     self.statsButton:Show()
+    self.newsButton:Show()
     self.versionText:Show()
     self:RefreshHub()
 end
@@ -625,6 +630,7 @@ function Window:OpenGame(id)
     self.helpButton:Show()
     self.optionsButton:Hide()
     self.statsButton:Hide()
+    self.newsButton:Hide()
     self.versionText:Hide()
     game:Enter()
     self:UpdateSidebar(true)
@@ -643,6 +649,7 @@ function Window:OpenOptions()
     self.helpButton:Hide()
     self.optionsButton:Hide()
     self.statsButton:Hide()
+    self.newsButton:Hide()
     self.versionText:Hide()
 end
 
@@ -659,6 +666,7 @@ function Window:OpenStats()
     self.helpButton:Hide()
     self.optionsButton:Hide()
     self.statsButton:Hide()
+    self.newsButton:Hide()
     self.versionText:Hide()
 end
 
