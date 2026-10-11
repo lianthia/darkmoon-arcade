@@ -22,6 +22,9 @@ local LOG_X, LOG_Y, LOG_W, LOG_H = W - 240, 44, 230, 360
 local ALLY_NAME, ENEMY_NAME, ABILITY_NAME = "|cff8cc8ff", "|cffff8c7a", "|cffffd100"
 -- The timeline of a turn in the tray: portrait coins, the ability on each, dashes in between.
 local TL_Y, TL_COIN, TL_ICON, TL_GAP = TRAY_Y - 10, 58, 30, 128
+-- The orders' place of "Play all turns"; while a turn plays it moves to Ready's corner and the
+-- timeline keeps clear of it.
+local AUTO_X, AUTO_Y, AUTO_PLAY_X, TL_RIGHT = W - 214, TRAY_Y + 30, W - 104, W - 200
 local ALLY_RIM, ENEMY_RIM = { 0.5, 0.75, 1 }, { 1, 0.5, 0.4 }
 
 local SCHOOL_COLORS = {
@@ -162,7 +165,7 @@ function Module:BuildBattle()
     self.readyButton = Kit.BigButton(view, 92, "MC_READY", function() self:ResolveTurn() end)
     Kit.Place(self.readyButton, W - 66, TRAY_Y + 4)
     self.autoButton = Kit.Button(view, 170, 28, nil, function() self:ToggleAutoBattle() end, "blue")
-    Kit.Place(self.autoButton, W - 214, TRAY_Y + 30)
+    Kit.Place(self.autoButton, AUTO_X, AUTO_Y)
     Widgets.OnRefresh(function() self:UpdateAutoButton() end)
     -- One click for a whole turn: everyone picks automatically, then the turn plays.
     self.playButton = Kit.Button(view, 170, 28, "MC_PLAY_TURN", function() self:PlayTurn() end, "green")
@@ -343,6 +346,8 @@ function Module:RefreshBattle()
     self.readyButton:SetShown(commanding and not self.autoBattle)
     self.readyButton:SetEnabled(Combat.Ready(b))
     self.autoButton:SetShown(commanding or deploying)
+    -- Below Play turn while giving orders; in Ready's corner while the bench fills the tray.
+    if deploying then Kit.Place(self.autoButton, AUTO_PLAY_X, TL_Y) else Kit.Place(self.autoButton, AUTO_X, AUTO_Y) end
     self.playButton:SetShown(commanding and not self.autoBattle)
     self:UpdateAutoButton()
     self:StartBattleLog(b)
@@ -538,6 +543,7 @@ function Module:ResolveTurn()
     for _, card in ipairs(self.cards) do card:Hide() end
     self.readyButton:Hide()
     self.autoButton:SetShown(self.autoBattle)
+    Kit.Place(self.autoButton, AUTO_PLAY_X, TL_Y)
     self.playButton:Hide()
     local view = self.views.battle
     view.hint:SetText("")
@@ -1030,12 +1036,15 @@ function Module:ShowTimeline(list)
     local b = self:Battle()
     if not b then return end
     local n = #list
-    local gap = math.min(TL_GAP, (W - 80) / math.max(1, n))
+    -- Full width, or left of the Stop button in an automatic battle.
+    local left, right = 40, self.autoBattle and TL_RIGHT or W - 40
+    local gap = math.min(TL_GAP, (right - left) / math.max(1, n))
+    local center = (left + right) / 2
     self.timelineList, self.timelineCurrent = list, 0
     for i, entry in ipairs(list) do
         local item = self:TimelineItem(i)
         local u = b.units[entry.uid]
-        local x = W / 2 + (i - (n + 1) / 2) * gap
+        local x = center + (i - (n + 1) / 2) * gap
         item.x = x
         Kit.Place(item, x, TL_Y, self.timeline)
         if not (u and item:SetCreature(MC.DisplayFor(u.kind, u.id))) then
