@@ -164,6 +164,13 @@ for _ = 1, 200 do
     elseif b.phase == "command" and not mc.playing then
         if battleShots == 1 then
             if Want("battle") then Snap("battle_command") end
+            if Want("battle") then
+                ns.Arcade.Settings(mc).colorblind = true
+                mc:RefreshShown()
+                Snap("battle_colorblind")
+                ns.Arcade.Settings(mc).colorblind = false
+                mc:RefreshShown()
+            end
             mc:PickAbility(1)
             if Want("battle") then Snap("battle_target") end
             battleShots = 2

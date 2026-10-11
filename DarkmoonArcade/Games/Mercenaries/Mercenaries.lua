@@ -18,7 +18,7 @@ local Module = {
     descKey = "MC_DESC",
     helpKey = "MC_HELP",
     tile = "tiles/mercenaries",
-    defaults = { fast = false, sounds = "ingame" },
+    defaults = { fast = false, sounds = "ingame", colorblind = false },
 }
 MC.Module = Module
 
@@ -31,6 +31,23 @@ MC.ROLE_COLORS = {
     caster = { 0.22, 0.48, 0.96 },
     neutral = { 0.62, 0.62, 0.62 },
 }
+-- The colour-blind option turns fighters bright gold and protectors dark wine-red, so the two differ
+-- in brightness too; every token also shows its role's symbol (shield, swords, staff).
+MC.ROLE_COLORS_CB = { fighter = { 0.98, 0.84, 0.22 }, protector = { 0.75, 0.25, 0.2 } }
+
+function MC.ColorBlind()
+    return ns.db ~= nil and ns.Arcade.Settings(MC.Module).colorblind == true
+end
+
+function MC.RoleTex(prefix, role)
+    role = role or "neutral"
+    return MC.Tex(prefix .. role .. ((MC.ROLE_COLORS_CB[role] and MC.ColorBlind()) and "_cb" or ""))
+end
+
+function MC.RoleColor(role)
+    if MC.ColorBlind() and MC.ROLE_COLORS_CB[role] then return MC.ROLE_COLORS_CB[role] end
+    return MC.ROLE_COLORS[role] or MC.ROLE_COLORS.neutral
+end
 
 -- Level colours like WoW's: grey far below, green below, yellow close, orange and red above.
 function MC.ConColor(level, reference)
@@ -214,7 +231,7 @@ function Module:Travel(layer, index)
     -- What happened at the stop is shown in a window that waits for the player.
     local event
     if node.type == "boon" then
-        event = { icon = MC.Tex("role_" .. node.role), title = L.MC_NODE_BOON,
+        event = { icon = MC.RoleTex("role_", node.role), title = L.MC_NODE_BOON,
             text = L.MC_EVENT_BOON:format(Describe.RoleName(node.role), Bounty.BoonTier(run) * 10) }
     elseif node.type == "mystery" and run.phase == "map" then
         local kind = node.mystery
@@ -651,7 +668,7 @@ function Module:CreatePages()
                 if MC.Kit.HAS_PORTRAITS then
                     SetPortraitTextureFromCreatureDisplayID(b.icon, MC.Mercs[id].display)
                 else
-                    b.icon:SetTexture(MC.Tex("role_" .. MC.Mercs[id].role))
+                    b.icon:SetTexture(MC.RoleTex("role_", MC.Mercs[id].role))
                 end
                 b.name:SetText(Describe.MercName(id))
             end
@@ -873,9 +890,19 @@ function Module:DecorateTile(tile, art)
     end
 end
 
+-- Redraws whatever is on screen (after the colour-blind option changed).
+function Module:RefreshShown()
+    if not self.views then return end
+    local view = self.view and self.views[self.view]
+    if view and view.refresh then view.refresh() end
+    if self.overlay and self.overlay.current then self.overlay:Refresh() end
+end
+
 function Module:Options()
     return {
         { kind = "check", tbl = Arcade.Settings(self), key = "fast", label = "MC_OPT_FAST", tip = "MC_OPT_FAST_TIP", default = false },
+        { kind = "check", tbl = Arcade.Settings(self), key = "colorblind", label = "MC_OPT_COLORBLIND", tip = "MC_OPT_COLORBLIND_TIP",
+            default = false, onChange = function() self:RefreshShown() end },
         { kind = "choice", tbl = Arcade.Settings(self), key = "sounds", label = "MC_OPT_SOUNDS", tip = "MC_OPT_SOUNDS_TIP",
             default = "ingame", choices = function()
                 return { { "ingame", L.MC_SOUNDS_INGAME }, { "simple", L.MC_SOUNDS_SIMPLE } }

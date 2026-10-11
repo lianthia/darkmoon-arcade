@@ -222,6 +222,10 @@ function MC.CreateToken(parent)
     f.health.text:SetPoint("CENTER", 0, -3)
     f.level = Badge(top, "level", 24, 10)
     f.level:SetPoint("CENTER", top, "TOP", 0, -4)
+    -- The role's symbol (shield, swords, star): roles tell apart without their colour.
+    f.roleIcon = top:CreateTexture(nil, "OVERLAY", nil, 3)
+    f.roleIcon:SetSize(26, 26)
+    f.roleIcon:SetPoint("CENTER", top, "TOPLEFT", 14, -26)
     f.absorb = top:CreateFontString(nil, "OVERLAY")
     f.absorb:SetFont(Media.FontFile(), 11, "OUTLINE")
     f.absorb:SetTextColor(0.8, 0.9, 1)
@@ -275,10 +279,12 @@ function Token:SetData(data, reference)
     self.data = data
     local boss = data.kind == "boss"
     local role = data.role or "neutral"
-    self.frame:SetTexture(MC.Tex("otoken_" .. role))
+    self.frame:SetTexture(MC.RoleTex("otoken_", role))
+    self.roleIcon:SetTexture(MC.RoleTex("role_", role))
+    self.roleIcon:SetShown(role ~= "neutral")
     self.frame:SetVertexColor(boss and 1 or 1, boss and 0.86 or 1, boss and 0.45 or 1)
-    self.attack.tex:SetTexture(MC.Tex("hs_attack_" .. role))
-    self.health.tex:SetTexture(MC.Tex("hs_health_" .. role))
+    self.attack.tex:SetTexture(MC.RoleTex("hs_attack_", role))
+    self.health.tex:SetTexture(MC.RoleTex("hs_health_", role))
     if first then
         self.portrait:SetDisplay(DisplayFor(data.kind, data.id))
         self.name:SetText(Describe.UnitName(data.kind, data.id))
@@ -359,7 +365,7 @@ function MC.UnitTooltip(owner, u, reference)
     GameTooltip:SetOwner(owner, "ANCHOR_RIGHT")
     local name = Describe.UnitName(u.kind == "elite" and "enemy" or (u.kind == "boss" and "enemy" or u.kind), u.id)
     GameTooltip:SetText(name, 1, 0.82, 0)
-    local roleColor = MC.ROLE_COLORS[u.role] or MC.ROLE_COLORS.neutral
+    local roleColor = MC.RoleColor(u.role)
     local levelText = L.LEVEL:format(u.level)
     if reference and u.level - reference >= 10 then levelText = L.MC_LEVEL_SKULL end
     GameTooltip:AddLine(levelText .. "  ·  " .. Describe.RoleName(u.role), roleColor[1], roleColor[2], roleColor[3])

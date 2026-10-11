@@ -262,28 +262,64 @@ def map_background():
     return overlay(arc.to_rgba(rgb), draw).filter(ImageFilter.GaussianBlur(0.7))
 
 
+def _sword(cx, cy, angle):
+    """Outline points of a sword (pommel, grip, crossguard, blade, tip) on a 64 px gem."""
+    du, dv = (math.sin(angle), -math.cos(angle)), (math.cos(angle), math.sin(angle))
+
+    def at(u, v):
+        return (cx + u * du[0] + v * dv[0], cy + u * du[1] + v * dv[1])
+    blade = [at(-6, -3.8), at(15, -3.8), at(23, 0), at(15, 3.8), at(-6, 3.8)]
+    guard = [at(-10.5, -9.5), at(-6, -9.5), at(-6, 9.5), at(-10.5, 9.5)]
+    grip = [at(-18, -2.6), at(-10, -2.6), at(-10, 2.6), at(-18, 2.6)]
+    return blade, guard, grip, at(-20, 0)
+
+
 def role_icon(role):
-    """Role gem: shield, crossed swords or a star on the role's colour."""
+    """Role gem: a heater shield, crossed swords or a staff with a glowing orb on the role's colour."""
     c = tuple(int(v * 255) for v in ROLE_COLORS[role])
 
     def draw(dr, s):
-        dr.ellipse([3 * s, 3 * s, 61 * s, 61 * s], fill=(30, 22, 16, 255))
+        dark, white = (30, 22, 16, 255), (255, 248, 230, 255)
+        dr.ellipse([3 * s, 3 * s, 61 * s, 61 * s], fill=dark)
         dr.ellipse([7 * s, 7 * s, 57 * s, 57 * s], fill=c + (255,))
-        white = (255, 248, 230, 255)
+
+        def poly(points, fill=white):
+            dr.polygon([(x * s, y * s) for x, y in points], fill=fill, outline=dark, width=int(1.6 * s))
+
+        def disc(x, y, r, fill=white):
+            dr.ellipse([(x - r) * s, (y - r) * s, (x + r) * s, (y + r) * s], fill=fill, outline=dark, width=int(1.6 * s))
         if role == "protector":
-            dr.polygon([(20 * s, 18 * s), (44 * s, 18 * s), (44 * s, 34 * s), (32 * s, 48 * s), (20 * s, 34 * s)], fill=white)
+            # Heater shield: straight top, sides curving into a point, a boss in the middle.
+            pts = [(16, 13), (48, 13), (48, 28)]
+            for k in range(1, 13):
+                t = k / 12
+                # Quadratic curve from the side down to the point.
+                pts.append(((1 - t) ** 2 * 48 + 2 * (1 - t) * t * 47 + t * t * 32, (1 - t) ** 2 * 28 + 2 * (1 - t) * t * 47 + t * t * 53))
+            for k in range(11, 0, -1):
+                t = k / 12
+                pts.append(((1 - t) ** 2 * 16 + 2 * (1 - t) * t * 17 + t * t * 32, (1 - t) ** 2 * 28 + 2 * (1 - t) * t * 47 + t * t * 53))
+            pts.append((16, 28))
+            poly(pts)
+            disc(32, 30, 6, c + (255,))
         elif role == "fighter":
-            for flip in (1, -1):
-                x0 = 32 - 13 * flip
-                dr.line([(x0 * s, 18 * s), ((32 + 13 * flip) * s, 46 * s)], fill=white, width=5 * s)
-                dr.line([((32 - 6 * flip) * s, 38 * s), ((32 - 16 * flip) * s, 33 * s)], fill=white, width=3 * s)
+            for angle in (math.radians(42), math.radians(-42)):
+                blade, guard, grip, pommel = _sword(32, 33, angle)
+                poly(grip)
+                disc(pommel[0], pommel[1], 2.8)
+                poly(blade)
+                poly(guard)
         elif role == "caster":
-            pts = []
-            for k in range(10):
-                a = k / 10 * 2 * math.pi
-                r = 17 if k % 2 == 0 else 7
-                pts.append(((32 + r * math.sin(a)) * s, (33 - r * math.cos(a)) * s))
-            dr.polygon(pts, fill=white)
+            # A staff with a glowing orb and sparks.
+            stem = [(14, 49), (19, 54), (39, 30), (34, 25)]
+            poly(stem)
+            disc(40, 23, 11)
+            for x, y, r in ((50, 41, 6), (22, 17, 5), (40, 23, 6)):
+                pts = []
+                for k in range(8):
+                    a = k / 8 * 2 * math.pi
+                    rr = r if k % 2 == 0 else r * 0.35
+                    pts.append((x + rr * math.sin(a), y - rr * math.cos(a)))
+                dr.polygon([(px * s, py * s) for px, py in pts], fill=white if (x, y) != (40, 23) else c + (255,))
         else:
             dr.ellipse([24 * s, 24 * s, 40 * s, 40 * s], fill=white)
     return supersampled(64, 64, draw)
@@ -458,6 +494,29 @@ def merc_card(role):
 
 TW_, TH_ = 192, 224
 T_OVAL = (96, 100, 74, 90)
+
+
+# Colour-blind friendly roles (option in the game): bright gold fighters and dark wine-red protectors,
+# so the two differ in brightness, not only in hue; casters stay blue.
+CB_COLORS = {
+    "fighter": (((0.80, 0.66, 0.10), (1.00, 0.92, 0.45), (0.40, 0.30, 0.03)), (0.98, 0.84, 0.22)),
+    "protector": (((0.42, 0.07, 0.05), (0.66, 0.18, 0.12), (0.18, 0.02, 0.02)), (0.52, 0.09, 0.07)),
+}
+
+
+def colorblind_fighter():
+    for role, (card, icon) in CB_COLORS.items():
+        old = CARD_COLORS[role], ROLE_COLORS[role]
+        CARD_COLORS[role], ROLE_COLORS[role] = card, icon
+        try:
+            ga.save_tga(merc_card(role), f"card_{role}_cb", FOLDER)
+            ga.save_tga(hs_ability_card(role), f"acard_{role}_cb", FOLDER)
+            ga.save_tga(hs_token(role), f"otoken_{role}_cb", FOLDER)
+            for kind in ("attack", "health"):
+                ga.save_tga(hs_badge(kind, role), f"hs_{kind}_{role}_cb", FOLDER)
+            ga.save_tga(role_icon(role), f"role_{role}_cb", FOLDER)
+        finally:
+            CARD_COLORS[role], ROLE_COLORS[role] = old
 
 
 def hs_token(role):
@@ -712,6 +771,7 @@ def main():
         ga.save_tga(hs_token(role), "otoken_" + role, FOLDER)
         for kind in ("attack", "health"):
             ga.save_tga(hs_badge(kind, role), f"hs_{kind}_{role}", FOLDER)
+    colorblind_fighter()
     for kind in BUTTON_FACES:
         ga.save_tga(hs_button(kind), kind, FOLDER)
     ga.save_tga(hs_token_back(), "otoken_back", FOLDER)

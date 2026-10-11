@@ -670,7 +670,7 @@ function Module:BuildCollection()
     view.tabs = {}
     for i, role in ipairs(ROLES) do
         local tab = Kit.Medallion(view, 46)
-        tab.icon:SetTexture(MC.Tex("role_" .. role))
+        tab.icon:SetTexture(MC.RoleTex("role_", role))
         tab:SetScript("OnClick", function()
             PlaySound(SOUNDKIT.IG_MAINMENU_OPTION)
             self.collectionRole, self.collectionPage = role, 1
@@ -808,13 +808,16 @@ function Module:RefreshCollection()
     self:SetScene(nil)
     local locked = store.run ~= nil
     if locked then self.partySlot = nil end
-    for role, tab in pairs(view.tabs) do Kit.SetSelected(tab, role == self.collectionRole) end
+    for role, tab in pairs(view.tabs) do
+        Kit.SetSelected(tab, role == self.collectionRole)
+        tab.icon:SetTexture(MC.RoleTex("role_", role))
+    end
     view.pageTitle.text:SetText(Describe.RoleName(self.collectionRole))
     local inParty = {}
     for i, b in ipairs(view.slots) do
         local id = store.party[i]
         if id then inParty[id] = true end
-        b.role:SetTexture(id and MC.Tex("role_" .. MC.Mercs[id].role) or nil)
+        b.role:SetTexture(id and MC.RoleTex("role_", MC.Mercs[id].role) or nil)
         b.name:SetText(id and Describe.MercName(id) or "")
         b.level.text:SetText(id and store.mercs[id].level or "")
         Kit.SetSelected(b, self.partySlot == i)

@@ -1,4 +1,6 @@
 MC_NAME	Mercenaries
+MC_OPT_COLORBLIND	Colores de rol aptos para daltónicos
+MC_OPT_COLORBLIND_TIP	Los luchadores pasan a ser dorados en vez de verdes y se distinguen de los protectores rojos. Cada retrato muestra además el símbolo de su rol: escudo, espadas o bastón.
 MC_RARITY_COMMON	Común
 MC_RARITY_UNCOMMON	Poco común
 MC_RARITY_RARE	Raro

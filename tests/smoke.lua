@@ -558,6 +558,13 @@ for _ = 1, 600 do
                 ns.Arcade.Settings(mc).sounds = "simple"
                 assert(not MC.AbilitySound("cairne_1"), "simple sounds leave the ability sounds out")
                 ns.Arcade.Settings(mc).sounds = "ingame"
+                -- Colour-blind friendly roles: fighters turn gold, the board redraws at once.
+                assert(not MC.RoleTex("role_", "fighter"):find("_cb"), "green fighters by default")
+                ns.Arcade.Settings(mc).colorblind = true
+                assert(MC.RoleTex("otoken_", "fighter"):find("_cb") and not MC.RoleTex("otoken_", "caster"):find("_cb"), "gold fighters")
+                mc:RefreshShown()
+                ns.Arcade.Settings(mc).colorblind = false
+                mc:RefreshShown()
                 mc.autoButton._scripts.OnClick(mc.autoButton)
                 assert(mc.autoBattle, "automatic battle on")
                 autoBattle = b
@@ -773,7 +780,8 @@ Window:OpenHub()
 -- Settings callbacks and dropdown contents.
 for _, name in ipairs({ "DarkmoonArcade_language", "DarkmoonArcade_scale", "DarkmoonArcade_flightGame",
         "DarkmoonArcade_newsNever", "DarkmoonArcade_mercenaries_fast",
-        "DarkmoonArcade_mercenaries_sounds", "DarkmoonArcade_flightTime" }) do
+        "DarkmoonArcade_mercenaries_sounds", "DarkmoonArcade_mercenaries_colorblind",
+        "DarkmoonArcade_flightTime" }) do
     assert(registeredSettings[name], name .. " registered")
 end
 assert(not registeredSettings.DarkmoonArcade_debugMode, "no debug mode in the release copy")

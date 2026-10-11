@@ -4,6 +4,8 @@
 local _, ns = ...
 ns.AddStrings("frFR", {
     MC_NAME = "Mercenaries",
+    MC_OPT_COLORBLIND = "Couleurs de rôle adaptées au daltonisme",
+    MC_OPT_COLORBLIND_TIP = "Les combattants deviennent dorés au lieu de verts et se distinguent ainsi des protecteurs rouges. Chaque portrait montre aussi le symbole de son rôle : bouclier, épées ou bâton.",
     MC_RARITY_COMMON = "Commun",
     MC_RARITY_UNCOMMON = "Inhabituel",
     MC_RARITY_RARE = "Rare",
@@ -862,6 +864,8 @@ ns.AddStrings("frFR", {
 
 ns.AddStrings("esES", {
     MC_NAME = "Mercenaries",
+    MC_OPT_COLORBLIND = "Colores de rol aptos para daltónicos",
+    MC_OPT_COLORBLIND_TIP = "Los luchadores pasan a ser dorados en vez de verdes y se distinguen de los protectores rojos. Cada retrato muestra además el símbolo de su rol: escudo, espadas o bastón.",
     MC_RARITY_COMMON = "Común",
     MC_RARITY_UNCOMMON = "Poco común",
     MC_RARITY_RARE = "Raro",
@@ -1720,6 +1724,8 @@ ns.AddStrings("esES", {
 
 ns.AddStrings("ruRU", {
     MC_NAME = "Mercenaries",
+    MC_OPT_COLORBLIND = "Цвета ролей для дальтоников",
+    MC_OPT_COLORBLIND_TIP = "Бойцы становятся золотыми вместо зеленых и отличаются от красных защитников. Каждый портрет также показывает символ роли: щит, мечи или посох.",
     MC_RARITY_COMMON = "Обычный",
     MC_RARITY_UNCOMMON = "Необычный",
     MC_RARITY_RARE = "Редкий",
@@ -2578,6 +2584,8 @@ ns.AddStrings("ruRU", {
 
 ns.AddStrings("zhCN", {
     MC_NAME = "Mercenaries",
+    MC_OPT_COLORBLIND = "色盲友好的职责颜色",
+    MC_OPT_COLORBLIND_TIP = "斗士由绿色变为金色，与红色的守护者区分开。每个头像还会显示职责符号：盾牌、双剑或法杖。",
     MC_RARITY_COMMON = "普通",
     MC_RARITY_UNCOMMON = "优秀",
     MC_RARITY_RARE = "精良",

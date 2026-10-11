@@ -1,4 +1,6 @@
 MC_NAME	Mercenaries
+MC_OPT_COLORBLIND	Couleurs de rôle adaptées au daltonisme
+MC_OPT_COLORBLIND_TIP	Les combattants deviennent dorés au lieu de verts et se distinguent ainsi des protecteurs rouges. Chaque portrait montre aussi le symbole de son rôle : bouclier, épées ou bâton.
 MC_RARITY_COMMON	Commun
 MC_RARITY_UNCOMMON	Inhabituel
 MC_RARITY_RARE	Rare

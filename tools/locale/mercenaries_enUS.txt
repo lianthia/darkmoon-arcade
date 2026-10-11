@@ -1,4 +1,6 @@
 MC_NAME	Mercenaries
+MC_OPT_COLORBLIND	Colour-blind friendly role colours
+MC_OPT_COLORBLIND_TIP	Fighters turn gold instead of green, so they stand apart from the red protectors. Every portrait also shows its role symbol: shield, swords or staff.
 MC_RARITY_COMMON	Common
 MC_RARITY_UNCOMMON	Uncommon
 MC_RARITY_RARE	Rare

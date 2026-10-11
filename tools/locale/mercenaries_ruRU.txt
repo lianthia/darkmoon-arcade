@@ -1,4 +1,6 @@
 MC_NAME	Mercenaries
+MC_OPT_COLORBLIND	Цвета ролей для дальтоников
+MC_OPT_COLORBLIND_TIP	Бойцы становятся золотыми вместо зеленых и отличаются от красных защитников. Каждый портрет также показывает символ роли: щит, мечи или посох.
 MC_RARITY_COMMON	Обычный
 MC_RARITY_UNCOMMON	Необычный
 MC_RARITY_RARE	Редкий

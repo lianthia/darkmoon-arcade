@@ -3,6 +3,8 @@ local _, ns = ...
 -- English and German so far; the other languages fall back to English until the full release.
 ns.AddStrings("enUS", {
     MC_NAME = "Mercenaries",
+    MC_OPT_COLORBLIND = "Colour-blind friendly role colours",
+    MC_OPT_COLORBLIND_TIP = "Fighters turn gold instead of green, so they stand apart from the red protectors. Every portrait also shows its role symbol: shield, swords or staff.",
     MC_RARITY_COMMON = "Common",
     MC_RARITY_UNCOMMON = "Uncommon",
     MC_RARITY_RARE = "Rare",
@@ -876,6 +878,8 @@ ns.AddStrings("enUS", {
 
 ns.AddStrings("deDE", {
     MC_NAME = "Mercenaries",
+    MC_OPT_COLORBLIND = "Farbenblind-freundliche Rollenfarben",
+    MC_OPT_COLORBLIND_TIP = "Kämpfer werden gold statt grün und heben sich so von den roten Beschützern ab. Jedes Porträt zeigt außerdem sein Rollensymbol: Schild, Schwerter oder Stab.",
     MC_RARITY_COMMON = "Häufig",
     MC_RARITY_UNCOMMON = "Selten",
     MC_RARITY_RARE = "Rar",

@@ -215,7 +215,7 @@ function Module:NodeIcon(run, node, visited)
         local boss = MC.Zones[run.zone].boss
         return "Interface\\Icons\\" .. (MC.BOSS_ICON[boss] or "INV_Misc_Bone_HumanSkull_01"), MC.Enemies[boss].display
     end
-    if node.type == "boon" then return MC.Tex("role_" .. node.role) end
+    if node.type == "boon" then return MC.RoleTex("role_", node.role) end
     if node.type == "mystery" and visited then return MYSTERY_ICON[node.mystery] or NODE_ICON.mystery end
     return NODE_ICON[node.type]
 end
@@ -298,7 +298,7 @@ function Module:RefreshMap()
         row:SetShown(member ~= nil)
         if member then
             local def = MC.Mercs[member.id]
-            row.role:SetTexture(MC.Tex("role_" .. def.role))
+            row.role:SetTexture(MC.RoleTex("role_", def.role))
             local name = Describe.MercName(member.id) .. (member.guest and (" |cff80c0ff(" .. L.MC_GUEST .. ")|r") or "")
             row.name:SetText(member.dead and ("|cffff5050" .. name .. "|r") or name)
             row.level.text:SetText(Bounty.MemberEntry(store, member).level)
@@ -372,7 +372,7 @@ function Module:ShowNodeInfo(layer, index)
         view.infoLevel:SetText(("|cff%02x%02x%02x%s|r"):format(r * 255, g * 255, b * 255,
             node.level - reference >= 10 and L.MC_LEVEL_SKULL or L.LEVEL:format(node.level)))
         for _, id in ipairs(node.enemies) do
-            lines[#lines + 1] = ("|T%s:14:14|t %s"):format(MC.Tex("role_" .. MC.Enemies[id].role), L["MC_E_" .. id])
+            lines[#lines + 1] = ("|T%s:14:14|t %s"):format(MC.RoleTex("role_", MC.Enemies[id].role), L["MC_E_" .. id])
         end
         if kind == "elite" then lines[#lines + 1] = "\n" .. L.MC_ELITE_INFO end
     else

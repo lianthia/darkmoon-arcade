@@ -1,4 +1,6 @@
 MC_NAME	Mercenaries
+MC_OPT_COLORBLIND	色盲友好的职责颜色
+MC_OPT_COLORBLIND_TIP	斗士由绿色变为金色，与红色的守护者区分开。每个头像还会显示职责符号：盾牌、双剑或法杖。
 MC_RARITY_COMMON	普通
 MC_RARITY_UNCOMMON	优秀
 MC_RARITY_RARE	精良
