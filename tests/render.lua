@@ -207,6 +207,15 @@ end
 if store.run and store.run.phase == "treasure" then
     mc:Route()
     if Want("treasure") then Snap("treasure") end
+    if Want("treasure") then
+        -- Three rarities side by side.
+        store.run.offer.options = { "might", "aegis", "ashbringer" }
+        mc.overlay:Refresh()
+        Snap("treasure_rarity")
+        store.run.offer.options = { "battlefocus", "titan", "sulfuras" }
+        mc.overlay:Refresh()
+        Snap("treasure_rarity2")
+    end
 end
 mc.overlay:Show("help")
 if Want("help") then Snap("help") end

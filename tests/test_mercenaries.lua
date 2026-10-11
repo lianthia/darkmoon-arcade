@@ -393,4 +393,33 @@ test("the last blow is remembered", function()
     eq(foe.killedBy, hero.uid, "killer recorded")
 end)
 
+test("every treasure has a rarity, and offers follow the weights", function()
+    local valid = {}
+    for _, r in ipairs(MC.RARITIES) do valid[r] = true end
+    for _, id in ipairs(MC.TREASURE_ORDER) do
+        assert(MC.Treasures[id] and valid[MC.Treasures[id].rarity], id .. " has a rarity")
+    end
+    for name, weights in pairs(MC.RARITY_WEIGHTS) do
+        local total = 0
+        for _, r in ipairs(MC.RARITIES) do total = total + weights[r] end
+        eq(total, 100, name .. " weights")
+    end
+    local store = NewStore()
+    local run = Bounty.NewRun(store, "elwynn", false, 77)
+    local seen = {}
+    for _ = 1, 400 do
+        for _, id in ipairs(Bounty.RollTreasures(store, run, 1, false, 3)) do
+            local r = MC.Treasures[id].rarity
+            seen[r] = (seen[r] or 0) + 1
+        end
+    end
+    assert(not seen.legendary, "no legendary treasure after a regular fight")
+    assert((seen.common or 0) > (seen.uncommon or 0) and (seen.uncommon or 0) > (seen.rare or 0), "rarer means less often")
+    local elite = {}
+    for _ = 1, 400 do
+        for _, id in ipairs(Bounty.RollTreasures(store, run, 1, true, 3)) do elite[MC.Treasures[id].rarity] = true end
+    end
+    assert(elite.legendary, "elite fights can offer legendary treasures")
+end)
+
 return passed, failed

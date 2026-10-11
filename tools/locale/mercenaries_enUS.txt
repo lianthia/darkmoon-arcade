@@ -1,4 +1,20 @@
 MC_NAME	Mercenaries
+MC_RARITY_COMMON	Common
+MC_RARITY_UNCOMMON	Uncommon
+MC_RARITY_RARE	Rare
+MC_RARITY_EPIC	Epic
+MC_RARITY_LEGENDARY	Legendary
+MC_T_whetstone	Whetstone
+MC_T_guardian	Guardian's Plate
+MC_T_battlefocus	Battle Focus
+MC_T_bloodthirst	Bloodthirst
+MC_T_stoneskin	Stoneskin
+MC_T_insight	Insight
+MC_T_assassin	Assassin's Mark
+MC_T_ashbringer	Ashbringer's Echo
+MC_T_thunderfury	Thunderfury's Spark
+MC_T_atiesh	Atiesh's Wisdom
+MC_T_sulfuras	Ember of Sulfuras
 MC_MUTE	Mute sounds
 MC_UNMUTE	Unmute sounds
 MC_OPT_SOUNDS	Battle sounds
@@ -33,7 +49,7 @@ MC_HELP_EFFECTS	|cff8a4a10Taunt|r - foes must attack this unit first.\n|cff8a4a1
 MC_HELP_MERCS_TITLE	Improving mercenaries
 MC_HELP_MERCS	|cff8a4a10Experience:|r every mercenary of the party gains experience from every won fight, up to level 60.\n|cff8a4a10Abilities:|r the second ability is learned at level 10, the third at level 30.\n|cff8a4a10Coins:|r each mercenary has its own coins. Every won fight gives each party member one coin, a beaten boss more. Each zone's boss also pays coins to certain mercenaries - that is how you recruit new ones.\n|cff8a4a10Recruiting:|r 50 coins of that mercenary.\n|cff8a4a10Ranks:|r abilities can be raised to rank II (30 coins) and rank III (80 coins).\n|cff8a4a10Equipment:|r each mercenary has three pieces. The first is there from the start, the second drops from a zone's boss in normal mode, the third in heroic mode. Hover a piece to see where it drops; click it to equip it.\n\nYour party is set in the book: click a slot on the right, then a mercenary.
 MC_HELP_TREASURES_TITLE	Treasures and events
-MC_HELP_TREASURES	|cff8a4a10Treasures:|r after a won fight a mercenary may take one of three treasures. It keeps it until the bounty ends. Elite fights offer stronger treasures.\n|cff8a4a10Cursed treasures|r are very strong, but each one lowers the health of the whole party for the rest of the bounty.\n\nMysteries:\n|cff8a4a10Stranger|r - copies a treasure one of your mercenaries already carries.\n|cff8a4a10Sabotage|r - the foes of the next fight start with less health.\n|cff8a4a10Portal|r - lets you skip a stop.\n|cff8a4a10Cursed chest|r - a choice of cursed treasures.\n|cff8a4a10Bonus loot|r - the boss pays half as many coins again.\n|cff8a4a10Recruit|r - a mercenary you may not own yet joins as a guest for the rest of the bounty.\n\n|cff8a4a10Score:|r every won fight scores ten times the foes' level; elites score half again, bosses three times as much and heroic bounties double.
+MC_HELP_TREASURES	|cff8a4a10Treasures:|r after a won fight a mercenary may take one of three treasures. It keeps it until the bounty ends. Every treasure has a rarity, as in WoW: common (white), uncommon (green), rare (blue), epic (purple) and legendary (orange). The rarer, the stronger - and the less often it shows up. Elite fights and heroic mode offer rarer treasures; legendary ones only appear there.\n|cff8a4a10Cursed treasures|r are very strong, but each one lowers the health of the whole party for the rest of the bounty.\n\nMysteries:\n|cff8a4a10Stranger|r - copies a treasure one of your mercenaries already carries.\n|cff8a4a10Sabotage|r - the foes of the next fight start with less health.\n|cff8a4a10Portal|r - lets you skip a stop.\n|cff8a4a10Cursed chest|r - a choice of cursed treasures.\n|cff8a4a10Bonus loot|r - the boss pays half as many coins again.\n|cff8a4a10Recruit|r - a mercenary you may not own yet joins as a guest for the rest of the bounty.\n\n|cff8a4a10Score:|r every won fight scores ten times the foes' level; elites score half again, bosses three times as much and heroic bounties double.
 MC_HELP_CONTROLS_TITLE	Controls
 MC_OPT_FAST	Fast battle animations
 MC_OPT_FAST_TIP	Plays the turns of Mercenaries twice as fast.
@@ -95,16 +111,16 @@ MC_MOD_STARTSHIELD	Starts every fight with Divine Shield
 MC_MOD_READYSTART	All abilities ready when a fight starts
 MC_MOD_THORNS	Deals %d damage to attackers
 MC_MOD_SPEED	All abilities: speed %+d
-MC_MOD_ATKPCT	+%d%% Attack
+MC_MOD_ATKPCT	+%d%% Attack value
 MC_MOD_HPPCT	+%d%% health
-MC_MOD_DMGPCT	+%d%% damage
+MC_MOD_DMGPCT	+%d%% damage with every ability
 MC_MOD_TAKENPCT	Takes %d%% less damage
 MC_MOD_HEALPCT	+%d%% healing
 MC_MOD_LIFESTEAL	Heals for %d%% of damage dealt
 MC_MOD_REGENPCT	Restores %d%% health each turn
 MC_MOD_CRITCHANCE	%d%% chance to deal double damage
 MC_MOD_EXECUTEPCT	+%d%% damage against foes below 30%% health
-MC_MOD_VENGEANCE	+%d%% Attack whenever an ally falls
+MC_MOD_VENGEANCE	+%d%% Attack value whenever an ally falls
 MC_NODE_FIGHT	Fight
 MC_NODE_ELITE	Elite fight
 MC_NODE_BOSS	Boss

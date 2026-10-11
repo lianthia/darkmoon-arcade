@@ -1,4 +1,20 @@
 MC_NAME	Mercenaries
+MC_RARITY_COMMON	Común
+MC_RARITY_UNCOMMON	Poco común
+MC_RARITY_RARE	Raro
+MC_RARITY_EPIC	Épico
+MC_RARITY_LEGENDARY	Legendario
+MC_T_whetstone	Piedra de afilar
+MC_T_guardian	Placa del guardián
+MC_T_battlefocus	Concentración de batalla
+MC_T_bloodthirst	Sed de sangre
+MC_T_stoneskin	Piel de piedra
+MC_T_insight	Perspicacia
+MC_T_assassin	Marca del asesino
+MC_T_ashbringer	Eco de la Crematoria
+MC_T_thunderfury	Chispa de Furia de trueno
+MC_T_atiesh	Sabiduría de Atiesh
+MC_T_sulfuras	Ascua de Sulfuras
 MC_MUTE	Silenciar
 MC_UNMUTE	Activar sonido
 MC_OPT_SOUNDS	Sonidos de combate
@@ -33,7 +49,7 @@ MC_HELP_EFFECTS	|cff8a4a10Provocar|r: los enemigos deben atacar primero a esta u
 MC_HELP_MERCS_TITLE	Mejorar mercenarios
 MC_HELP_MERCS	|cff8a4a10Experiencia:|r cada mercenario del grupo gana experiencia con cada combate ganado, hasta el nivel 60.\n|cff8a4a10Habilidades:|r la segunda habilidad se aprende al nivel 10, la tercera al nivel 30.\n|cff8a4a10Monedas:|r cada mercenario tiene sus propias monedas. Cada combate ganado da una moneda a cada miembro del grupo, y un jefe derrotado más. El jefe de cada zona también paga monedas a ciertos mercenarios: así se reclutan otros nuevos.\n|cff8a4a10Reclutar:|r 50 monedas de ese mercenario.\n|cff8a4a10Rangos:|r las habilidades pueden subir al rango II (30 monedas) y al rango III (80 monedas).\n|cff8a4a10Equipo:|r cada mercenario tiene tres piezas. La primera la tiene desde el principio, la segunda la suelta el jefe de una zona en modo normal y la tercera en modo heroico. Pasa el ratón sobre una pieza para ver dónde cae; haz clic para equiparla.\n\nEl grupo se forma en el libro: haz clic en un hueco de la derecha y luego en un mercenario.
 MC_HELP_TREASURES_TITLE	Tesoros y sucesos
-MC_HELP_TREASURES	|cff8a4a10Tesoros:|r tras un combate ganado, un mercenario puede elegir uno de tres tesoros. Lo conserva hasta el final de la recompensa. Los combates de élite ofrecen tesoros más fuertes.\n|cff8a4a10Los tesoros malditos|r son muy fuertes, pero cada uno reduce la salud de todo el grupo durante el resto de la recompensa.\n\nMisterios:\n|cff8a4a10Desconocido|r: copia un tesoro que ya lleva uno de tus mercenarios.\n|cff8a4a10Sabotaje|r: los enemigos del siguiente combate empiezan con menos salud.\n|cff8a4a10Portal|r: te permite saltar una parada.\n|cff8a4a10Cofre maldito|r: una selección de tesoros malditos.\n|cff8a4a10Botín extra|r: el jefe paga la mitad más de monedas.\n|cff8a4a10Recluta|r: un mercenario que quizá aún no tienes se une como invitado hasta el final de la recompensa.\n\n|cff8a4a10Puntuación:|r cada combate ganado puntúa diez veces el nivel de los enemigos; la élite vale la mitad más, los jefes el triple y las recompensas heroicas el doble.
+MC_HELP_TREASURES	|cff8a4a10Tesoros:|r tras un combate ganado, un mercenario puede elegir uno de tres tesoros. Lo conserva hasta el final de la recompensa. Cada tesoro tiene una rareza, como en WoW: común (blanco), poco común (verde), raro (azul), épico (morado) y legendario (naranja). Cuanto más raro, más fuerte, y menos a menudo aparece. Los combates de élite y el modo heroico ofrecen tesoros más raros; los legendarios solo aparecen allí.\n|cff8a4a10Los tesoros malditos|r son muy fuertes, pero cada uno reduce la salud de todo el grupo durante el resto de la recompensa.\n\nMisterios:\n|cff8a4a10Desconocido|r: copia un tesoro que ya lleva uno de tus mercenarios.\n|cff8a4a10Sabotaje|r: los enemigos del siguiente combate empiezan con menos salud.\n|cff8a4a10Portal|r: te permite saltar una parada.\n|cff8a4a10Cofre maldito|r: una selección de tesoros malditos.\n|cff8a4a10Botín extra|r: el jefe paga la mitad más de monedas.\n|cff8a4a10Recluta|r: un mercenario que quizá aún no tienes se une como invitado hasta el final de la recompensa.\n\n|cff8a4a10Puntuación:|r cada combate ganado puntúa diez veces el nivel de los enemigos; la élite vale la mitad más, los jefes el triple y las recompensas heroicas el doble.
 MC_HELP_CONTROLS_TITLE	Controles
 MC_OPT_FAST	Animaciones de combate rápidas
 MC_OPT_FAST_TIP	Reproduce los turnos de Mercenaries el doble de rápido.
@@ -95,16 +111,16 @@ MC_MOD_STARTSHIELD	Empieza cada combate con Escudo divino
 MC_MOD_READYSTART	Todas las habilidades listas al empezar un combate
 MC_MOD_THORNS	Inflige %d de daño a los atacantes
 MC_MOD_SPEED	Todas las habilidades: velocidad %+d
-MC_MOD_ATKPCT	+%d%% de ataque
+MC_MOD_ATKPCT	+%d%% de valor de ataque
 MC_MOD_HPPCT	+%d%% de salud
-MC_MOD_DMGPCT	+%d%% de daño
+MC_MOD_DMGPCT	+%d%% de daño con todas las habilidades
 MC_MOD_TAKENPCT	Recibe un %d%% menos de daño
 MC_MOD_HEALPCT	+%d%% de sanación
 MC_MOD_LIFESTEAL	Se sana un %d%% del daño infligido
 MC_MOD_REGENPCT	Restaura un %d%% de salud cada turno
 MC_MOD_CRITCHANCE	%d%% de probabilidad de infligir el doble de daño
 MC_MOD_EXECUTEPCT	+%d%% de daño contra enemigos por debajo del 30%% de salud
-MC_MOD_VENGEANCE	+%d%% de ataque cada vez que cae un aliado
+MC_MOD_VENGEANCE	+%d%% de valor de ataque cada vez que cae un aliado
 MC_NODE_FIGHT	Combate
 MC_NODE_ELITE	Combate de élite
 MC_NODE_BOSS	Jefe

@@ -449,24 +449,48 @@ function Bounty.TreasureFits(store, treasure, mercId, member)
     return false
 end
 
+-- Weights for the fight's kind: regular or elite, and heroic shifts both towards the rarer.
+function Bounty.RarityWeights(run, elite)
+    if run.heroic then return MC.RARITY_WEIGHTS[elite and "heroicElite" or "heroicFight"] end
+    return MC.RARITY_WEIGHTS[elite and "elite" or "fight"]
+end
+
+-- Rolls a rarity per offer, then a fitting treasure of it; with none left of that rarity, the next
+-- lower one is tried (then the higher ones). No treasure is offered twice at once.
 function Bounty.RollTreasures(store, run, memberIdx, elite, count)
     local mercId = run.party[memberIdx].id
-    local pool = {}
+    local pools = {}
+    for _, rarity in ipairs(MC.RARITIES) do pools[rarity] = {} end
     for _, id in ipairs(MC.TREASURE_ORDER) do
         local t = MC.Treasures[id]
-        if not t.cursed and (t.elite or false) == (elite or false) and Bounty.TreasureFits(store, t, mercId, run.party[memberIdx]) then
+        if not t.cursed and Bounty.TreasureFits(store, t, mercId, run.party[memberIdx]) then
+            local pool = pools[t.rarity]
             pool[#pool + 1] = id
         end
     end
+    local weights = Bounty.RarityWeights(run, elite)
+    local total = 0
+    for _, rarity in ipairs(MC.RARITIES) do total = total + weights[rarity] end
     local out = {}
-    for i = 1, count do
-        if #pool == 0 then break end
-        out[i] = table.remove(pool, Random(run, #pool))
-    end
-    -- Elite pools are small; top them up from the regular treasures.
-    if elite and #out < count then
-        local more = Bounty.RollTreasures(store, run, memberIdx, false, count - #out)
-        for _, id in ipairs(more) do out[#out + 1] = id end
+    for _ = 1, count do
+        local roll, rolled = Random(run) * total, 1
+        for i, rarity in ipairs(MC.RARITIES) do
+            roll = roll - weights[rarity]
+            if roll < 0 then
+                rolled = i
+                break
+            end
+        end
+        local order = {}
+        for i = rolled, 1, -1 do order[#order + 1] = MC.RARITIES[i] end
+        for i = rolled + 1, #MC.RARITIES do order[#order + 1] = MC.RARITIES[i] end
+        for _, rarity in ipairs(order) do
+            local pool = pools[rarity]
+            if #pool > 0 then
+                out[#out + 1] = table.remove(pool, Random(run, #pool))
+                break
+            end
+        end
     end
     return out
 end
@@ -508,8 +532,10 @@ local function Visit(store, run, node)
         run.phase = "map"
     elseif kind == "mystery" then
         local m = node.mystery
-        store.stats.mysteries = store.stats.mysteries or {}
-        store.stats.mysteries[m] = true
+        if store.stats then
+            store.stats.mysteries = store.stats.mysteries or {}
+            store.stats.mysteries[m] = true
+        end
         if m == "stranger" then
             if #Bounty.StrangerOptions(run) > 0 then
                 run.phase = "stranger"

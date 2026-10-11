@@ -420,8 +420,10 @@ function Module:PartyTooltip(owner, i)
     if member.dead then GameTooltip:AddLine(L.MC_FALLEN, 1, 0.3, 0.3) end
     if #member.treasures == 0 then GameTooltip:AddLine(L.MC_NO_TREASURES, 0.6, 0.6, 0.6) end
     for _, t in ipairs(member.treasures) do
-        local name, desc = self:TreasureText(t, member.id)
-        GameTooltip:AddLine(name, 1, 0.82, 0)
+        local _, desc = self:TreasureText(t, member.id)
+        local color = MC.RARITY_COLORS[MC.Treasures[t].rarity] or { 1, 0.82, 0 }
+        GameTooltip:AddLine(L["MC_T_" .. t] .. "  |cff999999(" .. L["MC_RARITY_" .. MC.Treasures[t].rarity:upper()] .. ")|r",
+            color[1], color[2], color[3])
         GameTooltip:AddLine(desc, 1, 1, 1, true)
     end
     GameTooltip:Show()

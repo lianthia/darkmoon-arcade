@@ -1,4 +1,20 @@
 MC_NAME	Mercenaries
+MC_RARITY_COMMON	Commun
+MC_RARITY_UNCOMMON	Inhabituel
+MC_RARITY_RARE	Rare
+MC_RARITY_EPIC	Épique
+MC_RARITY_LEGENDARY	Légendaire
+MC_T_whetstone	Pierre à aiguiser
+MC_T_guardian	Plaque du gardien
+MC_T_battlefocus	Concentration martiale
+MC_T_bloodthirst	Sanguinaire
+MC_T_stoneskin	Peau de pierre
+MC_T_insight	Perspicacité
+MC_T_assassin	Marque de l'assassin
+MC_T_ashbringer	Écho du Porte-cendres
+MC_T_thunderfury	Étincelle de Lame-tonnerre
+MC_T_atiesh	Sagesse d'Atiesh
+MC_T_sulfuras	Braise de Sulfuras
 MC_MUTE	Couper le son
 MC_UNMUTE	Activer le son
 MC_OPT_SOUNDS	Sons de combat
@@ -33,7 +49,7 @@ MC_HELP_EFFECTS	|cff8a4a10Provocation|r - les ennemis doivent attaquer cette uni
 MC_HELP_MERCS_TITLE	Améliorer les mercenaires
 MC_HELP_MERCS	|cff8a4a10Expérience :|r chaque mercenaire du groupe gagne de l'expérience à chaque combat gagné, jusqu'au niveau 60.\n|cff8a4a10Techniques :|r la deuxième technique s'apprend au niveau 10, la troisième au niveau 30.\n|cff8a4a10Pièces :|r chaque mercenaire a ses propres pièces. Chaque combat gagné donne une pièce à chaque membre du groupe, un boss vaincu davantage. Le boss de chaque zone paie aussi des pièces à certains mercenaires - c'est ainsi que l'on en recrute de nouveaux.\n|cff8a4a10Recrutement :|r 50 pièces de ce mercenaire.\n|cff8a4a10Rangs :|r les techniques peuvent passer au rang II (30 pièces) et au rang III (80 pièces).\n|cff8a4a10Équipement :|r chaque mercenaire a trois pièces d'équipement. La première est là dès le départ, la deuxième tombe sur le boss d'une zone en mode normal, la troisième en mode héroïque. Survolez une pièce pour voir où elle tombe ; cliquez pour l'équiper.\n\nLe groupe se compose dans le livre : cliquez sur un emplacement à droite, puis sur un mercenaire.
 MC_HELP_TREASURES_TITLE	Trésors et événements
-MC_HELP_TREASURES	|cff8a4a10Trésors :|r après un combat gagné, un mercenaire peut prendre un trésor parmi trois. Il le garde jusqu'à la fin de la prime. Les combats d'élite offrent des trésors plus forts.\n|cff8a4a10Les trésors maudits|r sont très puissants, mais chacun réduit la vie de tout le groupe pour le reste de la prime.\n\nMystères :\n|cff8a4a10Étranger|r - copie un trésor que l'un de vos mercenaires porte déjà.\n|cff8a4a10Sabotage|r - les ennemis du prochain combat commencent avec moins de vie.\n|cff8a4a10Portail|r - permet de sauter une étape.\n|cff8a4a10Coffre maudit|r - un choix de trésors maudits.\n|cff8a4a10Butin bonus|r - le boss paie moitié plus de pièces.\n|cff8a4a10Recrue|r - un mercenaire que vous ne possédez peut-être pas encore se joint à vous comme invité jusqu'à la fin de la prime.\n\n|cff8a4a10Score :|r chaque combat gagné rapporte dix fois le niveau des ennemis ; l'élite vaut moitié plus, les boss trois fois plus et les primes héroïques le double.
+MC_HELP_TREASURES	|cff8a4a10Trésors :|r après un combat gagné, un mercenaire peut prendre un trésor parmi trois. Il le garde jusqu'à la fin de la prime. Chaque trésor a une rareté, comme dans WoW : commun (blanc), inhabituel (vert), rare (bleu), épique (violet) et légendaire (orange). Plus il est rare, plus il est fort - et moins il apparaît. Les combats d'élite et le mode héroïque offrent des trésors plus rares ; les légendaires n'apparaissent que là.\n|cff8a4a10Les trésors maudits|r sont très puissants, mais chacun réduit la vie de tout le groupe pour le reste de la prime.\n\nMystères :\n|cff8a4a10Étranger|r - copie un trésor que l'un de vos mercenaires porte déjà.\n|cff8a4a10Sabotage|r - les ennemis du prochain combat commencent avec moins de vie.\n|cff8a4a10Portail|r - permet de sauter une étape.\n|cff8a4a10Coffre maudit|r - un choix de trésors maudits.\n|cff8a4a10Butin bonus|r - le boss paie moitié plus de pièces.\n|cff8a4a10Recrue|r - un mercenaire que vous ne possédez peut-être pas encore se joint à vous comme invité jusqu'à la fin de la prime.\n\n|cff8a4a10Score :|r chaque combat gagné rapporte dix fois le niveau des ennemis ; l'élite vaut moitié plus, les boss trois fois plus et les primes héroïques le double.
 MC_HELP_CONTROLS_TITLE	Commandes
 MC_OPT_FAST	Animations de combat rapides
 MC_OPT_FAST_TIP	Joue les tours de Mercenaries deux fois plus vite.
@@ -95,16 +111,16 @@ MC_MOD_STARTSHIELD	Commence chaque combat avec Bouclier divin
 MC_MOD_READYSTART	Toutes les techniques sont prêtes au début du combat
 MC_MOD_THORNS	Inflige %d points de dégâts aux attaquants
 MC_MOD_SPEED	Toutes les techniques : vitesse %+d
-MC_MOD_ATKPCT	+%d%% attaque
+MC_MOD_ATKPCT	+%d%% valeur d'attaque
 MC_MOD_HPPCT	+%d%% vie
-MC_MOD_DMGPCT	+%d%% dégâts
+MC_MOD_DMGPCT	+%d%% dégâts avec toutes les techniques
 MC_MOD_TAKENPCT	Subit %d%% de dégâts en moins
 MC_MOD_HEALPCT	+%d%% soins
 MC_MOD_LIFESTEAL	Se soigne de %d%% des dégâts infligés
 MC_MOD_REGENPCT	Rend %d%% de vie à chaque tour
 MC_MOD_CRITCHANCE	%d%% de chances d'infliger le double de dégâts
 MC_MOD_EXECUTEPCT	+%d%% de dégâts contre les ennemis sous 30%% de vie
-MC_MOD_VENGEANCE	+%d%% d'attaque chaque fois qu'un allié tombe
+MC_MOD_VENGEANCE	+%d%% valeur d'attaque chaque fois qu'un allié tombe
 MC_NODE_FIGHT	Combat
 MC_NODE_ELITE	Combat d'élite
 MC_NODE_BOSS	Boss

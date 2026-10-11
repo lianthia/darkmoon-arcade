@@ -443,6 +443,7 @@ local function OptionButton(parent, width, height)
     ring:SetPoint("CENTER", b.icon)
     ring:SetSize(60, 60)
     Kit.Atlas(ring, "hud-PlayerFrame-portraitring-large", MC.Tex("node_ring"))
+    b.ring = ring
     b.name = Kit.Ink(b, 14, { 0.45, 0.12, 0.04 })
     b.name:SetPoint("TOP", b.icon, "BOTTOM", 0, -12)
     b.name:SetWidth(width - 16)
@@ -450,11 +451,64 @@ local function OptionButton(parent, width, height)
     b.desc:SetPoint("TOP", b.name, "BOTTOM", 0, -6)
     b.desc:SetWidth(width - 24)
     b.desc:SetJustifyH("CENTER")
+    -- Rarity (treasures): a frame in the rarity's colour inside the rim, the ring tinted, the name in
+    -- its ink, the rarity's name at the foot; epic and legendary cards glow.
+    b.aura = b:CreateTexture(nil, "BACKGROUND", nil, -7)
+    b.aura:SetPoint("TOPLEFT", -26, 26)
+    b.aura:SetPoint("BOTTOMRIGHT", 26, -26)
+    b.aura:SetTexture(MC.Tex("soft_spot"))
+    b.aura:SetBlendMode("ADD")
+    b.aura:Hide()
+    b.frame = {}
+    for _, side in ipairs({ "TOP", "BOTTOM", "LEFT", "RIGHT" }) do
+        local t = b:CreateTexture(nil, "BORDER", nil, 2)
+        if side == "TOP" or side == "BOTTOM" then
+            local y = side == "TOP" and -1 or 1
+            t:SetPoint(side .. "LEFT", 1, y)
+            t:SetPoint(side .. "RIGHT", -1, y)
+            t:SetHeight(4)
+        else
+            local x = side == "LEFT" and 1 or -1
+            t:SetPoint("TOP" .. side, x, -1)
+            t:SetPoint("BOTTOM" .. side, x, 1)
+            t:SetWidth(4)
+        end
+        t:Hide()
+        b.frame[#b.frame + 1] = t
+    end
+    b.rarity = Kit.Ink(b, 11, { 1, 1, 1 })
+    b.rarity:SetPoint("BOTTOM", 0, 10)
+    function b:SetRarity(rarity)
+        local color, ink = rarity and MC.RARITY_COLORS[rarity], rarity and MC.RARITY_INKS[rarity]
+        for _, t in ipairs(self.frame) do
+            t:SetShown(color ~= nil)
+            if color then t:SetColorTexture(color[1], color[2], color[3], rarity == "common" and 0.55 or 0.9) end
+        end
+        self.ring:SetDesaturated(color ~= nil)
+        if color and rarity ~= "common" then
+            self.ring:SetVertexColor(color[1], color[2], color[3])
+        else
+            self.ring:SetVertexColor(1, 1, 1)
+        end
+        self.name:SetTextColor(unpack(ink or { 0.45, 0.12, 0.04 }))
+        self.rarity:SetText(rarity and L["MC_RARITY_" .. rarity:upper()] or "")
+        if ink then self.rarity:SetTextColor(ink[1], ink[2], ink[3]) end
+        local glow = rarity == "epic" or rarity == "legendary"
+        self.aura:SetShown(glow)
+        if glow then self.aura:SetVertexColor(color[1], color[2], color[3], rarity == "legendary" and 0.7 or 0.45) end
+    end
     b:HookScript("OnClick", function() PlaySound(SOUNDKIT.IG_MAINMENU_OPTION) end)
     Kit.Hover(b, { grow = 1.04, lift = 6, sound = false })
     return b
 end
 MC.OptionButton = OptionButton
+
+-- A treasure's name in its rarity's colour (for tooltips and lists on dark backgrounds).
+function MC.TreasureName(id)
+    local t = MC.Treasures[id]
+    local c = t and MC.RARITY_COLORS[t.rarity] or { 1, 0.82, 0 }
+    return ("|cff%02x%02x%02x%s|r"):format(c[1] * 255, c[2] * 255, c[3] * 255, L["MC_T_" .. id])
+end
 
 function Module:TreasureText(id, mercId)
     local t = MC.Treasures[id]
@@ -483,7 +537,7 @@ function Module:CreatePages()
     tToken:EnableMouse(false)
     local tButtons = {}
     for i = 1, 3 do
-        local b = OptionButton(treasure, 200, 176)
+        local b = OptionButton(treasure, 200, 196)
         MC.Kit.Place(b, W / 2 + (i - 2) * 220, 352, treasure)
         b:SetScript("OnClick", function()
             local store = self:Store()
@@ -519,6 +573,7 @@ function Module:CreatePages()
                 b.icon:SetTexture(MC.Treasures[id].icon)
                 b.name:SetText(name)
                 b.desc:SetText(desc)
+                b:SetRarity(MC.Treasures[id].rarity)
             end
         end
         decline:SetShown(cursed)
@@ -653,7 +708,7 @@ function Module:CreatePages()
                 b.option = i
                 local id = run.party[o.member].id
                 b.icon:SetTexture(MC.Treasures[o.treasure].icon)
-                b.text:SetText(("|cffffd100%s|r  ·  %s"):format(L["MC_T_" .. o.treasure], Describe.MercName(id)))
+                b.text:SetText(("%s  ·  %s"):format(MC.TreasureName(o.treasure), Describe.MercName(id)))
             end
         end
     end

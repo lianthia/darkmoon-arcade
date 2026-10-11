@@ -1,4 +1,20 @@
 MC_NAME	Mercenaries
+MC_RARITY_COMMON	普通
+MC_RARITY_UNCOMMON	优秀
+MC_RARITY_RARE	精良
+MC_RARITY_EPIC	史诗
+MC_RARITY_LEGENDARY	传说
+MC_T_whetstone	磨刀石
+MC_T_guardian	守护者板甲
+MC_T_battlefocus	战斗专注
+MC_T_bloodthirst	嗜血
+MC_T_stoneskin	石肤
+MC_T_insight	洞察
+MC_T_assassin	刺客印记
+MC_T_ashbringer	灰烬使者的回响
+MC_T_thunderfury	雷霆之怒的火花
+MC_T_atiesh	埃提耶什的智慧
+MC_T_sulfuras	萨弗拉斯的余烬
 MC_MUTE	静音
 MC_UNMUTE	取消静音
 MC_OPT_SOUNDS	战斗音效
@@ -33,7 +49,7 @@ MC_HELP_EFFECTS	|cff8a4a10嘲讽|r - 敌人必须先攻击此单位。\n|cff8a4a
 MC_HELP_MERCS_TITLE	强化佣兵
 MC_HELP_MERCS	|cff8a4a10经验：|r队伍中的每名佣兵在每场胜利的战斗中获得经验，最高 60 级。\n|cff8a4a10技能：|r第二个技能在 10 级学会，第三个在 30 级。\n|cff8a4a10硬币：|r每名佣兵都有自己的硬币。每场胜利的战斗给每名队员一枚硬币，击败首领则更多。每个区域的首领还会向特定佣兵支付硬币——这就是招募新佣兵的方式。\n|cff8a4a10招募：|r该佣兵的 50 枚硬币。\n|cff8a4a10等阶：|r技能可以提升到二阶（30 枚硬币）和三阶（80 枚硬币）。\n|cff8a4a10装备：|r每名佣兵有三件装备。第一件一开始就有，第二件由区域首领在普通模式掉落，第三件在英雄模式掉落。将鼠标悬停在装备上可查看掉落地点；点击即可装备。\n\n队伍在书中组建：点击右侧的栏位，然后点击一名佣兵。
 MC_HELP_TREASURES_TITLE	宝藏与事件
-MC_HELP_TREASURES	|cff8a4a10宝藏：|r赢得一场战斗后，一名佣兵可以从三件宝藏中选择一件，并保留到悬赏结束。精英战斗提供更强的宝藏。\n|cff8a4a10被诅咒的宝藏|r非常强大，但每一件都会在悬赏剩余时间内降低整个队伍的生命值。\n\n神秘事件：\n|cff8a4a10陌生人|r - 复制你的一名佣兵已携带的宝藏。\n|cff8a4a10破坏|r - 下一场战斗的敌人开场时生命值更少。\n|cff8a4a10传送门|r - 让你跳过一个站点。\n|cff8a4a10被诅咒的宝箱|r - 从被诅咒的宝藏中选择。\n|cff8a4a10额外战利品|r - 首领多支付一半的硬币。\n|cff8a4a10新兵|r - 一名你可能还没有的佣兵以客人身份加入，直到悬赏结束。\n\n|cff8a4a10得分：|r每场胜利的战斗得分为敌人等级的十倍；精英多一半，首领三倍，英雄悬赏翻倍。
+MC_HELP_TREASURES	|cff8a4a10宝藏：|r赢得一场战斗后，一名佣兵可以从三件宝藏中选择一件，并保留到悬赏结束。每件宝藏都有品质，与魔兽世界相同：普通（白色）、优秀（绿色）、精良（蓝色）、史诗（紫色）和传说（橙色）。越稀有越强大，出现得也越少。精英战斗和英雄模式提供更稀有的宝藏；传说宝藏只在那里出现。\n|cff8a4a10被诅咒的宝藏|r非常强大，但每一件都会在悬赏剩余时间内降低整个队伍的生命值。\n\n神秘事件：\n|cff8a4a10陌生人|r - 复制你的一名佣兵已携带的宝藏。\n|cff8a4a10破坏|r - 下一场战斗的敌人开场时生命值更少。\n|cff8a4a10传送门|r - 让你跳过一个站点。\n|cff8a4a10被诅咒的宝箱|r - 从被诅咒的宝藏中选择。\n|cff8a4a10额外战利品|r - 首领多支付一半的硬币。\n|cff8a4a10新兵|r - 一名你可能还没有的佣兵以客人身份加入，直到悬赏结束。\n\n|cff8a4a10得分：|r每场胜利的战斗得分为敌人等级的十倍；精英多一半，首领三倍，英雄悬赏翻倍。
 MC_HELP_CONTROLS_TITLE	操作
 MC_OPT_FAST	快速战斗动画
 MC_OPT_FAST_TIP	以两倍的速度播放 Mercenaries 的回合。
@@ -95,16 +111,16 @@ MC_MOD_STARTSHIELD	每场战斗开始时获得圣盾术
 MC_MOD_READYSTART	战斗开始时所有技能就绪
 MC_MOD_THORNS	对攻击者造成 %d 点伤害
 MC_MOD_SPEED	所有技能：速度 %+d
-MC_MOD_ATKPCT	攻击力 +%d%%
+MC_MOD_ATKPCT	攻击值 +%d%%
 MC_MOD_HPPCT	生命值 +%d%%
-MC_MOD_DMGPCT	伤害 +%d%%
+MC_MOD_DMGPCT	所有技能伤害 +%d%%
 MC_MOD_TAKENPCT	受到的伤害降低 %d%%
 MC_MOD_HEALPCT	治疗效果 +%d%%
 MC_MOD_LIFESTEAL	治疗相当于造成伤害 %d%% 的生命值
 MC_MOD_REGENPCT	每回合恢复 %d%% 的生命值
 MC_MOD_CRITCHANCE	%d%% 几率造成双倍伤害
 MC_MOD_EXECUTEPCT	对生命值低于 30%% 的敌人伤害 +%d%%
-MC_MOD_VENGEANCE	每当一名盟友阵亡，攻击力 +%d%%
+MC_MOD_VENGEANCE	每当一名盟友阵亡，攻击值 +%d%%
 MC_NODE_FIGHT	战斗
 MC_NODE_ELITE	精英战斗
 MC_NODE_BOSS	首领
