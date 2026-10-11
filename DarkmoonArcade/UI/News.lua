@@ -117,6 +117,11 @@ end
 
 function News:Show()
     self.version:SetText(L.VERSION:format(ns.Version()))
+    -- The window grows with the text of each release (at least the default size).
+    self.text:SetHeight(0)
+    local height = math.max(TEXT_H, math.ceil(self.text:GetStringHeight() or 0))
+    self.text:SetHeight(height)
+    self.frame:SetHeight(TOP + 34 + ART_H + 16 + height + BOTTOM)
     self.frame:Show()
     PlaySound(SOUNDKIT.IG_MAINMENU_OPEN)
 end
