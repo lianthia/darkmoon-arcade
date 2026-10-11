@@ -13,15 +13,17 @@ local WIDTH, TEXT_W, TEXT_H = 560, 480, 216
 local ART_W, ART_H = 480, 130
 local ICON, ROW_GAP = 38, 10
 
--- This release's highlights: icon and the number of their NEWS_<n>_TITLE / NEWS_<n>_TEXT.
+-- This release's highlights in display order: icon and the number of their NEWS_<key>_TITLE /
+-- NEWS_<key>_TEXT.
 News.ITEMS = {
-    { icon = "INV_Misc_PocketWatch_01" },
-    { icon = "INV_Misc_Drum_01" },
-    { icon = "INV_Sword_62" },
-    { icon = "INV_Misc_Head_Gnoll_01" },
-    { icon = "Spell_Holy_MindVision" },
-    { icon = "Spell_Holy_SealOfRighteousness" },
-    { icon = "INV_Misc_Wrench_01" },
+    { icon = "INV_Misc_PocketWatch_01", key = 1 },
+    { icon = "Ability_Hunter_SniperShot", key = 8 },
+    { icon = "INV_Misc_Drum_01", key = 2 },
+    { icon = "INV_Sword_62", key = 3 },
+    { icon = "INV_Misc_Head_Gnoll_01", key = 4 },
+    { icon = "Spell_Holy_MindVision", key = 5 },
+    { icon = "Spell_Holy_SealOfRighteousness", key = 6 },
+    { icon = "INV_Misc_Wrench_01", key = 7 },
 }
 -- A thank-you band (NEWS_THANKS); nil when a release has none.
 News.THANKS_ICON = "INV_ValentinesCard02"
@@ -126,11 +128,11 @@ function News:Create()
         row.icon:SetTexture("Interface\\Icons\\" .. item.icon)
         row.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
         Widgets.Rim(row, row.icon)
-        row.title = Widgets.LocalizedText(row, 13, "gold", "NEWS_" .. i .. "_TITLE")
+        row.title = Widgets.LocalizedText(row, 13, "gold", "NEWS_" .. item.key .. "_TITLE")
         row.title:SetPoint("TOPLEFT", row.icon, "TOPRIGHT", 14, 0)
         row.title:SetWidth(TEXT_W - ICON - 22)
         row.title:SetJustifyH("LEFT")
-        row.text = Widgets.LocalizedText(row, 11, "white", "NEWS_" .. i .. "_TEXT")
+        row.text = Widgets.LocalizedText(row, 11, "white", "NEWS_" .. item.key .. "_TEXT")
         row.text:SetPoint("TOPLEFT", row.title, "BOTTOMLEFT", 0, -4)
         row.text:SetWidth(TEXT_W - ICON - 22)
         row.text:SetJustifyH("LEFT")

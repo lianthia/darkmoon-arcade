@@ -369,6 +369,8 @@ function MC.UnitTooltip(owner, u, reference)
     local levelText = L.LEVEL:format(u.level)
     if reference and u.level - reference >= 10 then levelText = L.MC_LEVEL_SKULL end
     GameTooltip:AddLine(levelText .. "  ·  " .. Describe.RoleName(u.role), roleColor[1], roleColor[2], roleColor[3])
+    local circle = Describe.RoleCircle(u.role)
+    if circle then GameTooltip:AddLine(circle, 0.75, 0.75, 0.75, true) end
     if u.kind == "elite" then GameTooltip:AddLine(L.MC_ELITE, 0.75, 0.5, 1) end
     for i, slot in ipairs(u.abilities) do
         local def = MC.Abilities[slot.id]

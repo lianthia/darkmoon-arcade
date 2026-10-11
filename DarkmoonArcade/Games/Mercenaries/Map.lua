@@ -416,6 +416,7 @@ function Module:PartyTooltip(owner, i)
     GameTooltip:SetOwner(owner, "ANCHOR_RIGHT")
     GameTooltip:SetText(Describe.MercName(member.id), 1, 0.82, 0)
     GameTooltip:AddLine(L.LEVEL:format(Bounty.MemberEntry(store, member).level) .. "  ·  " .. Describe.RoleName(MC.Mercs[member.id].role), 0.8, 0.8, 0.8)
+    GameTooltip:AddLine(Describe.RoleCircle(MC.Mercs[member.id].role), 0.7, 0.7, 0.7, true)
     if member.guest then GameTooltip:AddLine(L.MC_GUEST_INFO, 0.5, 0.75, 1, true) end
     if member.dead then GameTooltip:AddLine(L.MC_FALLEN, 1, 0.3, 0.3) end
     if #member.treasures == 0 then GameTooltip:AddLine(L.MC_NO_TREASURES, 0.6, 0.6, 0.6) end

@@ -164,3 +164,14 @@ end
 function Describe.RoleName(role)
     return L["MC_ROLE_" .. role]
 end
+
+-- The role circle in one line: whom a role beats and who beats it (nil for neutral units).
+function Describe.RoleCircle(role)
+    local beats = MC.Combat.BEATS
+    if not beats[role] then return nil end
+    local weak
+    for other, victim in pairs(beats) do
+        if victim == role then weak = other end
+    end
+    return L.MC_ROLE_CIRCLE:format(Describe.RoleName(beats[role]), Describe.RoleName(weak))
+end

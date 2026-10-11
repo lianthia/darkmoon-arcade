@@ -204,6 +204,16 @@ function Module:BuildBattle()
         self.aimDashes[i] = d
     end
     self.projectiles = {}
+    -- Damage preview over the target under the mouse while aiming.
+    local preview = CreateFrame("Frame", nil, view)
+    preview:SetSize(160, 46)
+    preview:SetFrameLevel(view:GetFrameLevel() + 42)
+    preview.amount = Kit.Ink(preview, 26, { 1, 0.4, 0.32 }, "THICKOUTLINE")
+    preview.amount:SetPoint("TOP", 0, 0)
+    preview.note = Kit.Ink(preview, 11, { 1, 0.85, 0.3 }, "OUTLINE")
+    preview.note:SetPoint("TOP", preview.amount, "BOTTOM", 0, -1)
+    preview:Hide()
+    self.preview = preview
 
     view.refresh = function() self:RefreshBattle() end
 end
@@ -838,6 +848,31 @@ function Module:UpdateAim()
         end
     end
     for i = count + 1, MAX_DASHES do self.aimDashes[i]:Hide() end
+    self:UpdatePreview(target)
+end
+
+-- "-14" on the aimed-at foe's portrait, with "Advantage!" from the role circle, a shield or a miss chance.
+function Module:UpdatePreview(target)
+    local preview = self.preview
+    local b = self:Battle()
+    local info
+    if target and self.pending and b and target.uid then
+        local u, t = b.units[self.pending.uid], b.units[target.uid]
+        if u and t and t.side ~= u.side then info = Combat.PreviewDamage(b, u, self.pending.slot, t) end
+    end
+    if not info then
+        preview:Hide()
+        return
+    end
+    preview.amount:SetText("-" .. info.amount)
+    local notes = {}
+    if info.adv then notes[#notes + 1] = L.MC_ADVANTAGE end
+    if info.shield then notes[#notes + 1] = L.MC_PREVIEW_SHIELD end
+    if info.miss > 0 then notes[#notes + 1] = L.MC_PREVIEW_MISS:format(math.floor(info.miss * 100 + 0.5)) end
+    preview.note:SetText(table.concat(notes, "  ·  "))
+    preview:ClearAllPoints()
+    preview:SetPoint("TOP", self.views.battle, "TOPLEFT", target.x, -(target.y - 20))
+    preview:Show()
 end
 
 function Module:UpdateBattle(dt)

@@ -287,6 +287,40 @@ local function MissChance(src, tgt)
 end
 Combat.MissChance = MissChance
 
+-- What an ability would roughly do to the target the player points at: the damage without
+-- critical hits or misses, whether the role circle doubles it, and the chance to miss.
+local SINGLE = { target = true, all = true }
+
+function Combat.PreviewDamage(b, u, slotIndex, tgt)
+    local slot = u.abilities[slotIndex]
+    if not slot or not tgt or tgt.dead then return nil end
+    local def = Def(slot)
+    local school = def.school or "physical"
+    local total, hits = 0, 0
+    for _, e in ipairs(def.effects) do
+        if e[1] == "attack" and (e.to == nil or SINGLE[e.to]) then
+            local amount = Combat.Attack(u) + (e.v and Combat.Value(u, slotIndex, e.v) or 0)
+            total, hits = total + amount, hits + 1
+            school = "physical"
+        elseif e[1] == "damage" and (e.to == nil or SINGLE[e.to]) then
+            local n = e.hits or 1
+            total, hits = total + Combat.Value(u, slotIndex, e.v) * n, hits + n
+            school = e.school or school
+        end
+    end
+    if hits == 0 then return nil end
+    local mult = 1 + Mod(u, "dmgPct") + Buff(u, "dmg") + Mod(u, "school_" .. school)
+    local adv = BEATS[u.role] == tgt.role
+    if adv then mult = mult * 2 end
+    mult = mult * GapMultiplier(u, tgt)
+    mult = mult * math.max(0.1, 1 + Mod(tgt, "takenPct") + Buff(tgt, "taken"))
+    if tgt.hp < tgt.maxHp * 0.3 then mult = mult * (1 + Mod(u, "executePct")) end
+    local ambush = Buff(u, "ambush")
+    if ambush > 0 and (def.target == "enemy" or def.harmful) then mult = mult * (1 + ambush) end
+    local amount = math.max(hits, math.floor(total * mult + 0.5))
+    return { amount = amount, adv = adv, miss = MissChance(u, tgt), shield = tgt.st.shield and true or false }
+end
+
 -- Applies damage after shields; used directly by damage over time and fatigue.
 local function Hurt(b, src, tgt, dmg, school, info)
     if tgt.st.shield then

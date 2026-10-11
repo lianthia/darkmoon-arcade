@@ -422,4 +422,25 @@ test("every treasure has a rarity, and offers follow the weights", function()
     assert(elite.legendary, "elite fights can offer legendary treasures")
 end)
 
+test("damage preview matches the hit and shows the role advantage", function()
+    for _, role in ipairs({ "caster", "protector" }) do
+        local b = Combat.New({ Spec("hero", "fighter", 20) }, { Spec("foe", role, 20, nil, { hp = 500 }) }, 13)
+        Combat.Deploy(b, b.bench.ally[1])
+        local hero, foe
+        for _, u in pairs(b.units) do
+            if u.side == "ally" then hero = u else foe = u end
+        end
+        local info = Combat.PreviewDamage(b, hero, 1, foe)
+        eq(info.adv, role == "caster", role .. " advantage")
+        Combat.SetChoice(b, hero.uid, 1, foe.uid)
+        -- The hero's own hit, not a retaliation when the foe struck first.
+        local dealt, acting
+        for _, e in ipairs(Combat.Resolve(b)) do
+            if e.t == "act" then acting = e.src == hero.uid end
+            if acting and e.t == "damage" and e.src == hero.uid and e.dst == foe.uid and not dealt then dealt = e.amount end
+        end
+        eq(dealt, info.amount, role .. " preview equals the hit")
+    end
+end)
+
 return passed, failed

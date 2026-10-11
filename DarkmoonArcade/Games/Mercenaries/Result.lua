@@ -169,6 +169,24 @@ function Module:RefreshResult()
     end
 
     local out = {}
+    -- The treasures of this bounty, rarest first, in their rarity's colour.
+    local found, rank = {}, {}
+    for i, rarity in ipairs(MC.RARITIES) do rank[rarity] = i end
+    for _, member in ipairs(run.party) do
+        for _, id in ipairs(member.treasures or {}) do
+            if MC.Treasures[id] then found[#found + 1] = id end
+        end
+    end
+    table.sort(found, function(a, b)
+        local ra, rb = rank[MC.Treasures[a].rarity] or 0, rank[MC.Treasures[b].rarity] or 0
+        if ra ~= rb then return ra > rb end
+        return a < b
+    end)
+    if #found > 0 then
+        local names = {}
+        for _, id in ipairs(found) do names[#names + 1] = MC.TreasureName(id) end
+        out[#out + 1] = L.MC_TREASURES_FOUND:format(table.concat(names, ", "))
+    end
     if won then
         local r = run.rewards
         if r.first then out[#out + 1] = "|cffffd100" .. L.MC_FIRST_CLEAR .. "|r" end

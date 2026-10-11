@@ -177,6 +177,13 @@ for _ = 1, 200 do
             end
             mc:PickAbility(1)
             if Want("battle") then Snap("battle_target") end
+            if Want("battle") and mc.pending then
+                -- The mouse over the first foe: aiming line and damage preview.
+                local foe = mc.tokens[b.board.enemy[1]]
+                foe.hovered = true
+                Snap("battle_preview")
+                foe.hovered = false
+            end
             battleShots = 2
         end
         if battleShots == 4 then

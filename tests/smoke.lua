@@ -279,6 +279,16 @@ assert(#Arcade.order == 7, "seven games registered")
 assert(Arcade.order[1] == "mercenaries", "newest game first")
 assert(Arcade.order[2] == "spellbounce", "then the most popular game")
 
+-- Every row of the news has its own texts.
+local newsKeys = {}
+for _, item in ipairs(ns.News.ITEMS) do
+    assert(item.key and not newsKeys[item.key], "news rows need distinct keys")
+    newsKeys[item.key] = true
+    for _, part in ipairs({ "_TITLE", "_TEXT" }) do
+        local text = ns.L["NEWS_" .. item.key .. part]
+        assert(type(text) == "string" and text ~= "" and not text:find("^NEWS_"), "news text " .. item.key .. part)
+    end
+end
 -- The news show once after login; "Okay" retires them for this version.
 local News = ns.News
 assert(not News.frame._shown, "news wait for the loading screen")
@@ -587,6 +597,13 @@ for _ = 1, 600 do
             else
                 mc:PickAbility(1)
                 local enemy = mc.tokens[b.board.enemy[1]]
+                if enemy and mc.pending then
+                    -- Aiming: the expected damage shows over the foe under the mouse.
+                    enemy._scripts.OnEnter(enemy)
+                    mc:UpdateAim()
+                    assert(mc.preview._shown, "damage preview while aiming")
+                    enemy._scripts.OnLeave(enemy)
+                end
                 if enemy then enemy._scripts.OnClick(enemy, "LeftButton") end
                 Window.frame._scripts.OnKeyDown(Window.frame, "A")
                 Window.frame._scripts.OnKeyDown(Window.frame, "SPACE")
