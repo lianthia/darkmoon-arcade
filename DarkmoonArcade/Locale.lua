@@ -9,6 +9,7 @@ function ns.AddStrings(language, values)
 end
 
 ns.AddStrings("enUS", {
+    DEV_COPY_ACTIVE = "The dev copy (DarkmoonArcade_Dev) is active, so this copy stays off and no progress is lost.",
     OPT_NEWS_NEVER = "Never show \"What's new\" automatically",
     OPT_NEWS_NEVER_TIP = "The \"What's new\" window no longer opens by itself after an update. The button in the main menu still shows it.",
     STATISTICS = "Statistics",
@@ -108,6 +109,7 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    DEV_COPY_ACTIVE = "Die Dev-Kopie (DarkmoonArcade_Dev) ist aktiv, daher bleibt diese Kopie aus und kein Fortschritt geht verloren.",
     OPT_NEWS_NEVER = "„Neuerungen“ nie automatisch anzeigen",
     OPT_NEWS_NEVER_TIP = "Das Fenster „Neuerungen“ öffnet sich nach einem Update nicht mehr von selbst. Über den Knopf im Hauptmenü bleibt es erreichbar.",
     STATISTICS = "Statistiken",

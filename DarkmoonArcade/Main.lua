@@ -35,6 +35,27 @@ local function InitDB()
     ns.db = db
 end
 
+-- The release copy steps aside while the dev copy (DarkmoonArcade_Dev) is enabled for this
+-- character. Both keep their progress in DarkmoonArcadeDB, and WoW saves only the table of the
+-- copy that loaded last into both files: anything played in the other copy would be lost.
+local DEV_COPY = "DarkmoonArcade_Dev"
+
+function ns.DevCopyActive()
+    if ADDON ~= "DarkmoonArcade" then return false end
+    local state
+    if C_AddOns and C_AddOns.GetAddOnEnableState then
+        local ok, value = pcall(C_AddOns.GetAddOnEnableState, DEV_COPY, UnitName("player"))
+        if ok then state = value end
+    end
+    if state == nil and GetAddOnEnableState then
+        local ok, value = pcall(GetAddOnEnableState, UnitName("player"), DEV_COPY)
+        if ok then state = value end
+    end
+    if type(state) ~= "number" or state == 0 then return false end
+    local isLoadable = C_AddOns and C_AddOns.IsAddOnLoadable or IsAddOnLoadable
+    return not isLoadable or (isLoadable(DEV_COPY) and true or false)
+end
+
 local events = CreateFrame("Frame")
 local onTaxi = false
 
@@ -53,6 +74,12 @@ end
 
 events:SetScript("OnEvent", function(_, event, arg1)
     if event == "ADDON_LOADED" and arg1 == ADDON then
+        if ns.DevCopyActive() then
+            ns.standingDown = true
+            events:UnregisterAllEvents()
+            C_Timer.After(5, function() ns.Print(L.DEV_COPY_ACTIVE) end)
+            return
+        end
         InitDB()
         ns.SetLanguage(ns.db.language)
         Media.ApplyLanguageFonts()

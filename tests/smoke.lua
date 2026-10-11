@@ -260,6 +260,19 @@ DarkmoonArcadeDB = nil
 Fire("ADDON_LOADED", "DarkmoonArcade")
 Fire("PLAYER_LOGIN")
 assert(DarkmoonArcadeDB.flightGame == "murlocblast", "defaults")
+-- The release copy steps aside while the dev copy is enabled (both would share one save).
+assert(not ns.standingDown and not ns.DevCopyActive(), "no dev copy: the release copy runs")
+C_AddOns = {
+    GetAddOnEnableState = function(name) return name == "DarkmoonArcade_Dev" and 2 or 0 end,
+    IsAddOnLoadable = function() return true end,
+}
+assert(ns.DevCopyActive(), "release copy sees the enabled dev copy")
+C_AddOns.IsAddOnLoadable = function() return false end
+assert(not ns.DevCopyActive(), "a dev copy that cannot load does not count")
+C_AddOns.GetAddOnEnableState = function() return 0 end
+C_AddOns.IsAddOnLoadable = function() return true end
+assert(not ns.DevCopyActive(), "disabled dev copy does not count")
+C_AddOns = nil
 
 local Window, Arcade = ns.Window, ns.Arcade
 assert(#Arcade.order == 7, "seven games registered")
