@@ -1,4 +1,10 @@
 MC_NAME	Mercenaries
+MC_MUTE	Silenciar
+MC_UNMUTE	Activar sonido
+MC_OPT_SOUNDS	Sonidos de combate
+MC_OPT_SOUNDS_TIP	Sonidos de combate del juego: cada habilidad usa el sonido de hechizo o arma del juego. Sonidos simples: un sonido de golpe y uno de sanación para todo.
+MC_SOUNDS_INGAME	Sonidos de combate del juego
+MC_SOUNDS_SIMPLE	Sonidos simples
 MC_PLAY_ALL	Jugar todos los turnos
 MC_STOP_AUTO	Detener
 MC_PLAY_TURN	Jugar turno

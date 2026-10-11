@@ -764,6 +764,104 @@ function Combat.Resolve(b)
 end
 
 -- The same choices the enemy makes, for the balance bot and an "auto" helper.
+-- Planner for the debug mode's "Play all turns": tries each mercenary's abilities and targets on a
+-- copy of the battle, plays the whole turn there and keeps what turns out best. The copy shares the
+-- battle's random state, so it sees the foes' plans - fine for a testing tool that should get far.
+
+local function Copy(value, seen)
+    if type(value) ~= "table" then return value end
+    seen = seen or {}
+    if seen[value] then return seen[value] end
+    local out = {}
+    seen[value] = out
+    for k, v in pairs(value) do out[Copy(k, seen)] = Copy(v, seen) end
+    return out
+end
+Combat.Copy = Copy
+
+-- How good a battle looks for the party: foes hurt and fallen, own losses, lasting effects.
+function Combat.Score(b)
+    if b.phase == "won" then return 1e6 end
+    if b.phase == "lost" then return -1e6 end
+    local score = 0
+    for _, u in pairs(b.units) do
+        local hurt = (u.maxHp - math.max(0, u.hp)) / math.max(1, u.maxHp)
+        if u.side == "enemy" then
+            score = score + hurt * 100 + (u.dead and 150 or 0) + (u.st.stun and 20 or 0)
+        else
+            score = score - hurt * 120 - (u.dead and 250 or 0) + (u.st.shield and 15 or 0) + (u.st.absorb or 0)
+        end
+    end
+    return score
+end
+
+local function Options(b, u)
+    local list = {}
+    for i in ipairs(u.abilities) do
+        if Combat.Available(u, i) then
+            local targets = Combat.ValidTargets(b, u, i)
+            if #targets == 0 then
+                list[#list + 1] = { slot = i }
+            else
+                for _, t in ipairs(targets) do list[#list + 1] = { slot = i, target = t.uid } end
+            end
+        end
+    end
+    return list
+end
+
+local function Simulate(b, choices)
+    local copy = Copy(b)
+    for uid, choice in pairs(choices) do copy.units[uid].choice = { slot = choice.slot, target = choice.target } end
+    Combat.Resolve(copy)
+    return Combat.Score(copy)
+end
+
+-- Orders for the whole party, each the best answer to the others (two rounds).
+function Combat.BestChoices(b)
+    local party = Alive(b, "ally")
+    local choices, options = {}, {}
+    for _, u in ipairs(party) do
+        options[u.uid] = Options(b, u)
+        local auto = Combat.Choose(Copy(b), u)
+        choices[u.uid] = auto or options[u.uid][1] or { slot = 1 }
+    end
+    for _ = 1, 2 do
+        for _, u in ipairs(party) do
+            local best, bestScore = choices[u.uid], nil
+            for _, option in ipairs(options[u.uid]) do
+                choices[u.uid] = option
+                local score = Simulate(b, choices)
+                if not bestScore or score > bestScore then best, bestScore = option, score end
+            end
+            choices[u.uid] = best
+        end
+    end
+    for _, u in ipairs(party) do
+        local c = choices[u.uid]
+        Combat.ClearChoice(b, u.uid)
+        if not Combat.SetChoice(b, u.uid, c.slot, c.target) then u.choice = { slot = c.slot, target = c.target } end
+    end
+end
+
+-- From the bench: whoever beats most foes on the board in the role circle, then the healthiest.
+function Combat.BestReplacement(b)
+    local foes = Alive(b, "enemy")
+    local best, bestValue
+    for _, uid in ipairs(b.bench.ally) do
+        local u = b.units[uid]
+        if u and not u.dead then
+            local value = u.hp
+            for _, f in ipairs(foes) do
+                if BEATS[u.role] == f.role then value = value + 1000 end
+                if BEATS[f.role] == u.role then value = value - 400 end
+            end
+            if not bestValue or value > bestValue then best, bestValue = u, value end
+        end
+    end
+    return best
+end
+
 function Combat.AutoChoose(b)
     for _, u in ipairs(Alive(b, "ally")) do
         if not u.choice then

@@ -1,4 +1,10 @@
 MC_NAME	Mercenaries
+MC_MUTE	静音
+MC_UNMUTE	取消静音
+MC_OPT_SOUNDS	战斗音效
+MC_OPT_SOUNDS_TIP	游戏内战斗音效：每个技能播放游戏自带的法术或武器音效。简单音效：所有技能共用一个命中音效和一个治疗音效。
+MC_SOUNDS_INGAME	游戏内战斗音效
+MC_SOUNDS_SIMPLE	简单音效
 MC_PLAY_ALL	进行所有回合
 MC_STOP_AUTO	停止
 MC_PLAY_TURN	进行回合

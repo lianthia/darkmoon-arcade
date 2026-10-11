@@ -22,6 +22,8 @@ PROGRESS = "--progress" in sys.argv
 SWEEP = "--sweep" in sys.argv
 TUNE = "--tune" in sys.argv
 TARGET = 0.6
+# --planner: the bot plays like the debug mode's "Play all turns" (best orders found by simulation).
+USE_PLANNER = "--planner" in sys.argv
 
 lua = lupa.LuaRuntime(unpack_returned_tuples=True)
 lua.execute("ns = {}")
@@ -29,6 +31,7 @@ loader = lua.eval("function(code, name) local f = assert(loadstring(code, name))
 for name in FILES:
     loader((ADDON / "Games" / "Mercenaries" / f"{name}.lua").read_text(encoding="utf-8"), name)
 
+lua.globals().PLANNER = USE_PLANNER
 lua.execute("""
 local MC = ns.Mercenaries
 local Combat, Bounty = MC.Combat, MC.Bounty
@@ -39,10 +42,11 @@ function AutoBattle(b)
     while (b.phase == "deploy" or b.phase == "replace" or b.phase == "command") and guard < 300 do
         guard = guard + 1
         if b.phase == "command" then
-            Combat.AutoChoose(b)
+            if PLANNER then Combat.BestChoices(b) else Combat.AutoChoose(b) end
             Combat.Resolve(b)
         else
-            Combat.Deploy(b, b.bench.ally[1])
+            local pick = PLANNER and Combat.BestReplacement(b)
+            Combat.Deploy(b, pick and pick.uid or b.bench.ally[1])
         end
     end
     return b.phase

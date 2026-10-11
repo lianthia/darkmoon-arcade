@@ -99,6 +99,8 @@ MC.ABILITY_SOUNDS = SOUNDS
 -- Plays the ability's sound; returns true when a sound was played.
 function MC.AbilitySound(abilityId)
     if ns.db and not ns.db.sound then return false end
+    -- "Simple sounds": the plain hit and heal of earlier versions take over.
+    if ns.Arcade.Settings(MC.Module).sounds == "simple" then return false end
     local ids = SOUNDS[MC.AbilitySoundKey(abilityId)]
     if not ids then return false end
     PlaySoundFile(ids[math.random(#ids)], "SFX")

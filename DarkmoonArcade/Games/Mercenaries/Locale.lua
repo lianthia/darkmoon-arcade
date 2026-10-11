@@ -3,6 +3,12 @@ local _, ns = ...
 -- English and German so far; the other languages fall back to English until the full release.
 ns.AddStrings("enUS", {
     MC_NAME = "Mercenaries",
+    MC_MUTE = "Mute sounds",
+    MC_UNMUTE = "Unmute sounds",
+    MC_OPT_SOUNDS = "Battle sounds",
+    MC_OPT_SOUNDS_TIP = "In-game combat sounds: every ability plays the game's own spell or weapon sound. Simple sounds: one hit and one heal sound for everything.",
+    MC_SOUNDS_INGAME = "In-game combat sounds",
+    MC_SOUNDS_SIMPLE = "Simple sounds",
     MC_PLAY_ALL = "Play all turns",
     MC_STOP_AUTO = "Stop",
     MC_PLAY_TURN = "Play turn",
@@ -816,6 +822,12 @@ ns.AddStrings("enUS", {
 
 ns.AddStrings("deDE", {
     MC_NAME = "Mercenaries",
+    MC_MUTE = "Ton aus",
+    MC_UNMUTE = "Ton an",
+    MC_OPT_SOUNDS = "Kampfgeräusche",
+    MC_OPT_SOUNDS_TIP = "Kampfsounds aus dem Spiel: Jede Fähigkeit spielt den Zauber- oder Waffensound des Spiels. Einfache Sounds: ein Treffer- und ein Heilgeräusch für alles.",
+    MC_SOUNDS_INGAME = "Kampfsounds aus dem Spiel",
+    MC_SOUNDS_SIMPLE = "Einfache Sounds",
     MC_PLAY_ALL = "Alle Züge spielen",
     MC_STOP_AUTO = "Anhalten",
     MC_PLAY_TURN = "Zug spielen",

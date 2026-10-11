@@ -1,4 +1,10 @@
 MC_NAME	Mercenaries
+MC_MUTE	Выключить звук
+MC_UNMUTE	Включить звук
+MC_OPT_SOUNDS	Звуки боя
+MC_OPT_SOUNDS_TIP	Звуки боя из игры: каждая способность звучит как заклинание или оружие в игре. Простые звуки: один звук удара и один звук исцеления для всего.
+MC_SOUNDS_INGAME	Звуки боя из игры
+MC_SOUNDS_SIMPLE	Простые звуки
 MC_PLAY_ALL	Сыграть все ходы
 MC_STOP_AUTO	Остановить
 MC_PLAY_TURN	Сыграть ход

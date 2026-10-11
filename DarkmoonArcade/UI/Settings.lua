@@ -47,6 +47,10 @@ function SettingsPage.Definitions()
             end },
         { kind = "check", tbl = db, key = "flightTime", label = "OPT_FLIGHT_TIME", tip = "OPT_FLIGHT_TIME_TIP", default = true },
     }
+    -- The dev copy's testing tools, right after the general options.
+    if ADDON ~= "DarkmoonArcade" then
+        table.insert(defs, 6, { kind = "check", tbl = db, key = "debugMode", label = "OPT_DEBUG", tip = "OPT_DEBUG_TIP", default = false })
+    end
     for _, id in ipairs(ns.Arcade.order) do
         local game = ns.Arcade.games[id]
         if game.Options then

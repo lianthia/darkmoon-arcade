@@ -359,4 +359,26 @@ test("a guest joins once, fights at the party level and earns nothing", function
     eq(store.mercs[id] and store.mercs[id].xp or 0, before, "no experience for the guest")
 end)
 
+test("planner gives valid orders and leaves the battle untouched", function()
+    local abilities = { { id = "jaina_1" }, { id = "jaina_2" }, { id = "jaina_3" } }
+    local b = Combat.New({ Spec("a", "caster", 20, abilities), Spec("b", "fighter", 20, abilities), Spec("c", "protector", 20, abilities) },
+        { Spec("e1", "fighter"), Spec("e2", "caster"), Spec("e3", "protector") }, 21)
+    for _ = 1, 3 do Combat.Deploy(b, Combat.BestReplacement(b).uid) end
+    eq(b.phase, "command", "party deployed")
+    local before = Combat.Copy(b)
+    Combat.BestChoices(b)
+    assert(Combat.Ready(b), "everyone has orders")
+    for _, u in ipairs(Combat.Alive(b, "ally")) do
+        assert(Combat.Available(u, u.choice.slot), "chosen ability is available")
+        u.choice = nil
+    end
+    DeepEqual(b, before)
+end)
+
+test("replacement prefers the role that beats the foes", function()
+    local b = Combat.New({ Spec("p", "protector"), Spec("f", "fighter"), Spec("c", "caster") },
+        { Spec("e1", "caster"), Spec("e2", "caster") }, 4)
+    eq(b.units[Combat.BestReplacement(b).uid].role, "fighter", "fighter beats casters")
+end)
+
 return passed, failed

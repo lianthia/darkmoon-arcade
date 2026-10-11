@@ -545,7 +545,19 @@ for _ = 1, 600 do
                 assert(not MC.DEV and not mc.autoButton._shown, "play all turns hidden in the release copy")
                 MC.DEV = true
                 mc:RefreshBattle()
-                assert(mc.autoButton._shown, "play all turns offered in the dev copy")
+                assert(not mc.autoButton._shown, "play all turns needs the debug mode, too")
+                DarkmoonArcadeDB.debugMode = true
+                mc:RefreshBattle()
+                assert(mc.autoButton._shown, "play all turns offered in the dev copy's debug mode")
+                -- The sound switch in the header and the choice of battle sounds.
+                mc.soundButton._scripts.OnClick(mc.soundButton)
+                assert(DarkmoonArcadeDB.sound == false, "sounds muted from the battle")
+                mc.soundButton._scripts.OnClick(mc.soundButton)
+                assert(DarkmoonArcadeDB.sound == true, "sounds back on")
+                assert(ns.Arcade.Settings(mc).sounds == "ingame" and MC.AbilitySound("cairne_1"), "in-game combat sounds by default")
+                ns.Arcade.Settings(mc).sounds = "simple"
+                assert(not MC.AbilitySound("cairne_1"), "simple sounds leave the ability sounds out")
+                ns.Arcade.Settings(mc).sounds = "ingame"
                 mc.autoButton._scripts.OnClick(mc.autoButton)
                 assert(mc.autoBattle, "automatic battle on")
                 autoBattle = b
@@ -574,7 +586,7 @@ for _ = 1, 600 do
 end
 assert(fights > 0, "mercenaries fought")
 assert(autoTurns > 0, "a battle played by itself")
-MC.DEV = false
+MC.DEV, DarkmoonArcadeDB.debugMode = false, false
 assert(not mc.autoBattle or mc.autoBattleFor == autoBattle, "the next battle starts by hand")
 assert(not mc.timeline._shown, "timeline gone after the turn")
 for id in pairs(MC.Abilities) do
@@ -755,9 +767,11 @@ Window:OpenHub()
 
 -- Settings callbacks and dropdown contents.
 for _, name in ipairs({ "DarkmoonArcade_language", "DarkmoonArcade_scale", "DarkmoonArcade_flightGame",
-        "DarkmoonArcade_newsNever", "DarkmoonArcade_mercenaries_fast" }) do
+        "DarkmoonArcade_newsNever", "DarkmoonArcade_mercenaries_fast",
+        "DarkmoonArcade_mercenaries_sounds", "DarkmoonArcade_flightTime" }) do
     assert(registeredSettings[name], name .. " registered")
 end
+assert(not registeredSettings.DarkmoonArcade_debugMode, "no debug mode in the release copy")
 assert(ns.SafeCall("Settings again", ns.Settings.Register, ns.Settings), "taken setting names are skipped quietly")
 for variable, entry in pairs(dropdownOptions) do
     local data = entry.options()

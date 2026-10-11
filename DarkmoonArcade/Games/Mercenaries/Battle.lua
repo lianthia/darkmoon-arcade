@@ -4,8 +4,11 @@
 
 local ADDON, ns = ...
 local MC = ns.Mercenaries
--- "Play all turns" is a tool of the dev copy (DarkmoonArcade_Dev) only.
+-- "Play all turns" is a testing tool: dev copy (DarkmoonArcade_Dev) with its debug mode on.
 MC.DEV = ADDON ~= "DarkmoonArcade"
+function MC.AutoBattleAllowed()
+    return MC.DEV and ns.db ~= nil and ns.db.debugMode == true
+end
 local Combat, Describe, Kit = MC.Combat, MC.Describe, MC.Kit
 local Widgets, Media, L = ns.Widgets, ns.Media, ns.L
 local Module = MC.Module
@@ -174,11 +177,16 @@ function Module:BuildBattle()
     Kit.Place(self.playButton, W - 214, TRAY_Y - 6)
 
     -- Speed and the battle log sit in the header; both stay at hand while a turn plays.
-    self.speedButton = Kit.Button(view, 120, 24, nil, function() self:ToggleSpeed() end, "blue")
-    Kit.Place(self.speedButton, W - 316, 22)
-    Widgets.OnRefresh(function() self:UpdateSpeedButton() end)
-    self.logButton = Kit.Button(view, 150, 24, "MC_LOG", function() self:ToggleLog() end, "blue")
-    Kit.Place(self.logButton, W - 172, 22)
+    self.soundButton = Kit.Button(view, 120, 24, nil, function() self:ToggleSound() end, "blue")
+    Kit.Place(self.soundButton, W - 426, 22)
+    self.speedButton = Kit.Button(view, 112, 24, nil, function() self:ToggleSpeed() end, "blue")
+    Kit.Place(self.speedButton, W - 300, 22)
+    Widgets.OnRefresh(function()
+        self:UpdateSpeedButton()
+        self:UpdateSoundButton()
+    end)
+    self.logButton = Kit.Button(view, 136, 24, "MC_LOG", function() self:ToggleLog() end, "blue")
+    Kit.Place(self.logButton, W - 166, 22)
     self:BuildBattleLog(view)
     self:BuildTimeline(view)
 
@@ -282,8 +290,9 @@ function Module:RefreshBattle()
     local zone = Describe.ZoneName(run.zone) .. (run.heroic and (" (" .. L.MC_HEROIC .. ")") or "")
     local node = MC.Bounty.Node(run)
     local kind = node and (node.type == "boss" and L.MC_NODE_BOSS or node.type == "elite" and L.MC_NODE_ELITE or L.MC_NODE_FIGHT) or ""
-    view.zone:SetText(zone .. "  ·  " .. kind)
+    Kit.FitText(view.zone, zone .. "  ·  " .. kind, W - 500, 14, 10)
     view.turn:SetText(L.MC_TURN:format(b.turn))
+    self:UpdateSoundButton()
     view.reserve:SetText(#b.bench.enemy > 0 and L.MC_RESERVE:format(#b.bench.enemy) or "")
 
     if self.playing then return end
@@ -347,7 +356,7 @@ function Module:RefreshBattle()
     if self.autoBattleFor ~= b then self.autoBattle, self.autoBattleFor = false, b end
     self.readyButton:SetShown(commanding and not self.autoBattle)
     self.readyButton:SetEnabled(Combat.Ready(b))
-    self.autoButton:SetShown(MC.DEV and (commanding or deploying))
+    self.autoButton:SetShown(MC.AutoBattleAllowed() and (commanding or deploying))
     -- Below Play turn while giving orders; in Ready's corner while the bench fills the tray.
     if deploying then Kit.Place(self.autoButton, AUTO_PLAY_X, TL_Y) else Kit.Place(self.autoButton, AUTO_X, AUTO_Y) end
     self.playButton:SetShown(commanding and not self.autoBattle)
@@ -468,7 +477,7 @@ end
 -- pressed again, the player takes over after the current turn.
 function Module:ToggleAutoBattle()
     local b = self:Battle()
-    if not b or not MC.DEV then return end
+    if not b or not MC.AutoBattleAllowed() then return end
     self.autoBattle = not self.autoBattle
     self.autoWait = 0
     if not self.autoBattle and not self.playing then self:RefreshBattle() end
@@ -480,20 +489,29 @@ function Module:UpdateAutoButton()
     if self.autoButton then self.autoButton:SetText(self.autoBattle and L.MC_STOP_AUTO or L.MC_PLAY_ALL) end
 end
 
--- One step of an automatic battle: send in the healthiest from the bench, or play the turn.
+-- One step of an automatic battle: send in the best from the bench, or plan and play the turn.
 function Module:AutoBattleStep()
     local b = self:Battle()
     if not b then return end
     if b.phase == "deploy" or b.phase == "replace" then
-        local best
-        for _, uid in ipairs(b.bench.ally) do
-            local u = b.units[uid]
-            if u and not u.dead and (not best or u.hp > best.hp) then best = u end
-        end
+        local best = Combat.BestReplacement(b)
         if best and Combat.Deploy(b, best.uid) then self:RefreshBattle() end
-    elseif b.phase == "command" then
-        self:PlayTurn()
+    elseif b.phase == "command" and not self.playing then
+        -- The most promising orders, then the turn.
+        Combat.BestChoices(b)
+        self.pending = nil
+        self:ResolveTurn()
     end
+end
+
+-- The arcade's sound switch (the same as in the options), at hand during a battle.
+function Module:ToggleSound()
+    ns.db.sound = not ns.db.sound
+    self:UpdateSoundButton()
+end
+
+function Module:UpdateSoundButton()
+    if self.soundButton and ns.db then self.soundButton:SetText(ns.db.sound and L.MC_MUTE or L.MC_UNMUTE) end
 end
 
 function Module:ToggleSpeed()

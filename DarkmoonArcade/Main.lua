@@ -10,6 +10,7 @@ local DEFAULTS = {
     minimap = true,
     minimapAngle = 225,
     newsNever = false,
+    debugMode = false,
     scale = 1.1,
     language = "auto",
 }
@@ -39,6 +40,12 @@ end
 -- character. Both keep their progress in DarkmoonArcadeDB, and WoW saves only the table of the
 -- copy that loaded last into both files: anything played in the other copy would be lost.
 local DEV_COPY = "DarkmoonArcade_Dev"
+
+-- Tools for testing (such as playing every turn of a battle by itself) appear only in the dev copy
+-- with its debug mode on.
+function ns.DebugMode()
+    return ADDON ~= "DarkmoonArcade" and ns.db ~= nil and ns.db.debugMode == true
+end
 
 function ns.DevCopyActive()
     if ADDON ~= "DarkmoonArcade" then return false end
@@ -131,6 +138,9 @@ SlashCmdList.DARKMOONARCADE = function(input)
         end
     elseif cmd == "options" or cmd == "config" then
         Window:OpenOptions()
+    elseif cmd == "debug" and ADDON ~= "DarkmoonArcade" then
+        ns.db.debugMode = not ns.db.debugMode
+        ns.Print(ns.db.debugMode and L.DEBUG_ON or L.DEBUG_OFF)
     elseif cmd == "minimap" then
         ns.db.minimap = not ns.db.minimap
         ns.Minimap:Update()

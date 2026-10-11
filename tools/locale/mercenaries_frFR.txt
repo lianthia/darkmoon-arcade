@@ -1,4 +1,10 @@
 MC_NAME	Mercenaries
+MC_MUTE	Couper le son
+MC_UNMUTE	Activer le son
+MC_OPT_SOUNDS	Sons de combat
+MC_OPT_SOUNDS_TIP	Sons de combat du jeu : chaque technique joue le son de sort ou d'arme du jeu. Sons simples : un son de coup et un son de soin pour tout.
+MC_SOUNDS_INGAME	Sons de combat du jeu
+MC_SOUNDS_SIMPLE	Sons simples
 MC_PLAY_ALL	Jouer tous les tours
 MC_STOP_AUTO	Arrêter
 MC_PLAY_TURN	Jouer le tour

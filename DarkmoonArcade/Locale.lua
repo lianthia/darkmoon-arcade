@@ -9,6 +9,10 @@ function ns.AddStrings(language, values)
 end
 
 ns.AddStrings("enUS", {
+    OPT_DEBUG = "Debug mode",
+    OPT_DEBUG_TIP = "Shows testing tools, such as playing all turns of a battle. Only in the dev copy.",
+    DEBUG_ON = "Debug mode on.",
+    DEBUG_OFF = "Debug mode off.",
     DEV_COPY_ACTIVE = "The dev copy (DarkmoonArcade_Dev) is active, so this copy stays off and no progress is lost.",
     OPT_NEWS_NEVER = "Never show \"What's new\" automatically",
     OPT_NEWS_NEVER_TIP = "The \"What's new\" window no longer opens by itself after an update. The button in the main menu still shows it.",
@@ -109,6 +113,10 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    OPT_DEBUG = "Debug-Modus",
+    OPT_DEBUG_TIP = "Zeigt Testwerkzeuge, etwa alle Züge eines Kampfs automatisch spielen. Nur in der Dev-Kopie.",
+    DEBUG_ON = "Debug-Modus an.",
+    DEBUG_OFF = "Debug-Modus aus.",
     DEV_COPY_ACTIVE = "Die Dev-Kopie (DarkmoonArcade_Dev) ist aktiv, daher bleibt diese Kopie aus und kein Fortschritt geht verloren.",
     OPT_NEWS_NEVER = "„Neuerungen“ nie automatisch anzeigen",
     OPT_NEWS_NEVER_TIP = "Das Fenster „Neuerungen“ öffnet sich nach einem Update nicht mehr von selbst. Über den Knopf im Hauptmenü bleibt es erreichbar.",

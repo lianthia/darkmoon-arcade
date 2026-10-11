@@ -4,6 +4,12 @@
 local _, ns = ...
 ns.AddStrings("frFR", {
     MC_NAME = "Mercenaries",
+    MC_MUTE = "Couper le son",
+    MC_UNMUTE = "Activer le son",
+    MC_OPT_SOUNDS = "Sons de combat",
+    MC_OPT_SOUNDS_TIP = "Sons de combat du jeu : chaque technique joue le son de sort ou d'arme du jeu. Sons simples : un son de coup et un son de soin pour tout.",
+    MC_SOUNDS_INGAME = "Sons de combat du jeu",
+    MC_SOUNDS_SIMPLE = "Sons simples",
     MC_PLAY_ALL = "Jouer tous les tours",
     MC_STOP_AUTO = "Arrêter",
     MC_PLAY_TURN = "Jouer le tour",
@@ -802,6 +808,12 @@ ns.AddStrings("frFR", {
 
 ns.AddStrings("esES", {
     MC_NAME = "Mercenaries",
+    MC_MUTE = "Silenciar",
+    MC_UNMUTE = "Activar sonido",
+    MC_OPT_SOUNDS = "Sonidos de combate",
+    MC_OPT_SOUNDS_TIP = "Sonidos de combate del juego: cada habilidad usa el sonido de hechizo o arma del juego. Sonidos simples: un sonido de golpe y uno de sanación para todo.",
+    MC_SOUNDS_INGAME = "Sonidos de combate del juego",
+    MC_SOUNDS_SIMPLE = "Sonidos simples",
     MC_PLAY_ALL = "Jugar todos los turnos",
     MC_STOP_AUTO = "Detener",
     MC_PLAY_TURN = "Jugar turno",
@@ -1600,6 +1612,12 @@ ns.AddStrings("esES", {
 
 ns.AddStrings("ruRU", {
     MC_NAME = "Mercenaries",
+    MC_MUTE = "Выключить звук",
+    MC_UNMUTE = "Включить звук",
+    MC_OPT_SOUNDS = "Звуки боя",
+    MC_OPT_SOUNDS_TIP = "Звуки боя из игры: каждая способность звучит как заклинание или оружие в игре. Простые звуки: один звук удара и один звук исцеления для всего.",
+    MC_SOUNDS_INGAME = "Звуки боя из игры",
+    MC_SOUNDS_SIMPLE = "Простые звуки",
     MC_PLAY_ALL = "Сыграть все ходы",
     MC_STOP_AUTO = "Остановить",
     MC_PLAY_TURN = "Сыграть ход",
@@ -2398,6 +2416,12 @@ ns.AddStrings("ruRU", {
 
 ns.AddStrings("zhCN", {
     MC_NAME = "Mercenaries",
+    MC_MUTE = "静音",
+    MC_UNMUTE = "取消静音",
+    MC_OPT_SOUNDS = "战斗音效",
+    MC_OPT_SOUNDS_TIP = "游戏内战斗音效：每个技能播放游戏自带的法术或武器音效。简单音效：所有技能共用一个命中音效和一个治疗音效。",
+    MC_SOUNDS_INGAME = "游戏内战斗音效",
+    MC_SOUNDS_SIMPLE = "简单音效",
     MC_PLAY_ALL = "进行所有回合",
     MC_STOP_AUTO = "停止",
     MC_PLAY_TURN = "进行回合",

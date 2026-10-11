@@ -1,4 +1,10 @@
 MC_NAME	Mercenaries
+MC_MUTE	Mute sounds
+MC_UNMUTE	Unmute sounds
+MC_OPT_SOUNDS	Battle sounds
+MC_OPT_SOUNDS_TIP	In-game combat sounds: every ability plays the game's own spell or weapon sound. Simple sounds: one hit and one heal sound for everything.
+MC_SOUNDS_INGAME	In-game combat sounds
+MC_SOUNDS_SIMPLE	Simple sounds
 MC_PLAY_ALL	Play all turns
 MC_STOP_AUTO	Stop
 MC_PLAY_TURN	Play turn
