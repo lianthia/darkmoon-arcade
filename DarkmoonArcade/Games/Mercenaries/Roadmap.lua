@@ -16,15 +16,15 @@ local NODE, BIG_NODE = 58, 70
 local DASH_GAP = 13
 
 -- status: done, ongoing (work that never quite ends), next, planned or idea; the offset winds the
--- path left and right.
+-- path left and right. `key` names the texts (MC_RM_<key>_TITLE/TEXT), so milestones can move.
 local MILESTONES = {
-    { status = "done", icon = "INV_Sword_04", offset = 0 },
-    { status = "done", icon = "Trade_Engineering", offset = -130 },
-    { status = "ongoing", icon = "INV_Misc_Gear_01", offset = 120 },
-    { status = "planned", icon = "INV_Scroll_03", offset = -120 },
-    { status = "planned", icon = "INV_Misc_Head_Dragon_01", offset = 120 },
-    { status = "planned", icon = "INV_Misc_GroupNeedMore", offset = -120 },
-    { status = "idea", icon = "INV_Misc_QuestionMark", offset = 0 },
+    { key = 1, status = "done", icon = "INV_Sword_04", offset = 0 },
+    { key = 2, status = "done", icon = "Trade_Engineering", offset = -130 },
+    { key = 4, status = "next", icon = "INV_Scroll_03", offset = 120 },
+    { key = 5, status = "planned", icon = "INV_Misc_Head_Dragon_01", offset = -120 },
+    { key = 6, status = "planned", icon = "INV_Misc_GroupNeedMore", offset = 120 },
+    { key = 3, status = "ongoing", icon = "INV_Misc_Gear_01", offset = -120 },
+    { key = 7, status = "idea", icon = "INV_Misc_QuestionMark", offset = 0 },
 }
 MC.ROADMAP = MILESTONES
 -- Milestones being worked on: big gold coins that pulse; the path is gold up to them.
@@ -76,13 +76,16 @@ function Module:BuildRoadmap()
     local dashes = CreateFrame("Frame", nil, view)
     dashes:SetAllPoints()
     dashes:SetFrameLevel(art:GetFrameLevel() + 4)
+    local reach = 1
+    while MILESTONES[reach + 1] and (MILESTONES[reach + 1].status == "done" or CURRENT[MILESTONES[reach + 1].status]) do
+        reach = reach + 1
+    end
     for i = 1, #MILESTONES - 1 do
         local x1, y1 = Point(i)
         local x2, y2 = Point(i + 1)
         local dx, dy = x2 - x1, y2 - y1
         local length = math.sqrt(dx * dx + dy * dy)
-        local upper = MILESTONES[i + 1].status
-        local ahead = upper ~= "done" and not CURRENT[upper]
+        local ahead = i + 1 > reach
         local d = BIG_NODE / 2 + 6
         while d < length - BIG_NODE / 2 - 4 do
             local t = dashes:CreateTexture(nil, "ARTWORK")
@@ -118,7 +121,7 @@ function Module:BuildRoadmap()
         else
             b.plate:SetPoint("LEFT", nodes, "TOPLEFT", x + size / 2 + 2, -y)
         end
-        Widgets.OnRefresh(function() b.plate.text:SetText(L["MC_RM_" .. i .. "_TITLE"]) end)
+        Widgets.OnRefresh(function() b.plate.text:SetText(L["MC_RM_" .. stone.key .. "_TITLE"]) end)
         b:SetScript("OnClick", function() self:SelectMilestone(i) end)
         b:HookScript("OnEnter", function() self:ShowMilestone(i) end)
         b:HookScript("OnLeave", function() self:ShowMilestone(self.roadmapSelection) end)
@@ -193,10 +196,10 @@ function Module:ShowMilestone(i)
     if not stone then return end
     view.infoIcon:SetMetal(METAL[stone.status])
     view.infoIcon:SetIcon("Interface\\Icons\\" .. stone.icon)
-    view.infoName.text:SetText(L["MC_RM_" .. i .. "_TITLE"])
+    view.infoName.text:SetText(L["MC_RM_" .. stone.key .. "_TITLE"])
     local color = STATUS_COLOR[stone.status]
     view.infoStatus:SetTextColor(color[1], color[2], color[3])
     view.infoStatus:SetText(L[STATUS_KEY[stone.status]])
-    view.infoText:SetText(L["MC_RM_" .. i .. "_TEXT"])
+    view.infoText:SetText(L["MC_RM_" .. stone.key .. "_TEXT"])
 end
 

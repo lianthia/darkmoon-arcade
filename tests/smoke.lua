@@ -487,8 +487,12 @@ for i, coin in ipairs(mc.roadmapNodes) do
 end
 for _, language in ipairs({ "enUS", "deDE", "frFR", "esES", "ruRU", "zhCN" }) do
     ns.SetLanguage(language)
-    for i = 1, #ns.Mercenaries.ROADMAP do
-        assert(ns.L["MC_RM_" .. i .. "_TEXT"]:find("•"), language .. " milestone " .. i)
+    local keys = {}
+    for i, stone in ipairs(ns.Mercenaries.ROADMAP) do
+        assert(not keys[stone.key], "milestone key twice: " .. stone.key)
+        keys[stone.key] = true
+        assert(ns.L["MC_RM_" .. stone.key .. "_TITLE"], language .. " milestone title " .. stone.key)
+        assert(ns.L["MC_RM_" .. stone.key .. "_TEXT"]:find("•"), language .. " milestone " .. stone.key)
     end
 end
 ns.SetLanguage(DarkmoonArcadeDB.language)
