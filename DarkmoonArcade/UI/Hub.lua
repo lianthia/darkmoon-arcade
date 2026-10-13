@@ -8,7 +8,7 @@ local Media, Widgets, L = ns.Media, ns.Widgets, ns.L
 local Arcade, Window = ns.Arcade, ns.Window
 
 local LIST_W, COLUMN_GAP = 344, 14
-local BANNER_H, PANEL_GAP = 320, 12
+local BANNER_H, PANEL_GAP = 344, 12
 local ROW_GAP, LIST_TOP = 9, 34
 local THUMB_W, CARD_W = 136, 300
 local GOLD = { 1, 0.82, 0.3 }
@@ -28,66 +28,122 @@ local function Gradient(tex, top, bottom)
     if not ok then tex:SetColorTexture(bottom[1], bottom[2], bottom[3], (top[4] + bottom[4]) / 2) end
 end
 
--- A dark glass panel with the arcade's thin gold rim.
+-- Hairlines round a frame: a faint gold edge, a little brighter along the top.
+local function Hairlines(f, alpha)
+    for _, side in ipairs({ "TOP", "BOTTOM", "LEFT", "RIGHT" }) do
+        local t = f:CreateTexture(nil, "BORDER")
+        local a = side == "TOP" and alpha * 1.6 or alpha
+        t:SetColorTexture(GOLD[1], GOLD[2], GOLD[3], a)
+        if side == "TOP" or side == "BOTTOM" then
+            t:SetPoint(side .. "LEFT")
+            t:SetPoint(side .. "RIGHT")
+            t:SetHeight(1)
+        else
+            t:SetPoint("TOP" .. side)
+            t:SetPoint("BOTTOM" .. side)
+            t:SetWidth(1)
+        end
+    end
+end
+
+-- A dark glass panel with hairline edges.
 local function Glass(parent, alpha)
     local f = CreateFrame("Frame", nil, parent)
     f.fill = f:CreateTexture(nil, "BACKGROUND")
     f.fill:SetAllPoints()
-    Gradient(f.fill, { 0.1, 0.05, 0.14, alpha }, { 0.03, 0.01, 0.05, alpha + 0.1 })
-    Widgets.Rim(f, f)
+    Gradient(f.fill, { 0.09, 0.04, 0.13, alpha }, { 0.03, 0.01, 0.05, alpha + 0.15 })
+    Hairlines(f, 0.22)
     return f
 end
 
--- The big golden call to action.
+local function HasAtlas(name)
+    return C_Texture and C_Texture.GetAtlasInfo and C_Texture.GetAtlasInfo(name) ~= nil
+end
+
+-- The call to action: the client's large gold-framed red button (as in the Trading Post), in three
+-- slices so it takes any width. Without those atlases, a plain gold gradient.
+local BUTTON_ATLAS = { left = { "128-goldredbutton-left", 114 }, center = { "_128-goldredbutton-center", 64 },
+    right = { "128-goldredbutton-right", 292 } }
+
 local function PlayButton(parent, w, h, onClick)
     local b = CreateFrame("Button", nil, parent)
     b:SetSize(w, h)
-    local fill = b:CreateTexture(nil, "BACKGROUND")
-    fill:SetAllPoints()
-    Gradient(fill, { 1, 0.86, 0.42, 1 }, { 0.78, 0.5, 0.12, 1 })
-    Widgets.Rim(b, b)
-    local shine = b:CreateTexture(nil, "ARTWORK")
-    shine:SetPoint("TOPLEFT", 2, -2)
-    shine:SetPoint("TOPRIGHT", -2, -2)
-    shine:SetHeight(h / 2 - 2)
-    Gradient(shine, { 1, 1, 1, 0.28 }, { 1, 1, 1, 0.04 })
-    local hover = b:CreateTexture(nil, "HIGHLIGHT")
-    hover:SetAllPoints()
-    hover:SetColorTexture(1, 1, 0.85, 0.18)
-    b.label = Widgets.Text(b, 16, "white")
-    b.label:SetPoint("CENTER", 0, 0)
-    b.label:SetTextColor(0.22, 0.1, 0.02)
-    b.label:SetShadowOffset(0, 0)
+    local k = h / 128
+    local slices = {}
+    if HasAtlas(BUTTON_ATLAS.left[1]) then
+        local left = b:CreateTexture(nil, "BACKGROUND")
+        left:SetPoint("TOPLEFT")
+        left:SetPoint("BOTTOMLEFT")
+        left:SetWidth(BUTTON_ATLAS.left[2] * k)
+        local right = b:CreateTexture(nil, "BACKGROUND")
+        right:SetPoint("TOPRIGHT")
+        right:SetPoint("BOTTOMRIGHT")
+        right:SetWidth(BUTTON_ATLAS.right[2] * k)
+        local center = b:CreateTexture(nil, "BACKGROUND")
+        center:SetPoint("TOPLEFT", left, "TOPRIGHT")
+        center:SetPoint("BOTTOMRIGHT", right, "BOTTOMLEFT")
+        slices = { left = left, center = center, right = right }
+        local function Look(suffix)
+            for part, tex in pairs(slices) do tex:SetAtlas(BUTTON_ATLAS[part][1] .. suffix) end
+        end
+        b.Look = Look
+        Look("")
+        local hl = b:CreateTexture(nil, "HIGHLIGHT")
+        hl:SetAllPoints()
+        hl:SetAtlas("128-goldredbutton-highlight")
+        hl:SetBlendMode("ADD")
+    else
+        local fill = b:CreateTexture(nil, "BACKGROUND")
+        fill:SetAllPoints()
+        Gradient(fill, { 0.62, 0.1, 0.08, 1 }, { 0.36, 0.04, 0.03, 1 })
+        Widgets.Rim(b, b)
+        local hl = b:CreateTexture(nil, "HIGHLIGHT")
+        hl:SetAllPoints()
+        hl:SetColorTexture(1, 0.8, 0.5, 0.15)
+    end
+    b.label = Widgets.Text(b, 17, "gold")
+    b.label:SetPoint("CENTER", 0, 2)
     b:SetScript("OnClick", onClick)
-    b:SetScript("OnMouseDown", function() b.label:SetPoint("CENTER", 1, -1) end)
-    b:SetScript("OnMouseUp", function() b.label:SetPoint("CENTER", 0, 0) end)
+    b:SetScript("OnMouseDown", function()
+        if b.Look then b.Look("-pressed") end
+        b.label:SetPoint("CENTER", 1, 1)
+    end)
+    b:SetScript("OnMouseUp", function()
+        if b.Look then b.Look("") end
+        b.label:SetPoint("CENTER", 0, 2)
+    end)
     return b
 end
 
--- One of the four progress figures under the banner: value, label and a thin bar.
-local function Stat(parent, w)
+-- One of the four progress figures under the banner: a large value, its label and a thin bar;
+-- hairlines between the figures instead of boxes.
+local function Stat(parent, w, first)
     local f = CreateFrame("Frame", nil, parent)
     f:SetSize(w, 62)
-    local fill = f:CreateTexture(nil, "BACKGROUND")
-    fill:SetAllPoints()
-    fill:SetColorTexture(1, 1, 1, 0.04)
-    f.value = Widgets.Text(f, 22, "gold")
-    f.value:SetPoint("TOPLEFT", 12, -9)
+    if not first then
+        local line = f:CreateTexture(nil, "BORDER")
+        line:SetColorTexture(GOLD[1], GOLD[2], GOLD[3], 0.18)
+        line:SetPoint("TOPLEFT", 0, -6)
+        line:SetPoint("BOTTOMLEFT", 0, 6)
+        line:SetWidth(1)
+    end
+    f.value = Widgets.Text(f, 24, "gold")
+    f.value:SetPoint("TOPLEFT", 16, -4)
     f.label = Widgets.Text(f, 10, "gray")
-    f.label:SetPoint("TOPLEFT", f.value, "BOTTOMLEFT", 0, -3)
-    f.label:SetWidth(w - 20)
+    f.label:SetPoint("TOPLEFT", f.value, "BOTTOMLEFT", 0, -2)
+    f.label:SetWidth(w - 24)
     f.label:SetJustifyH("LEFT")
     f.label:SetWordWrap(false)
     local track = f:CreateTexture(nil, "ARTWORK")
-    track:SetPoint("BOTTOMLEFT", 12, 8)
-    track:SetPoint("BOTTOMRIGHT", -12, 8)
-    track:SetHeight(3)
-    track:SetColorTexture(0, 0, 0, 0.5)
+    track:SetPoint("BOTTOMLEFT", 16, 6)
+    track:SetPoint("BOTTOMRIGHT", -16, 6)
+    track:SetHeight(2)
+    track:SetColorTexture(1, 1, 1, 0.08)
     f.bar = f:CreateTexture(nil, "ARTWORK", nil, 1)
     f.bar:SetPoint("TOPLEFT", track, "TOPLEFT")
-    f.bar:SetHeight(3)
+    f.bar:SetHeight(2)
     f.bar:SetColorTexture(GOLD[1], GOLD[2], GOLD[3], 0.9)
-    f.barWidth = w - 24
+    f.barWidth = w - 32
     return f
 end
 
@@ -140,16 +196,20 @@ function Window:CreateHub()
         local name = Widgets.LocalizedText(top, 28, "gold", featured.nameKey)
         name:SetPoint("TOPLEFT", 28, -48)
     end
-    -- A small "featured" tag in the corner.
+    -- A small "featured" tag in the corner: a dark pill with a gold edge on its left.
     local tag = CreateFrame("Frame", nil, top)
-    tag:SetPoint("TOPLEFT", 18, -14)
+    tag:SetPoint("TOPLEFT", 18, -16)
     tag:SetHeight(20)
     local tagFill = tag:CreateTexture(nil, "BACKGROUND")
     tagFill:SetAllPoints()
-    tagFill:SetColorTexture(0.05, 0.02, 0.08, 0.75)
-    Widgets.Rim(tag, tag)
+    tagFill:SetColorTexture(0.03, 0.01, 0.05, 0.7)
+    local tagEdge = tag:CreateTexture(nil, "ARTWORK")
+    tagEdge:SetPoint("TOPLEFT")
+    tagEdge:SetPoint("BOTTOMLEFT")
+    tagEdge:SetWidth(2)
+    tagEdge:SetColorTexture(GOLD[1], GOLD[2], GOLD[3], 1)
     tag.text = Widgets.LocalizedText(tag, 10, "gold", "HUB_FEATURED")
-    tag.text:SetPoint("CENTER", 0, 0)
+    tag.text:SetPoint("LEFT", 10, 0)
     Widgets.OnRefresh(function() tag:SetWidth((tag.text:GetStringWidth() or 60) + 20) end)
     local desc = Widgets.LocalizedText(top, 13, "white", featured.descKey)
     desc:SetPoint("BOTTOMLEFT", 26, 20)
@@ -157,47 +217,55 @@ function Window:CreateHub()
     desc:SetJustifyH("LEFT")
     desc:SetSpacing(3)
     banner:SetScript("OnClick", function() self:PlayFeatured() end)
+    Hairlines(banner, 0.3)
 
     -- Under the stage: the player's progress, what is new, and the way in.
-    local panel = Glass(hub, 0.55)
+    local panel = Glass(hub, 0.5)
     panel:SetPoint("TOPLEFT", banner, "BOTTOMLEFT", 0, -PANEL_GAP)
     panel:SetSize(stageW, hubH - BANNER_H - PANEL_GAP)
-    local statW = math.floor((stageW - 32 - 3 * 10) / 4)
+    local statW = math.floor((stageW - 16) / 4)
     self.heroStats = {}
     for i = 1, 4 do
-        local s = Stat(panel, statW)
-        s:SetPoint("TOPLEFT", 16 + (i - 1) * (statW + 10), -16)
+        local s = Stat(panel, statW, i == 1)
+        s:SetPoint("TOPLEFT", 8 + (i - 1) * statW, -14)
         self.heroStats[i] = s
     end
+    local divider = panel:CreateTexture(nil, "BORDER")
+    divider:SetColorTexture(GOLD[1], GOLD[2], GOLD[3], 0.14)
+    divider:SetHeight(1)
+    divider:SetPoint("TOPLEFT", 24, -88)
+    divider:SetPoint("TOPRIGHT", -24, -88)
+
+    local BUTTON_W, TEXT_W = 236, stageW - 236 - 64
     local statusIcon = panel:CreateTexture(nil, "ARTWORK")
     statusIcon:SetSize(16, 16)
-    statusIcon:SetPoint("TOPLEFT", 18, -94)
+    statusIcon:SetPoint("TOPLEFT", 22, -108)
     statusIcon:SetTexture("Interface\\GossipFrame\\AvailableQuestIcon")
-    self.heroStatus = Widgets.Text(panel, 12, "white")
+    self.heroStatus = Widgets.Text(panel, 13, "white")
     self.heroStatus:SetPoint("LEFT", statusIcon, "RIGHT", 8, 0)
-    self.heroStatus:SetWidth(stageW - 300)
+    self.heroStatus:SetWidth(TEXT_W - 24)
     self.heroStatus:SetJustifyH("LEFT")
     self.heroStatus:SetWordWrap(false)
     -- What's new: the latest version's highlights in one line; a click opens the window.
     local news = CreateFrame("Button", nil, panel)
-    news:SetPoint("TOPLEFT", 16, -118)
-    news:SetSize(stageW - 300, 34)
+    news:SetPoint("TOPLEFT", 22, -132)
+    news:SetSize(TEXT_W, 18)
     news.text = Widgets.Text(news, 11, "gray")
-    news.text:SetPoint("TOPLEFT", 2, -2)
-    news.text:SetWidth(stageW - 304)
+    news.text:SetPoint("LEFT", 0, 0)
+    news.text:SetWidth(TEXT_W)
     news.text:SetJustifyH("LEFT")
-    news.text:SetSpacing(2)
+    news.text:SetWordWrap(false)
     news:SetScript("OnClick", function() ns.News:Show() end)
     news:SetScript("OnEnter", function() news.text:SetTextColor(1, 0.9, 0.6) end)
     news:SetScript("OnLeave", function() news.text:SetTextColor(0.75, 0.72, 0.68) end)
     news.text:SetTextColor(0.75, 0.72, 0.68)
     self.heroNews = news
     self.hubHint = Widgets.Text(panel, 10, "gray")
-    self.hubHint:SetPoint("BOTTOMLEFT", 18, 16)
-    self.hubHint:SetWidth(stageW - 300)
+    self.hubHint:SetPoint("BOTTOMLEFT", 22, 16)
+    self.hubHint:SetWidth(TEXT_W)
     self.hubHint:SetJustifyH("LEFT")
-    self.heroPlay = PlayButton(panel, 240, 48, function() self:PlayFeatured() end)
-    self.heroPlay:SetPoint("BOTTOMRIGHT", -16, 16)
+    self.heroPlay = PlayButton(panel, BUTTON_W, 58, function() self:PlayFeatured() end)
+    self.heroPlay:SetPoint("TOPRIGHT", -18, -100)
 
     -- The other games: a quiet list on the right.
     local column = CreateFrame("Frame", nil, hub)
@@ -205,6 +273,8 @@ function Window:CreateHub()
     column:SetSize(LIST_W, hubH)
     local heading = Widgets.LocalizedText(column, 14, "gold", "HUB_MORE_GAMES")
     heading:SetPoint("TOPLEFT", 4, -6)
+    heading:SetWidth(LIST_W - 8)
+    heading:SetJustifyH("LEFT")
     local rule = column:CreateTexture(nil, "ARTWORK")
     rule:SetColorTexture(0.86, 0.66, 0.3, 0.35)
     rule:SetHeight(1)
@@ -358,9 +428,9 @@ function Window:RefreshHub()
     local latest = ns.News and ns.News.VERSIONS and ns.News.VERSIONS[1]
     if latest then
         local titles = {}
-        for i = 1, math.min(3, #latest.items) do
+        for i = 1, math.min(2, #latest.items) do
             titles[i] = L[ns.News.Key(latest, latest.items[i].key .. "_TITLE")]
         end
-        self.heroNews.text:SetText("|cffffd100" .. L.HUB_NEWS:format(latest.version) .. "|r  " .. table.concat(titles, "  ·  ") .. "  ›")
+        self.heroNews.text:SetText("|cffffd100" .. L.HUB_NEWS:format(latest.version) .. "|r  " .. table.concat(titles, "  ·  "))
     end
 end
