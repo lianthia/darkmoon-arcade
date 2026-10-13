@@ -98,6 +98,11 @@ end)
 Tab("options_minigames", function() OptionsPage(6) end)
 ns.Window:OpenHub()
 SlashCmdList.DARKMOONARCADE("mercenaries")
+if not RENDER_ONLY or RENDER_ONLY:find("window", 1, true) then
+    Tick(0.6)
+    local items, w, h = RenderDump(ns.Window.frame)
+    Shots[#Shots + 1] = { name = "window_game", items = items, w = w, h = h }
+end
 local Window = ns.Window
 mc = Window.activeGame
 local MC = ns.Mercenaries

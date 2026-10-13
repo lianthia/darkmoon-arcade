@@ -22,6 +22,8 @@ local CONTENT_H = Arcade.FIELD_H
 -- Playfield and sidebar are framed panels on one grid; the footer buttons align with their edges.
 -- The home tabs fill the window from edge to edge below the header.
 local HEADER_H, INSET_BOTTOM, INSET_SIDE, EDGE = 56, 48, 18, 3
+-- A game sits a little below the header, with a narrow margin at the sides.
+local GAME_TOP, GAME_SIDE = 12, 12
 local FRAME_W = CONTENT_W + INSET_SIDE * 2
 local FRAME_H = CONTENT_H + HEADER_H + INSET_BOTTOM
 local LOGO_H = 42
@@ -175,13 +177,13 @@ end
 
 -- Header ------------------------------------------------------------------------
 
--- The tabs of the home view, plus one for the game that is open.
+-- The tabs of the home view. While a game is open the header shows the way back and the game's name
+-- instead.
 local TABS = {
     { id = "home", key = "TAB_HOME" },
     { id = "news", key = "NEWS_TITLE" },
     { id = "stats", key = "STATISTICS" },
     { id = "options", key = "OPTIONS" },
-    { id = "game" },
 }
 
 function Window:CreateHeader()
@@ -243,6 +245,24 @@ function Window:CreateHeader()
         b.def = def
         self.tabButtons[def.id] = b
     end
+    -- In a game: "< Main menu", a thin divider and the game's name.
+    local back = CreateFrame("Button", nil, header)
+    back:SetHeight(HEADER_H - EDGE)
+    back.label = Widgets.Text(back, 14, "white")
+    back.label:SetPoint("LEFT", 0, -1)
+    back.label:SetTextColor(0.72, 0.68, 0.62)
+    back:SetScript("OnEnter", function() back.label:SetTextColor(1, 1, 1) end)
+    back:SetScript("OnLeave", function() back.label:SetTextColor(0.72, 0.68, 0.62) end)
+    back:SetScript("OnClick", function()
+        PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB)
+        self:OpenHub()
+    end)
+    self.backButton = back
+    local divider = header:CreateTexture(nil, "ARTWORK")
+    divider:SetColorTexture(RIM_COLOR[1], RIM_COLOR[2], RIM_COLOR[3], 0.35)
+    divider:SetSize(1, 22)
+    self.headerDivider = divider
+    self.gameTitle = Widgets.Text(header, 16, "gold")
     Widgets.OnRefresh(function() self:UpdateTabs() end)
 
     local close = CreateFrame("Button", nil, header, "UIPanelCloseButtonNoScripts")
@@ -251,16 +271,32 @@ function Window:CreateHeader()
     close:SetScript("OnClick", function() f:Hide() end)
 end
 
--- Places the tabs after the logo and marks the active one; the game tab shows while a game is open.
+-- Places the tabs after the logo and marks the active one. With a game open: the way back and its name.
 function Window:UpdateTabs()
     if not self.tabButtons then return end
     local x = 14 + self.headerLogo:GetWidth() + 26
+    local game = self.activeGame
+    self.backButton:SetShown(game ~= nil)
+    self.headerDivider:SetShown(game ~= nil)
+    self.gameTitle:SetShown(game ~= nil)
+    if game then
+        self.backButton.label:SetText("‹  " .. L.MAIN_MENU)
+        self.backButton:SetWidth(math.ceil(self.backButton.label:GetStringWidth() or 100) + 8)
+        self.backButton:ClearAllPoints()
+        self.backButton:SetPoint("LEFT", self.header, "LEFT", x, 0)
+        x = x + self.backButton:GetWidth() + 18
+        self.headerDivider:ClearAllPoints()
+        self.headerDivider:SetPoint("LEFT", self.header, "LEFT", x, 0)
+        self.gameTitle:SetText(L[game.nameKey])
+        self.gameTitle:ClearAllPoints()
+        self.gameTitle:SetPoint("LEFT", self.header, "LEFT", x + 19, -1)
+    end
     for _, def in ipairs(TABS) do
         local b = self.tabButtons[def.id]
-        local shown = def.id ~= "game" or self.activeGame ~= nil
+        local shown = game == nil
         b:SetShown(shown)
         if shown then
-            b.label:SetText(def.key and L[def.key] or L[self.activeGame.nameKey])
+            b.label:SetText(L[def.key])
             local width = math.ceil(b.label:GetStringWidth() or 60) + 8
             b:SetWidth(width)
             b:ClearAllPoints()
@@ -330,9 +366,29 @@ function Window:CreateSidebar()
     local fill = bar:CreateTexture(nil, "BACKGROUND")
     fill:SetAllPoints()
     fill:SetColorTexture(0, 0, 0, 0.32)
-    Widgets.Rim(bar, bar)
-    -- Owned by the sidebar so it shows and hides with the game view.
-    Widgets.Rim(bar, self.field)
+    -- Fine gold edges like the main menu's; the field's belong to the sidebar so they show and
+    -- hide with the game view.
+    local function Edges(region)
+        -- On a frame of their own above the region, so a game's content never covers them.
+        local holder = CreateFrame("Frame", nil, bar)
+        holder:SetAllPoints(region)
+        holder:SetFrameLevel(region:GetFrameLevel() + 60)
+        for _, side in ipairs({ "TOP", "BOTTOM", "LEFT", "RIGHT" }) do
+            local t = holder:CreateTexture(nil, "OVERLAY")
+            t:SetColorTexture(RIM_COLOR[1], RIM_COLOR[2], RIM_COLOR[3], 0.4)
+            if side == "TOP" or side == "BOTTOM" then
+                t:SetPoint(side .. "LEFT", region, side .. "LEFT", 0, 0)
+                t:SetPoint(side .. "RIGHT", region, side .. "RIGHT", 0, 0)
+                t:SetHeight(1)
+            else
+                t:SetPoint("TOP" .. side, region, "TOP" .. side, 0, 0)
+                t:SetPoint("BOTTOM" .. side, region, "BOTTOM" .. side, 0, 0)
+                t:SetWidth(1)
+            end
+        end
+    end
+    Edges(bar)
+    Edges(self.field)
 
     local s = {}
     s.name = Widgets.Text(bar, 16, "gold")
@@ -424,7 +480,7 @@ function Window:CreateFooter()
     local achievements = Widgets.Button(chrome, 124, 26, "ACHIEVEMENTS", function()
         if self.activeGame then self.activeGame:ShowAchievements() end
     end)
-    achievements:SetPoint("BOTTOMRIGHT", -INSET_SIDE, 12)
+    achievements:SetPoint("BOTTOMRIGHT", -GAME_SIDE, 12)
     self.achievementsButton = achievements
     local help = Widgets.Button(chrome, 96, 26, "HELP", function()
         if self.activeGame then self.activeGame:ShowHelp() end
@@ -448,21 +504,21 @@ function Window:SetFieldSize(width, height, home)
     width, height = width or Arcade.FIELD_W, height or Arcade.FIELD_H
     local key = (home and "home" or "game") .. width .. "x" .. height
     if self.sizeKey == key then return end
-    local contentW, contentH, side, bottom
+    local contentW, contentH, side, top, bottom
     if home then
         contentW, contentH = Arcade.HomeSize()
-        side, bottom = EDGE, EDGE
+        side, top, bottom = EDGE, HEADER_H, EDGE
     else
         contentW, contentH = width + GUTTER + SIDEBAR_W, height
-        side, bottom = INSET_SIDE, INSET_BOTTOM
+        side, top, bottom = GAME_SIDE, HEADER_H + GAME_TOP, INSET_BOTTOM
     end
     local f = self.frame
     local cx, cy = f:GetCenter()
     local oldScale = f:GetScale()
-    f:SetSize(contentW + side * 2, HEADER_H + contentH + bottom)
+    f:SetSize(contentW + side * 2, top + contentH + bottom)
     self.content:SetSize(contentW, contentH)
     self.content:ClearAllPoints()
-    self.content:SetPoint("TOPLEFT", side, -HEADER_H)
+    self.content:SetPoint("TOPLEFT", side, -top)
     self.field:SetSize(width, height)
     self.sidebar:SetHeight(height)
     self.sizeKey = key

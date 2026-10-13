@@ -319,7 +319,13 @@ assert(Window.frame._shown, "window should be shown")
 for _, id in ipairs({ "home", "news", "stats", "options" }) do
     assert(Window.tabButtons[id]._shown, id .. " tab")
 end
-assert(not Window.tabButtons.game._shown, "no game tab in the main menu")
+assert(not Window.backButton._shown, "no way back in the main menu")
+-- A game replaces the tabs with the way back and its name.
+SlashCmdList.DARKMOONARCADE("murlocblast")
+assert(not Window.tabButtons.home._shown and Window.backButton._shown, "game header: the way back")
+assert(Window.gameTitle._text == ns.L[ns.Arcade.games.murlocblast.nameKey], "game header: the game's name")
+Window.backButton._scripts.OnClick(Window.backButton)
+assert(Window.hub._shown and Window.tabButtons.home._shown and not Window.activeGame, "back to the main menu")
 Window.tabButtons.home._scripts.OnClick(Window.tabButtons.home)
 assert(Window.hub._shown and Window.tab == "home", "home tab shows the main menu")
 Window.frame:Hide()
