@@ -9,6 +9,8 @@ function ns.AddStrings(language, values)
 end
 
 ns.AddStrings("enUS", {
+    STATS_DETAILS = "Details",
+    STATS_TIME_SPLIT = "Play time by game",
     OPT_SECTION_WINDOW = "Window",
     STATS_MINIGAMES = "Minigames",
     TAB_HOME = "Home",
@@ -149,7 +151,7 @@ ns.AddStrings("enUS", {
     FLIGHT_TO = "Flight to %s",
     IN_FLIGHT = "In flight",
     MINIMAP_LEFT = "Left-click: open",
-    MINIMAP_RIGHT = "Right-click: options",
+    MINIMAP_RIGHT = "Right-click: menu",
     MINIMAP_DRAG = "Drag: move button",
     RESET_DONE = "Progress and highscores reset.",
     USAGE = "/arcade – open/close  ·  /arcade options  ·  /arcade minimap  ·  /arcade reset",
@@ -174,6 +176,8 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    STATS_DETAILS = "Einzelheiten",
+    STATS_TIME_SPLIT = "Spielzeit nach Spiel",
     OPT_SECTION_WINDOW = "Fenster",
     STATS_MINIGAMES = "Minispiele",
     TAB_HOME = "Startseite",
@@ -311,7 +315,7 @@ ns.AddStrings("deDE", {
     FLIGHT_TO = "Flug nach %s",
     IN_FLIGHT = "Im Flug",
     MINIMAP_LEFT = "Linksklick: öffnen",
-    MINIMAP_RIGHT = "Rechtsklick: Optionen",
+    MINIMAP_RIGHT = "Rechtsklick: Menü",
     MINIMAP_DRAG = "Ziehen: Button verschieben",
     RESET_DONE = "Fortschritt und Bestenlisten zurückgesetzt.",
     USAGE = "/arcade – öffnen/schließen  ·  /arcade options  ·  /arcade minimap  ·  /arcade reset",
@@ -336,6 +340,8 @@ ns.AddStrings("deDE", {
 })
 
 ns.AddStrings("frFR", {
+    STATS_DETAILS = "Détails",
+    STATS_TIME_SPLIT = "Temps de jeu par jeu",
     OPT_SECTION_WINDOW = "Fenêtre",
     STATS_MINIGAMES = "Mini-jeux",
     TAB_HOME = "Accueil",
@@ -469,7 +475,7 @@ ns.AddStrings("frFR", {
     FLIGHT_TO = "Vol vers %s",
     IN_FLIGHT = "En vol",
     MINIMAP_LEFT = "Clic gauche : ouvrir",
-    MINIMAP_RIGHT = "Clic droit : options",
+    MINIMAP_RIGHT = "Clic droit : menu",
     MINIMAP_DRAG = "Glisser : déplacer le bouton",
     RESET_DONE = "Progression et scores réinitialisés.",
     USAGE = "/arcade – ouvrir/fermer  ·  /arcade options  ·  /arcade minimap  ·  /arcade reset",
@@ -494,6 +500,8 @@ ns.AddStrings("frFR", {
 })
 
 ns.AddStrings("esES", {
+    STATS_DETAILS = "Detalles",
+    STATS_TIME_SPLIT = "Tiempo de juego por juego",
     OPT_SECTION_WINDOW = "Ventana",
     STATS_MINIGAMES = "Minijuegos",
     TAB_HOME = "Inicio",
@@ -627,7 +635,7 @@ ns.AddStrings("esES", {
     FLIGHT_TO = "Vuelo a %s",
     IN_FLIGHT = "En vuelo",
     MINIMAP_LEFT = "Clic izquierdo: abrir",
-    MINIMAP_RIGHT = "Clic derecho: opciones",
+    MINIMAP_RIGHT = "Clic derecho: menú",
     MINIMAP_DRAG = "Arrastrar: mover el botón",
     RESET_DONE = "Progreso y puntuaciones reiniciados.",
     USAGE = "/arcade – abrir/cerrar  ·  /arcade options  ·  /arcade minimap  ·  /arcade reset",
@@ -652,6 +660,8 @@ ns.AddStrings("esES", {
 })
 
 ns.AddStrings("ruRU", {
+    STATS_DETAILS = "Подробности",
+    STATS_TIME_SPLIT = "Время игры по играм",
     OPT_SECTION_WINDOW = "Окно",
     STATS_MINIGAMES = "Мини-игры",
     TAB_HOME = "Главная",
@@ -786,7 +796,7 @@ ns.AddStrings("ruRU", {
     FLIGHT_TO = "Полёт: %s",
     IN_FLIGHT = "В полёте",
     MINIMAP_LEFT = "ЛКМ: открыть",
-    MINIMAP_RIGHT = "ПКМ: настройки",
+    MINIMAP_RIGHT = "ПКМ: меню",
     MINIMAP_DRAG = "Перетащить: переместить кнопку",
     RESET_DONE = "Прогресс и рекорды сброшены.",
     USAGE = "/arcade – открыть/закрыть  ·  /arcade options  ·  /arcade minimap  ·  /arcade reset",
@@ -811,6 +821,8 @@ ns.AddStrings("ruRU", {
 })
 
 ns.AddStrings("zhCN", {
+    STATS_DETAILS = "详情",
+    STATS_TIME_SPLIT = "各游戏的游戏时间",
     OPT_SECTION_WINDOW = "窗口",
     STATS_MINIGAMES = "小游戏",
     TAB_HOME = "首页",
@@ -945,7 +957,7 @@ ns.AddStrings("zhCN", {
     FLIGHT_TO = "飞往%s",
     IN_FLIGHT = "飞行中",
     MINIMAP_LEFT = "左键：打开",
-    MINIMAP_RIGHT = "右键：选项",
+    MINIMAP_RIGHT = "右键：菜单",
     MINIMAP_DRAG = "拖动：移动按钮",
     RESET_DONE = "进度和排行榜已重置。",
     USAGE = "/arcade – 打开/关闭  ·  /arcade options  ·  /arcade minimap  ·  /arcade reset",

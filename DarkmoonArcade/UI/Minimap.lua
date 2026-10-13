@@ -36,11 +36,28 @@ local function FollowCursor(button)
     Place(button, ns.db.minimapAngle)
 end
 
-local function OnClick(mouseButton)
+-- Right-click: a small menu with the other home tabs.
+local function ShowMenu(owner)
+    local Window = ns.Window
+    if not (MenuUtil and MenuUtil.CreateContextMenu) then return Window:OpenOptions() end
+    MenuUtil.CreateContextMenu(owner or UIParent, function(_, root)
+        root:CreateTitle(L.TITLE)
+        root:CreateButton(L.NEWS_TITLE, function() Window:OpenNews() end)
+        root:CreateButton(L.STATISTICS, function() Window:OpenStats() end)
+        root:CreateButton(L.OPTIONS, function() Window:OpenOptions() end)
+    end)
+end
+
+-- Left-click opens the home tab (or closes the window when it already shows it).
+local function OnClick(mouseButton, owner)
+    local Window = ns.Window
     if mouseButton == "RightButton" then
-        ns.Window:OpenOptions()
+        ShowMenu(owner)
+    elseif Window.frame:IsShown() and Window.tab == "home" then
+        Window.frame:Hide()
     else
-        ns.Window:Toggle()
+        Window.frame:Show()
+        Window:OpenHub()
     end
 end
 
@@ -53,8 +70,8 @@ local function ShowTooltip(owner, canDrag)
     GameTooltip:Show()
 end
 
-function DarkmoonArcade_OnAddonCompartmentClick(_, mouseButton)
-    OnClick(mouseButton)
+function DarkmoonArcade_OnAddonCompartmentClick(_, mouseButton, menuButton)
+    OnClick(mouseButton, menuButton)
 end
 
 function DarkmoonArcade_OnAddonCompartmentEnter(_, menuButton)
@@ -91,7 +108,7 @@ function MinimapButton:Create()
     border:SetSize(50, 50)
     border:SetPoint("TOPLEFT")
 
-    b:SetScript("OnClick", function(_, mouseButton) OnClick(mouseButton) end)
+    b:SetScript("OnClick", function(button, mouseButton) OnClick(mouseButton, button) end)
     b:SetScript("OnEnter", function(button)
         if not button.dragging then ShowTooltip(button, true) end
     end)

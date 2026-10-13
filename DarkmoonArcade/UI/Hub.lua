@@ -8,7 +8,7 @@ local Media, Widgets, L = ns.Media, ns.Widgets, ns.L
 local Arcade, Window = ns.Arcade, ns.Window
 
 local LIST_W, COLUMN_GAP, SIDE_PAD = 344, 14, 14
-local BANNER_H, PANEL_GAP = 340, 10
+local BANNER_H, PANEL_GAP = 340, 0
 -- Under the stage: the play column on the left, the news lines on the right.
 local PLAY_COLUMN, NEWS_LINES, NEWS_LINE_H = 300, 4, 29
 local ROW_GAP, LIST_TOP = 9, 34
@@ -30,31 +30,12 @@ local function Gradient(tex, top, bottom)
     if not ok then tex:SetColorTexture(bottom[1], bottom[2], bottom[3], (top[4] + bottom[4]) / 2) end
 end
 
--- Hairlines round a frame: a faint gold edge, a little brighter along the top.
-local function Hairlines(f, alpha)
-    for _, side in ipairs({ "TOP", "BOTTOM", "LEFT", "RIGHT" }) do
-        local t = f:CreateTexture(nil, "BORDER")
-        local a = side == "TOP" and alpha * 1.6 or alpha
-        t:SetColorTexture(GOLD[1], GOLD[2], GOLD[3], a)
-        if side == "TOP" or side == "BOTTOM" then
-            t:SetPoint(side .. "LEFT")
-            t:SetPoint(side .. "RIGHT")
-            t:SetHeight(1)
-        else
-            t:SetPoint("TOP" .. side)
-            t:SetPoint("BOTTOM" .. side)
-            t:SetWidth(1)
-        end
-    end
-end
-
--- A dark glass panel with hairline edges.
+-- A dark panel under the stage; it continues the painting's dark lower edge.
 local function Glass(parent, alpha)
     local f = CreateFrame("Frame", nil, parent)
     f.fill = f:CreateTexture(nil, "BACKGROUND")
     f.fill:SetAllPoints()
-    Gradient(f.fill, { 0.09, 0.04, 0.13, alpha }, { 0.03, 0.01, 0.05, alpha + 0.15 })
-    Hairlines(f, 0.22)
+    Gradient(f.fill, { 0.03, 0.01, 0.05, alpha }, { 0.02, 0.01, 0.03, alpha })
     return f
 end
 
@@ -269,7 +250,7 @@ function Window:CreateHub()
     banner:SetScript("OnClick", function() self:PlayFeatured() end)
 
     -- Under the stage: the player's progress, the way in, and what is new.
-    local panel = Glass(hub, 0.5)
+    local panel = Glass(hub, 0.92)
     panel:SetPoint("TOPLEFT", banner, "BOTTOMLEFT", 0, -PANEL_GAP)
     panel:SetSize(stageW, panelH)
     local statW = math.floor((stageW - 16) / 4)
@@ -296,10 +277,13 @@ function Window:CreateHub()
     self.heroStatus:SetJustifyH("LEFT")
     if self.heroStatus.SetMaxLines then self.heroStatus:SetMaxLines(2) end
     self.heroPlay = PlayButton(panel, PLAY_COLUMN - 28, 58, function() self:PlayFeatured() end)
-    self.heroPlay:SetPoint("BOTTOMLEFT", 14, 30)
-    self.heroVersion = Widgets.Text(panel, 10, "gray")
-    self.heroVersion:SetPoint("BOTTOMLEFT", 24, 12)
-    Widgets.OnRefresh(function() self.heroVersion:SetText(L.VERSION:format(ns.Version())) end)
+    self.heroPlay:SetPoint("BOTTOMLEFT", 14, 12)
+    -- Stage and panel are one piece: a single hairline along their right edge.
+    local edge = hub:CreateTexture(nil, "BORDER")
+    edge:SetColorTexture(GOLD[1], GOLD[2], GOLD[3], 0.3)
+    edge:SetWidth(1)
+    edge:SetPoint("TOPLEFT", banner, "TOPRIGHT", 0, 0)
+    edge:SetPoint("BOTTOMLEFT", panel, "BOTTOMRIGHT", 0, 0)
 
     -- Right: the latest version's highlights; the link opens the news tab.
     local split = panel:CreateTexture(nil, "BORDER")

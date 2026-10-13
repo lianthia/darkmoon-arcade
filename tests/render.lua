@@ -84,6 +84,7 @@ Tab("news_old", function()
     ns.News:Select(#ns.News.VERSIONS)
 end)
 Tab("stats", function() ns.Window:OpenStats() end)
+Tab("stats_mercs", function() ns.StatsView:Select(2) end)
 local function OptionsPage(i)
     ns.OptionsView:SelectTab(i)
     local panel = ns.OptionsView.panels[i]

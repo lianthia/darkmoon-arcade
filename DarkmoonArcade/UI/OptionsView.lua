@@ -224,6 +224,11 @@ function OptionsView:Create(parent)
         b:SetPoint("TOPLEFT", 0, -(i - 1) * (NAV_ROW + 4))
         self.navButtons[i] = b
     end
+    -- The installed version, below the categories.
+    local version = Widgets.Text(nav, 10, "gray")
+    version:SetPoint("BOTTOMLEFT", 4, 0)
+    Widgets.OnRefresh(function() version:SetText(L.VERSION:format(ns.Version())) end)
+    self.version = version
     self:SelectTab(1)
     return view
 end

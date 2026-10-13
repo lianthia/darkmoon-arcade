@@ -456,9 +456,10 @@ for step = 1, 900 do
         results.clicks = results.clicks + ClickVisibleButtons(rnd)
         if not Window.frame._shown then SlashCmdList.DARKMOONARCADE("") end
     end
-    if step % 150 == 0 then
+    -- Every game comes up at least once; random clicks (the header's tabs too) may leave it early.
+    if step % 75 == 0 then
         local ids = { "murlocblast", "flappygriffin", "jewelsofuldum", "goblinslots", "spellbounce", "darkmoondeck", "mercenaries" }
-        SlashCmdList.DARKMOONARCADE(ids[(step / 150) % 7 + 1])
+        SlashCmdList.DARKMOONARCADE(ids[(step / 75) % 7 + 1])
         if Window.activeGame and Window.activeGame.id == "darkmoondeck" then Window.activeGame:NewRun() end
         if Window.activeGame and Window.activeGame.id == "flappygriffin" then Window.activeGame:NewRun() end
         if Window.activeGame and Window.activeGame.id == "murlocblast" then Window.activeGame:StartGame(1) end
@@ -876,6 +877,11 @@ Window:OpenHub()
 -- Statistics: play time, runs and flights were counted; every game has a block.
 Window:OpenStats()
 assert(ns.StatsView.view._shown, "statistics shown")
+for i = 1, #ns.StatsView.entries do
+    ns.StatsView.entries[i]._scripts.OnClick(ns.StatsView.entries[i])
+    assert(ns.StatsView.selected == i and ns.StatsView.title._text, "statistics page " .. i)
+end
+assert(ns.OptionsView.version._text:find(ns.Version(), 1, true), "the version under the options")
 assert(ns.Stats.TotalTime() > 0 and ns.Stats.TotalRuns() > 0, "play time and runs counted")
 assert(DarkmoonArcadeDB.stats.flights >= 1, "flight with the arcade counted")
 for _, id in ipairs(Arcade.order) do
