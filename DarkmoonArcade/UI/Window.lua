@@ -489,11 +489,12 @@ function Window:CreateFooter()
     self.helpButton = help
 end
 
--- The home tabs' size: the featured game's window, its insets and footer turned into room.
+-- The home tabs' size: exactly the featured game's window, so the window keeps its size when the
+-- game opens; the game's margins, gap and footer become room for the home tabs.
 function Arcade.HomeSize()
     local featured = Arcade.Featured()
-    local w = (featured.fieldWidth or Arcade.FIELD_W) + GUTTER + SIDEBAR_W + 2 * (INSET_SIDE - EDGE)
-    local h = (featured.fieldHeight or Arcade.FIELD_H) + INSET_BOTTOM - EDGE
+    local w = (featured.fieldWidth or Arcade.FIELD_W) + GUTTER + SIDEBAR_W + 2 * (GAME_SIDE - EDGE)
+    local h = (featured.fieldHeight or Arcade.FIELD_H) + GAME_TOP + INSET_BOTTOM - EDGE
     return w, h
 end
 
