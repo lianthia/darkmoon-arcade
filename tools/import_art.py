@@ -1,52 +1,25 @@
 """Converts the hand-made artwork in art/ into game textures: python tools/import_art.py"""
 import pathlib
 
-from collections import deque
-
-import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 MEDIA = ROOT / "DarkmoonArcade" / "media"
 
 
-def background_mask(src):
-    """True where the artwork shows its dark backdrop; the black outline of the logo is kept."""
-    h, w, _ = src.shape
-    mx = src.max(axis=2)
-    r, b = src[..., 0], src[..., 2]
-    colored = ((b > r + 6) & (mx > 40)) | (mx >= 200) | ((r > 150) & (src[..., 1] > 90))
-    protected = np.asarray(Image.fromarray((colored * 255).astype(np.uint8)).filter(ImageFilter.MaxFilter(19))) > 0
-    passable = ((mx > 24) & (b <= r + 6) & (mx < 200)) | ((mx <= 24) & ~protected)
-    seen = np.zeros((h, w), bool)
-    queue = deque()
-    for y in range(h):
-        for x in (0, w - 1):
-            queue.append((y, x))
-    for x in range(w):
-        for y in (0, h - 1):
-            queue.append((y, x))
-    while queue:
-        y, x = queue.popleft()
-        if seen[y, x] or not passable[y, x]:
-            continue
-        seen[y, x] = True
-        if y > 0: queue.append((y - 1, x))
-        if y < h - 1: queue.append((y + 1, x))
-        if x > 0: queue.append((y, x - 1))
-        if x < w - 1: queue.append((y, x + 1))
-    return seen
+# The arcade's logo (art/darkmoon_logo.png, drawn by hand with a transparent background) at the top
+# of a 512x256 texture (512x172 used); UI/Window.lua shows that part in the header.
+LOGO_W = 512
 
 
-def cutout_logo():
-    src = np.asarray(Image.open(ROOT / "art" / "logo_source.png").convert("RGB"))
-    alpha = np.where(background_mask(src.astype(int)), 0, 255).astype(np.uint8)
-    alpha = np.asarray(Image.fromarray(alpha).filter(ImageFilter.GaussianBlur(1.2)))
-    logo = Image.fromarray(np.dstack([src, alpha]), "RGBA")
-    logo = logo.crop(logo.getbbox()).resize((512, 330), Image.LANCZOS)
-    canvas = Image.new("RGBA", (512, 512), (0, 0, 0, 0))
-    canvas.paste(logo, (0, 0))
+def arcade_logo():
+    src = Image.open(ROOT / "art" / "darkmoon_logo.png").convert("RGBA")
+    src = src.crop(src.getbbox())
+    h = round(LOGO_W * src.height / src.width)
+    canvas = Image.new("RGBA", (LOGO_W, 256), (0, 0, 0, 0))
+    canvas.paste(src.resize((LOGO_W, h), Image.LANCZOS), (0, 0))
     canvas.save(MEDIA / "logo.tga")
+    print("arcade logo", LOGO_W, "x", h)
 
 
 def moon_icon():
@@ -83,7 +56,7 @@ def mercenaries_logo():
 
 
 if __name__ == "__main__":
-    cutout_logo()
+    arcade_logo()
     moon_icon()
     mercenaries_logo()
     print("Artwork imported into", MEDIA)

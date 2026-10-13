@@ -26,7 +26,7 @@ local HEADER_H, INSET_BOTTOM, INSET_SIDE, EDGE = 56, 48, 18, 3
 local GAME_TOP, GAME_SIDE = 12, 12
 local FRAME_W = CONTENT_W + INSET_SIDE * 2
 local FRAME_H = CONTENT_H + HEADER_H + INSET_BOTTOM
-local LOGO_H = 42
+local LOGO_H = 40
 local TAB_GAP = 28
 -- Room the window needs beyond its frame: the flight plate below, a margin all around.
 local FLIGHT_EXTRA, SCREEN_MARGIN = 36, 8
@@ -216,10 +216,11 @@ function Window:CreateHeader()
     rule:SetPoint("BOTTOMRIGHT")
 
     local logo = header:CreateTexture(nil, "ARTWORK")
-    logo:SetSize(LOGO_H * 512 / 330, LOGO_H)
+    -- The logo fills 512x172 of its 512x256 texture (tools/import_art.py).
+    logo:SetSize(LOGO_H * 512 / 172, LOGO_H)
     logo:SetPoint("LEFT", 14, 0)
     logo:SetTexture(Media.Tex("logo"))
-    logo:SetTexCoord(0, 1, 0, 330 / 512)
+    logo:SetTexCoord(0, 1, 0, 172 / 256)
     self.headerLogo = logo
 
     self.tabButtons = {}
