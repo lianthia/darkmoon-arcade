@@ -508,12 +508,13 @@ for _ = 1, #ns.Mercenaries.FX_LIST do
     for _ = 1, 40 do mc:OnUpdate(0.05) end
 end
 mc:TuneFx({ "scale", "Scale", 1.15, "mul", 2 }, 1)
-mc:TuneFxAim()
-mc:ToggleFxApi()
+mc:TuneFxCamera(5)
+for _, key in ipairs({ "fovAxis", "mirror", "pitchSign", "down", "loop" }) do mc:ToggleFxSetting(key) end
 mc:RateFx("good")
 local fxId = ns.Mercenaries.FX_LIST[mc.fxIndex].id
-local fxSaved = DarkmoonArcadeDB.fxGallery[fxId]
-assert(fxSaved.rating == "good" and fxSaved.scale > 1 and fxSaved.aim == 1, "effect tuning kept")
+local fxSaved = DarkmoonArcadeDB.fxGallery.v2[fxId]
+assert(fxSaved.rating == "good" and fxSaved.scale > 1, "effect tuning kept")
+assert(DarkmoonArcadeDB.fxGallery.ppy == 45 and DarkmoonArcadeDB.fxGallery.mirror, "camera settings kept")
 mc:ResetFx()
 assert(fxSaved.scale == nil and fxSaved.rating == "good", "reset keeps the rating")
 mc:Route()

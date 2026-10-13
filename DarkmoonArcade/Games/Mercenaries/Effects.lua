@@ -1,11 +1,16 @@
 -- Spell effects: the client's own spell models (missiles, impacts, auras) played over the board.
--- Each model needs its own size, place and turn in the frame; the effect gallery of the dev copy
--- (FxGallery.lua) tunes them in the game and keeps the values in DarkmoonArcadeDB.fxGallery.
+--
+-- All effects are actors in one ModelScene that covers the whole board, with a fixed camera: a
+-- model keeps its real size (no camera that fits each model on its own) and nothing is cut off at
+-- the edge of a small model frame. Clients without ModelScene fall back to one PlayerModel per
+-- effect. The effect gallery of the dev copy (FxGallery.lua) tunes and rates every effect; the
+-- values are kept in DarkmoonArcadeDB.fxGallery.v2 to be moved into FX_LIST.
 
 local _, ns = ...
 local MC = ns.Mercenaries
 local Media = ns.Media
 local Module = MC.Module
+local W, H = MC.W, MC.H
 
 -- kind: missile (flies from the caster to the target, then plays `impact`), impact (on the
 -- target) or aura (on the caster or an ally). file: the model's FileDataID (spells/*.m2).
@@ -64,23 +69,25 @@ for i, e in ipairs(MC.FX_LIST) do
     MC.FX[e.id] = e
 end
 
--- Starting values for every effect; the gallery changes them per effect.
--- size: the model frame in pixels; scale, x, y, z: the model in its frame; rx, ry, rz: turn in
--- degrees; dur: seconds (a missile's flight); aim: the axis a missile turns on to face its target.
-MC.FX_DEFAULTS = { size = 160, scale = 1, x = 0, y = 0, z = 0, rx = 0, ry = 0, rz = 0, dur = 0.8, aim = 0 }
-MC.FX_API = { "transform", "position" }
+-- Starting values of every effect; the gallery changes them per effect. scale: the model's size;
+-- x, y: shift in pixels; rx, ry, rz: turn in degrees (roll, pitch, yaw); dur: seconds (a
+-- missile's flight).
+MC.FX_DEFAULTS = { scale = 1, x = 0, y = 0, rx = 0, ry = 0, rz = 0, dur = 0.8 }
+-- The camera: how many pixels one yard in the scene covers, and its field of view.
+MC.FX_CAMERA = { ppy = 40, fov = 0.6 }
 
 function MC.FxStore()
     local db = ns.db
-    if not db then return {} end
+    if not db then return { v2 = {} } end
     db.fxGallery = db.fxGallery or {}
+    db.fxGallery.v2 = db.fxGallery.v2 or {}
     return db.fxGallery
 end
 
--- An effect's values: the tuned ones from the gallery over the defaults.
+-- An effect's values: the tuned ones from the gallery over the effect's own and the defaults.
 function MC.FxTuning(id)
     local def = MC.FX[id]
-    local saved = MC.FxStore()[id]
+    local saved = MC.FxStore().v2[id]
     local t = {}
     for k, v in pairs(MC.FX_DEFAULTS) do
         local own = def and def[k]
@@ -89,75 +96,137 @@ function MC.FxTuning(id)
     return t
 end
 
-local function Vector(x, y, z)
-    if CreateVector3D then return CreateVector3D(x, y, z) end
+-- Camera settings the gallery can change for all effects at once.
+function MC.FxCamera()
+    local store = MC.FxStore()
+    return {
+        ppy = store.ppy or MC.FX_CAMERA.ppy,
+        fov = MC.FX_CAMERA.fov,
+        fovAxis = store.fovAxis or "vertical",
+        mirror = store.mirror and -1 or 1,
+        pitchSign = store.pitchSign or -1,
+    }
 end
 
--- Places the model in its frame. "transform" uses SetTransform (frame-relative, the camera stays
--- put); "position" the older SetPosition / SetModelScale / SetFacing.
-local function Pose(m, t, extraAngle)
-    local api = MC.FxStore().api or "transform"
-    local rx, ry, rz = math.rad(t.rx), math.rad(t.ry), math.rad(t.rz)
-    if extraAngle then
-        if t.aim == 1 then rx = rx + extraAngle elseif t.aim == 2 then ry = ry + extraAngle elseif t.aim == 3 then rz = rz + extraAngle end
-    end
-    if api == "transform" and m.SetTransform and CreateVector3D then
-        pcall(m.SetTransform, m, Vector(t.x, t.y, t.z), Vector(rx, ry, rz), t.scale)
-    else
-        if m.ClearTransform then pcall(m.ClearTransform, m) end
-        pcall(m.SetPosition, m, t.z, t.x, t.y)
-        pcall(m.SetModelScale, m, t.scale)
-        pcall(m.SetFacing, m, rz)
-    end
+-- Blizzard's own UI effects (missiles and bursts between frames), where the client has them.
+function MC.ScriptedFxAvailable()
+    return C_ScriptedAnimations ~= nil and C_ScriptedAnimations.GetAllScriptedAnimationEffects ~= nil
+        and C_XMLUtil ~= nil and C_XMLUtil.GetTemplateInfo ~= nil
+        and C_XMLUtil.GetTemplateInfo("ScriptAnimatedModelSceneTemplate") ~= nil
 end
 
-function Module:FxPool()
-    if not self.fxModels then
-        self.fxModels = Media.Pool(function()
-            local m = CreateFrame("PlayerModel", nil, self.fxLayer)
-            m:SetFrameLevel(self.fxLayer:GetFrameLevel() + 2)
-            -- The pose only holds once the model has loaded; set it again then.
-            m:SetScript("OnModelLoaded", function(model)
-                if model.pose then model.pose() end
+-- Adds Blizzard's UI effects to the list (kind "scripted", id "s<number>"); dev copy only.
+function MC.AddScriptedFx()
+    if MC.scriptedAdded or not MC.ScriptedFxAvailable() then return 0 end
+    MC.scriptedAdded = true
+    local ok, list = pcall(C_ScriptedAnimations.GetAllScriptedAnimationEffects)
+    if not ok or type(list) ~= "table" then return 0 end
+    table.sort(list, function(a, b) return (a.id or 0) < (b.id or 0) end)
+    local dump, added = {}, 0
+    for _, e in ipairs(list) do
+        if e.id and e.visual and e.visual ~= 0 then
+            local def = E("s" .. e.id, "scripted", e.visual, "blizzard ui effect " .. e.id, { scripted = e.id })
+            MC.FX_LIST[#MC.FX_LIST + 1] = def
+            def.index = #MC.FX_LIST
+            MC.FX[def.id] = def
+            added = added + 1
+            dump[#dump + 1] = table.concat({ e.id, e.visual, e.visualScale or 1, e.duration or 0,
+                e.trajectory or 0, e.startBehavior or 0, e.finishBehavior or 0, e.finishEffectID or 0 }, ",")
+        end
+    end
+    -- id, visual, visualScale, duration, trajectory, startBehavior, finishBehavior, finishEffectID
+    MC.FxStore().scripted = dump
+    return added
+end
+
+-- Scene ---------------------------------------------------------------------------------------------
+
+function Module:FxScene()
+    if self.fxScene == nil then
+        self.fxScene = false
+        local ok, scene = pcall(CreateFrame, "ModelScene", nil, self.fxLayer)
+        if ok and scene and scene.CreateActor then
+            scene:SetAllPoints(self.fxLayer)
+            scene:SetFrameLevel(self.fxLayer:GetFrameLevel() + 2)
+            if scene.EnableMouse then scene:EnableMouse(false) end
+            self.fxScene = scene
+            self.fxActors = Media.Pool(function() return scene:CreateActor() end, function(a)
+                if a.ClearModel then pcall(a.ClearModel, a) end
+                if a.Hide then a:Hide() end
             end)
-            return m
-        end, function(m)
-            m.pose = nil
-            pcall(m.ClearModel, m)
-            m:Hide()
-        end)
+            self:AimFxCamera()
+        end
+        if MC.DEV then
+            MC.FxStore().info = {
+                modelScene = self.fxScene ~= false, scripted = MC.ScriptedFxAvailable(),
+            }
+        end
     end
-    return self.fxModels
+    return self.fxScene
 end
 
--- Plays effect `id` at x, y (board coordinates, y downwards). A missile flies to toX, toY and
--- then plays its impact there. Returns the effect's length in seconds (0 if unknown).
+-- Camera at (-D, 0, 0) looking along +X: screen right is -Y, screen up is +Z. D is chosen so that
+-- `ppy` pixels show one yard at the plane X = 0, where the effects play.
+function Module:AimFxCamera()
+    local scene = self.fxScene
+    if not scene then return end
+    local cam = MC.FxCamera()
+    local half = (cam.fovAxis == "vertical" and H or W) / 2 / cam.ppy
+    local distance = half / math.tan(cam.fov / 2)
+    pcall(scene.SetCameraFieldOfView, scene, cam.fov)
+    pcall(scene.SetCameraNearClip, scene, 0.1)
+    pcall(scene.SetCameraFarClip, scene, distance * 4)
+    pcall(scene.SetCameraPosition, scene, -distance, 0, 0)
+    pcall(scene.SetCameraOrientationByYawPitchRoll, scene, 0, 0, 0)
+end
+
+-- Board pixels (x right, y down from the top left) to the scene's Y and Z.
+function Module:FxWorld(px, py)
+    local cam = MC.FxCamera()
+    return -(px - W / 2) / cam.ppy * cam.mirror, -(py - H / 2) / cam.ppy
+end
+
+-- Turns a missile, which points along +X, to fly along the board direction dx, dy.
+local function Aim(dx, dy, cam)
+    local sx, sy = dx * cam.mirror, -dy
+    local len = math.max(0.001, math.sqrt(sx * sx + sy * sy))
+    local yaw = math.atan2(-sx, 0)
+    local pitch = cam.pitchSign * math.asin(sy / len)
+    return yaw, pitch
+end
+
+-- Plays effect `id` at x, y (board pixels). A missile flies to toX, toY and then plays its
+-- impact there. Returns the effect's length in seconds (0 if it cannot play).
 function Module:PlayFx(id, x, y, toX, toY, onDone)
     local def = MC.FX[id]
-    if not def or not self.fxLayer then return 0 end
-    local t = MC.FxTuning(id)
-    local pool = self:FxPool()
-    local m = pool.Acquire()
-    m:SetSize(t.size, t.size)
-    m:SetAlpha(1)
-    m:Show()
-    local ok = pcall(m.SetModel, m, def.file)
-    local store = MC.FxStore()
+    if not def or def.kind == "scripted" or not self.fxLayer then return 0 end
+    local scene = self:FxScene()
+    if not scene then return self:PlayFxModel(def, x, y, toX, toY, onDone) end
+    local t, cam = MC.FxTuning(id), MC.FxCamera()
+    local a = self.fxActors.Acquire()
+    local ok = pcall(a.SetModelByFileID, a, def.file)
     if MC.DEV then
-        local loaded = m.GetModelFileID and m:GetModelFileID()
+        local store = MC.FxStore()
         store.loaded = store.loaded or {}
-        store.loaded[id] = ok and (loaded == nil and "unknown" or loaded == def.file) or false
-        store.info = { setTransform = m.SetTransform ~= nil, vector = CreateVector3D ~= nil }
+        store.loaded[id] = ok
     end
+    pcall(a.SetScale, a, t.scale)
+    pcall(a.SetAlpha, a, 1)
     local missile = def.kind == "missile" and toX ~= nil
-    local angle = missile and math.atan2(-(toY - y), toX - x) or nil
-    m.pose = function() Pose(m, t, angle) end
-    m.pose()
-    local function Place(px, py)
-        m:ClearAllPoints()
-        m:SetPoint("CENTER", self.fxLayer, "TOPLEFT", px, -py)
+    local yaw, pitch = math.rad(t.rz), math.rad(t.ry)
+    if missile then
+        local aimYaw, aimPitch = Aim(toX - x, toY - y, cam)
+        yaw, pitch = yaw + aimYaw, pitch + aimPitch
     end
-    Place(x, y)
+    pcall(a.SetYaw, a, yaw)
+    pcall(a.SetPitch, a, pitch)
+    pcall(a.SetRoll, a, math.rad(t.rx))
+    local function Put(px, py)
+        local wy, wz = self:FxWorld(px + t.x, py + t.y)
+        pcall(a.SetPosition, a, 0, wy, wz)
+    end
+    Put(x, y)
+    if a.Show then a:Show() end
     local dur = math.max(0.1, t.dur)
     self.effects[#self.effects + 1] = {
         t = 0,
@@ -165,17 +234,93 @@ function Module:PlayFx(id, x, y, toX, toY, onDone)
             local p = e.t / dur
             if p >= 1 then return false end
             if missile then
-                Place(x + (toX - x) * p, y + (toY - y) * p - math.sin(p * math.pi) * 24)
+                Put(x + (toX - x) * p, y + (toY - y) * p - math.sin(p * math.pi) * 24)
+            elseif p > 0.75 then
+                pcall(a.SetAlpha, a, 1 - (p - 0.75) / 0.25)
+            end
+            return true
+        end,
+        finish = function()
+            self.fxActors.Release(a)
+            if missile and def.impact and not self.clearingEffects then self:PlayFx(def.impact, toX, toY) end
+            if onDone then onDone() end
+        end,
+    }
+    return dur + (missile and def.impact and MC.FxTuning(def.impact).dur or 0)
+end
+
+-- Fallback without ModelScene: one PlayerModel per effect, a large frame round the spot so the
+-- effect's edges are not cut off.
+local PAD = 4
+function Module:PlayFxModel(def, x, y, toX, toY, onDone)
+    local t = MC.FxTuning(def.id)
+    if not self.fxModels then
+        self.fxModels = Media.Pool(function()
+            local m = CreateFrame("PlayerModel", nil, self.fxLayer)
+            m:SetFrameLevel(self.fxLayer:GetFrameLevel() + 2)
+            return m
+        end, function(m)
+            pcall(m.ClearModel, m)
+            m:Hide()
+        end)
+    end
+    local m = self.fxModels.Acquire()
+    local size = 120 * PAD
+    m:SetSize(size, size)
+    m:SetAlpha(1)
+    m:Show()
+    pcall(m.SetModel, m, def.file)
+    pcall(m.SetModelScale, m, t.scale / PAD)
+    local missile = def.kind == "missile" and toX ~= nil
+    local function Put(px, py)
+        m:ClearAllPoints()
+        m:SetPoint("CENTER", self.fxLayer, "TOPLEFT", px + t.x, -(py + t.y))
+    end
+    Put(x, y)
+    local dur = math.max(0.1, t.dur)
+    self.effects[#self.effects + 1] = {
+        t = 0,
+        update = function(e)
+            local p = e.t / dur
+            if p >= 1 then return false end
+            if missile then
+                Put(x + (toX - x) * p, y + (toY - y) * p - math.sin(p * math.pi) * 24)
             elseif p > 0.75 then
                 m:SetAlpha(1 - (p - 0.75) / 0.25)
             end
             return true
         end,
         finish = function()
-            pool.Release(m)
+            self.fxModels.Release(m)
             if missile and def.impact and not self.clearingEffects then self:PlayFx(def.impact, toX, toY) end
             if onDone then onDone() end
         end,
     }
-    return dur + (missile and def.impact and MC.FxTuning(def.impact).dur or 0)
+    return dur
+end
+
+-- Blizzard's UI effects play between two frames in a scene of their own.
+function Module:PlayScriptedFx(id, source, target)
+    local def = MC.FX[id]
+    if not def or not def.scripted then return 0 end
+    if not self.fxScripted then
+        local ok, scene = pcall(CreateFrame, "ModelScene", nil, self.fxLayer, "ScriptAnimatedModelSceneTemplate")
+        if not ok or not scene then return 0 end
+        scene:SetAllPoints(self.fxLayer)
+        scene:SetFrameLevel(self.fxLayer:GetFrameLevel() + 3)
+        self.fxScripted = scene
+    end
+    local ok = pcall(self.fxScripted.AddEffect, self.fxScripted, def.scripted, source, target)
+    if MC.DEV then
+        local store = MC.FxStore()
+        store.loaded = store.loaded or {}
+        store.loaded[id] = ok
+    end
+    return 1.5
+end
+
+function Module:ClearScriptedFx()
+    if self.fxScripted and self.fxScripted.RemoveAllEffects then
+        pcall(self.fxScripted.RemoveAllEffects, self.fxScripted)
+    end
 end
