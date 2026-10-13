@@ -106,6 +106,14 @@ if Want("collection") then
     Enter(card)
     Snap("collection_hover")
     Leave(card)
+    -- A rank up to buy: "!" on the card and its role tab.
+    local entry = store.mercs[card.merc]
+    local coins = entry.coins
+    entry.coins = 500
+    mc:RefreshCollection()
+    Snap("collection_marker")
+    entry.coins = coins
+    mc:RefreshCollection()
 end
 store.mercs.jaina = store.mercs.jaina or MC.Bounty.NewEntry(false)
 store.mercs.jaina.coins = 200

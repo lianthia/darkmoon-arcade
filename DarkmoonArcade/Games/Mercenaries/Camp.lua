@@ -286,7 +286,7 @@ function Module:RefreshCamp()
     for id, entry in pairs(store.mercs) do
         if MC.Mercs[id] then
             if entry.owned then owned = owned + 1 end
-            if Bounty.CanRecruit(store, id) then recruitable = true end
+            if Bounty.CanImprove(store, id) then recruitable = true end
         end
     end
     view.collection.plaque.text:SetText(L.MC_COLLECTION)
@@ -686,6 +686,9 @@ function Module:BuildCollection()
         end)
         tab:HookScript("OnLeave", GameTooltip_Hide)
         Kit.Place(tab, 40 + (i - 1) * 54, 28)
+        tab.marker = Marker(tab)
+        tab.marker:SetSize(20, 20)
+        tab.marker:SetPoint("CENTER", tab, "BOTTOMRIGHT", -2, 6)
         view.tabs[role] = tab
     end
 
@@ -704,6 +707,8 @@ function Module:BuildCollection()
         Kit.SetBaseScale(card, CARD_SCALE)
         Kit.Place(card, 130 + col * 156, 150 + row * 212)
         card:SetScript("OnClick", function() self:CollectionClicked(card.merc) end)
+        card.marker = Marker(card)
+        card.marker:SetPoint("BOTTOM", card, "TOP", 0, -10)
         view.cards[i] = card
     end
     view.prev = Kit.Arrow(page, -1, function(dir) self:TurnCollectionPage(dir) end)
@@ -816,9 +821,15 @@ function Module:RefreshCollection()
     self:SetScene(nil)
     local locked = store.run ~= nil
     if locked then self.partySlot = nil end
+    -- A "!" where a mercenary can be recruited or ranked up.
+    local improve = {}
+    for _, id in ipairs(MC.MERC_ORDER) do
+        if Bounty.CanImprove(store, id) then improve[MC.Mercs[id].role] = true end
+    end
     for role, tab in pairs(view.tabs) do
         Kit.SetSelected(tab, role == self.collectionRole)
         tab.icon:SetTexture(MC.RoleTex("role_", role))
+        tab.marker:SetShown(improve[role] == true)
     end
     view.pageTitle.text:SetText(Describe.RoleName(self.collectionRole))
     local inParty = {}
@@ -838,6 +849,7 @@ function Module:RefreshCollection()
     for i, card in ipairs(view.cards) do
         local id = list[(self.collectionPage - 1) * 6 + i]
         card:SetShown(id ~= nil)
+        card.marker:SetShown(id ~= nil and Bounty.CanImprove(store, id))
         if id then
             local unit = MC.PreviewUnit(store, id)
             local extra = CardExtra(store, id)

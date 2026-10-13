@@ -127,6 +127,15 @@ function Bounty.CanRankUp(store, id, slot)
     return cost ~= nil and entry.coins >= cost
 end
 
+-- Something to do for this mercenary: recruit it or raise one of its abilities.
+function Bounty.CanImprove(store, id)
+    if Bounty.CanRecruit(store, id) then return true end
+    for slot = 1, #MC.ABILITY_LEVELS do
+        if Bounty.CanRankUp(store, id, slot) then return true end
+    end
+    return false
+end
+
 function Bounty.RankUp(store, id, slot)
     if not Bounty.CanRankUp(store, id, slot) then return false end
     local entry = store.mercs[id]
