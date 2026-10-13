@@ -141,6 +141,11 @@ SlashCmdList.DARKMOONARCADE = function(input)
     elseif cmd == "debug" and ADDON ~= "DarkmoonArcade" then
         ns.db.debugMode = not ns.db.debugMode
         ns.Print(ns.db.debugMode and L.DEBUG_ON or L.DEBUG_OFF)
+    elseif cmd == "fx" and ADDON ~= "DarkmoonArcade" then
+        -- Dev copy: the effect gallery of Mercenaries.
+        Window.frame:Show()
+        Window:OpenGame("mercenaries")
+        ns.Mercenaries.Module:OpenFxGallery()
     elseif cmd == "minimap" then
         ns.db.minimap = not ns.db.minimap
         ns.Minimap:Update()

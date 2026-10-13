@@ -148,6 +148,7 @@ function Module:Build(container)
     self:BuildRoadmap()
     self:BuildMap()
     self:BuildBattle()
+    if MC.DEV then self:BuildFxGallery() end
 
     local fx = CreateFrame("Frame", nil, container)
     fx:SetAllPoints()
@@ -795,9 +796,12 @@ function Module:Popup(x, y, text, size, r, g, b, duration, rise)
 end
 
 function Module:ClearEffects()
+    -- Finishing effects must not start follow-ups (a missile's impact).
+    self.clearingEffects = true
     for _, e in ipairs(self.effects) do
         if e.finish then e.finish(e) end
     end
+    self.clearingEffects = false
     self.effects = {}
 end
 
@@ -864,6 +868,7 @@ function Module:OnUpdate(dt)
     if self.view == "battle" then self:UpdateBattle(dt) end
     if self.view == "map" then self:UpdateMap(dt) end
     if self.view == "travel" then self:UpdateTravel(dt) end
+    if self.view == "fxgallery" then self:UpdateFxGallery(dt) end
     for i = #self.effects, 1, -1 do
         local e = self.effects[i]
         e.t = e.t + dt

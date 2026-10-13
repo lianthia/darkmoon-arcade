@@ -86,6 +86,11 @@ if Want("news") then
     ns.News.frame:Hide()
 end
 if Want("camp") then Snap("camp") end
+if Want("fxgallery") then
+    mc:BuildFxGallery()
+    mc:OpenFxGallery()
+    Snap("fxgallery")
+end
 if Want("roadmap") then
     mc:ShowView("roadmap")
     Snap("roadmap")

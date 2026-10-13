@@ -74,6 +74,8 @@ Games\Mercenaries\Camp.lua
 Games\Mercenaries\Map.lua
 Games\Mercenaries\Sounds.lua
 Games\Mercenaries\Battle.lua
+Games\Mercenaries\Effects.lua
+Games\Mercenaries\FxGallery.lua
 Games\Mercenaries\Help.lua
 Games\Mercenaries\Result.lua
 Games\Mercenaries\Roadmap.lua
