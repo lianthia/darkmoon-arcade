@@ -1,4 +1,4 @@
--- Options inside the arcade window, built from the shared definitions in Settings.lua.
+-- Options inside the arcade window (a tab of its own), built from the shared definitions in Settings.lua.
 
 local _, ns = ...
 
@@ -62,7 +62,7 @@ end
 function OptionsView:CreateDropdown(panel, def, y)
     local dropdown = CreateFrame("DropdownButton", nil, panel, "WowStyle1DropdownTemplate")
     dropdown:SetWidth(210)
-    dropdown:SetPoint("TOPRIGHT", -16, y)
+    dropdown:SetPoint("TOPLEFT", 360, y)
     dropdown:SetupMenu(function(_, root)
         for _, choice in ipairs(Choices(def)) do
             root:CreateRadio(choice[2], function() return IsCurrent(def, choice[1]) end, function()
@@ -74,40 +74,78 @@ function OptionsView:CreateDropdown(panel, def, y)
     return dropdown
 end
 
--- Builds one tab: a framed panel with a scroll frame, filled with the rows of `defs`.
-function OptionsView:CreateTab(view, defs)
+-- The options tab: categories on the left (general, window, sound, flights, Mercenaries, the
+-- minigames), the chosen category's settings on the right.
+local PAD, NAV_W, NAV_ROW = 18, 220, 40
+local GOLD = { 1, 0.82, 0.3 }
+
+-- Sorts the shared definitions into categories. Every arcade section is a category of its own; the
+-- featured game gets one, the other games share "minigames" and keep their names as headings.
+function OptionsView.Categories()
+    local featured = ns.Arcade.Featured()
+    local list, byId, current = {}, {}, nil
+    local function Category(id, label)
+        if not byId[id] then
+            byId[id] = { id = id, label = label, defs = {} }
+            list[#list + 1] = byId[id]
+        end
+        return byId[id]
+    end
+    for _, def in ipairs(ns.Settings.Definitions()) do
+        if def.kind == "section" then
+            if def.tab ~= "games" then
+                current = Category(def.label, def.label)
+            elseif def.label == featured.nameKey then
+                current = Category("featured", def.label)
+            else
+                current = Category("minigames", "STATS_MINIGAMES")
+                current.defs[#current.defs + 1] = def
+            end
+        elseif current then
+            current.defs[#current.defs + 1] = def
+        end
+    end
+    return list
+end
+
+-- Builds one category's page: its title, then a scroll frame with the rows of `defs`.
+function OptionsView:CreateTab(view, category)
     local panel = CreateFrame("Frame", nil, view)
-    panel:SetPoint("TOPLEFT", 70, -78)
-    panel:SetPoint("BOTTOMRIGHT", -70, 6)
-    local fill = panel:CreateTexture(nil, "BACKGROUND")
-    fill:SetAllPoints()
-    fill:SetColorTexture(0, 0, 0, 0.32)
-    Widgets.Rim(panel, panel)
+    panel:SetPoint("TOPLEFT", PAD + NAV_W + PAD * 2, -PAD)
+    panel:SetPoint("BOTTOMRIGHT", -PAD, PAD)
+    local title = Widgets.LocalizedText(panel, 18, "gold", category.label)
+    title:SetPoint("TOPLEFT", 4, 0)
+    local rule = panel:CreateTexture(nil, "BORDER")
+    rule:SetColorTexture(GOLD[1], GOLD[2], GOLD[3], 0.3)
+    rule:SetHeight(1)
+    rule:SetPoint("TOPLEFT", 0, -28)
+    rule:SetPoint("TOPRIGHT", 0, -28)
 
     local scroll = CreateFrame("ScrollFrame", nil, panel, "UIPanelScrollFrameTemplate")
-    scroll:SetPoint("TOPLEFT", 0, -6)
-    scroll:SetPoint("BOTTOMRIGHT", -26, 6)
+    scroll:SetPoint("TOPLEFT", 0, -38)
+    scroll:SetPoint("BOTTOMRIGHT", -26, 0)
     local content = CreateFrame("Frame", nil, scroll)
-    content:SetWidth(panel:GetWidth() > 0 and panel:GetWidth() - 26 or 474)
+    content:SetWidth(panel:GetWidth() > 0 and panel:GetWidth() - 26 or 760)
     scroll:SetScrollChild(content)
     scroll:SetScript("OnSizeChanged", function(_, width) content:SetWidth(width) end)
+    panel.content = content
 
     local y = -4
-    for _, def in ipairs(defs) do
+    for _, def in ipairs(category.defs) do
         local row = { def = def }
         if def.kind == "section" then
             local text = Widgets.LocalizedText(content, 14, "gold", def.label)
-            text:SetPoint("TOPLEFT", 18, y - 6)
+            text:SetPoint("TOPLEFT", 6, y - 10)
             local line = content:CreateTexture(nil, "ARTWORK")
-            line:SetColorTexture(0.86, 0.66, 0.3, 0.25)
-            line:SetPoint("TOPLEFT", 18, y - 24)
-            line:SetPoint("TOPRIGHT", -8, y - 24)
+            line:SetColorTexture(GOLD[1], GOLD[2], GOLD[3], 0.18)
+            line:SetPoint("TOPLEFT", 6, y - 28)
+            line:SetPoint("TOPRIGHT", -8, y - 28)
             line:SetHeight(1)
-            y = y - SECTION_ROW
+            y = y - SECTION_ROW - 6
         elseif def.kind == "check" then
             local check = CreateFrame("CheckButton", nil, content, "UICheckButtonTemplate")
             check:SetSize(26, 26)
-            check:SetPoint("TOPLEFT", 14, y)
+            check:SetPoint("TOPLEFT", 2, y)
             local label = Widgets.LocalizedText(content, 12, "white", def.label)
             label:SetPoint("LEFT", check, "RIGHT", 6, 0)
             check:SetScript("OnClick", function(button)
@@ -119,12 +157,12 @@ function OptionsView:CreateTab(view, defs)
             y = y - CHECK_ROW
         else
             local label = Widgets.LocalizedText(content, 12, "white", def.label)
-            label:SetPoint("TOPLEFT", 20, y - 6)
+            label:SetPoint("TOPLEFT", 8, y - 6)
             if TemplateExists("WowStyle1DropdownTemplate") then
                 row.dropdown = self:CreateDropdown(content, def, y)
             else
                 local cycler = Widgets.Cycler(content, 210, function(dir) self:Step(row, dir) end)
-                cycler:SetPoint("TOPRIGHT", -8, y)
+                cycler:SetPoint("TOPLEFT", 360, y)
                 cycler:EnableMouse(true)
                 Tooltip(cycler, def)
                 row.cycler = cycler
@@ -137,6 +175,27 @@ function OptionsView:CreateTab(view, defs)
     return panel
 end
 
+-- One category in the list on the left.
+local function NavButton(parent, label, onClick)
+    local b = CreateFrame("Button", nil, parent)
+    b:SetSize(NAV_W, NAV_ROW)
+    b.fill = b:CreateTexture(nil, "BACKGROUND")
+    b.fill:SetAllPoints()
+    b.fill:SetColorTexture(1, 1, 1, 0.06)
+    b.edge = b:CreateTexture(nil, "ARTWORK")
+    b.edge:SetPoint("TOPLEFT")
+    b.edge:SetPoint("BOTTOMLEFT")
+    b.edge:SetWidth(3)
+    b.edge:SetColorTexture(GOLD[1], GOLD[2], GOLD[3], 1)
+    local hl = b:CreateTexture(nil, "HIGHLIGHT")
+    hl:SetAllPoints()
+    hl:SetColorTexture(1, 0.85, 0.5, 0.06)
+    b.label = Widgets.LocalizedText(b, 14, "white", label)
+    b.label:SetPoint("LEFT", 18, 0)
+    b:SetScript("OnClick", onClick)
+    return b
+end
+
 function OptionsView:Create(parent)
     local view = CreateFrame("Frame", nil, parent)
     view:SetAllPoints()
@@ -144,81 +203,39 @@ function OptionsView:Create(parent)
     view:Hide()
     self.view = view
 
-    local title = Widgets.LocalizedText(view, 20, "gold", "OPTIONS")
-    title:SetPoint("TOP", 0, -10)
+    local nav = CreateFrame("Frame", nil, view)
+    nav:SetPoint("TOPLEFT", PAD, -PAD)
+    nav:SetPoint("BOTTOMLEFT", PAD, PAD)
+    nav:SetWidth(NAV_W)
+    local divider = view:CreateTexture(nil, "BORDER")
+    divider:SetColorTexture(GOLD[1], GOLD[2], GOLD[3], 0.18)
+    divider:SetWidth(1)
+    divider:SetPoint("TOPLEFT", PAD + NAV_W + PAD, -PAD)
+    divider:SetPoint("BOTTOMLEFT", PAD + NAV_W + PAD, PAD)
 
-    -- Two tabs: everything about the arcade, and one long scrolling list for all games.
-    local groups = { general = {}, games = {} }
-    local current = "general"
-    for _, def in ipairs(ns.Settings.Definitions()) do
-        if def.tab then current = def.tab end
-        table.insert(groups[current], def)
+    self.rows, self.panels, self.navButtons = {}, {}, {}
+    self.categories = OptionsView.Categories()
+    for i, category in ipairs(self.categories) do
+        self.panels[i] = self:CreateTab(view, category)
+        local b = NavButton(nav, category.label, function()
+            PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB)
+            self:SelectTab(i)
+        end)
+        b:SetPoint("TOPLEFT", 0, -(i - 1) * (NAV_ROW + 4))
+        self.navButtons[i] = b
     end
-
-    self.rows = {}
-    self.panels = {
-        self:CreateTab(view, groups.general),
-        self:CreateTab(view, groups.games),
-    }
-    self:CreateTabButtons(view)
     self:SelectTab(1)
     return view
 end
 
-function OptionsView:CreateTabButtons(view)
-    local keys = { "OPT_TAB_GENERAL", "OPT_TAB_GAMES" }
-    if TemplateExists("TabSystemTemplate") and TabSystemMixin and TabSystemOwnerMixin then
-        local tabs = CreateFrame("Frame", nil, view, "TabSystemTemplate")
-        tabs.tabTemplate = "TabSystemTopButtonTemplate"
-        TabSystemMixin.OnLoad(tabs)
-        tabs:SetPoint("BOTTOMLEFT", self.panels[1], "TOPLEFT", 12, 2)
-        Mixin(view, TabSystemOwnerMixin)
-        TabSystemOwnerMixin.OnLoad(view)
-        view:SetTabSystem(tabs)
-        self.tabIDs = {}
-        for i, key in ipairs(keys) do
-            self.tabIDs[i] = view:AddNamedTab(L[key], self.panels[i])
-        end
-        self.tabSystem = view
-        -- The template sizes a tab once from its text's current width, which truncates longer or
-        -- translated labels. Give each label its full width, then let the tab measure itself again.
-        local function FitTabs()
-            for i, id in ipairs(self.tabIDs) do
-                local button = tabs:GetTabButton(id)
-                local label = button and (button.Text or (button.GetFontString and button:GetFontString()))
-                if label then
-                    local text = L[keys[i]]
-                    button.tabText = text
-                    label:SetText(text)
-                    local width = label.GetUnboundedStringWidth and label:GetUnboundedStringWidth() or label:GetStringWidth()
-                    label:SetWidth(math.ceil(width) + 4)
-                    if button.UpdateTabWidth then
-                        button:UpdateTabWidth()
-                    else
-                        button:SetWidth(math.max(110, width + 48))
-                    end
-                end
-            end
-            if tabs.MarkDirty then tabs:MarkDirty() end
-        end
-        Widgets.OnRefresh(FitTabs)
-        FitTabs()
-        return
-    end
-    -- Fallback: plain buttons that switch the panels.
-    local last
-    for i, key in ipairs(keys) do
-        local b = Widgets.Button(view, 130, 24, key, function() self:SelectTab(i) end)
-        if last then b:SetPoint("LEFT", last, "RIGHT", 6, 0) else b:SetPoint("BOTTOMLEFT", self.panels[1], "TOPLEFT", 4, 6) end
-        last = b
-    end
-end
-
 function OptionsView:SelectTab(index)
-    if self.tabSystem then
-        self.tabSystem:SetTab(self.tabIDs[index])
-    else
-        for i, panel in ipairs(self.panels) do panel:SetShown(i == index) end
+    self.selected = index
+    for i, panel in ipairs(self.panels) do
+        panel:SetShown(i == index)
+        local b = self.navButtons[i]
+        b.fill:SetShown(i == index)
+        b.edge:SetShown(i == index)
+        if i == index then b.label:SetTextColor(1, 0.82, 0.3) else b.label:SetTextColor(0.78, 0.74, 0.68) end
     end
 end
 

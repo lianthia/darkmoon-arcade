@@ -96,7 +96,6 @@ events:SetScript("OnEvent", function(_, event, arg1)
         ns.SafeCall("Settings", ns.Settings.Register, ns.Settings)
         ns.SafeCall("Flight", Flight.Init, Flight)
         ns.SafeCall("Toast", ns.Toast.Create, ns.Toast)
-        ns.SafeCall("News", ns.News.Create, ns.News)
         events:UnregisterEvent("ADDON_LOADED")
     elseif event == "PLAYER_LOGIN" then
         -- The minimap has its final size only once the UI layout is applied.

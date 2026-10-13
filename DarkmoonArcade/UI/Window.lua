@@ -1,5 +1,6 @@
--- The arcade window: Blizzard's panel frame crowned by the logo, the main menu (UI/Hub.lua), and a
--- playfield plus sidebar for whichever game is active.
+-- The arcade window: Blizzard's panel frame with a header (logo and tabs, as in the Battle.net
+-- app), the home tabs (main menu in UI/Hub.lua, what's new, statistics, options) at the featured
+-- game's size, and a playfield plus sidebar for whichever game is active.
 
 local ADDON, ns = ...
 
@@ -19,14 +20,14 @@ local CONTENT_W = Arcade.FIELD_W + GUTTER + SIDEBAR_W
 local CONTENT_H = Arcade.FIELD_H
 
 -- Playfield and sidebar are framed panels on one grid; the footer buttons align with their edges.
-local INSET_TOP, INSET_BOTTOM, INSET_SIDE = 58, 48, 18
+-- The home tabs fill the window from edge to edge below the header.
+local HEADER_H, INSET_BOTTOM, INSET_SIDE, EDGE = 56, 48, 18, 3
 local FRAME_W = CONTENT_W + INSET_SIDE * 2
-local FRAME_H = CONTENT_H + INSET_TOP + INSET_BOTTOM
-local LOGO_W, LOGO_H = 150, 97
--- Half of the logo sits inside the frame, the content starts just below it.
-local LOGO_OVERLAP = 48
--- Room the window needs beyond its frame: the logo above, the flight plate below, a margin all around.
-local LOGO_EXTRA, FLIGHT_EXTRA, SCREEN_MARGIN = LOGO_H - LOGO_OVERLAP, 36, 8
+local FRAME_H = CONTENT_H + HEADER_H + INSET_BOTTOM
+local LOGO_H = 42
+local TAB_GAP = 28
+-- Room the window needs beyond its frame: the flight plate below, a margin all around.
+local FLIGHT_EXTRA, SCREEN_MARGIN = 36, 8
 
 -- Panel templates without a title bar first; the portrait frame is the known-good fallback.
 local CHROME_TEMPLATES = { "SimplePanelTemplate", "PortraitFrameTemplateNoCloseButton" }
@@ -70,7 +71,6 @@ function Window:Create()
     f:SetSize(FRAME_W, FRAME_H)
     f:SetToplevel(true)
     f:SetClampedToScreen(true)
-    f:SetClampRectInsets(0, 0, LOGO_H - LOGO_OVERLAP, 0)
     f:SetMovable(true)
     f:EnableMouse(true)
     f:Hide()
@@ -105,39 +105,7 @@ function Window:Create()
     table.sort(parts)
     ns.Debug("chromeParts", table.concat(parts, ","))
 
-    local close = CreateFrame("Button", nil, chrome, "UIPanelCloseButtonNoScripts")
-    close:SetPoint("TOPRIGHT", -2, -2)
-    close:SetScript("OnClick", function() f:Hide() end)
-
-    local function StartMove() f:StartMoving() end
-    local function StopMove()
-        f:StopMovingOrSizing()
-        local point, _, relPoint, x, y = f:GetPoint()
-        ns.db.position = { point, relPoint, x, y }
-    end
-
-    local dragArea = CreateFrame("Frame", nil, chrome)
-    dragArea:SetPoint("TOPLEFT", 4, 0)
-    dragArea:SetPoint("TOPRIGHT", -30, 0)
-    dragArea:SetHeight(INSET_TOP + 4)
-    dragArea:EnableMouse(true)
-    dragArea:RegisterForDrag("LeftButton")
-    dragArea:SetScript("OnDragStart", StartMove)
-    dragArea:SetScript("OnDragStop", StopMove)
-
-    -- The logo crowns the frame; its own high frame level keeps it above the panel border.
-    local logoFrame = CreateFrame("Frame", nil, f)
-    logoFrame:SetSize(LOGO_W, LOGO_H)
-    logoFrame:SetPoint("BOTTOM", f, "TOP", 0, -LOGO_OVERLAP)
-    logoFrame:SetFrameLevel(f:GetFrameLevel() + 1000)
-    logoFrame:EnableMouse(true)
-    logoFrame:RegisterForDrag("LeftButton")
-    logoFrame:SetScript("OnDragStart", StartMove)
-    logoFrame:SetScript("OnDragStop", StopMove)
-    local logo = logoFrame:CreateTexture(nil, "ARTWORK")
-    logo:SetAllPoints()
-    logo:SetTexture(Media.Tex("logo"))
-    logo:SetTexCoord(0, 1, 0, 330 / 512)
+    self:CreateHeader()
 
     -- One continuous surface behind header, content and footer; the panel border draws on top.
     local surface = chrome:CreateTexture(nil, "BACKGROUND", nil, 2)
@@ -148,7 +116,7 @@ function Window:Create()
 
     local content = CreateFrame("Frame", nil, chrome)
     content:SetSize(CONTENT_W, CONTENT_H)
-    content:SetPoint("TOPLEFT", INSET_SIDE, -INSET_TOP)
+    content:SetPoint("TOPLEFT", INSET_SIDE, -HEADER_H)
     content:SetFrameLevel(chrome:GetFrameLevel() + 4)
     self.content = content
 
@@ -163,6 +131,7 @@ function Window:Create()
     self:CreateHub()
     ns.OptionsView:Create(content)
     ns.StatsView:Create(content)
+    ns.News:Create(content)
 
     self:ApplyScale()
     self:RestorePosition()
@@ -202,6 +171,106 @@ function Window:Create()
     end)
 
     self:OpenHub()
+end
+
+-- Header ------------------------------------------------------------------------
+
+-- The tabs of the home view, plus one for the game that is open.
+local TABS = {
+    { id = "home", key = "TAB_HOME" },
+    { id = "news", key = "NEWS_TITLE" },
+    { id = "stats", key = "STATISTICS" },
+    { id = "options", key = "OPTIONS" },
+    { id = "game" },
+}
+
+function Window:CreateHeader()
+    local chrome, f = self.chrome, self.frame
+    local header = CreateFrame("Frame", nil, chrome)
+    header:SetPoint("TOPLEFT", EDGE, -EDGE)
+    header:SetPoint("TOPRIGHT", -EDGE, -EDGE)
+    header:SetHeight(HEADER_H - EDGE)
+    header:SetFrameLevel(chrome:GetFrameLevel() + 8)
+    self.header = header
+
+    local function StartMove() f:StartMoving() end
+    local function StopMove()
+        f:StopMovingOrSizing()
+        local point, _, relPoint, x, y = f:GetPoint()
+        ns.db.position = { point, relPoint, x, y }
+    end
+    header:EnableMouse(true)
+    header:RegisterForDrag("LeftButton")
+    header:SetScript("OnDragStart", StartMove)
+    header:SetScript("OnDragStop", StopMove)
+
+    local band = header:CreateTexture(nil, "BACKGROUND")
+    band:SetAllPoints()
+    band:SetColorTexture(0, 0, 0, 0.3)
+    local rule = header:CreateTexture(nil, "BORDER")
+    rule:SetColorTexture(RIM_COLOR[1], RIM_COLOR[2], RIM_COLOR[3], 0.3)
+    rule:SetHeight(1)
+    rule:SetPoint("BOTTOMLEFT")
+    rule:SetPoint("BOTTOMRIGHT")
+
+    local logo = header:CreateTexture(nil, "ARTWORK")
+    logo:SetSize(LOGO_H * 512 / 330, LOGO_H)
+    logo:SetPoint("LEFT", 14, 0)
+    logo:SetTexture(Media.Tex("logo"))
+    logo:SetTexCoord(0, 1, 0, 330 / 512)
+    self.headerLogo = logo
+
+    self.tabButtons = {}
+    for _, def in ipairs(TABS) do
+        local b = CreateFrame("Button", nil, header)
+        b:SetHeight(HEADER_H - EDGE)
+        b.label = Widgets.Text(b, 14, "white")
+        b.label:SetPoint("CENTER", 0, -1)
+        b.line = b:CreateTexture(nil, "OVERLAY")
+        b.line:SetColorTexture(1, 0.82, 0.3, 1)
+        b.line:SetHeight(2)
+        b.line:SetPoint("BOTTOMLEFT", 0, 0)
+        b.line:SetPoint("BOTTOMRIGHT", 0, 0)
+        b:SetScript("OnEnter", function() if self.tab ~= def.id then b.label:SetTextColor(1, 1, 1) end end)
+        b:SetScript("OnLeave", function() self:UpdateTabs() end)
+        b:SetScript("OnClick", function()
+            PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB)
+            if def.id == "home" then self:OpenHub()
+            elseif def.id == "news" then self:OpenNews()
+            elseif def.id == "stats" then self:OpenStats()
+            elseif def.id == "options" then self:OpenOptions() end
+        end)
+        b.def = def
+        self.tabButtons[def.id] = b
+    end
+    Widgets.OnRefresh(function() self:UpdateTabs() end)
+
+    local close = CreateFrame("Button", nil, header, "UIPanelCloseButtonNoScripts")
+    close:SetPoint("RIGHT", -6, 0)
+    close:SetFrameLevel(header:GetFrameLevel() + 4)
+    close:SetScript("OnClick", function() f:Hide() end)
+end
+
+-- Places the tabs after the logo and marks the active one; the game tab shows while a game is open.
+function Window:UpdateTabs()
+    if not self.tabButtons then return end
+    local x = 14 + self.headerLogo:GetWidth() + 26
+    for _, def in ipairs(TABS) do
+        local b = self.tabButtons[def.id]
+        local shown = def.id ~= "game" or self.activeGame ~= nil
+        b:SetShown(shown)
+        if shown then
+            b.label:SetText(def.key and L[def.key] or L[self.activeGame.nameKey])
+            local width = math.ceil(b.label:GetStringWidth() or 60) + 8
+            b:SetWidth(width)
+            b:ClearAllPoints()
+            b:SetPoint("LEFT", self.header, "LEFT", x, 0)
+            x = x + width + TAB_GAP
+            local active = self.tab == def.id
+            b.line:SetShown(active)
+            if active then b.label:SetTextColor(1, 0.82, 0.3) else b.label:SetTextColor(0.72, 0.68, 0.62) end
+        end
+    end
 end
 
 -- Sidebar ----------------------------------------------------------------------
@@ -351,17 +420,7 @@ function Window:CreateFooter()
     local chrome = self.chrome
     self:CreateFlightPanel()
 
-    -- Hub: options on the right. Games: main menu on the left, achievements on the right.
-    local options = Widgets.Button(chrome, 124, 26, "OPTIONS", function() self:OpenOptions() end)
-    options:SetPoint("BOTTOMRIGHT", -INSET_SIDE, 12)
-    self.optionsButton = options
-    local stats = Widgets.Button(chrome, 124, 26, "STATISTICS", function() self:OpenStats() end)
-    stats:SetPoint("RIGHT", options, "LEFT", -8, 0)
-    self.statsButton = stats
-    -- The news of this version, for everyone who closed them too early.
-    local news = Widgets.Button(chrome, 124, 26, "NEWS_TITLE", function() ns.News:Show() end)
-    news:SetPoint("RIGHT", stats, "LEFT", -8, 0)
-    self.newsButton = news
+    -- Games: help and achievements on the right; the header's tabs lead everywhere else.
     local achievements = Widgets.Button(chrome, 124, 26, "ACHIEVEMENTS", function()
         if self.activeGame then self.activeGame:ShowAchievements() end
     end)
@@ -372,30 +431,41 @@ function Window:CreateFooter()
     end)
     help:SetPoint("RIGHT", achievements, "LEFT", -8, 0)
     self.helpButton = help
-
-    local version = ns.Version()
-    self.versionText = Widgets.Text(chrome, 10, "gray")
-    self.versionText:SetPoint("BOTTOMLEFT", INSET_SIDE, 19)
-    Widgets.OnRefresh(function() self.versionText:SetText(L.VERSION:format(version)) end)
-    local mainMenu = Widgets.Button(chrome, 124, 26, "MAIN_MENU", function() self:OpenHub() end)
-    mainMenu:SetPoint("BOTTOMLEFT", INSET_SIDE, 12)
-    self.gamesButton = mainMenu
 end
 
--- Games may ask for a larger playfield (`fieldWidth`, `fieldHeight`); the window grows around its
--- center and shrinks its scale whenever it would no longer fit on the screen.
-function Window:SetFieldSize(width, height)
+-- The home tabs' size: the featured game's window, its insets and footer turned into room.
+function Arcade.HomeSize()
+    local featured = Arcade.Featured()
+    local w = (featured.fieldWidth or Arcade.FIELD_W) + GUTTER + SIDEBAR_W + 2 * (INSET_SIDE - EDGE)
+    local h = (featured.fieldHeight or Arcade.FIELD_H) + INSET_BOTTOM - EDGE
+    return w, h
+end
+
+-- Games may ask for a larger playfield (`fieldWidth`, `fieldHeight`); the home tabs use the home
+-- size from edge to edge. The window grows around its center and shrinks its scale whenever it
+-- would no longer fit on the screen.
+function Window:SetFieldSize(width, height, home)
     width, height = width or Arcade.FIELD_W, height or Arcade.FIELD_H
-    if self.fieldWidth == width and self.fieldHeight == height then return end
-    local extraW, extraH = width - Arcade.FIELD_W, height - Arcade.FIELD_H
+    local key = (home and "home" or "game") .. width .. "x" .. height
+    if self.sizeKey == key then return end
+    local contentW, contentH, side, bottom
+    if home then
+        contentW, contentH = Arcade.HomeSize()
+        side, bottom = EDGE, EDGE
+    else
+        contentW, contentH = width + GUTTER + SIDEBAR_W, height
+        side, bottom = INSET_SIDE, INSET_BOTTOM
+    end
     local f = self.frame
     local cx, cy = f:GetCenter()
     local oldScale = f:GetScale()
-    f:SetSize(FRAME_W + extraW, FRAME_H + extraH)
-    self.content:SetSize(CONTENT_W + extraW, CONTENT_H + extraH)
+    f:SetSize(contentW + side * 2, HEADER_H + contentH + bottom)
+    self.content:SetSize(contentW, contentH)
+    self.content:ClearAllPoints()
+    self.content:SetPoint("TOPLEFT", side, -HEADER_H)
     self.field:SetSize(width, height)
-    self.sidebar:SetHeight(CONTENT_H + extraH)
-    self.fieldWidth, self.fieldHeight = width, height
+    self.sidebar:SetHeight(height)
+    self.sizeKey = key
     self:ApplyScale()
     if cx and self.fieldSizeSet then
         -- Keep the center where it was on screen, whatever the new scale.
@@ -412,7 +482,7 @@ function Window:FitScale()
     local screenW, screenH = UIParent:GetWidth(), UIParent:GetHeight()
     if not screenW or screenW <= 0 or not screenH or screenH <= 0 then return 1 end
     local needW = f:GetWidth() + SCREEN_MARGIN * 2
-    local needH = f:GetHeight() + LOGO_EXTRA + FLIGHT_EXTRA + SCREEN_MARGIN * 2
+    local needH = f:GetHeight() + FLIGHT_EXTRA + SCREEN_MARGIN * 2
     return math.min(screenW / needW, screenH / needH)
 end
 
@@ -424,22 +494,42 @@ function Window:LeaveGame()
     end
 end
 
-function Window:OpenHub()
+-- Switches to one of the home tabs: home (main menu), news, stats or options.
+function Window:ShowHome(tab)
     self:LeaveGame()
-    -- The main menu takes the featured game's size.
-    self:SetFieldSize(self.featured.fieldWidth, self.featured.fieldHeight)
-    ns.OptionsView:Hide()
-    ns.StatsView:Hide()
-    self.hub:Show()
+    local featured = self.featured
+    self:SetFieldSize(featured.fieldWidth, featured.fieldHeight, true)
+    self.hub:SetShown(tab == "home")
+    if tab == "options" then ns.OptionsView:Show() else ns.OptionsView:Hide() end
+    if tab == "stats" then ns.StatsView:Show() else ns.StatsView:Hide() end
+    if tab == "news" then ns.News.frame:Show() else ns.News:Hide() end
     self.sidebar:Hide()
-    self.gamesButton:Hide()
     self.achievementsButton:Hide()
     self.helpButton:Hide()
-    self.optionsButton:Show()
-    self.statsButton:Show()
-    self.newsButton:Show()
-    self.versionText:Show()
+    self.tab = tab
+    self:UpdateTabs()
+end
+
+function Window:OpenHub()
+    self:ShowHome("home")
     self:RefreshHub()
+end
+
+-- The news tab, on a version (default: the newest).
+function Window:OpenNews(index)
+    self.frame:Show()
+    self:ShowHome("news")
+    ns.News:Refresh(index)
+end
+
+function Window:OpenOptions()
+    self.frame:Show()
+    self:ShowHome("options")
+end
+
+function Window:OpenStats()
+    self.frame:Show()
+    self:ShowHome("stats")
 end
 
 function Window:OpenGame(id)
@@ -460,52 +550,16 @@ function Window:OpenGame(id)
     self.hub:Hide()
     ns.OptionsView:Hide()
     ns.StatsView:Hide()
+    ns.News:Hide()
     self.sidebar:Show()
     game.container:Show()
     self.activeGame = game
-    self.gamesButton:Show()
     self.achievementsButton:Show()
     self.helpButton:Show()
-    self.optionsButton:Hide()
-    self.statsButton:Hide()
-    self.newsButton:Hide()
-    self.versionText:Hide()
+    self.tab = "game"
+    self:UpdateTabs()
     game:Enter()
     self:UpdateSidebar(true)
-end
-
-function Window:OpenOptions()
-    self.frame:Show()
-    self:LeaveGame()
-    self:SetFieldSize()
-    self.hub:Hide()
-    self.sidebar:Hide()
-    ns.StatsView:Hide()
-    ns.OptionsView:Show()
-    self.gamesButton:Show()
-    self.achievementsButton:Hide()
-    self.helpButton:Hide()
-    self.optionsButton:Hide()
-    self.statsButton:Hide()
-    self.newsButton:Hide()
-    self.versionText:Hide()
-end
-
-function Window:OpenStats()
-    self.frame:Show()
-    self:LeaveGame()
-    self:SetFieldSize()
-    self.hub:Hide()
-    self.sidebar:Hide()
-    ns.OptionsView:Hide()
-    ns.StatsView:Show()
-    self.gamesButton:Show()
-    self.achievementsButton:Hide()
-    self.helpButton:Hide()
-    self.optionsButton:Hide()
-    self.statsButton:Hide()
-    self.newsButton:Hide()
-    self.versionText:Hide()
 end
 
 -- Shows the window and the game chosen for flights.
@@ -572,7 +626,7 @@ function Window:FadeTarget(frame)
 end
 
 function Window:UpdateFade(elapsed)
-    local frames = { self.frame, ns.News and ns.News.frame }
+    local frames = { self.frame }
     for _, frame in pairs(frames) do
         if frame and frame:IsShown() then
             local target, alpha = self:FadeTarget(frame), frame:GetAlpha()

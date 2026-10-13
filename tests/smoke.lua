@@ -303,31 +303,46 @@ ns.SetLanguage(DarkmoonArcadeDB.language)
 local missed = ns.News.Missed("v1.3.1")
 assert(missed["1.3.2"] and not missed["1.3.1"] and not missed["1.3.0"], "missed versions")
 assert(next(ns.News.Missed(nil)) == nil and next(ns.News.Missed("dev")) == nil, "nothing missed on a fresh install")
--- The news show once after login; "Okay" retires them for this version.
+-- After login (a fresh install) the window opens on the news tab, once per version.
 local News = ns.News
-assert(not News.frame._shown, "news wait for the loading screen")
+assert(not Window.frame._shown, "news wait for the loading screen")
 Tick(4)
-assert(News.frame._shown, "news after a fresh install")
-News.okButton._scripts.OnClick(News.okButton)
-assert(not News.frame._shown and DarkmoonArcadeDB.newsSeen == ns.Version(), "okay retires the news")
-assert(not Window.frame._shown, "okay leaves the arcade closed")
+assert(Window.frame._shown and News.frame._shown and Window.tab == "news", "news tab after a fresh install")
+assert(DarkmoonArcadeDB.newsSeen == ns.Version(), "the tab counts the news as seen")
+Window.frame:Hide()
 News:ShowIfNew()
-assert(not News.frame._shown, "news only once per version")
+assert(not Window.frame._shown, "news only once per version")
 
 SlashCmdList.DARKMOONARCADE("")
 assert(Window.frame._shown, "window should be shown")
+-- The header: a tab each for home, news, statistics and options; the game tab only with a game open.
+for _, id in ipairs({ "home", "news", "stats", "options" }) do
+    assert(Window.tabButtons[id]._shown, id .. " tab")
+end
+assert(not Window.tabButtons.game._shown, "no game tab in the main menu")
+Window.tabButtons.home._scripts.OnClick(Window.tabButtons.home)
+assert(Window.hub._shown and Window.tab == "home", "home tab shows the main menu")
 Window.frame:Hide()
 DarkmoonArcadeDB.newsSeen = "1.0.0"
 News:ShowIfNew()
-assert(News.frame._shown, "news after an update")
-News.showButton._scripts.OnClick(News.showButton)
-assert(not News.frame._shown and DarkmoonArcadeDB.newsSeen == ns.Version(), "the arcade button retires the news")
-assert(Window.frame._shown and Window.hub._shown, "the arcade button opens the main menu")
+assert(Window.frame._shown and News.frame._shown, "news after an update")
+Window.tabButtons.home._scripts.OnClick(Window.tabButtons.home)
+assert(Window.hub._shown and not News.frame._shown, "back to the main menu")
 -- The main menu: the featured game on its stage with the player's progress, the others in a list.
 assert(Window.featured.id == "mercenaries", "Mercenaries is featured")
 assert(Window.heroStats[1].value._text ~= nil and Window.heroStats[4].label._text ~= nil, "progress on the stage")
 assert(Window.heroPlay.label._text == ns.L.PLAY, "play, no bounty under way yet")
 assert(#Window.tiles == #ns.Arcade.order - 1, "every other game in the list")
+assert(Window.heroNews[1].title._text ~= nil, "the latest highlights on the stage")
+-- The flight star: one game is starred; starring another moves it, starring it again turns it off.
+assert(#Window.stars == #ns.Arcade.order, "a star for every game")
+local star = Window.stars[1]
+star._scripts.OnClick(star)
+assert(DarkmoonArcadeDB.flightGame == star.game.id, "the star picks the flight game")
+star._scripts.OnClick(star)
+assert(DarkmoonArcadeDB.flightGame == "off", "a second click turns it off")
+DarkmoonArcadeDB.flightGame = "murlocblast"
+Window:RefreshHub()
 -- See-through while moving, but not under the mouse and not while standing.
 DarkmoonArcadeDB.fadeMoving, DarkmoonArcadeDB.fadeAlpha = true, 0.3
 Window.moving = true
@@ -337,34 +352,24 @@ assert(Window:FadeTarget(Window.frame) == 1, "stays visible under the mouse")
 Window.moving = false
 assert(Window:FadeTarget(away) == 1, "fully visible when standing")
 DarkmoonArcadeDB.fadeMoving = false
--- The main menu's button opens the news again; the option keeps them from opening by themselves.
-assert(Window.newsButton._shown, "news button in the main menu")
-Window.newsButton._scripts.OnClick(Window.newsButton)
-assert(News.frame._shown, "news button shows the news")
--- The history: a tab per version, the wheel leafs back, a returning player sees what was missed.
-assert(News.selected == 1 and News.tabs[1]._shown, "newest version first")
-News.tabs[#ns.News.VERSIONS]._scripts.OnClick(News.tabs[#ns.News.VERSIONS])
-assert(News.selected == #ns.News.VERSIONS, "a tab opens an older version")
-News.tabRow._scripts.OnMouseWheel(News.tabRow, 1)
-assert(News.selected == #ns.News.VERSIONS - 1, "the wheel leafs to a newer version")
-News.okButton._scripts.OnClick(News.okButton)
+-- The news tab: the versions on the left, a returning player sees what was missed.
 DarkmoonArcadeDB.newsSeen = "v1.3.1"
-News:Show()
+Window.tabButtons.news._scripts.OnClick(Window.tabButtons.news)
+assert(News.frame._shown and News.selected == 1, "newest version first")
 assert(News.tabs[2].mark._shown and not News.tabs[3].mark._shown, "missed versions are marked")
-News.okButton._scripts.OnClick(News.okButton)
-DarkmoonArcadeDB.newsSeen, DarkmoonArcadeDB.newsNever = "1.0.0", true
-News:ShowIfNew()
-assert(not News.frame._shown, "never show the news automatically")
-Window.newsButton._scripts.OnClick(Window.newsButton)
-assert(News.frame._shown, "the button works with the option set")
-News.okButton._scripts.OnClick(News.okButton)
-DarkmoonArcadeDB.newsNever = false
--- "Never show by itself" from the window turns the same option on.
+News.tabs[#ns.News.VERSIONS]._scripts.OnClick(News.tabs[#ns.News.VERSIONS])
+assert(News.selected == #ns.News.VERSIONS, "a version on the left opens it")
+-- The option keeps the tab from opening by itself; the check box on the tab is the same switch.
+News.neverCheck._checked = true
+News.neverCheck._scripts.OnClick(News.neverCheck)
+assert(DarkmoonArcadeDB.newsNever, "never again from the tab")
+Window.frame:Hide()
 DarkmoonArcadeDB.newsSeen = "1.0.0"
 News:ShowIfNew()
-News.neverButton._scripts.OnClick(News.neverButton)
-assert(not News.frame._shown and DarkmoonArcadeDB.newsNever, "never again from the window")
+assert(not Window.frame._shown, "never show the news automatically")
 DarkmoonArcadeDB.newsNever = false
+SlashCmdList.DARKMOONARCADE("")
+Window:OpenHub()
 
 local results = { murloc = 0, flappy = 0, jewels = 0, slots = 0, spell = 0, deck = 0, clicks = 0, best = 0 }
 local seed = 42

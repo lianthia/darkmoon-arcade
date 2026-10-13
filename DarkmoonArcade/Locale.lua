@@ -9,10 +9,18 @@ function ns.AddStrings(language, values)
 end
 
 ns.AddStrings("enUS", {
+    OPT_SECTION_WINDOW = "Window",
+    STATS_MINIGAMES = "Minigames",
+    TAB_HOME = "Home",
+    NEWS_VERSIONS = "Versions",
+    NEWS_NEVER_AUTO = "Don't open by itself after updates",
+    HUB_ALL_NEWS = "All news  ›",
+    HUB_STAR_ON = "Opens by itself on your flights. Click to turn this off.",
+    HUB_STAR_OFF = "Make this the game that opens by itself on your flights.",
     HUB_FEATURED = "Featured",
     HUB_MORE_GAMES = "More games",
     HUB_CONTINUE = "Continue",
-    HUB_NEWS = "New in %s:",
+    HUB_NEWS = "New in %s",
     OPT_FADE_MOVING = "See-through while moving",
     OPT_FADE_MOVING_TIP = "While your character moves, the arcade's windows turn see-through, so you can keep them open. With the mouse over them, or on a flight, they stay fully visible.",
     OPT_FADE_ALPHA = "Visibility while moving",
@@ -166,10 +174,18 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    OPT_SECTION_WINDOW = "Fenster",
+    STATS_MINIGAMES = "Minispiele",
+    TAB_HOME = "Startseite",
+    NEWS_VERSIONS = "Versionen",
+    NEWS_NEVER_AUTO = "Nach Updates nicht von selbst öffnen",
+    HUB_ALL_NEWS = "Alle Neuerungen  ›",
+    HUB_STAR_ON = "Öffnet sich auf deinen Flügen von selbst. Klicken zum Ausschalten.",
+    HUB_STAR_OFF = "Dieses Spiel auf deinen Flügen von selbst öffnen.",
     HUB_FEATURED = "Im Rampenlicht",
     HUB_MORE_GAMES = "Weitere Spiele",
     HUB_CONTINUE = "Weiterspielen",
-    HUB_NEWS = "Neu in %s:",
+    HUB_NEWS = "Neu in %s",
     OPT_FADE_MOVING = "Beim Laufen durchsichtig",
     OPT_FADE_MOVING_TIP = "Während deine Figur läuft, werden die Fenster der Arcade durchsichtig, sodass du sie offen lassen kannst. Mit der Maus darüber oder auf einem Flug bleiben sie voll sichtbar.",
     OPT_FADE_ALPHA = "Sichtbarkeit beim Laufen",
@@ -320,10 +336,18 @@ ns.AddStrings("deDE", {
 })
 
 ns.AddStrings("frFR", {
+    OPT_SECTION_WINDOW = "Fenêtre",
+    STATS_MINIGAMES = "Mini-jeux",
+    TAB_HOME = "Accueil",
+    NEWS_VERSIONS = "Versions",
+    NEWS_NEVER_AUTO = "Ne pas s'ouvrir seul après une mise à jour",
+    HUB_ALL_NEWS = "Toutes les nouveautés  ›",
+    HUB_STAR_ON = "S'ouvre seul pendant vos vols. Cliquez pour désactiver.",
+    HUB_STAR_OFF = "Faire de ce jeu celui qui s'ouvre seul pendant vos vols.",
     HUB_FEATURED = "À la une",
     HUB_MORE_GAMES = "Autres jeux",
     HUB_CONTINUE = "Continuer",
-    HUB_NEWS = "Nouveau en %s :",
+    HUB_NEWS = "Nouveau en %s",
     OPT_FADE_MOVING = "Transparente en mouvement",
     OPT_FADE_MOVING_TIP = "Pendant que votre personnage se déplace, les fenêtres de l'arcade deviennent transparentes : vous pouvez les laisser ouvertes. Sous la souris ou pendant un vol, elles restent entièrement visibles.",
     OPT_FADE_ALPHA = "Visibilité en mouvement",
@@ -470,10 +494,18 @@ ns.AddStrings("frFR", {
 })
 
 ns.AddStrings("esES", {
+    OPT_SECTION_WINDOW = "Ventana",
+    STATS_MINIGAMES = "Minijuegos",
+    TAB_HOME = "Inicio",
+    NEWS_VERSIONS = "Versiones",
+    NEWS_NEVER_AUTO = "No abrir solo tras una actualización",
+    HUB_ALL_NEWS = "Todas las novedades  ›",
+    HUB_STAR_ON = "Se abre solo en tus vuelos. Haz clic para desactivarlo.",
+    HUB_STAR_OFF = "Haz que este juego se abra solo en tus vuelos.",
     HUB_FEATURED = "Destacado",
     HUB_MORE_GAMES = "Más juegos",
     HUB_CONTINUE = "Continuar",
-    HUB_NEWS = "Novedades de %s:",
+    HUB_NEWS = "Novedades de %s",
     OPT_FADE_MOVING = "Transparente al moverse",
     OPT_FADE_MOVING_TIP = "Mientras tu personaje se mueve, las ventanas del arcade se vuelven transparentes para que puedas dejarlas abiertas. Con el ratón encima o durante un vuelo se ven por completo.",
     OPT_FADE_ALPHA = "Visibilidad al moverse",
@@ -620,10 +652,18 @@ ns.AddStrings("esES", {
 })
 
 ns.AddStrings("ruRU", {
+    OPT_SECTION_WINDOW = "Окно",
+    STATS_MINIGAMES = "Мини-игры",
+    TAB_HOME = "Главная",
+    NEWS_VERSIONS = "Версии",
+    NEWS_NEVER_AUTO = "Не открывать само после обновлений",
+    HUB_ALL_NEWS = "Все новости  ›",
+    HUB_STAR_ON = "Открывается само во время полетов. Нажмите, чтобы отключить.",
+    HUB_STAR_OFF = "Открывать эту игру автоматически во время полетов.",
     HUB_FEATURED = "В центре внимания",
     HUB_MORE_GAMES = "Другие игры",
     HUB_CONTINUE = "Продолжить",
-    HUB_NEWS = "Новое в %s:",
+    HUB_NEWS = "Новое в %s",
     OPT_FADE_MOVING = "Прозрачность при движении",
     OPT_FADE_MOVING_TIP = "Пока ваш персонаж движется, окна аркады становятся прозрачными, и их можно не закрывать. При наведении мыши или в полете они видны полностью.",
     OPT_FADE_ALPHA = "Видимость при движении",
@@ -771,10 +811,18 @@ ns.AddStrings("ruRU", {
 })
 
 ns.AddStrings("zhCN", {
+    OPT_SECTION_WINDOW = "窗口",
+    STATS_MINIGAMES = "小游戏",
+    TAB_HOME = "首页",
+    NEWS_VERSIONS = "版本",
+    NEWS_NEVER_AUTO = "更新后不自动打开",
+    HUB_ALL_NEWS = "全部新内容  ›",
+    HUB_STAR_ON = "飞行时自动打开。点击关闭。",
+    HUB_STAR_OFF = "将此游戏设为飞行时自动打开的游戏。",
     HUB_FEATURED = "精选",
     HUB_MORE_GAMES = "更多游戏",
     HUB_CONTINUE = "继续",
-    HUB_NEWS = "%s 新内容：",
+    HUB_NEWS = "%s 新内容",
     OPT_FADE_MOVING = "移动时透明",
     OPT_FADE_MOVING_TIP = "角色移动时，游乐场的窗口会变得透明，方便你保持窗口开启。鼠标悬停或飞行途中则保持完全可见。",
     OPT_FADE_ALPHA = "移动时的可见度",

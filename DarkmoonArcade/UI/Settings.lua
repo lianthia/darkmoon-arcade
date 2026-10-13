@@ -24,6 +24,11 @@ function SettingsPage.Definitions()
                 end
                 return choices
             end },
+        { kind = "check", tbl = db, key = "minimap", label = "OPT_MINIMAP", tip = "OPT_MINIMAP_TIP", default = true,
+            onChange = function() ns.Minimap:Update() end },
+        { kind = "check", tbl = db, key = "newsNever", label = "OPT_NEWS_NEVER", tip = "OPT_NEWS_NEVER_TIP", default = false },
+
+        { kind = "section", label = "OPT_SECTION_WINDOW" },
         { kind = "range", tbl = db, key = "scale", label = "OPT_SCALE", tip = "OPT_SCALE_TIP", default = 1.1,
             min = 0.8, max = 1.6, step = 0.1, onChange = function() Window:ApplyScale() end,
             format = function(value) return ("%d%%"):format(value * 100 + 0.5) end },
@@ -31,9 +36,6 @@ function SettingsPage.Definitions()
         { kind = "range", tbl = db, key = "fadeAlpha", label = "OPT_FADE_ALPHA", tip = "OPT_FADE_ALPHA_TIP", default = 0.4,
             min = 0.1, max = 0.9, step = 0.05,
             format = function(value) return ("%d%%"):format(value * 100 + 0.5) end },
-        { kind = "check", tbl = db, key = "minimap", label = "OPT_MINIMAP", tip = "OPT_MINIMAP_TIP", default = true,
-            onChange = function() ns.Minimap:Update() end },
-        { kind = "check", tbl = db, key = "newsNever", label = "OPT_NEWS_NEVER", tip = "OPT_NEWS_NEVER_TIP", default = false },
 
         { kind = "section", label = "OPT_SECTION_SOUND" },
         { kind = "check", tbl = db, key = "sound", label = "OPT_SOUND", tip = "OPT_SOUND_TIP", default = true },

@@ -65,6 +65,37 @@ if not RENDER_ONLY or ("hub"):find(RENDER_ONLY, 1, true) or RENDER_ONLY:find("hu
     local items, w, h = RenderDump(ns.Window.frame)
     Shots[#Shots + 1] = { name = "hub", items = items, w = w, h = h }
 end
+-- The other home tabs. The renderer skips scroll children, so the news rows are anchored to the
+-- tab itself for the snapshot.
+local function Tab(name, open)
+    if RENDER_ONLY and not RENDER_ONLY:find(name, 1, true) and not ("tabs"):find(RENDER_ONLY, 1, true) then return end
+    open()
+    Tick(0.4)
+    local items, w, h = RenderDump(ns.Window.frame)
+    Shots[#Shots + 1] = { name = name, items = items, w = w, h = h }
+end
+DarkmoonArcadeDB.newsSeen = "v1.3.1"
+Tab("news", function()
+    ns.Window:OpenNews()
+    ns.News.content:ClearAllPoints()
+    ns.News.content:SetPoint("TOPLEFT", ns.News.art, "BOTTOMLEFT", 0, -16)
+end)
+Tab("news_old", function()
+    ns.News:Select(#ns.News.VERSIONS)
+end)
+Tab("stats", function() ns.Window:OpenStats() end)
+local function OptionsPage(i)
+    ns.OptionsView:SelectTab(i)
+    local panel = ns.OptionsView.panels[i]
+    panel.content:ClearAllPoints()
+    panel.content:SetPoint("TOPLEFT", panel, "TOPLEFT", 0, -38)
+end
+Tab("options", function()
+    ns.Window:OpenOptions()
+    OptionsPage(2)
+end)
+Tab("options_minigames", function() OptionsPage(6) end)
+ns.Window:OpenHub()
 SlashCmdList.DARKMOONARCADE("mercenaries")
 local Window = ns.Window
 mc = Window.activeGame
@@ -81,27 +112,6 @@ local function Want(name)
     return false
 end
 
-if Want("news") then
-    ns.News:Show()
-    Tick(0.6)
-    local items, w, h = RenderDump(ns.News.frame)
-    Shots[#Shots + 1] = { name = "news", items = items, w = w, h = h }
-    -- The renderer skips scroll children; the text on its own shows its layout.
-    ns.News.content:SetPoint("TOPLEFT", ns.News.frame, "TOPLEFT", 40, -290)
-    items, w, h = RenderDump(ns.News.content)
-    Shots[#Shots + 1] = { name = "news_text", items = items, w = w, h = h }
-    ns.News.content:SetPoint("TOPLEFT", ns.News.scroll, "TOPLEFT", 0, 0)
-    -- Back from 1.3.1: 1.3.2 is marked; leafed back to 1.3.0.
-    DarkmoonArcadeDB.newsSeen = "v1.3.1"
-    ns.News:Show(#ns.News.VERSIONS)
-    Tick(0.2)
-    items, w, h = RenderDump(ns.News.frame)
-    Shots[#Shots + 1] = { name = "news_history", items = items, w = w, h = h }
-    ns.News.content:SetPoint("TOPLEFT", ns.News.frame, "TOPLEFT", 40, -320)
-    items, w, h = RenderDump(ns.News.content)
-    Shots[#Shots + 1] = { name = "news_history_text", items = items, w = w, h = h }
-    ns.News.frame:Hide()
-end
 if Want("camp") then Snap("camp") end
 if Want("fxgallery") then
     mc:BuildFxGallery()
