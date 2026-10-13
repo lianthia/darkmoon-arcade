@@ -83,6 +83,16 @@ if Want("news") then
     ns.News.content:SetPoint("TOPLEFT", ns.News.frame, "TOPLEFT", 40, -290)
     items, w, h = RenderDump(ns.News.content)
     Shots[#Shots + 1] = { name = "news_text", items = items, w = w, h = h }
+    ns.News.content:SetPoint("TOPLEFT", ns.News.scroll, "TOPLEFT", 0, 0)
+    -- Back from 1.3.1: 1.3.2 is marked; leafed back to 1.3.0.
+    DarkmoonArcadeDB.newsSeen = "v1.3.1"
+    ns.News:Show(#ns.News.VERSIONS)
+    Tick(0.2)
+    items, w, h = RenderDump(ns.News.frame)
+    Shots[#Shots + 1] = { name = "news_history", items = items, w = w, h = h }
+    ns.News.content:SetPoint("TOPLEFT", ns.News.frame, "TOPLEFT", 40, -320)
+    items, w, h = RenderDump(ns.News.content)
+    Shots[#Shots + 1] = { name = "news_history_text", items = items, w = w, h = h }
     ns.News.frame:Hide()
 end
 if Want("camp") then Snap("camp") end

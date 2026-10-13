@@ -1,4 +1,5 @@
-"""Refuses stable releases while a game is still marked `preview = true`.
+"""Refuses stable releases while a game is still marked `preview = true`, while the "What's new"
+window does not start with this version, or while CHANGELOG.md (CurseForge) holds other notes.
 
 python tools/release_check.py v1.3.0          -> exit 1 if any game module is a preview
 python tools/release_check.py v1.3.0-alpha    -> always fine (alpha and beta may ship previews)
@@ -23,6 +24,19 @@ def previews():
     return sorted(found)
 
 
+def stale_texts(version):
+    """The news and the changelog must be about the version being released."""
+    problems = []
+    news = (ROOT / "DarkmoonArcade" / "UI" / "News.lua").read_text(encoding="utf-8")
+    first = re.search(r'version\s*=\s*"([^"]+)"', news)
+    if not first or first.group(1) != version:
+        problems.append(f"News.VERSIONS starts with {first.group(1) if first else '?'}, not {version}: add this release's news.")
+    changelog = ROOT / "CHANGELOG.md"
+    if not changelog.exists() or version not in changelog.read_text(encoding="utf-8").splitlines()[0]:
+        problems.append(f"CHANGELOG.md does not start with the notes of {version}: copy dist/notes-{version}.md.")
+    return problems
+
+
 def main(argv):
     if len(argv) != 2:
         print(__doc__)
@@ -35,7 +49,10 @@ def main(argv):
         print(f"Release {tag} blocked: still in preview -> {', '.join(blocked)}.")
         print("Ship it as -alpha/-beta, or finish the game and remove `preview = true` first.")
         return 1
-    return 0
+    problems = stale_texts(tag.lstrip("v"))
+    for line in problems:
+        print(f"Release {tag} blocked: {line}")
+    return 1 if problems else 0
 
 
 if __name__ == "__main__":

@@ -279,16 +279,30 @@ assert(#Arcade.order == 7, "seven games registered")
 assert(Arcade.order[1] == "mercenaries", "newest game first")
 assert(Arcade.order[2] == "spellbounce", "then the most popular game")
 
--- Every row of the news has its own texts.
-local newsKeys = {}
-for _, item in ipairs(ns.News.ITEMS) do
-    assert(item.key and not newsKeys[item.key], "news rows need distinct keys")
-    newsKeys[item.key] = true
-    for _, part in ipairs({ "_TITLE", "_TEXT" }) do
-        local text = ns.L["NEWS_" .. item.key .. part]
-        assert(type(text) == "string" and text ~= "" and not text:find("^NEWS_"), "news text " .. item.key .. part)
+-- Every version of the news, in every language, has the texts of its rows; newest first.
+local function NewsText(key, what)
+    local text = ns.L[key]
+    assert(type(text) == "string" and text ~= "" and not text:find("^NEWS_"), "news text " .. key .. " " .. what)
+end
+for _, language in ipairs({ "enUS", "deDE", "frFR", "esES", "ruRU", "zhCN" }) do
+    ns.SetLanguage(language)
+    for i, v in ipairs(ns.News.VERSIONS) do
+        local newsKeys = {}
+        for _, item in ipairs(v.items) do
+            assert(item.key and not newsKeys[item.key], "news rows need distinct keys: " .. v.version)
+            newsKeys[item.key] = true
+            NewsText(ns.News.Key(v, item.key .. "_TITLE"), language)
+            NewsText(ns.News.Key(v, item.key .. "_TEXT"), language)
+        end
+        if v.thanks then NewsText(ns.News.Key(v, "THANKS"), language) end
+        if v.headline then NewsText(ns.News.Key(v, "HEADLINE"), language) end
     end
 end
+ns.SetLanguage(DarkmoonArcadeDB.language)
+-- A player back from 1.3.1 missed 1.3.2 (and nothing older).
+local missed = ns.News.Missed("v1.3.1")
+assert(missed["1.3.2"] and not missed["1.3.1"] and not missed["1.3.0"], "missed versions")
+assert(next(ns.News.Missed(nil)) == nil and next(ns.News.Missed("dev")) == nil, "nothing missed on a fresh install")
 -- The news show once after login; "Okay" retires them for this version.
 local News = ns.News
 assert(not News.frame._shown, "news wait for the loading screen")
@@ -313,6 +327,16 @@ assert(Window.frame._shown and Window.hub._shown, "the arcade button opens the m
 assert(Window.newsButton._shown, "news button in the main menu")
 Window.newsButton._scripts.OnClick(Window.newsButton)
 assert(News.frame._shown, "news button shows the news")
+-- The history: a tab per version, the wheel leafs back, a returning player sees what was missed.
+assert(News.selected == 1 and News.tabs[1]._shown, "newest version first")
+News.tabs[#ns.News.VERSIONS]._scripts.OnClick(News.tabs[#ns.News.VERSIONS])
+assert(News.selected == #ns.News.VERSIONS, "a tab opens an older version")
+News.tabRow._scripts.OnMouseWheel(News.tabRow, 1)
+assert(News.selected == #ns.News.VERSIONS - 1, "the wheel leafs to a newer version")
+News.okButton._scripts.OnClick(News.okButton)
+DarkmoonArcadeDB.newsSeen = "v1.3.1"
+News:Show()
+assert(News.tabs[2].mark._shown and not News.tabs[3].mark._shown, "missed versions are marked")
 News.okButton._scripts.OnClick(News.okButton)
 DarkmoonArcadeDB.newsSeen, DarkmoonArcadeDB.newsNever = "1.0.0", true
 News:ShowIfNew()
