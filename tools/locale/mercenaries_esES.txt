@@ -3,6 +3,8 @@ MC_PREVIEW_SHIELD	Escudo
 MC_PREVIEW_MISS	%d%% de fallo
 MC_ROLE_CIRCLE	Fuerte contra: %s, débil contra: %s.
 MC_TREASURES_FOUND	Tesoros: %s
+MC_OPT_EFFECTS	Efectos de hechizos en combate
+MC_OPT_EFFECTS_TIP	Bolas de fuego, descargas de escarcha, sanaciones y escudos como en el propio juego. Desactívalos para volver al simple brillo de versiones anteriores.
 MC_OPT_COLORBLIND	Colores de rol aptos para daltónicos
 MC_OPT_COLORBLIND_TIP	Los luchadores pasan a ser dorados en vez de verdes y se distinguen de los protectores rojos. Cada retrato muestra además el símbolo de su rol: escudo, espadas o bastón.
 MC_RARITY_COMMON	Común

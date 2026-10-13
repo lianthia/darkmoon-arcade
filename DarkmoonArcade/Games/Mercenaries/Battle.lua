@@ -667,7 +667,7 @@ function Module:PlayEvent(e)
             self:ShowBanner(e.ability)
             self.soundSrc = MC.AbilitySound(e.ability) and e.src or nil
             local school = MC.Abilities[e.ability].school
-            if e.dst and e.dst ~= e.src and school and school ~= "physical" then
+            if not self:ActFx(e) and e.dst and e.dst ~= e.src and school and school ~= "physical" then
                 self:Projectile(e.src, e.dst, school)
             end
         end
@@ -684,6 +684,7 @@ function Module:PlayEvent(e)
             token.flashT = 0.35
             token.flash:SetVertexColor(1, 1, 1)
         end
+        self:DamageFx(e)
         local x, y = self:TokenPoint(e.dst)
         local c = SCHOOL_COLORS[e.school] or SCHOOL_COLORS.physical
         local text = "-" .. e.amount .. (e.crit and "!" or "")
@@ -708,6 +709,7 @@ function Module:PlayEvent(e)
                 token.flash:SetVertexColor(0.3, 1, 0.3)
             end
             local x, y = self:TokenPoint(e.dst)
+            self:AuraFx("heal", e.dst)
             self:Popup(x, y - 6, "+" .. e.amount, 26, 0.35, 1, 0.35, 1.0, 36)
             if e.src ~= self.soundSrc then MC.Sound("heal") end
         end
@@ -718,7 +720,10 @@ function Module:PlayEvent(e)
             d.shield = t == "shield"
             self:ShowDisp(e.dst)
         end
-        if t == "shield" then MC.Sound("shield") end
+        if t == "shield" then
+            MC.Sound("shield")
+            self:AuraFx("shield2", e.dst)
+        end
         return 0.2
     elseif t == "absorb" or t == "absorbUp" then
         local d = disp[e.dst]
@@ -739,6 +744,10 @@ function Module:PlayEvent(e)
             if t == "cleanse" then d.dot, d.debuff, d.stun = false, false, nil end
             self:ShowDisp(e.dst)
         end
+        if t == "taunt" then self:AuraFx("taunt", e.dst) end
+        if t == "stun" then self:AuraFx("stun", e.dst) end
+        if t == "hot" then self:AuraFx("renew", e.dst) end
+        if t == "dot" and e.school == "shadow" then self:AuraFx("shadow_dot", e.dst) end
         return 0.15
     elseif t == "stunned" then
         self:AdvanceTimeline(e.src, L.MC_STUNNED)
@@ -765,6 +774,7 @@ function Module:PlayEvent(e)
                 d.buff = true
             end
             self:ShowDisp(e.dst)
+            if not Combat.IsDebuff(e) and e.k ~= "ambush" then self:BuffFx(e.dst) end
         end
         return 0.12
     elseif t == "maxhp" then
@@ -957,6 +967,63 @@ function Module:UpdateBattle(dt)
             self:FinishBattle()
         end
     end
+end
+
+-- Spell effects -------------------------------------------------------------------------------------
+
+-- Effects sit a little above a token's middle, where the gallery tuned them.
+local FX_RAISE = 10
+local MISSILE_TIME = 0.45
+
+-- Starts an ability's effects; true when spell effects are on (the glowing orb then stays away).
+function Module:ActFx(e)
+    self.fxAct = nil
+    if not self:BattleFxOn() then return false end
+    local info = MC.AbilityFx(e.ability)
+    if not info then return false end
+    local act = { info = info, missileTo = {}, buffed = {} }
+    self.fxAct = act
+    if info.missile and e.dst and e.dst ~= e.src and self.tokens[e.dst] then
+        local speed = ns.Arcade.Settings(self).fast and FAST or 1
+        local x, y = self:TokenPoint(e.src)
+        local tx, ty = self:TokenPoint(e.dst)
+        self:PlayFx(info.missile, x, y - FX_RAISE, tx, ty - FX_RAISE, nil, MISSILE_TIME / speed)
+        act.missileTo[e.dst] = true
+    end
+    return true
+end
+
+-- A hit: the missile brings its own impact; otherwise the school's hit or, for abilities that
+-- strike several, its burst. Damage over time shows only for shadow.
+function Module:DamageFx(e)
+    if not self:BattleFxOn() or not self.tokens[e.dst] then return end
+    if e.dot then
+        if e.school == "shadow" then self:AuraFx("shadow_dot", e.dst) end
+        return
+    end
+    local act = self.fxAct
+    if act and act.missileTo[e.dst] and e.src ~= e.dst then
+        act.missileTo[e.dst] = nil
+        return
+    end
+    local set = MC.SCHOOL_FX[e.school] or MC.SCHOOL_FX.physical
+    local big = act ~= nil and act.info.big and act.info.school == e.school
+    self:AuraFx(big and set.big or set.hit, e.dst)
+end
+
+function Module:AuraFx(id, uid)
+    if not self:BattleFxOn() or not self.tokens[uid] then return end
+    local x, y = self:TokenPoint(uid)
+    self:PlayFx(id, x, y - FX_RAISE)
+end
+
+-- A buff shows once per target and ability, in the colour of the ability's school.
+function Module:BuffFx(uid)
+    local act = self.fxAct
+    if not act or act.buffed[uid] then return end
+    act.buffed[uid] = true
+    local school = act.info.school
+    self:AuraFx(school == "holy" and "holy_cast" or (school == "nature" and "nature_cast" or "battleshout"), uid)
 end
 
 -- Battle log ----------------------------------------------------------------------------------------

@@ -3,6 +3,8 @@ MC_PREVIEW_SHIELD	Shield
 MC_PREVIEW_MISS	%d%% miss
 MC_ROLE_CIRCLE	Strong against %s, weak against %s.
 MC_TREASURES_FOUND	Treasures: %s
+MC_OPT_EFFECTS	Spell effects in battle
+MC_OPT_EFFECTS_TIP	Fireballs, frostbolts, heals and shields as in the game itself. Turn them off for the plain glow of earlier versions.
 MC_OPT_COLORBLIND	Colour-blind friendly role colours
 MC_OPT_COLORBLIND_TIP	Fighters turn gold instead of green, so they stand apart from the red protectors. Every portrait also shows its role symbol: shield, swords or staff.
 MC_RARITY_COMMON	Common

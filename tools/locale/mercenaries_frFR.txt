@@ -3,6 +3,8 @@ MC_PREVIEW_SHIELD	Bouclier
 MC_PREVIEW_MISS	%d%% d'échec
 MC_ROLE_CIRCLE	Fort contre : %s, faible contre : %s.
 MC_TREASURES_FOUND	Trésors : %s
+MC_OPT_EFFECTS	Effets de sorts en combat
+MC_OPT_EFFECTS_TIP	Boules de feu, éclairs de givre, soins et boucliers comme dans le jeu lui-même. Désactivez-les pour retrouver la simple lueur des versions précédentes.
 MC_OPT_COLORBLIND	Couleurs de rôle adaptées au daltonisme
 MC_OPT_COLORBLIND_TIP	Les combattants deviennent dorés au lieu de verts et se distinguent ainsi des protecteurs rouges. Chaque portrait montre aussi le symbole de son rôle : bouclier, épées ou bâton.
 MC_RARITY_COMMON	Commun

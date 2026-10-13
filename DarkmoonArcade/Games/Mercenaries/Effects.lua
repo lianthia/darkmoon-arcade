@@ -4,7 +4,8 @@
 -- model keeps its real size (no camera that fits each model on its own) and nothing is cut off at
 -- the edge of a small model frame. Clients without ModelScene fall back to one PlayerModel per
 -- effect. The effect gallery of the dev copy (FxGallery.lua) tunes and rates every effect; the
--- values are kept in DarkmoonArcadeDB.fxGallery.v2 to be moved into FX_LIST.
+-- values are kept in DarkmoonArcadeDB.fxGallery.v3 to be moved into FX_LIST. The values in
+-- FX_LIST come from Ben's second round in the gallery (`unused`: rated bad).
 
 local _, ns = ...
 local MC = ns.Mercenaries
@@ -22,16 +23,16 @@ end
 
 MC.FX_LIST = {
     -- Missiles
-    E("fire_missile", "missile", 166128, "fireball_missile_high", { impact = "fire_hit" }),
-    E("fel_missile", "missile", 166074, "fel_fireball_missile_high", { impact = "fire_hit2" }),
-    E("frost_missile", "missile", 166214, "frostbolt", { impact = "frost_hit" }),
-    E("frost_missile2", "missile", 1598570, "cfx_mage_frostbolt_missile", { impact = "frost_hit" }),
-    E("blue_missile", "missile", 166127, "fireball_blue_missile_high", { impact = "frost_hit" }),
-    E("lightning_missile", "missile", 166497, "lightningbolt_missile", { impact = "lightning_hit" }),
-    E("arcane_missile", "missile", 165569, "arcane_missile", { impact = "arcane_hit" }),
-    E("arcane_orb", "missile", 963808, "arcane_missile_orb", { impact = "arcane_hit" }),
-    E("shadow_missile", "missile", 382336, "fireball_missile_shadow_high", { impact = "shadow_hit" }),
-    E("twilight_missile", "missile", 367434, "twilight_fireball_missile_high", { impact = "shadow_hit2" }),
+    E("fire_missile", "missile", 166128, "fireball_missile_high", { impact = "fire_hit", scale = 0.76 }),
+    E("fel_missile", "missile", 166074, "fel_fireball_missile_high", { impact = "fire_hit2", scale = 0.76 }),
+    E("frost_missile", "missile", 166214, "frostbolt", { impact = "frost_hit", scale = 0.76 }),
+    E("frost_missile2", "missile", 1598570, "cfx_mage_frostbolt_missile", { impact = "frost_hit", scale = 0.76 }),
+    E("blue_missile", "missile", 166127, "fireball_blue_missile_high", { impact = "frost_hit", scale = 0.76 }),
+    E("lightning_missile", "missile", 166497, "lightningbolt_missile", { impact = "lightning_hit", scale = 0.76 }),
+    E("arcane_missile", "missile", 165569, "arcane_missile", { impact = "arcane_hit", scale = 0.76 }),
+    E("arcane_orb", "missile", 963808, "arcane_missile_orb", { impact = "arcane_hit", scale = 0.76 }),
+    E("shadow_missile", "missile", 382336, "fireball_missile_shadow_high", { impact = "shadow_hit", scale = 0.76 }),
+    E("twilight_missile", "missile", 367434, "twilight_fireball_missile_high", { impact = "shadow_hit2", scale = 0.76 }),
     -- Impacts on the target
     E("fire_hit", "impact", 166115, "fire_impactdd_high_chest"),
     E("fire_hit2", "impact", 166119, "fire_impactdd_uber_chest"),
@@ -42,14 +43,14 @@ MC.FX_LIST = {
     E("shadow_hit2", "impact", 166795, "shadow_impactdd_high_chest"),
     E("shadow_hit3", "impact", 166799, "shadow_impactdd_uber_chest"),
     E("holy_hit", "impact", 166329, "holy_impactdd_uber_chest"),
-    E("holy_hit2", "impact", 916379, "explosion_holy_impact"),
+    E("holy_hit2", "impact", 916379, "explosion_holy_impact", { y = 39 }),
     E("arcane_hit", "impact", 165578, "arcaneexplosion_impact_chest"),
-    E("arcane_burst", "impact", 165576, "arcaneexplosion_base"),
+    E("arcane_burst", "impact", 165576, "arcaneexplosion_base", { scale = 0.66, x = -14, y = -62 }),
     E("blood_hit", "impact", 426040, "bloodyexplosionblack"),
     E("blood_hit2", "impact", 165738, "bloodyexplosiongreen"),
-    E("thunderclap", "impact", 167120, "thunderclap_cast_base"),
+    E("thunderclap", "impact", 167120, "thunderclap_cast_base", { scale = 0.76, y = 49 }),
     E("shadow_dot", "impact", 166800, "shadow_impactdot_med_chest"),
-    E("stun", "impact", 166988, "stunswirl_state_head"),
+    E("stun", "impact", 166988, "stunswirl_state_head", { scale = 1.32 }),
     -- Auras on the caster or an ally
     E("heal", "aura", 166327, "holy_impactdd_med_chest"),
     E("renew", "aura", 166697, "renew_chest"),
@@ -57,10 +58,10 @@ MC.FX_LIST = {
     E("nature_cast", "aura", 166604, "nature_precast_chest"),
     E("shield", "aura", 588344, "divineshield_v2_chest"),
     E("shield2", "aura", 165962, "divineshield_low_chest"),
-    E("taunt", "aura", 167093, "taunt_head"),
-    E("taunt_cast", "aura", 167092, "taunt_cast"),
+    E("taunt", "aura", 167093, "taunt_head", { scale = 1.15, x = 36, y = -60 }),
+    E("taunt_cast", "aura", 167092, "taunt_cast", { unused = true }),
     E("battleshout", "aura", 165658, "battleshout_cast_base"),
-    E("levelup", "aura", 166464, "levelup"),
+    E("levelup", "aura", 166464, "levelup", { scale = 1.15, x = 36, y = 56 }),
     E("resurrect", "aura", 166704, "resurrection_low_base"),
 }
 MC.FX = {}
@@ -73,21 +74,24 @@ end
 -- x, y: shift in pixels; rx, ry, rz: turn in degrees (roll, pitch, yaw); dur: seconds (a
 -- missile's flight).
 MC.FX_DEFAULTS = { scale = 1, x = 0, y = 0, rx = 0, ry = 0, rz = 0, dur = 0.8 }
--- The camera: how many pixels one yard in the scene covers, and its field of view.
-MC.FX_CAMERA = { ppy = 40, fov = 0.6 }
+-- The camera: how many pixels one yard in the scene covers, and its field of view. The client's
+-- field of view spans the scene's diagonal (found in the gallery: with it every effect sat on its
+-- mark without being shifted).
+MC.FX_CAMERA = { ppy = 48, fov = 0.6, fovAxis = "diagonal" }
 
 function MC.FxStore()
     local db = ns.db
-    if not db then return { v2 = {} } end
+    if not db then return { v3 = {}, cam = {} } end
     db.fxGallery = db.fxGallery or {}
-    db.fxGallery.v2 = db.fxGallery.v2 or {}
+    db.fxGallery.v3 = db.fxGallery.v3 or {}
+    db.fxGallery.cam = db.fxGallery.cam or {}
     return db.fxGallery
 end
 
 -- An effect's values: the tuned ones from the gallery over the effect's own and the defaults.
 function MC.FxTuning(id)
     local def = MC.FX[id]
-    local saved = MC.FxStore().v2[id]
+    local saved = MC.FxStore().v3[id]
     local t = {}
     for k, v in pairs(MC.FX_DEFAULTS) do
         local own = def and def[k]
@@ -98,13 +102,13 @@ end
 
 -- Camera settings the gallery can change for all effects at once.
 function MC.FxCamera()
-    local store = MC.FxStore()
+    local cam = MC.FxStore().cam
     return {
-        ppy = store.ppy or MC.FX_CAMERA.ppy,
+        ppy = cam.ppy or MC.FX_CAMERA.ppy,
         fov = MC.FX_CAMERA.fov,
-        fovAxis = store.fovAxis or "vertical",
-        mirror = store.mirror and -1 or 1,
-        pitchSign = store.pitchSign or -1,
+        fovAxis = cam.fovAxis or MC.FX_CAMERA.fovAxis,
+        mirror = cam.mirror and -1 or 1,
+        pitchSign = cam.pitchSign or -1,
     }
 end
 
@@ -139,6 +143,49 @@ function MC.AddScriptedFx()
     return added
 end
 
+-- In battle -----------------------------------------------------------------------------------------
+
+-- Per school: the missile of a single-target spell, the hit on a target and the burst of an
+-- ability that strikes several. Holy has no missile; physical hits show no missile either.
+MC.SCHOOL_FX = {
+    fire = { missile = "fire_missile", hit = "fire_hit", big = "fire_hit2" },
+    frost = { missile = "frost_missile", hit = "frost_hit", big = "frost_hit" },
+    nature = { missile = "lightning_missile", hit = "lightning_hit", big = "lightning_call" },
+    shadow = { missile = "shadow_missile", hit = "shadow_hit", big = "shadow_hit3" },
+    arcane = { missile = "arcane_missile", hit = "arcane_hit", big = "arcane_burst" },
+    holy = { hit = "holy_hit", big = "holy_hit2" },
+    physical = { hit = "blood_hit", big = "thunderclap" },
+}
+local SPREAD = { all = true, others = true, adjacent = true }
+
+-- How an ability looks: its school, whether it strikes several, and the missile it flies with.
+local abilityFx = {}
+function MC.AbilityFx(abilityId)
+    if abilityFx[abilityId] then return abilityFx[abilityId] end
+    local def = MC.Abilities[abilityId]
+    if not def then return nil end
+    local school = MC.SCHOOL_FX[def.school] and def.school or "physical"
+    local info = { school = school, big = false }
+    for _, eff in ipairs(def.effects) do
+        if eff[1] == "damage" then
+            local to = eff.to or "target"
+            info.big = SPREAD[to] or false
+            local own = MC.SCHOOL_FX[eff.school or school]
+            if not info.big and def.target == "enemy" and to == "target" and own then
+                info.missile = own.missile
+            end
+            break
+        end
+    end
+    abilityFx[abilityId] = info
+    return info
+end
+
+-- Spell effects in battle: the option, and a client that can show them.
+function Module:BattleFxOn()
+    return ns.Arcade.Settings(self).effects ~= false and self:FxScene() ~= false
+end
+
 -- Scene ---------------------------------------------------------------------------------------------
 
 function Module:FxScene()
@@ -171,7 +218,8 @@ function Module:AimFxCamera()
     local scene = self.fxScene
     if not scene then return end
     local cam = MC.FxCamera()
-    local half = (cam.fovAxis == "vertical" and H or W) / 2 / cam.ppy
+    local span = cam.fovAxis == "vertical" and H or (cam.fovAxis == "horizontal" and W or math.sqrt(W * W + H * H))
+    local half = span / 2 / cam.ppy
     local distance = half / math.tan(cam.fov / 2)
     pcall(scene.SetCameraFieldOfView, scene, cam.fov)
     pcall(scene.SetCameraNearClip, scene, 0.1)
@@ -197,7 +245,7 @@ end
 
 -- Plays effect `id` at x, y (board pixels). A missile flies to toX, toY and then plays its
 -- impact there. Returns the effect's length in seconds (0 if it cannot play).
-function Module:PlayFx(id, x, y, toX, toY, onDone)
+function Module:PlayFx(id, x, y, toX, toY, onDone, duration)
     local def = MC.FX[id]
     if not def or def.kind == "scripted" or not self.fxLayer then return 0 end
     local scene = self:FxScene()
@@ -227,7 +275,7 @@ function Module:PlayFx(id, x, y, toX, toY, onDone)
     end
     Put(x, y)
     if a.Show then a:Show() end
-    local dur = math.max(0.1, t.dur)
+    local dur = math.max(0.1, duration or t.dur)
     self.effects[#self.effects + 1] = {
         t = 0,
         update = function(e)

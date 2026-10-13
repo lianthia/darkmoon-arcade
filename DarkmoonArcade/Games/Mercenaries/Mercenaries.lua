@@ -18,7 +18,7 @@ local Module = {
     descKey = "MC_DESC",
     helpKey = "MC_HELP",
     tile = "tiles/mercenaries",
-    defaults = { fast = false, sounds = "ingame", colorblind = false },
+    defaults = { fast = false, sounds = "ingame", colorblind = false, effects = true },
 }
 MC.Module = Module
 
@@ -906,6 +906,7 @@ end
 function Module:Options()
     return {
         { kind = "check", tbl = Arcade.Settings(self), key = "fast", label = "MC_OPT_FAST", tip = "MC_OPT_FAST_TIP", default = false },
+        { kind = "check", tbl = Arcade.Settings(self), key = "effects", label = "MC_OPT_EFFECTS", tip = "MC_OPT_EFFECTS_TIP", default = true },
         { kind = "check", tbl = Arcade.Settings(self), key = "colorblind", label = "MC_OPT_COLORBLIND", tip = "MC_OPT_COLORBLIND_TIP",
             default = false, onChange = function() self:RefreshShown() end },
         { kind = "choice", tbl = Arcade.Settings(self), key = "sounds", label = "MC_OPT_SOUNDS", tip = "MC_OPT_SOUNDS_TIP",

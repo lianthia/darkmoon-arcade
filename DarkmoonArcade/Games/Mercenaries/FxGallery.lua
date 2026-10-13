@@ -220,15 +220,15 @@ function Module:ShowFx()
     local view, def = self.views.fxgallery, self:GalleryFx()
     local t = MC.FxTuning(def.id)
     local store = MC.FxStore()
-    local saved = store.v2[def.id] or {}
+    local saved = store.v3[def.id] or {}
     local scripted = def.kind == "scripted"
     view.title:SetText(("%d/%d  %s"):format(self.fxIndex, #MC.FX_LIST, def.id))
     local loaded = store.loaded and store.loaded[def.id]
-    local old = store[def.id] and store[def.id].rating
+    local old = store.v2 and store.v2[def.id] and store.v2[def.id].rating
     view.info:SetText(("%s  |  %s  |  file %d%s%s%s"):format(def.kind, def.name, def.file,
         def.impact and ("  ->  " .. def.impact) or "",
         loaded == false and "  |cffff5050(did not load)|r" or "",
-        old and ("  |cff999999(1st round: " .. RATING_NAME[old] .. ")|r") or ""))
+        old and ("  |cff999999(2nd round: " .. RATING_NAME[old] .. ")|r") or ""))
     for _, row in ipairs(ROWS) do
         local r = view.rows[row[1]]
         r.value:SetText(scripted and "-" or ("%." .. row[5] .. "f"):format(t[row[1]]))
@@ -248,7 +248,7 @@ function Module:ShowFx()
     for _, b in ipairs(view.rateButtons) do b.sel:SetShown(saved.rating == b.key) end
     local rated = 0
     for _, e in ipairs(MC.FX_LIST) do
-        if store.v2[e.id] and store.v2[e.id].rating then rated = rated + 1 end
+        if store.v3[e.id] and store.v3[e.id].rating then rated = rated + 1 end
     end
     view.progress:SetText(("Rated: %d of %d. %s Green crosses: where effects should sit. /reload saves."):format(
         rated, #MC.FX_LIST, store.info and store.info.modelScene == false and "|cffff5050No ModelScene!|r" or ""))
@@ -256,8 +256,8 @@ end
 
 local function Entry(id)
     local store = MC.FxStore()
-    store.v2[id] = store.v2[id] or {}
-    return store.v2[id]
+    store.v3[id] = store.v3[id] or {}
+    return store.v3[id]
 end
 
 function Module:TuneFx(row, dir)
@@ -273,7 +273,7 @@ end
 
 function Module:TuneFxCamera(step)
     local store = MC.FxStore()
-    store.ppy = math.max(5, MC.FxCamera().ppy + step)
+    store.cam.ppy = math.max(5, MC.FxCamera().ppy + step)
     self:AimFxCamera()
     self:ShowFx()
     self:PlayGalleryFx()
@@ -281,12 +281,14 @@ end
 
 function Module:ToggleFxSetting(key)
     local store = MC.FxStore()
+    local cam = store.cam
     if key == "fovAxis" then
-        store.fovAxis = MC.FxCamera().fovAxis == "vertical" and "horizontal" or "vertical"
+        local next = { vertical = "horizontal", horizontal = "diagonal", diagonal = "vertical" }
+        cam.fovAxis = next[MC.FxCamera().fovAxis]
     elseif key == "mirror" then
-        store.mirror = not store.mirror or nil
+        cam.mirror = not cam.mirror or nil
     elseif key == "pitchSign" then
-        store.pitchSign = -MC.FxCamera().pitchSign
+        cam.pitchSign = -MC.FxCamera().pitchSign
     elseif key == "down" then
         self.fxDown = not self.fxDown
     elseif key == "loop" then

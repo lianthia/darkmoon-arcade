@@ -3,6 +3,8 @@ MC_PREVIEW_SHIELD	护盾
 MC_PREVIEW_MISS	%d%% 未命中
 MC_ROLE_CIRCLE	克制：%s，被克制：%s。
 MC_TREASURES_FOUND	宝藏：%s
+MC_OPT_EFFECTS	战斗中的法术特效
+MC_OPT_EFFECTS_TIP	火球、寒冰箭、治疗和护盾都与游戏本身一致。关闭后恢复早期版本的简单光效。
 MC_OPT_COLORBLIND	色盲友好的职责颜色
 MC_OPT_COLORBLIND_TIP	斗士由绿色变为金色，与红色的守护者区分开。每个头像还会显示职责符号：盾牌、双剑或法杖。
 MC_RARITY_COMMON	普通

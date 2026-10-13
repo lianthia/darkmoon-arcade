@@ -454,6 +454,13 @@ assert(deck.overlay.current == "over", "game over page: " .. tostring(deck.overl
 -- Mercenaries: the camp, the collection, then a whole bounty fought through the board.
 SlashCmdList.DARKMOONARCADE("mercenaries")
 local mc = Window.activeGame
+-- Which spell effects the battles play.
+local fxPlayed = {}
+local playFx = mc.PlayFx
+mc.PlayFx = function(self, id, ...)
+    fxPlayed[id] = true
+    return playFx(self, id, ...)
+end
 local MC = ns.Mercenaries
 local store = mc:Store()
 if store.run then mc:AbandonRun(); mc.resultClose._scripts.OnClick(mc.resultClose) end
@@ -512,9 +519,9 @@ mc:TuneFxCamera(5)
 for _, key in ipairs({ "fovAxis", "mirror", "pitchSign", "down", "loop" }) do mc:ToggleFxSetting(key) end
 mc:RateFx("good")
 local fxId = ns.Mercenaries.FX_LIST[mc.fxIndex].id
-local fxSaved = DarkmoonArcadeDB.fxGallery.v2[fxId]
-assert(fxSaved.rating == "good" and fxSaved.scale > 1, "effect tuning kept")
-assert(DarkmoonArcadeDB.fxGallery.ppy == 45 and DarkmoonArcadeDB.fxGallery.mirror, "camera settings kept")
+local fxSaved = DarkmoonArcadeDB.fxGallery.v3[fxId]
+assert(fxSaved.rating == "good" and fxSaved.scale > (ns.Mercenaries.FX[fxId].scale or 1), "effect tuning kept")
+assert(DarkmoonArcadeDB.fxGallery.cam.ppy == 53 and DarkmoonArcadeDB.fxGallery.cam.mirror, "camera settings kept")
 mc:ResetFx()
 assert(fxSaved.scale == nil and fxSaved.rating == "good", "reset keeps the rating")
 mc:Route()
@@ -642,6 +649,13 @@ for _ = 1, 600 do
 end
 assert(fights > 0, "mercenaries fought")
 assert(autoTurns > 0, "a battle played by itself")
+assert(next(fxPlayed), "battles play spell effects")
+for school, set in pairs(MC.SCHOOL_FX) do
+    for _, id in pairs(set) do
+        assert(MC.FX[id] and not MC.FX[id].unused, school .. " uses a known, wanted effect: " .. id)
+    end
+end
+for id in pairs(MC.Abilities) do assert(MC.AbilityFx(id), id .. " has its look") end
 MC.DEV, DarkmoonArcadeDB.debugMode = false, false
 assert(not mc.autoBattle or mc.autoBattleFor == autoBattle, "the next battle starts by hand")
 assert(not mc.timeline._shown, "timeline gone after the turn")
