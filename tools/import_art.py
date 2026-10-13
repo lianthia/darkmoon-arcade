@@ -23,19 +23,18 @@ def arcade_logo():
 
 
 def moon_icon():
-    # The source has a baked-in checkerboard instead of transparency; the moon is a circle, so mask it.
-    src = Image.open(ROOT / "art" / "moon_icon.png").convert("RGBA")
+    """The hand-drawn moon (art/darkmoon_icon.png, on its dark square) cut to a disc: the minimap
+    button, the addon list and the Darkmoon medal of Flappy Griffin."""
+    src = Image.open(ROOT / "art" / "darkmoon_icon.png").convert("RGBA")
     w, h = src.size
     ss = 4
     mask = Image.new("L", (w * ss, h * ss), 0)
-    cx, cy, r = 298 * ss, 300 * ss, 293 * ss
+    r = min(w, h) / 2 * ss - ss
+    cx, cy = w * ss / 2, h * ss / 2
     ImageDraw.Draw(mask).ellipse([cx - r, cy - r, cx + r, cy + r], fill=255)
     src.putalpha(mask.resize((w, h), Image.LANCZOS))
-    side = 600
-    square = Image.new("RGBA", (side, side), (0, 0, 0, 0))
-    square.paste(src, ((side - w) // 2, (side - h) // 2))
-    square.resize((64, 64), Image.LANCZOS).save(MEDIA / "icon.tga")
-    square.resize((128, 128), Image.LANCZOS).save(MEDIA / "portrait.tga")
+    src.resize((64, 64), Image.LANCZOS).save(MEDIA / "icon.tga")
+    src.resize((128, 128), Image.LANCZOS).save(MEDIA / "portrait.tga")
 
 
 def mercenaries_logo():
