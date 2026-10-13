@@ -12,6 +12,8 @@ local DEFAULTS = {
     newsNever = false,
     debugMode = false,
     scale = 1.1,
+    fadeMoving = false,
+    fadeAlpha = 0.4,
     language = "auto",
 }
 

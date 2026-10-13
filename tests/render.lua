@@ -58,6 +58,13 @@ if RENDER_LANG then
     ns.Media.ApplyLanguageFonts()
     ns.Widgets.RefreshAll()
 end
+-- The main menu, before any game opens.
+if not RENDER_ONLY or ("hub"):find(RENDER_ONLY, 1, true) or RENDER_ONLY:find("hub", 1, true) then
+    SlashCmdList.DARKMOONARCADE("")
+    Tick(0.6)
+    local items, w, h = RenderDump(ns.Window.frame)
+    Shots[#Shots + 1] = { name = "hub", items = items, w = w, h = h }
+end
 SlashCmdList.DARKMOONARCADE("mercenaries")
 local Window = ns.Window
 mc = Window.activeGame

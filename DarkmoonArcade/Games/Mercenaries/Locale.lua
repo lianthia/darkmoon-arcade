@@ -2,6 +2,10 @@ local _, ns = ...
 
 -- English and German so far; the other languages fall back to English until the full release.
 ns.AddStrings("enUS", {
+    MC_HUB_LEVEL = "Party level",
+    MC_HUB_ZONES = "Zones cleared",
+    MC_HUB_RUN = "Bounty under way: %s",
+    MC_HUB_READY = "Your party is ready for the next bounty.",
     MC_NAME = "Mercenaries",
     MC_PREVIEW_SHIELD = "Shield",
     MC_PREVIEW_MISS = "%d%% miss",
@@ -883,6 +887,10 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    MC_HUB_LEVEL = "Gruppenstufe",
+    MC_HUB_ZONES = "Zonen bezwungen",
+    MC_HUB_RUN = "Laufendes Kopfgeld: %s",
+    MC_HUB_READY = "Deine Gruppe ist bereit für das nächste Kopfgeld.",
     MC_NAME = "Mercenaries",
     MC_PREVIEW_SHIELD = "Schild",
     MC_PREVIEW_MISS = "%d%% Verfehlen",

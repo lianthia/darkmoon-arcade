@@ -1,5 +1,5 @@
--- The arcade window: Blizzard's panel frame crowned by the logo, a hub with one tile per
--- game, and a playfield plus sidebar for whichever game is active.
+-- The arcade window: Blizzard's panel frame crowned by the logo, the main menu (UI/Hub.lua), and a
+-- playfield plus sidebar for whichever game is active.
 
 local ADDON, ns = ...
 
@@ -14,6 +14,7 @@ ns.Window = Window
 -- Every game draws into a playfield of this size; the sidebar sits to its right.
 Arcade.FIELD_W, Arcade.FIELD_H = 432, 462
 local SIDEBAR_W, GUTTER = 204, 14
+Arcade.SIDEBAR_W, Arcade.GUTTER = SIDEBAR_W, GUTTER
 local CONTENT_W = Arcade.FIELD_W + GUTTER + SIDEBAR_W
 local CONTENT_H = Arcade.FIELD_H
 
@@ -24,8 +25,6 @@ local FRAME_H = CONTENT_H + INSET_TOP + INSET_BOTTOM
 local LOGO_W, LOGO_H = 150, 97
 -- Half of the logo sits inside the frame, the content starts just below it.
 local LOGO_OVERLAP = 48
-local TILE_W, TILE_H, TILE_GAP, TILE_COLUMNS = 300, 150, 20, 2
-local HUB_TITLE_Y, HUB_TOP, HUB_BOTTOM, HUB_PAD, HUB_SCROLL_STEP = 18, 50, 34, 6, 85
 -- Room the window needs beyond its frame: the logo above, the flight plate below, a margin all around.
 local LOGO_EXTRA, FLIGHT_EXTRA, SCREEN_MARGIN = LOGO_H - LOGO_OVERLAP, 36, 8
 
@@ -167,6 +166,8 @@ function Window:Create()
 
     self:ApplyScale()
     self:RestorePosition()
+
+    self:CreateFader()
 
     -- A new resolution or UI scale may leave the window too large for the screen.
     local events = CreateFrame("Frame", nil, f)
@@ -381,159 +382,6 @@ function Window:CreateFooter()
     self.gamesButton = mainMenu
 end
 
--- Hub ------------------------------------------------------------------------------
-
-function Window:CreateHub()
-    local hub = CreateFrame("Frame", nil, self.content)
-    hub:SetAllPoints()
-    hub:SetFrameLevel(self.content:GetFrameLevel() + 5)
-    self.hub = hub
-
-    local subtitle = Widgets.LocalizedText(hub, 18, "gold", "PICK_GAME")
-    subtitle:SetPoint("TOP", 0, -HUB_TITLE_Y)
-    self.hubHint = Widgets.Text(hub, 11, "gray")
-    self.hubHint:SetPoint("BOTTOM", 0, 12)
-
-    -- The cards scroll between title and hint; a cut-off row shows that more games follow.
-    local columns = math.min(TILE_COLUMNS, #Arcade.order)
-    local rows = math.ceil(#Arcade.order / TILE_COLUMNS)
-    local rowWidth = columns * TILE_W + (columns - 1) * TILE_GAP
-    local gridHeight = rows * TILE_H + (rows - 1) * TILE_GAP + HUB_PAD * 2
-    local viewHeight = CONTENT_H - HUB_TOP - HUB_BOTTOM
-    local left = (CONTENT_W - rowWidth) / 2
-
-    local scroll = CreateFrame("ScrollFrame", nil, hub)
-    scroll:SetPoint("TOPLEFT", 0, -HUB_TOP)
-    scroll:SetPoint("BOTTOMRIGHT", 0, HUB_BOTTOM)
-    local child = CreateFrame("Frame", nil, scroll)
-    child:SetSize(CONTENT_W, math.max(gridHeight, viewHeight))
-    scroll:SetScrollChild(child)
-    self.hubScroll = { frame = scroll, offset = 0, target = 0, max = math.max(0, gridHeight - viewHeight) }
-
-    local track = hub:CreateTexture(nil, "ARTWORK")
-    track:SetColorTexture(0, 0, 0, 0.35)
-    track:SetWidth(4)
-    track:SetPoint("TOPRIGHT", scroll, "TOPRIGHT", -4, -HUB_PAD)
-    track:SetPoint("BOTTOMRIGHT", scroll, "BOTTOMRIGHT", -4, HUB_PAD)
-    local thumb = hub:CreateTexture(nil, "ARTWORK", nil, 1)
-    thumb:SetColorTexture(RIM_COLOR[1], RIM_COLOR[2], RIM_COLOR[3], 0.8)
-    thumb:SetWidth(4)
-    local trackHeight = viewHeight - HUB_PAD * 2
-    local thumbHeight = trackHeight * viewHeight / math.max(gridHeight, viewHeight)
-    thumb:SetHeight(thumbHeight)
-    track:SetShown(self.hubScroll.max > 0)
-    thumb:SetShown(self.hubScroll.max > 0)
-
-    local state = self.hubScroll
-    local function Apply()
-        scroll:SetVerticalScroll(state.offset)
-        local share = state.max > 0 and state.offset / state.max or 0
-        thumb:ClearAllPoints()
-        thumb:SetPoint("TOP", track, "TOP", 0, -(trackHeight - thumbHeight) * share)
-    end
-    scroll:EnableMouseWheel(true)
-    scroll:SetScript("OnMouseWheel", function(_, delta)
-        state.target = math.max(0, math.min(state.max, state.target - delta * HUB_SCROLL_STEP))
-    end)
-    scroll:SetScript("OnUpdate", function(_, elapsed)
-        if math.abs(state.target - state.offset) < 0.5 then
-            if state.offset ~= state.target then
-                state.offset = state.target
-                Apply()
-            end
-            return
-        end
-        state.offset = state.offset + (state.target - state.offset) * math.min(1, elapsed * 14)
-        Apply()
-    end)
-    Apply()
-
-    self.tiles = {}
-    for i, id in ipairs(Arcade.order) do
-        local tile = self:CreateTile(child, Arcade.games[id])
-        local column = (i - 1) % TILE_COLUMNS
-        local row = math.floor((i - 1) / TILE_COLUMNS)
-        local x = left + column * (TILE_W + TILE_GAP)
-        -- A lone card in the last row sits in the middle.
-        if i == #Arcade.order and column == 0 and columns > 1 then x = (CONTENT_W - TILE_W) / 2 end
-        tile:SetPoint("TOPLEFT", child, "TOPLEFT", x, -HUB_PAD - row * (TILE_H + TILE_GAP))
-        self.tiles[#self.tiles + 1] = tile
-    end
-end
-
--- A game card: artwork with rounded corners and a gold rim; details fade in on hover.
-function Window:CreateTile(parent, game)
-    local tile = CreateFrame("Button", nil, parent)
-    tile:SetSize(TILE_W, TILE_H)
-    tile:RegisterForClicks("LeftButtonUp")
-
-    local mask = tile:CreateMaskTexture()
-    mask:SetTexture(Media.Tex("card_mask"), "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
-    mask:SetAllPoints()
-
-    local art = tile:CreateTexture(nil, "ARTWORK", nil, 0)
-    art:SetAllPoints()
-    art:SetTexture(Media.Tex(game.tile))
-    art:AddMaskTexture(mask)
-
-    local shade = tile:CreateTexture(nil, "ARTWORK", nil, 1)
-    shade:SetAllPoints()
-    shade:SetTexture(Media.Tex("card_shade"))
-    shade:AddMaskTexture(mask)
-
-    -- Name and best score sit on their own layer, above any 3D models a game adds to its card.
-    local labels = CreateFrame("Frame", nil, tile)
-    labels:SetAllPoints()
-    labels:SetFrameLevel(tile:GetFrameLevel() + 6)
-    local name = Widgets.LocalizedText(labels, 18, "gold", game.nameKey)
-    name:SetPoint("BOTTOMLEFT", 14, 12)
-    tile.best = Widgets.Text(labels, 11, "white")
-    tile.best:SetPoint("TOPRIGHT", -14, -12)
-
-    local frameArt = tile:CreateTexture(nil, "OVERLAY")
-    frameArt:SetAllPoints()
-    frameArt:SetTexture(Media.Tex("card_frame"))
-
-    -- Details sit on their own frame so they draw above decorative 3D models.
-    local details = CreateFrame("Frame", nil, tile)
-    details:SetAllPoints()
-    details:SetFrameLevel(tile:GetFrameLevel() + 10)
-    details:SetAlpha(0)
-    local veil = details:CreateTexture(nil, "BACKGROUND")
-    veil:SetAllPoints()
-    veil:SetTexture(Media.Tex("card_mask"))
-    veil:SetVertexColor(0.01, 0.01, 0.03, 0.9)
-    local title = Widgets.LocalizedText(details, 18, "gold", game.nameKey)
-    title:SetPoint("TOP", 0, -18)
-    local desc = Widgets.LocalizedText(details, 12, "white", game.descKey)
-    desc:SetPoint("TOP", title, "BOTTOM", 0, -10)
-    desc:SetWidth(TILE_W - 40)
-    desc:SetJustifyH("CENTER")
-    local play = Widgets.Button(details, 140, 26, "PLAY", function() self:OpenGame(game.id) end)
-    play:SetPoint("BOTTOM", 0, 14)
-    local rim = details:CreateTexture(nil, "OVERLAY")
-    rim:SetAllPoints()
-    rim:SetTexture(Media.Tex("card_glow"))
-    rim:SetBlendMode("ADD")
-
-    -- Hover by mouse position, so moving onto the play button keeps the details visible.
-    tile:SetScript("OnUpdate", function(_, elapsed)
-        local target = tile:IsMouseOver() and 1 or 0
-        local alpha = details:GetAlpha()
-        if alpha ~= target then
-            local step = elapsed * 6
-            details:SetAlpha(target > alpha and math.min(target, alpha + step) or math.max(target, alpha - step))
-        end
-    end)
-    tile:SetScript("OnClick", function()
-        PlaySound(SOUNDKIT.IG_MAINMENU_OPTION)
-        self:OpenGame(game.id)
-    end)
-    tile.game = game
-    if game.DecorateTile then ns.SafeCall("DecorateTile", game.DecorateTile, game, tile, art) end
-    return tile
-end
-
 -- Games may ask for a larger playfield (`fieldWidth`, `fieldHeight`); the window grows around its
 -- center and shrinks its scale whenever it would no longer fit on the screen.
 function Window:SetFieldSize(width, height)
@@ -568,17 +416,6 @@ function Window:FitScale()
     return math.min(screenW / needW, screenH / needH)
 end
 
-function Window:RefreshHub()
-    local choice = ns.db.flightGame
-    local target = choice == "off" and L.FLIGHT_OFF or choice == "hub" and L.FLIGHT_HUB
-        or (Arcade.games[choice] and L[Arcade.games[choice].nameKey]) or L.FLIGHT_OFF
-    self.hubHint:SetText(L.HUB_FLIGHT_HINT:format(target))
-    for _, tile in ipairs(self.tiles) do
-        local best = tile.game.BestScore and tile.game:BestScore()
-        tile.best:SetText(best and best > 0 and L.BEST:format(ns.FormatNumber(best)) or "")
-    end
-end
-
 function Window:LeaveGame()
     if self.activeGame then
         self.activeGame:Leave()
@@ -589,7 +426,8 @@ end
 
 function Window:OpenHub()
     self:LeaveGame()
-    self:SetFieldSize()
+    -- The main menu takes the featured game's size.
+    self:SetFieldSize(self.featured.fieldWidth, self.featured.fieldHeight)
     ns.OptionsView:Hide()
     ns.StatsView:Hide()
     self.hub:Show()
@@ -710,6 +548,40 @@ function Window:ApplyLanguage()
     end
     self:RefreshHub()
     self:UpdateSidebar()
+end
+
+-- See-through while moving: the arcade's windows fade to the chosen visibility while the character
+-- walks or rides, so they can stay open. Under the mouse and on flights they stay fully visible.
+local FADE_SPEED = 4
+
+function Window:CreateFader()
+    local fader = CreateFrame("Frame")
+    fader:RegisterEvent("PLAYER_STARTED_MOVING")
+    fader:RegisterEvent("PLAYER_STOPPED_MOVING")
+    fader:SetScript("OnEvent", function(_, event) self.moving = event == "PLAYER_STARTED_MOVING" end)
+    fader:SetScript("OnUpdate", function(_, elapsed) self:UpdateFade(elapsed) end)
+    self.moving = IsPlayerMoving and IsPlayerMoving() or false
+    self.fader = fader
+end
+
+function Window:FadeTarget(frame)
+    local db = ns.db
+    if not (db and db.fadeMoving and self.moving) then return 1 end
+    if frame:IsMouseOver() or (UnitOnTaxi and UnitOnTaxi("player")) then return 1 end
+    return math.max(0.05, math.min(1, db.fadeAlpha or 0.4))
+end
+
+function Window:UpdateFade(elapsed)
+    local frames = { self.frame, ns.News and ns.News.frame }
+    for _, frame in pairs(frames) do
+        if frame and frame:IsShown() then
+            local target, alpha = self:FadeTarget(frame), frame:GetAlpha()
+            if alpha ~= target then
+                local step = elapsed * FADE_SPEED
+                frame:SetAlpha(target > alpha and math.min(target, alpha + step) or math.max(target, alpha - step))
+            end
+        end
+    end
 end
 
 -- A small plate below the window, shown only during flights.

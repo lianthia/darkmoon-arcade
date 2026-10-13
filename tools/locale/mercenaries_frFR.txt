@@ -795,3 +795,7 @@ MC_G_benedictus_3	Mitre de l'archevêque
 MC_G_hamuul_1	Bâton Totem-runique
 MC_G_hamuul_2	Bois de Reflet-de-Lune
 MC_G_hamuul_3	Graine cénarienne
+MC_HUB_LEVEL	Niveau du groupe
+MC_HUB_ZONES	Zones conquises
+MC_HUB_RUN	Prime en cours : %s
+MC_HUB_READY	Votre groupe est prêt pour la prochaine prime.

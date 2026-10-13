@@ -795,3 +795,7 @@ MC_G_benedictus_3	大主教法冠
 MC_G_hamuul_1	符文图腾法杖
 MC_G_hamuul_2	月光林地鹿角
 MC_G_hamuul_3	塞纳里奥种子
+MC_HUB_LEVEL	队伍等级
+MC_HUB_ZONES	已征服区域
+MC_HUB_RUN	进行中的悬赏：%s
+MC_HUB_READY	你的队伍已准备好迎接下一个悬赏。

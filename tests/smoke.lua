@@ -323,6 +323,20 @@ assert(News.frame._shown, "news after an update")
 News.showButton._scripts.OnClick(News.showButton)
 assert(not News.frame._shown and DarkmoonArcadeDB.newsSeen == ns.Version(), "the arcade button retires the news")
 assert(Window.frame._shown and Window.hub._shown, "the arcade button opens the main menu")
+-- The main menu: the featured game on its stage with the player's progress, the others in a list.
+assert(Window.featured.id == "mercenaries", "Mercenaries is featured")
+assert(Window.heroStats[1].value._text ~= nil and Window.heroStats[4].label._text ~= nil, "progress on the stage")
+assert(Window.heroPlay.label._text == ns.L.PLAY, "play, no bounty under way yet")
+assert(#Window.tiles == #ns.Arcade.order - 1, "every other game in the list")
+-- See-through while moving, but not under the mouse and not while standing.
+DarkmoonArcadeDB.fadeMoving, DarkmoonArcadeDB.fadeAlpha = true, 0.3
+Window.moving = true
+local away = setmetatable({ IsMouseOver = function() return false end }, { __index = Window.frame })
+assert(math.abs(Window:FadeTarget(away) - 0.3) < 1e-6, "fades while moving")
+assert(Window:FadeTarget(Window.frame) == 1, "stays visible under the mouse")
+Window.moving = false
+assert(Window:FadeTarget(away) == 1, "fully visible when standing")
+DarkmoonArcadeDB.fadeMoving = false
 -- The main menu's button opens the news again; the option keeps them from opening by themselves.
 assert(Window.newsButton._shown, "news button in the main menu")
 Window.newsButton._scripts.OnClick(Window.newsButton)

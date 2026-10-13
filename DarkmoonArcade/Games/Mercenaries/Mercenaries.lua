@@ -18,6 +18,13 @@ local Module = {
     descKey = "MC_DESC",
     helpKey = "MC_HELP",
     tile = "tiles/mercenaries",
+    -- The main menu's stage: the Darkmoon Faire painting of the camp (its picture spans v 0.255 to
+    -- 0.815 of the file) with the game's logo.
+    featured = true,
+    hero = {
+        art = 2821800, v0 = 0.255, v1 = 0.815, aspect = 1024 / (0.56 * 768),
+        logo = "mercs/logo", logoShadow = "mercs/logo_shadow", logoW = 300, logoRatio = 347 / 1024, logoV = 347 / 512,
+    },
     defaults = { fast = false, sounds = "ingame", colorblind = false, effects = true },
 }
 MC.Module = Module
@@ -893,6 +900,53 @@ function Module:DecorateTile(tile, art)
         Apply()
         m:SetScript("OnShow", Apply)
     end
+end
+
+-- Three heroes of the old world on the main menu's stage.
+function Module:DecorateHero(stage)
+    local heroes = { { 2970, 0.45 }, { 4527, 0.15 }, { 4307, -0.25 } } -- Jaina, Thrall, Cairne
+    for i, hero in ipairs(heroes) do
+        local m = CreateFrame("PlayerModel", nil, stage)
+        m:SetSize(190, 270)
+        m:SetPoint("BOTTOMRIGHT", stage, "BOTTOMRIGHT", 30 - (#heroes - i) * 115, -26)
+        m:SetFrameLevel(stage:GetFrameLevel() + 2 + (i == 2 and 2 or 0))
+        local function Apply()
+            pcall(m.SetDisplayInfo, m, hero[1])
+            pcall(m.SetFacing, m, hero[2])
+        end
+        Apply()
+        m:SetScript("OnShow", Apply)
+    end
+end
+
+-- The main menu's progress figures and the state of the current bounty.
+function Module:HubInfo()
+    local store = self:Store()
+    local owned, cleared = 0, 0
+    for id, entry in pairs(store.mercs) do
+        if MC.Mercs[id] and entry.owned then owned = owned + 1 end
+    end
+    for _, zoneId in ipairs(MC.ZONE_ORDER) do
+        if Bounty.ZoneState(store, zoneId).normal > 0 then cleared = cleared + 1 end
+    end
+    local done, total = Achievements.Count(self.id)
+    local level = Bounty.PartyLevel(store)
+    local run = store.run
+    local status = L.MC_HUB_READY
+    if run then
+        local where = Describe.ZoneName(run.zone) .. (run.heroic and (" (" .. L.MC_HEROIC .. ")") or "")
+        status = L.MC_HUB_RUN:format(where .. "  ·  " .. L.MC_STAGE:format(math.max(run.layer, 0), #run.map.layers))
+    end
+    return {
+        stats = {
+            { value = math.floor(level), label = L.MC_HUB_LEVEL, share = level / MC.MAX_LEVEL },
+            { value = owned .. "/" .. #MC.MERC_ORDER, label = L.MC_COLLECTION, share = owned / #MC.MERC_ORDER },
+            { value = cleared .. "/" .. #MC.ZONE_ORDER, label = L.MC_HUB_ZONES, share = cleared / #MC.ZONE_ORDER },
+            { value = done .. "/" .. total, label = L.ACHIEVEMENTS, share = total > 0 and done / total or 0 },
+        },
+        status = status,
+        resume = run ~= nil,
+    }
 end
 
 -- Redraws whatever is on screen (after the colour-blind option changed).

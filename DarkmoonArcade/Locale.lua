@@ -9,6 +9,14 @@ function ns.AddStrings(language, values)
 end
 
 ns.AddStrings("enUS", {
+    HUB_FEATURED = "Featured",
+    HUB_MORE_GAMES = "More games",
+    HUB_CONTINUE = "Continue",
+    HUB_NEWS = "New in %s:",
+    OPT_FADE_MOVING = "See-through while moving",
+    OPT_FADE_MOVING_TIP = "While your character moves, the arcade's windows turn see-through, so you can keep them open. With the mouse over them, or on a flight, they stay fully visible.",
+    OPT_FADE_ALPHA = "Visibility while moving",
+    OPT_FADE_ALPHA_TIP = "How visible the windows stay while you move.",
     NEWS_NEVER = "Never show this window by itself",
     NEWS_NEVER_HINT = "You can change this any time under Options, General.",
     NEWS_NEVER_DONE = "\"What's new\" will no longer open by itself. Change it any time under Options, General.",
@@ -158,6 +166,14 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    HUB_FEATURED = "Im Rampenlicht",
+    HUB_MORE_GAMES = "Weitere Spiele",
+    HUB_CONTINUE = "Weiterspielen",
+    HUB_NEWS = "Neu in %s:",
+    OPT_FADE_MOVING = "Beim Laufen durchsichtig",
+    OPT_FADE_MOVING_TIP = "Während deine Figur läuft, werden die Fenster der Arcade durchsichtig, sodass du sie offen lassen kannst. Mit der Maus darüber oder auf einem Flug bleiben sie voll sichtbar.",
+    OPT_FADE_ALPHA = "Sichtbarkeit beim Laufen",
+    OPT_FADE_ALPHA_TIP = "Wie sichtbar die Fenster beim Laufen bleiben.",
     NEWS_NEVER = "Dieses Fenster nie mehr von selbst zeigen",
     NEWS_NEVER_HINT = "Jederzeit änderbar unter Optionen, Allgemein.",
     NEWS_NEVER_DONE = "„Neuerungen“ öffnet sich nicht mehr von selbst. Jederzeit änderbar unter Optionen, Allgemein.",
@@ -304,6 +320,14 @@ ns.AddStrings("deDE", {
 })
 
 ns.AddStrings("frFR", {
+    HUB_FEATURED = "À la une",
+    HUB_MORE_GAMES = "Autres jeux",
+    HUB_CONTINUE = "Continuer",
+    HUB_NEWS = "Nouveau en %s :",
+    OPT_FADE_MOVING = "Transparente en mouvement",
+    OPT_FADE_MOVING_TIP = "Pendant que votre personnage se déplace, les fenêtres de l'arcade deviennent transparentes : vous pouvez les laisser ouvertes. Sous la souris ou pendant un vol, elles restent entièrement visibles.",
+    OPT_FADE_ALPHA = "Visibilité en mouvement",
+    OPT_FADE_ALPHA_TIP = "Visibilité des fenêtres pendant vos déplacements.",
     NEWS_NEVER = "Ne plus jamais afficher cette fenêtre seule",
     NEWS_NEVER_HINT = "Modifiable à tout moment dans Options, Général.",
     NEWS_NEVER_DONE = "« Nouveautés » ne s'ouvrira plus seule. Modifiable à tout moment dans Options, Général.",
@@ -446,6 +470,14 @@ ns.AddStrings("frFR", {
 })
 
 ns.AddStrings("esES", {
+    HUB_FEATURED = "Destacado",
+    HUB_MORE_GAMES = "Más juegos",
+    HUB_CONTINUE = "Continuar",
+    HUB_NEWS = "Novedades de %s:",
+    OPT_FADE_MOVING = "Transparente al moverse",
+    OPT_FADE_MOVING_TIP = "Mientras tu personaje se mueve, las ventanas del arcade se vuelven transparentes para que puedas dejarlas abiertas. Con el ratón encima o durante un vuelo se ven por completo.",
+    OPT_FADE_ALPHA = "Visibilidad al moverse",
+    OPT_FADE_ALPHA_TIP = "Cuánto se ven las ventanas mientras te mueves.",
     NEWS_NEVER = "No volver a mostrar esta ventana sola",
     NEWS_NEVER_HINT = "Puedes cambiarlo cuando quieras en Opciones, General.",
     NEWS_NEVER_DONE = "«Novedades» ya no se abrirá sola. Puedes cambiarlo en Opciones, General.",
@@ -588,6 +620,14 @@ ns.AddStrings("esES", {
 })
 
 ns.AddStrings("ruRU", {
+    HUB_FEATURED = "В центре внимания",
+    HUB_MORE_GAMES = "Другие игры",
+    HUB_CONTINUE = "Продолжить",
+    HUB_NEWS = "Новое в %s:",
+    OPT_FADE_MOVING = "Прозрачность при движении",
+    OPT_FADE_MOVING_TIP = "Пока ваш персонаж движется, окна аркады становятся прозрачными, и их можно не закрывать. При наведении мыши или в полете они видны полностью.",
+    OPT_FADE_ALPHA = "Видимость при движении",
+    OPT_FADE_ALPHA_TIP = "Насколько видны окна, пока вы двигаетесь.",
     NEWS_NEVER = "Больше не показывать это окно само",
     NEWS_NEVER_HINT = "Можно изменить в любой момент: Настройки, Общие.",
     NEWS_NEVER_DONE = "«Что нового» больше не будет открываться само. Изменить можно в Настройках, раздел Общие.",
@@ -731,6 +771,14 @@ ns.AddStrings("ruRU", {
 })
 
 ns.AddStrings("zhCN", {
+    HUB_FEATURED = "精选",
+    HUB_MORE_GAMES = "更多游戏",
+    HUB_CONTINUE = "继续",
+    HUB_NEWS = "%s 新内容：",
+    OPT_FADE_MOVING = "移动时透明",
+    OPT_FADE_MOVING_TIP = "角色移动时，游乐场的窗口会变得透明，方便你保持窗口开启。鼠标悬停或飞行途中则保持完全可见。",
+    OPT_FADE_ALPHA = "移动时的可见度",
+    OPT_FADE_ALPHA_TIP = "移动时窗口保持的可见程度。",
     NEWS_NEVER = "不再自动显示此窗口",
     NEWS_NEVER_HINT = "可随时在选项的常规中更改。",
     NEWS_NEVER_DONE = "“新内容”将不再自动打开。可随时在选项的常规中更改。",

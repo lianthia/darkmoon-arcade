@@ -795,3 +795,7 @@ MC_G_benedictus_3	Митра архиепископа
 MC_G_hamuul_1	Посох Рунного Тотема
 MC_G_hamuul_2	Рога Лунной поляны
 MC_G_hamuul_3	Семя Кенария
+MC_HUB_LEVEL	Уровень отряда
+MC_HUB_ZONES	Пройдено зон
+MC_HUB_RUN	Текущая награда: %s
+MC_HUB_READY	Ваш отряд готов к следующей награде.

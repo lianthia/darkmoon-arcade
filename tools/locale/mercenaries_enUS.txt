@@ -795,3 +795,7 @@ MC_G_benedictus_3	Archbishop's Mitre
 MC_G_hamuul_1	Runetotem Staff
 MC_G_hamuul_2	Moonglade Antlers
 MC_G_hamuul_3	Cenarion Seed
+MC_HUB_LEVEL	Party level
+MC_HUB_ZONES	Zones cleared
+MC_HUB_RUN	Bounty under way: %s
+MC_HUB_READY	Your party is ready for the next bounty.

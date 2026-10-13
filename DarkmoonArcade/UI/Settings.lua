@@ -27,6 +27,10 @@ function SettingsPage.Definitions()
         { kind = "range", tbl = db, key = "scale", label = "OPT_SCALE", tip = "OPT_SCALE_TIP", default = 1.1,
             min = 0.8, max = 1.6, step = 0.1, onChange = function() Window:ApplyScale() end,
             format = function(value) return ("%d%%"):format(value * 100 + 0.5) end },
+        { kind = "check", tbl = db, key = "fadeMoving", label = "OPT_FADE_MOVING", tip = "OPT_FADE_MOVING_TIP", default = false },
+        { kind = "range", tbl = db, key = "fadeAlpha", label = "OPT_FADE_ALPHA", tip = "OPT_FADE_ALPHA_TIP", default = 0.4,
+            min = 0.1, max = 0.9, step = 0.05,
+            format = function(value) return ("%d%%"):format(value * 100 + 0.5) end },
         { kind = "check", tbl = db, key = "minimap", label = "OPT_MINIMAP", tip = "OPT_MINIMAP_TIP", default = true,
             onChange = function() ns.Minimap:Update() end },
         { kind = "check", tbl = db, key = "newsNever", label = "OPT_NEWS_NEVER", tip = "OPT_NEWS_NEVER_TIP", default = false },
@@ -49,7 +53,11 @@ function SettingsPage.Definitions()
     }
     -- The dev copy's testing tools, right after the general options.
     if ADDON ~= "DarkmoonArcade" then
-        table.insert(defs, 6, { kind = "check", tbl = db, key = "debugMode", label = "OPT_DEBUG", tip = "OPT_DEBUG_TIP", default = false })
+        local at = #defs + 1
+        for i, def in ipairs(defs) do
+            if def.key == "newsNever" then at = i + 1 end
+        end
+        table.insert(defs, at, { kind = "check", tbl = db, key = "debugMode", label = "OPT_DEBUG", tip = "OPT_DEBUG_TIP", default = false })
     end
     for _, id in ipairs(ns.Arcade.order) do
         local game = ns.Arcade.games[id]

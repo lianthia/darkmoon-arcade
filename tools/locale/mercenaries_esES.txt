@@ -795,3 +795,7 @@ MC_G_benedictus_3	Mitra del arzobispo
 MC_G_hamuul_1	Bastón Tótem de Runa
 MC_G_hamuul_2	Astas del Claro de la Luna
 MC_G_hamuul_3	Semilla Cenarion
+MC_HUB_LEVEL	Nivel del grupo
+MC_HUB_ZONES	Zonas superadas
+MC_HUB_RUN	Recompensa en curso: %s
+MC_HUB_READY	Tu grupo está listo para la próxima recompensa.
