@@ -5,7 +5,8 @@ acceptance criteria from the concept:
   - 5 levels below the zone's minimum: boss beaten in under 1 % of runs
   - 10 levels below: under 0.1 %
   - a fitting party (boss level - 1): 50-70 %
-Use `--progress` to simulate a new player levelling through all zones instead.
+Use `--progress` to simulate a new player levelling through all zones instead, and `--gap` for a
+single regular fight against foes above the party's level (how much a level gap matters).
 """
 import pathlib
 import sys
@@ -106,6 +107,33 @@ function WinRate(zone, level, heroic, runs)
     return wins / runs, fights / runs
 end
 
+-- One regular fight of three of the zone's foes at `foeLevel`, the starting party at `partyLevel`
+-- (no treasures, ranks or gear). Returns the share of fights won.
+function GapRate(zid, partyLevel, foeLevel, runs)
+    local zone = MC.Zones[zid]
+    local wins = 0
+    for seed = 1, runs do
+        local store = FixedStore(partyLevel)
+        local run = Bounty.NewRun(store, zid, false, seed * 7919)
+        local allies = {}
+        for idx, member in ipairs(run.party) do
+            local spec = Bounty.MercSpec(store, member.id, member, run)
+            spec.pidx = idx
+            allies[#allies + 1] = spec
+        end
+        local enemies = {}
+        for i = 1, 3 do
+            local id = zone.pool[(seed * 31 + i * 7) % #zone.pool + 1]
+            enemies[i] = Bounty.EnemySpec(id, foeLevel, { power = zone.power })
+        end
+        local b = Combat.New(allies, enemies, seed * 104729)
+        AutoBattle(b)
+        if b.phase == "won" then wins = wins + 1 end
+        store.run = nil
+    end
+    return wins / runs
+end
+
 -- A fresh player: always picks the lowest zone not yet cleared, retries on defeat.
 function Progress(maxRuns)
     local store = {}
@@ -125,6 +153,11 @@ end
 
 g = lua.globals()
 MC = g.ns.Mercenaries
+# --gapparams miss,missSq,dmg,bonus,bonusCap: try other level-gap values without editing Combat.lua.
+if "--gapparams" in sys.argv:
+    values = [float(v) for v in sys.argv[sys.argv.index("--gapparams") + 1].split(",")]
+    for key, value in zip(["miss", "missSq", "dmg", "bonus", "bonusCap"], values):
+        MC.Combat.GAP[key] = value
 order = [MC.ZONE_ORDER[i] for i in range(1, len(MC.ZONE_ORDER) + 1)]
 
 if SWEEP:
@@ -169,6 +202,17 @@ if TUNE:
         zone[key] = round((lo + hi) / 2, 2)
         rate = g.WinRate(zid, level, heroic, RUNS)[0]
         print(f"{zid:12} {key} = {zone[key]:5.2f}  -> {rate * 100:.0f}%")
+    sys.exit(0)
+
+if "--gap" in sys.argv:
+    # A party below its foes: party level = foe level - gap, for foes at each zone's boss level - 3.
+    gaps = [0, 1, 2, 3, 4, 5, 6]
+    print(f"{'zone':12} {'foes':>4} " + " ".join(f"{('-' + str(g)):>6}" for g in gaps))
+    for zid in ["westfall", "redridge", "duskwood", "hillsbrad", "arathi", "stranglethorn", "tanaris", "felwood"]:
+        zone = MC.Zones[zid]
+        foe = MC.Bounty.BossLevel(zone, False) - 3
+        rates = [g.GapRate(zid, foe - gap, foe, RUNS) for gap in gaps]
+        print(f"{zid:12} {foe:4} " + " ".join(f"{r * 100:5.0f}%" for r in rates))
     sys.exit(0)
 
 if PROGRESS:

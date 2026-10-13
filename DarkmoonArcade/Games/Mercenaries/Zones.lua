@@ -156,14 +156,14 @@ MC.ZONE_ORDER = {
 -- the time against the bot's play (heroic: 40 % at level 59 without ranks or gear).
 -- Tuned with tools/balance_mercenaries.py --tune (--heroic).
 local POWER = {
-    elwynn = -0.20, dunmorogh = 0.02, tirisfal = 0.11, teldrassil = 0.01, durotar = 0.24, mulgore = -0.03,
-    zephras = 0.18, westfall = 0.03, lochmodan = 0.43, silverpine = 0.22, darkshore = 0.25, barrens = 0.24,
-    redridge = 0.09, stonetalon = 0.61, ashenvale = 0.18, duskwood = 0.13, wetlands = 0.00, hillsbrad = 0.47,
-    thousandneedles = 0.56, alterac = 0.80, arathi = 0.83, desolace = 0.49, stranglethorn = 0.41,
-    riverglades = 0.15, badlands = 0.67, swampofsorrows = 0.65, dustwallow = 0.30, shendralas = 0.34,
-    feralas = 0.08, tanaris = 0.69, hinterlands = 0.68, searinggorge = 0.63, azshara = 0.68,
-    blastedlands = -0.09, felwood = 0.20, ungoro = -0.02, burningsteppes = -0.17, westernplaguelands = 0.13,
-    easternplaguelands = 0.00, winterspring = -0.09, silithus = 0.20, hyjal = 0.05,
+    elwynn = -0.27, dunmorogh = 0.02, tirisfal = 0.11, teldrassil = 0.01, durotar = 0.24, mulgore = -0.03,
+    zephras = 0.18, westfall = 0.03, lochmodan = 0.43, silverpine = 0.22, darkshore = 0.25, barrens = 0.13,
+    redridge = -0.04, stonetalon = 0.61, ashenvale = 0.18, duskwood = 0.13, wetlands = -0.11, hillsbrad = 0.47,
+    thousandneedles = 0.56, alterac = 0.97, arathi = 1.04, desolace = 0.49, stranglethorn = 0.36,
+    riverglades = 0.11, badlands = 0.55, swampofsorrows = 0.65, dustwallow = 0.30, shendralas = 0.34,
+    feralas = -0.04, tanaris = 0.69, hinterlands = 0.68, searinggorge = 0.63, azshara = 0.68,
+    blastedlands = -0.18, felwood = 0.20, ungoro = -0.10, burningsteppes = -0.25, westernplaguelands = 0.13,
+    easternplaguelands = -0.13, winterspring = -0.23, silithus = 0.20, hyjal = -0.13,
 }
 local HEROIC_POWER = {
     elwynn = -0.02, dunmorogh = 0.30, tirisfal = 0.11, teldrassil = 0.30, durotar = 0.12, mulgore = 0.14,
