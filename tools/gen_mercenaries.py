@@ -514,7 +514,6 @@ def colorblind_fighter():
             ga.save_tga(hs_token(role), f"otoken_{role}_cb", FOLDER)
             for kind in ("attack", "health"):
                 ga.save_tga(hs_badge(kind, role), f"hs_{kind}_{role}_cb", FOLDER)
-            ga.save_tga(role_icon(role), f"role_{role}_cb", FOLDER)
         finally:
             CARD_COLORS[role], ROLE_COLORS[role] = old
 
@@ -745,7 +744,8 @@ def main():
     ga.save_tga(board(), "board", FOLDER)
     for role in ROLE_COLORS:
         ga.save_tga(token_frame(role), "token_" + role, FOLDER)
-        ga.save_tga(role_icon(role), "role_" + role, FOLDER)
+    # The three roles' icons are Ben's gems (tools/import_art.py); only "neutral" is drawn here.
+    ga.save_tga(role_icon("neutral"), "role_neutral", FOLDER)
     ga.save_tga(token_frame("neutral", boss=True), "token_boss", FOLDER)
     ga.save_tga(token_back(), "token_back", FOLDER)
     ga.save_tga(token_glow(), "token_glow", FOLDER)
