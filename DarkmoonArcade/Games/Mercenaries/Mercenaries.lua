@@ -53,9 +53,11 @@ function MC.ColorBlind()
     return ns.db ~= nil and ns.Arcade.Settings(MC.Module).colorblind == true
 end
 
-function MC.RoleTex(prefix, role)
+-- `disabled`: the grey gem of a mercenary not yet recruited (role icons only).
+function MC.RoleTex(prefix, role, disabled)
     role = role or "neutral"
-    return MC.Tex(prefix .. role .. ((MC.ROLE_COLORS_CB[role] and MC.ColorBlind()) and "_cb" or ""))
+    local cb = (MC.ROLE_COLORS_CB[role] and MC.ColorBlind()) and "_cb" or ""
+    return MC.Tex(prefix .. role .. cb .. ((disabled and role ~= "neutral") and "_disabled" or ""))
 end
 
 function MC.RoleColor(role)

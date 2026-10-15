@@ -175,11 +175,12 @@ def mercenaries_camp():
 
 
 def mercenaries_roles():
-    """The roles' gems (art/mercenaries_roles/<role>[-colorblind]-<state>.png, 492x492 from Figma): the
-    collection's role tabs, 128x128 with their room for frame and glow
-    (media/mercs/roletab_<role>[_cb]_<state>.tga), and the role icon everywhere else, cut tight round
-    the gem at 64x64 (media/mercs/role_<role>[_cb].tga). The colour-blind option uses the _cb files of
-    the roles it recolours; a role without its own colour-blind gem keeps its usual one."""
+    """The roles' gems (art/mercenaries_roles/<role>[-colorblind][-disabled]-<state>.png, 492x492 from
+    Figma): the collection's role tabs, 128x128 with their room for frame and glow
+    (media/mercs/roletab_<role>[_cb][_disabled]_<state>.tga), and the role icon everywhere else, cut tight
+    round the gem at 64x64 (media/mercs/role_<role>[_cb][_disabled].tga). The colour-blind option uses
+    the _cb files of the roles it recolours (a role without its own colour-blind gem keeps its usual
+    one); _disabled is the grey gem of a mercenary not yet recruited."""
     target = MEDIA / "mercs"
 
     def icon(img):
@@ -193,11 +194,12 @@ def mercenaries_roles():
     for path in sorted((ROOT / "art" / "mercenaries_roles").glob("*.png")):
         parts = path.stem.split("-")
         role, state = parts[0], parts[-1]
-        variant = "_cb" if "colorblind" in parts else ""
+        variant = ("_cb" if "colorblind" in parts else "") + ("_disabled" if "disabled" in parts else "")
         gems[(role, variant, state)] = Image.open(path).convert("RGBA")
     for role in ("fighter", "protector"):
         for state in ("regular", "hover", "active"):
             gems.setdefault((role, "_cb", state), gems[(role, "", state)])
+            gems.setdefault((role, "_cb_disabled", state), gems[(role, "_disabled", state)])
     for (role, variant, state), img in gems.items():
         img.resize((128, 128), Image.LANCZOS).save(target / f"roletab_{role}{variant}_{state}.tga")
         if state == "regular":
