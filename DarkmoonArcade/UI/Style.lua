@@ -33,6 +33,7 @@ Style.C = {
     ready = Hex("8aae94"),
     chip = { 21 / 255, 19 / 255, 29 / 255, 0.81 },
 }
+local C = Style.C
 
 -- Plain text without the game's outline, in one of the colours above.
 function Style.Text(parent, size, color, layer)
@@ -165,6 +166,77 @@ function Style.Gradient(tex, left, right)
     tex:SetColorTexture(1, 1, 1, 1)
     local ok = CreateColor and pcall(tex.SetGradient, tex, "HORIZONTAL", CreateColor(unpack(left)), CreateColor(unpack(right)))
     if not ok then tex:SetColorTexture(left[1], left[2], left[3], (left[4] + right[4]) / 2) end
+end
+
+-- Pages (what's new, statistics, options) ------------------------------------------------------
+
+-- A page: a list on the left, its content right of it.
+Style.PAGE_PAD, Style.LIST_W = 16, 236
+Style.CONTENT_X = Style.PAGE_PAD * 2 + Style.LIST_W
+
+-- A rounded plate in the surface colour.
+function Style.Panel(parent)
+    local f = CreateFrame("Frame", nil, parent)
+    f.plate = Style.Rounded(f, f, 8, C.surface)
+    return f
+end
+
+-- A small grey heading in capitals, like "GAMES" in the navigation.
+function Style.Caption(parent, key)
+    local fs = Style.Text(parent, 10, C.dim)
+    ns.Widgets.OnRefresh(function() fs:SetText(ns.L[key]:upper()) end)
+    return fs
+end
+
+-- The list on the left of a page, on its own plate.
+function Style.SideList(page, captionKey)
+    local list = Style.Panel(page)
+    list:SetPoint("TOPLEFT", Style.PAGE_PAD, -Style.PAGE_PAD)
+    list:SetPoint("BOTTOMLEFT", Style.PAGE_PAD, Style.PAGE_PAD)
+    list:SetWidth(Style.LIST_W)
+    list.top = 8
+    if captionKey then
+        list.caption = Style.Caption(list, captionKey)
+        list.caption:SetPoint("TOPLEFT", 16, -16)
+        list.top = 36
+    end
+    return list
+end
+
+local ListItem = {}
+
+function ListItem.Paint(b)
+    b.bg:SetColor(b.active and C.itemActive or C.item)
+    b.label:SetTextColor(unpack(b.active and C.gold or (b.hover and C.text or C.muted)))
+end
+
+function ListItem.SetActive(b, active)
+    b.active = active and true or false
+    ListItem.Paint(b)
+end
+
+-- An entry of a side list, like the navigation's: a plate, a name and an optional line below it.
+function Style.ListItem(parent, onClick, withSub)
+    local b = CreateFrame("Button", nil, parent)
+    b:SetSize(Style.LIST_W - 16, 44)
+    b.bg = Style.Rounded(b, b, 8, C.item)
+    b.label = Style.Text(b, 12, C.muted)
+    b.label:SetWidth(Style.LIST_W - 56)
+    if withSub then
+        b.label:SetPoint("TOPLEFT", 14, -8)
+        b.sub = Style.Text(b, 10, C.dim)
+        b.sub:SetPoint("TOPLEFT", b.label, "BOTTOMLEFT", 0, -4)
+        b.sub:SetWidth(Style.LIST_W - 56)
+    else
+        b.label:SetPoint("LEFT", 14, 0)
+    end
+    b.active, b.hover = false, false
+    b.SetActive = ListItem.SetActive
+    b:SetScript("OnEnter", function() b.hover = true; ListItem.Paint(b) end)
+    b:SetScript("OnLeave", function() b.hover = false; ListItem.Paint(b) end)
+    b:SetScript("OnClick", onClick)
+    ListItem.Paint(b)
+    return b
 end
 
 -- The games' small pictures (media/launcher/thumbs.tga, see tools/import_art.py).

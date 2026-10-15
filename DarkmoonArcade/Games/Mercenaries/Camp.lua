@@ -72,7 +72,8 @@ local REGIONS = {
     },
 }
 
-local MAP_W, MAP_H = 566, 468
+-- The map takes the width left of the 238-wide boss panel.
+local MAP_W, MAP_H = W - 274, 468
 
 -- The part of a map (u0, u1, v0, v1) that shows a rectangle with a margin at the canvas' aspect.
 local function FitView(l, r, t, b, margin)
@@ -426,7 +427,7 @@ end
 -- The right column: picture of the zone, the boss, its story, difficulty and "Choose".
 function Module:BuildBossPanel(view)
     local panel = CreateFrame("Frame", nil, view)
-    panel:SetPoint("TOPLEFT", 594, -8)
+    panel:SetPoint("TOPLEFT", W - 246, -8)
     panel:SetPoint("BOTTOMRIGHT", -8, 40)
     local back = panel:CreateTexture(nil, "BACKGROUND", nil, 2)
     back:SetAllPoints()
@@ -678,7 +679,8 @@ end
 
 -- Collection --------------------------------------------------------------------------------------
 
-local PAGE_X, PAGE_Y, PAGE_W, PAGE_H = 14, 54, 572, 470
+-- The book takes the width left of the 234-wide party panel.
+local PAGE_X, PAGE_Y, PAGE_W, PAGE_H = 14, 54, W - 268, 470
 local CARD_SCALE = 0.86
 
 function Module:BuildCollection()
@@ -726,7 +728,7 @@ function Module:BuildCollection()
         local col, row = (i - 1) % 3, math.floor((i - 1) / 3)
         local card = Kit.MercCard(page)
         Kit.SetBaseScale(card, CARD_SCALE)
-        Kit.Place(card, 130 + col * 156, 150 + row * 212)
+        Kit.Place(card, PAGE_W / 2 + (col - 1) * 156, 150 + row * 212)
         card:SetScript("OnClick", function() self:CollectionClicked(card.merc) end)
         card.marker = Marker(card)
         card.marker:SetPoint("BOTTOM", card, "TOP", 0, -10)
@@ -741,7 +743,7 @@ function Module:BuildCollection()
 
     -- The party on the right, one garrison follower button per slot.
     local panel = CreateFrame("Frame", nil, view)
-    panel:SetPoint("TOPLEFT", 596, -54)
+    panel:SetPoint("TOPLEFT", W - 244, -54)
     panel:SetPoint("BOTTOMRIGHT", -10, 44)
     local fill = panel:CreateTexture(nil, "BACKGROUND", nil, 2)
     fill:SetAllPoints()

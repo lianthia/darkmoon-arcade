@@ -60,8 +60,8 @@ function Nav:Create(window)
     local frame = CreateFrame("Frame", nil, window.frame)
     frame:SetPoint("TOPLEFT", BORDER, -TOP)
     frame:SetSize(WIDE, 618)
-    -- Above the pages and games, so it opens over them.
-    frame:SetFrameLevel(window.frame:GetFrameLevel() + 30)
+    -- Far above the pages and games (which raise their own frames), so it opens over them.
+    frame:SetFrameLevel(window.frame:GetFrameLevel() + 500)
     frame:EnableMouse(true)
     frame:SetClipsChildren(true)
     self.frame = frame

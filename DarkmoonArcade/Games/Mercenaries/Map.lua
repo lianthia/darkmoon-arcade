@@ -8,7 +8,8 @@ local Widgets, L = ns.Widgets, ns.L
 local Module = MC.Module
 local W, H = MC.W, MC.H
 
-local MAP_LEFT, MAP_RIGHT = 206, 634
+-- Party left, encounter right (both about 190 wide), the path in between.
+local MAP_LEFT, MAP_RIGHT = 206, W - 206
 local MAP_CX = (MAP_LEFT + MAP_RIGHT) / 2
 local MAP_TOP, MAP_BOTTOM = 124, H - 48
 local NODE, ELITE_NODE, BOSS_NODE, NODE_GAP = 48, 56, 76, 108

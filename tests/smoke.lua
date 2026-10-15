@@ -328,9 +328,9 @@ assert(Window.page == "news", "the window opens on the page it showed last")
 Window:OpenHub()
 assert(Window.page == "discover" and Window.tab == "home" and Nav.wide, "the launcher opens on discover, navigation wide")
 assert(#Nav.games == #Nav.HIGHLIGHTED, "the highlighted games in the navigation")
--- A game: no tab is active, the navigation shrinks to its icons and marks the game.
+-- A game: the games tab stays active, the navigation shrinks to its icons and marks the game.
 SlashCmdList.DARKMOONARCADE("mercenaries")
-assert(Window.tab == nil and not Nav.wide and Nav.width == ns.Arcade.NAV_COLLAPSED, "game: narrow navigation")
+assert(Window.tab == "home" and not Nav.wide and Nav.width == ns.Arcade.NAV_COLLAPSED, "game: narrow navigation")
 assert(math.abs(Window.content._w * Window.content._scale - ns.Arcade.FULL_W) < 1, "Mercenaries fills the area")
 assert(not Window.sidebar._shown and Window.frame._w == 1082, "no sidebar, the window keeps its size")
 -- A minigame outside the highlighted ones gets its own entry while it is open; the window narrows.

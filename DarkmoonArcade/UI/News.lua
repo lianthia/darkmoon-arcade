@@ -6,15 +6,15 @@
 
 local _, ns = ...
 
-local Media, Widgets, L = ns.Media, ns.Widgets, ns.L
+local Media, Widgets, Style, L = ns.Media, ns.Widgets, ns.Style, ns.L
+local C = Style.C
 
 local News = {}
 ns.News = News
 
-local LIST_W, LIST_ROW, PAD = 250, 54, 18
+local PAD = Style.PAGE_PAD
 local ART_H = 150
-local ICON, ROW_GAP, COLUMN_GAP = 38, 12, 22
-local GOLD = { 1, 0.82, 0.3 }
+local ICON, ROW_GAP, COLUMN_GAP, CARD_PAD = 36, 8, 8, 16
 -- The Darkmoon Faire painting of the Mercenaries camp; its picture spans v 0.255 to 0.815.
 local CAMP_ART, CAMP_V0, CAMP_V1 = 2821800, 0.255, 0.815
 
@@ -105,43 +105,6 @@ end
 
 -- The tab ---------------------------------------------------------------------------------------
 
-local function Hairline(parent, alpha)
-    local t = parent:CreateTexture(nil, "BORDER")
-    t:SetColorTexture(GOLD[1], GOLD[2], GOLD[3], alpha)
-    return t
-end
-
--- One version in the list: number, headline, a mark when it was missed.
-local function VersionButton(parent, onClick)
-    local b = CreateFrame("Button", nil, parent)
-    b:SetSize(LIST_W, LIST_ROW)
-    b.fill = b:CreateTexture(nil, "BACKGROUND")
-    b.fill:SetAllPoints()
-    b.fill:SetColorTexture(1, 1, 1, 0.06)
-    b.edge = b:CreateTexture(nil, "ARTWORK")
-    b.edge:SetPoint("TOPLEFT")
-    b.edge:SetPoint("BOTTOMLEFT")
-    b.edge:SetWidth(3)
-    b.edge:SetColorTexture(GOLD[1], GOLD[2], GOLD[3], 1)
-    local hl = b:CreateTexture(nil, "HIGHLIGHT")
-    hl:SetAllPoints()
-    hl:SetColorTexture(1, 0.85, 0.5, 0.06)
-    b.version = Widgets.Text(b, 16, "gold")
-    b.version:SetPoint("TOPLEFT", 18, -9)
-    b.headline = Widgets.Text(b, 11, "gray")
-    b.headline:SetPoint("TOPLEFT", b.version, "BOTTOMLEFT", 0, -3)
-    b.headline:SetWidth(LIST_W - 40)
-    b.headline:SetJustifyH("LEFT")
-    b.headline:SetWordWrap(false)
-    b.mark = b:CreateTexture(nil, "OVERLAY")
-    b.mark:SetSize(7, 7)
-    b.mark:SetColorTexture(0.35, 1, 0.45, 1)
-    b.mark:SetRotation(math.pi / 4)
-    b.mark:SetPoint("LEFT", b.version, "RIGHT", 8, 0)
-    b:SetScript("OnClick", onClick)
-    return b
-end
-
 function News:Headline(v)
     return v.headline and L[News.Key(v, "HEADLINE")] or L.NEWS_PATCH:format(v.version)
 end
@@ -153,49 +116,39 @@ function News:Create(parent)
     view:Hide()
     self.frame = view
 
-    -- Left: every version, newest first.
-    local list = CreateFrame("Frame", nil, view)
-    list:SetPoint("TOPLEFT", PAD, -PAD)
-    list:SetPoint("BOTTOMLEFT", PAD, PAD)
-    list:SetWidth(LIST_W)
-    local heading = Widgets.LocalizedText(list, 14, "gold", "NEWS_VERSIONS")
-    heading:SetPoint("TOPLEFT", 4, 0)
-    local rule = Hairline(list, 0.3)
-    rule:SetHeight(1)
-    rule:SetPoint("TOPLEFT", 0, -22)
-    rule:SetPoint("TOPRIGHT", 0, -22)
+    -- Left: every version, newest first; a green dot marks the ones a player missed.
+    local list = Style.SideList(view, "NEWS_VERSIONS")
     self.tabs = {}
     for i in ipairs(News.VERSIONS) do
-        local b = VersionButton(list, function() self:Select(i) end)
-        b:SetPoint("TOPLEFT", 0, -30 - (i - 1) * (LIST_ROW + 4))
+        local b = Style.ListItem(list, function() self:Select(i) end, true)
+        b:SetPoint("TOPLEFT", 8, -list.top - (i - 1) * 50)
+        b.mark = b:CreateTexture(nil, "OVERLAY")
+        b.mark:SetSize(6, 6)
+        b.mark:SetTexture(Media.Tex("dot"))
+        b.mark:SetVertexColor(unpack(C.ready))
+        b.mark:SetPoint("RIGHT", -14, 0)
         b.index = i
         self.tabs[i] = b
     end
-    self.missedLine = Widgets.Text(list, 11, "white")
-    self.missedLine:SetTextColor(0.45, 1, 0.55)
-    self.missedLine:SetPoint("TOPLEFT", 4, -30 - #News.VERSIONS * (LIST_ROW + 4) - 8)
-    self.missedLine:SetWidth(LIST_W - 8)
-    self.missedLine:SetJustifyH("LEFT")
+    self.missedLine = Style.Text(list, 10, C.ready)
+    self.missedLine:SetPoint("TOPLEFT", 16, -list.top - #News.VERSIONS * 50 - 6)
+    self.missedLine:SetWidth(Style.LIST_W - 32)
+    self.missedLine:SetWordWrap(true)
     -- Never open by itself: the same switch as the option.
     local never = CreateFrame("CheckButton", nil, list, "UICheckButtonTemplate")
     never:SetSize(24, 24)
-    never:SetPoint("BOTTOMLEFT", 0, 0)
+    never:SetPoint("BOTTOMLEFT", 10, 10)
     never:SetScript("OnClick", function(button) ns.db.newsNever = button:GetChecked() and true or false end)
-    local neverLabel = Widgets.LocalizedText(list, 11, "gray", "NEWS_NEVER_AUTO")
+    local neverLabel = Style.LocalizedText(list, 10, C.muted, "NEWS_NEVER_AUTO")
     neverLabel:SetPoint("LEFT", never, "RIGHT", 4, 0)
-    neverLabel:SetWidth(LIST_W - 32)
-    neverLabel:SetJustifyH("LEFT")
+    neverLabel:SetWidth(Style.LIST_W - 52)
+    neverLabel:SetWordWrap(true)
     self.neverCheck = never
 
-    local divider = Hairline(view, 0.18)
-    divider:SetWidth(1)
-    divider:SetPoint("TOPLEFT", PAD + LIST_W + PAD, -PAD)
-    divider:SetPoint("BOTTOMLEFT", PAD + LIST_W + PAD, PAD)
-
-    -- Right: the camp painting with the version's headline, then its highlights in two columns.
-    local left = PAD + LIST_W + PAD * 2
+    -- Right: the camp painting with the version's headline, then its highlights on plates in two
+    -- columns.
     local art = CreateFrame("Frame", nil, view)
-    art:SetPoint("TOPLEFT", left, -PAD)
+    art:SetPoint("TOPLEFT", Style.CONTENT_X, -PAD)
     art:SetPoint("TOPRIGHT", -PAD, -PAD)
     art:SetHeight(ART_H)
     art:SetClipsChildren(true)
@@ -214,13 +167,20 @@ function News:Create(parent)
         t:SetTexture(Media.Tex("mercs/" .. name))
         t:SetTexCoord(0, 1, 0, 347 / 512)
     end
-    self.headline = Widgets.Text(art, 22, "gold")
-    self.headline:SetPoint("BOTTOMRIGHT", -24, 18)
+    local top = CreateFrame("Frame", nil, art)
+    top:SetAllPoints()
+    top:SetFrameLevel(art:GetFrameLevel() + 5)
+    Style.CutCorners(top, art, 8, C.window)
+    self.tag = Style.Caption(top, "NEWS_TITLE")
+    self.tag:SetTextColor(unpack(C.gold))
+    self.tag:SetPoint("BOTTOMRIGHT", -24, 50)
+    self.headline = Style.Text(top, 22, C.text)
+    self.headline:SetPoint("TOPRIGHT", self.tag, "BOTTOMRIGHT", 0, -6)
     self.headline:SetShadowOffset(1, -1)
     self.art = art
 
     local scroll = CreateFrame("ScrollFrame", nil, view, "UIPanelScrollFrameTemplate")
-    scroll:SetPoint("TOPLEFT", art, "BOTTOMLEFT", 0, -16)
+    scroll:SetPoint("TOPLEFT", art, "BOTTOMLEFT", 0, -8)
     scroll:SetPoint("BOTTOMRIGHT", -PAD - 22, PAD)
     local content = CreateFrame("Frame", nil, scroll)
     content:SetSize(10, 10)
@@ -231,35 +191,32 @@ function News:Create(parent)
     for _, v in ipairs(News.VERSIONS) do rowCount = math.max(rowCount, #v.items) end
     self.rows = {}
     for i = 1, rowCount do
-        local row = CreateFrame("Frame", nil, content)
+        local row = Style.Panel(content)
         row.icon = row:CreateTexture(nil, "ARTWORK")
         row.icon:SetSize(ICON, ICON)
-        row.icon:SetPoint("TOPLEFT", 2, -2)
+        row.icon:SetPoint("TOPLEFT", CARD_PAD, -CARD_PAD)
         row.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
-        Widgets.Rim(row, row.icon)
-        row.title = Widgets.Text(row, 13, "gold")
-        row.title:SetPoint("TOPLEFT", row.icon, "TOPRIGHT", 12, 0)
-        row.title:SetJustifyH("LEFT")
-        row.text = Widgets.Text(row, 11, "white")
-        row.text:SetPoint("TOPLEFT", row.title, "BOTTOMLEFT", 0, -4)
-        row.text:SetJustifyH("LEFT")
-        row.text:SetTextColor(0.85, 0.83, 0.8)
-        row.text:SetSpacing(2)
+        Style.CutCorners(row, row.icon, 6, C.surface)
+        row.title = Style.Text(row, 12, C.text)
+        row.title:SetPoint("TOPLEFT", row.icon, "TOPRIGHT", 12, -1)
+        row.title:SetWordWrap(true)
+        row.text = Style.Text(row, 11, C.muted)
+        row.text:SetPoint("TOPLEFT", row.title, "BOTTOMLEFT", 0, -5)
+        row.text:SetWordWrap(true)
+        row.text:SetSpacing(3)
         self.rows[i] = row
     end
     local thanks = CreateFrame("Frame", nil, content)
-    local fill = thanks:CreateTexture(nil, "BACKGROUND")
-    fill:SetAllPoints()
-    fill:SetColorTexture(0.45, 0.16, 0.22, 0.35)
-    Widgets.Rim(thanks, thanks)
+    Style.Rounded(thanks, thanks, 8, C.itemActive)
+    Style.Rounded(thanks, thanks, 8, { C.gold[1], C.gold[2], C.gold[3], 0.5 }, "BORDER", 0, "ring")
     thanks.icon = thanks:CreateTexture(nil, "ARTWORK")
     thanks.icon:SetSize(26, 26)
-    thanks.icon:SetPoint("LEFT", 10, 0)
+    thanks.icon:SetPoint("LEFT", 14, 0)
     thanks.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
-    thanks.text = Widgets.Text(thanks, 11, "white")
-    thanks.text:SetPoint("LEFT", thanks.icon, "RIGHT", 10, 0)
-    thanks.text:SetJustifyH("LEFT")
-    thanks.text:SetTextColor(1, 0.86, 0.7)
+    Style.CutCorners(thanks, thanks.icon, 5, C.itemActive)
+    thanks.text = Style.Text(thanks, 11, C.gold)
+    thanks.text:SetPoint("LEFT", thanks.icon, "RIGHT", 12, 0)
+    thanks.text:SetWordWrap(true)
     self.thanks = thanks
 
     self.selected, self.missed = 1, {}
@@ -294,11 +251,12 @@ function News:Refresh(index)
     self:Select(index or 1, true)
 end
 
--- Lays out one version's highlights in two columns and returns the height they take.
+-- Lays out one version's highlights on plates in two columns and returns the height they take.
 function News:Fill(index)
     local v = News.VERSIONS[index]
-    local width = math.max(200, (self.scroll:GetWidth() or 780))
+    local width = math.max(200, (self.scroll:GetWidth() or 700))
     local colW = math.floor((width - COLUMN_GAP) / 2)
+    local textW = colW - ICON - 12 - 2 * CARD_PAD
     self.content:SetWidth(width)
     local y = 0
     for i = 1, #self.rows, 2 do
@@ -309,29 +267,33 @@ function News:Fill(index)
                 row:SetShown(item ~= nil)
                 if item then
                     row:SetWidth(colW)
-                    row.title:SetWidth(colW - ICON - 16)
-                    row.text:SetWidth(colW - ICON - 16)
+                    row.title:SetWidth(textW)
+                    row.text:SetWidth(textW)
                     row.icon:SetTexture("Interface\\Icons\\" .. item.icon)
                     row.title:SetText(L[News.Key(v, item.key .. "_TITLE")])
                     row.text:SetText(L[News.Key(v, item.key .. "_TEXT")])
-                    local h = math.max(ICON + 4, 2 + (row.title:GetStringHeight() or 13) + 4 + (row.text:GetStringHeight() or 11) + 6)
+                    local h = math.max(ICON, 1 + (row.title:GetStringHeight() or 13) + 5 + (row.text:GetStringHeight() or 11))
                     row:ClearAllPoints()
                     row:SetPoint("TOPLEFT", j * (colW + COLUMN_GAP), -y)
-                    row:SetHeight(h)
-                    rowH = math.max(rowH, h)
+                    rowH = math.max(rowH, h + 2 * CARD_PAD)
                 end
             end
+        end
+        -- Both plates of a row are as tall as the taller one.
+        for j = 0, 1 do
+            local row = self.rows[i + j]
+            if row and v.items[i + j] then row:SetHeight(rowH) end
         end
         if rowH > 0 then y = y + rowH + ROW_GAP end
     end
     self.thanks:SetShown(v.thanks ~= nil)
     if v.thanks then
         self.thanks.icon:SetTexture("Interface\\Icons\\" .. v.thanks)
-        self.thanks.text:SetWidth(width - 60)
+        self.thanks.text:SetWidth(width - 70)
         self.thanks.text:SetText(L[News.Key(v, "THANKS")])
-        local h = math.max(40, (self.thanks.text:GetStringHeight() or 11) + 18)
+        local h = math.max(44, (self.thanks.text:GetStringHeight() or 11) + 22)
         self.thanks:ClearAllPoints()
-        self.thanks:SetPoint("TOPLEFT", 0, -(y + 4))
+        self.thanks:SetPoint("TOPLEFT", 0, -y)
         self.thanks:SetSize(width, h)
         y = y + h + 8
     end
@@ -353,11 +315,9 @@ function News:Select(index, quiet)
     for i, b in ipairs(self.tabs) do
         local vi = News.VERSIONS[i]
         local chosen = i == index
-        b.version:SetText(vi.version)
-        b.headline:SetText(self:Headline(vi))
-        b.fill:SetShown(chosen)
-        b.edge:SetShown(chosen)
-        b.version:SetTextColor(chosen and 1 or 0.75, chosen and 0.82 or 0.7, chosen and 0.3 or 0.6)
+        b.label:SetText(vi.version)
+        b.sub:SetText(self:Headline(vi))
+        b:SetActive(chosen)
         b.mark:SetShown(self.missed[vi.version] == true)
     end
     self:Fill(index)

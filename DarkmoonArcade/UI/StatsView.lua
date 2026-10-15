@@ -4,71 +4,40 @@
 
 local _, ns = ...
 
-local Widgets, Stats, L = ns.Widgets, ns.Stats, ns.L
+local Style, Stats, L = ns.Style, ns.Stats, ns.L
+local C = Style.C
 
 local StatsView = {}
 ns.StatsView = StatsView
 
-local PAD, LIST_W, LIST_ROW = 18, 250, 50
-local CARD_H, LINE, BAR_ROW = 66, 26, 30
-local GOLD = { 1, 0.82, 0.3 }
+local PAD = Style.PAGE_PAD
+local CELL_H, LINE, BAR_ROW = 62, 28, 28
 
-local function Hairline(parent, alpha)
-    local t = parent:CreateTexture(nil, "BORDER")
-    t:SetColorTexture(GOLD[1], GOLD[2], GOLD[3], alpha)
-    return t
-end
-
--- One entry of the list: name and a short line under it.
-local function Entry(parent, onClick)
-    local b = CreateFrame("Button", nil, parent)
-    b:SetSize(LIST_W, LIST_ROW)
-    b.fill = b:CreateTexture(nil, "BACKGROUND")
-    b.fill:SetAllPoints()
-    b.fill:SetColorTexture(1, 1, 1, 0.06)
-    b.edge = b:CreateTexture(nil, "ARTWORK")
-    b.edge:SetPoint("TOPLEFT")
-    b.edge:SetPoint("BOTTOMLEFT")
-    b.edge:SetWidth(3)
-    b.edge:SetColorTexture(GOLD[1], GOLD[2], GOLD[3], 1)
-    local hl = b:CreateTexture(nil, "HIGHLIGHT")
-    hl:SetAllPoints()
-    hl:SetColorTexture(1, 0.85, 0.5, 0.06)
-    b.name = Widgets.Text(b, 14, "gold")
-    b.name:SetPoint("TOPLEFT", 18, -9)
-    b.name:SetWidth(LIST_W - 30)
-    b.name:SetJustifyH("LEFT")
-    b.name:SetWordWrap(false)
-    b.sub = Widgets.Text(b, 10, "gray")
-    b.sub:SetPoint("TOPLEFT", b.name, "BOTTOMLEFT", 0, -3)
-    b.sub:SetWidth(LIST_W - 30)
-    b.sub:SetJustifyH("LEFT")
-    b.sub:SetWordWrap(false)
-    b:SetScript("OnClick", onClick)
-    return b
-end
-
--- A figure on the right: value over label, a hairline on its left.
-local function Card(parent, w, first)
-    local f = CreateFrame("Frame", nil, parent)
-    f:SetSize(w, CARD_H)
-    if not first then
-        local line = Hairline(f, 0.18)
-        line:SetWidth(1)
-        line:SetPoint("TOPLEFT", 0, -8)
-        line:SetPoint("BOTTOMLEFT", 0, 8)
+-- A plate of figures: value on the left, its label on the right, `perRow` to a row.
+local function Figures(page, count, perRow, width)
+    local rows = math.ceil(count / perRow)
+    local plate = Style.Panel(page)
+    plate:SetSize(width, rows * CELL_H + 8)
+    plate.cells = {}
+    local cellW = width / perRow
+    for i = 1, count do
+        local col, row = (i - 1) % perRow, math.floor((i - 1) / perRow)
+        local left, right = col * cellW + 24, (col + 1) * cellW - 24
+        local cell = {}
+        cell.value = Style.Text(plate, 22, C.text)
+        cell.value:SetPoint("TOPLEFT", left, -18 - row * CELL_H)
+        cell.label = Style.Text(plate, 11, C.muted)
+        cell.label:SetPoint("TOPRIGHT", plate, "TOPLEFT", right, -28 - row * CELL_H)
+        cell.label:SetJustifyH("RIGHT")
+        if col > 0 then
+            local rule = Style.Line(plate, C.border, "ARTWORK")
+            rule:SetWidth(1)
+            rule:SetPoint("TOPLEFT", col * cellW, -14 - row * CELL_H)
+            rule:SetHeight(CELL_H - 20)
+        end
+        plate.cells[i] = cell
     end
-    f.value = Widgets.Text(f, 20, "gold")
-    f.value:SetPoint("TOPLEFT", 16, -10)
-    f.value:SetWidth(w - 24)
-    f.value:SetJustifyH("LEFT")
-    f.value:SetWordWrap(false)
-    f.label = Widgets.Text(f, 10, "gray")
-    f.label:SetPoint("TOPLEFT", f.value, "BOTTOMLEFT", 0, -4)
-    f.label:SetWidth(w - 24)
-    f.label:SetJustifyH("LEFT")
-    f.label:SetWordWrap(false)
-    return f
+    return plate
 end
 
 function StatsView:Create(parent)
@@ -78,11 +47,8 @@ function StatsView:Create(parent)
     view:Hide()
     self.view = view
 
-    -- Left: the arcade, the featured game, then the minigames under their own heading.
-    local list = CreateFrame("Frame", nil, view)
-    list:SetPoint("TOPLEFT", PAD, -PAD)
-    list:SetPoint("BOTTOMLEFT", PAD, PAD)
-    list:SetWidth(LIST_W)
+    -- Left: the arcade, the spotlight game, then the minigames under their own caption.
+    local list = Style.SideList(view, "STATISTICS")
     self.entries = {}
     local featured = ns.Arcade.Featured()
     local pages = { { id = "arcade" }, { id = featured.id, game = featured } }
@@ -90,61 +56,43 @@ function StatsView:Create(parent)
         if ns.Arcade.games[id] ~= featured then pages[#pages + 1] = { id = id, game = ns.Arcade.games[id], minigame = true } end
     end
     self.pages = pages
-    local y = 0
+    local y = list.top
     for i, page in ipairs(pages) do
         if page.minigame and not pages[i - 1].minigame then
-            local heading = Widgets.LocalizedText(list, 12, "gold", "STATS_MINIGAMES")
-            heading:SetPoint("TOPLEFT", 4, -y - 10)
-            local rule = Hairline(list, 0.3)
-            rule:SetHeight(1)
-            rule:SetPoint("TOPLEFT", 0, -y - 28)
-            rule:SetPoint("TOPRIGHT", 0, -y - 28)
-            y = y + 34
+            local caption = Style.Caption(list, "STATS_MINIGAMES")
+            caption:SetPoint("TOPLEFT", 16, -y - 8)
+            y = y + 28
         end
-        local b = Entry(list, function()
+        local b = Style.ListItem(list, function()
             PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB)
             self:Select(i)
-        end)
-        b:SetPoint("TOPLEFT", 0, -y)
+        end, true)
+        b:SetPoint("TOPLEFT", 8, -y)
         self.entries[i] = b
-        y = y + LIST_ROW + 2
+        y = y + 50
     end
-
-    local divider = Hairline(view, 0.18)
-    divider:SetWidth(1)
-    divider:SetPoint("TOPLEFT", PAD + LIST_W + PAD, -PAD)
-    divider:SetPoint("BOTTOMLEFT", PAD + LIST_W + PAD, PAD)
 
     -- Right: title, figures, then the game's own lines or the play time per game.
     local page = CreateFrame("Frame", nil, view)
-    page:SetPoint("TOPLEFT", PAD + LIST_W + PAD * 2, -PAD)
+    page:SetPoint("TOPLEFT", Style.CONTENT_X, -PAD)
     page:SetPoint("BOTTOMRIGHT", -PAD, PAD)
     self.page = page
-    self.title = Widgets.Text(page, 20, "gold")
-    self.title:SetPoint("TOPLEFT", 4, 0)
-    self.note = Widgets.Text(page, 11, "gray")
-    self.note:SetPoint("TOPRIGHT", 0, -4)
-    local rule = Hairline(page, 0.3)
-    rule:SetHeight(1)
-    rule:SetPoint("TOPLEFT", 0, -30)
-    rule:SetPoint("TOPRIGHT", 0, -30)
-    local width = ns.Arcade.HomeSize() - PAD * 4 - LIST_W
-    self.cardRow = {}
+    local width = ns.Arcade.HomeSize() - Style.CONTENT_X - PAD
+    self.title = Style.Text(page, 22, C.text)
+    self.title:SetPoint("TOPLEFT", 4, -4)
+    self.note = Style.Text(page, 10, C.dim)
+    self.note:SetPoint("TOPRIGHT", -4, -12)
     -- A game's four figures in one row; the arcade's six in two rows of three.
-    for _, count in ipairs({ 4, 6 }) do
-        local row, perRow = {}, count == 6 and 3 or 4
-        local w = math.floor(width / perRow)
-        for i = 1, count do
-            local column = (i - 1) % perRow
-            local c = Card(page, w, column == 0)
-            c:SetPoint("TOPLEFT", column * w, -40 - math.floor((i - 1) / perRow) * CARD_H)
-            row[i] = c
-        end
-        self.cardRow[count] = row
-    end
+    self.figures = { [4] = Figures(page, 4, 4, width), [6] = Figures(page, 6, 3, width) }
+    for _, plate in pairs(self.figures) do plate:SetPoint("TOPLEFT", 0, -40) end
+
+    local details = Style.Panel(page)
+    details:SetPoint("LEFT")
+    details:SetPoint("RIGHT")
+    self.details = details
+    self.detailTitle = Style.Text(details, 13, C.text)
+    self.detailTitle:SetPoint("TOPLEFT", 24, -18)
     self.lines, self.bars = {}, {}
-    self.detailTitle = Widgets.Text(page, 13, "gold")
-    self.detailTitle:SetPoint("TOPLEFT", 4, -40 - CARD_H - 22)
     self.selected = 1
     return view
 end
@@ -152,17 +100,19 @@ end
 function StatsView:Line(i)
     local line = self.lines[i]
     if not line then
-        local y = -40 - CARD_H - 48 - (i - 1) * LINE
+        local y = -48 - (i - 1) * LINE
+        local d = self.details
         line = {
-            label = Widgets.Text(self.page, 12, "white"),
-            value = Widgets.Text(self.page, 12, "gold"),
-            rule = Hairline(self.page, 0.08),
+            label = Style.Text(d, 11, C.muted),
+            value = Style.Text(d, 11, C.text),
+            rule = Style.Line(d, C.border, "ARTWORK"),
         }
-        line.label:SetPoint("TOPLEFT", 6, y)
-        line.value:SetPoint("TOPLEFT", 360, y)
+        line.label:SetPoint("TOPLEFT", 24, y)
+        line.value:SetPoint("TOPRIGHT", -24, y)
+        line.value:SetJustifyH("RIGHT")
         line.rule:SetHeight(1)
-        line.rule:SetPoint("TOPLEFT", 0, y - LINE + 6)
-        line.rule:SetPoint("TOPRIGHT", 0, y - LINE + 6)
+        line.rule:SetPoint("TOPLEFT", 24, y + 8)
+        line.rule:SetPoint("TOPRIGHT", -24, y + 8)
         self.lines[i] = line
     end
     return line
@@ -172,31 +122,30 @@ end
 function StatsView:Bar(i)
     local bar = self.bars[i]
     if not bar then
-        local y = -40 - CARD_H * 2 - 48 - (i - 1) * BAR_ROW
+        local y = -48 - (i - 1) * BAR_ROW
+        local d = self.details
         bar = {
-            name = Widgets.Text(self.page, 12, "white"),
-            track = self.page:CreateTexture(nil, "ARTWORK"),
-            fill = self.page:CreateTexture(nil, "ARTWORK", nil, 1),
-            value = Widgets.Text(self.page, 11, "gray"),
+            name = Style.Text(d, 11, C.text),
+            track = Style.Line(d, C.border, "ARTWORK"),
+            fill = d:CreateTexture(nil, "ARTWORK", nil, 1),
+            value = Style.Text(d, 10, C.muted),
         }
-        bar.name:SetPoint("TOPLEFT", 6, y)
-        bar.name:SetWidth(200)
-        bar.name:SetJustifyH("LEFT")
-        bar.name:SetWordWrap(false)
-        bar.track:SetColorTexture(1, 1, 1, 0.06)
-        bar.track:SetPoint("TOPLEFT", 220, y - 2)
-        bar.track:SetPoint("TOPRIGHT", -110, y - 2)
-        bar.track:SetHeight(10)
-        bar.fill:SetColorTexture(GOLD[1], GOLD[2], GOLD[3], 0.85)
+        bar.name:SetPoint("TOPLEFT", 24, y)
+        bar.name:SetWidth(180)
+        bar.track:SetPoint("TOPLEFT", 220, y - 4)
+        bar.track:SetPoint("TOPRIGHT", -120, y - 4)
+        bar.track:SetHeight(4)
+        bar.fill:SetColorTexture(unpack(C.gold))
         bar.fill:SetPoint("TOPLEFT", bar.track, "TOPLEFT")
-        bar.fill:SetHeight(10)
-        bar.value:SetPoint("TOPRIGHT", 0, y)
+        bar.fill:SetHeight(4)
+        bar.value:SetPoint("TOPRIGHT", -24, y)
+        bar.value:SetJustifyH("RIGHT")
         self.bars[i] = bar
     end
     return bar
 end
 
-local function Figures(game, s)
+local function GameFigures(game, s)
     local seconds = s.time[game.id] or 0
     local d, t = ns.Achievements.Count(game.id)
     local played = seconds >= 1 or s.runs[game.id] ~= nil
@@ -220,10 +169,10 @@ function StatsView:Refresh()
         local b = self.entries[i]
         if page.game then
             local seconds = s.time[page.id] or 0
-            b.name:SetText(L[page.game.nameKey])
+            b.label:SetText(L[page.game.nameKey])
             b.sub:SetText(seconds >= 1 and ns.FormatDuration(seconds) or L.STATS_NONE)
         else
-            b.name:SetText(L.STATS_ARCADE)
+            b.label:SetText(L.STATS_ARCADE)
             b.sub:SetText(L.STATS_TOTAL_TIME .. ": " .. ns.FormatDuration(Stats.TotalTime()))
         end
     end
@@ -238,31 +187,27 @@ end
 
 function StatsView:Select(index)
     self.selected = index
-    for i, b in ipairs(self.entries) do
-        local chosen = i == index
-        b.fill:SetShown(chosen)
-        b.edge:SetShown(chosen)
-        if chosen then b.name:SetTextColor(1, 0.82, 0.3) else b.name:SetTextColor(0.85, 0.78, 0.62) end
-    end
+    for i, b in ipairs(self.entries) do b:SetActive(i == index) end
     local s, page = Stats.DB(), self.pages[index]
-    local cards, figures
+    local plate, figures, rows
     HideAll(self.lines)
     HideAll(self.bars)
     if page.game then
         local played
-        played, figures = Figures(page.game, s)
+        played, figures = GameFigures(page.game, s)
         self.title:SetText(L[page.game.nameKey])
         self.note:SetText("")
-        cards = self.cardRow[4]
+        plate = self.figures[4]
         local extra = played and page.game.StatLines and page.game:StatLines() or {}
-        self.detailTitle:SetText(#extra > 0 and L.STATS_DETAILS or "")
-        self.detailTitle:SetPoint("TOPLEFT", 4, -40 - CARD_H - 22)
+        self.detailTitle:SetText(L.STATS_DETAILS)
         for i, entry in ipairs(extra) do
             local line = self:Line(i)
             line.label:SetText(entry[1])
             line.value:SetText(entry[2])
             for _, part in pairs(line) do part:Show() end
+            line.rule:SetShown(i > 1)
         end
+        rows = #extra
     else
         local done, total = 0, 0
         for _, id in ipairs(ns.Arcade.order) do
@@ -280,9 +225,8 @@ function StatsView:Select(index)
         }
         self.title:SetText(L.STATS_ARCADE)
         self.note:SetText(L.STATS_SINCE .. ": " .. date(L.DATE_FORMAT, s.since))
-        cards = self.cardRow[6]
+        plate = self.figures[6]
         self.detailTitle:SetText(L.STATS_TIME_SPLIT)
-        self.detailTitle:SetPoint("TOPLEFT", 4, -40 - CARD_H * 2 - 22)
         local most = 1
         for _, id in ipairs(ns.Arcade.order) do most = math.max(most, s.time[id] or 0) end
         for i, id in ipairs(ns.Arcade.order) do
@@ -295,16 +239,19 @@ function StatsView:Select(index)
             bar.fill:SetWidth(math.max(1, width))
             bar.fill:SetShown(seconds >= 1)
         end
+        rows = #ns.Arcade.order
     end
-    for _, row in pairs(self.cardRow) do
-        for i, card in ipairs(row) do
-            card:SetShown(row == cards)
-            if row == cards then
-                card.value:SetText(figures[i][1])
-                card.label:SetText(figures[i][2])
-            end
-        end
+    for _, other in pairs(self.figures) do other:SetShown(other == plate) end
+    for i, cell in ipairs(plate.cells) do
+        cell.value:SetText(figures[i][1])
+        cell.label:SetText(figures[i][2])
     end
+    -- The details plate below the figures, as tall as its lines (hidden without any).
+    self.details:ClearAllPoints()
+    self.details:SetPoint("TOPLEFT", plate, "BOTTOMLEFT", 0, -8)
+    self.details:SetPoint("TOPRIGHT", plate, "BOTTOMRIGHT", 0, -8)
+    self.details:SetHeight(48 + rows * LINE + 6)
+    self.details:SetShown(rows > 0)
 end
 
 function StatsView:Show()

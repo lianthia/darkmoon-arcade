@@ -88,7 +88,7 @@ function Window:Create()
     local bg = f:CreateTexture(nil, "BACKGROUND", nil, -8)
     bg:SetAllPoints()
     bg:SetColorTexture(unpack(C.window))
-    -- A two-unit frame: lighter on the left, near black elsewhere.
+    -- A two-unit near-black frame.
     local edges = CreateFrame("Frame", nil, f)
     edges:SetAllPoints()
     edges:SetFrameLevel(f:GetFrameLevel() + 80)
@@ -98,7 +98,7 @@ function Window:Create()
         t:SetPoint(b)
         if w then t:SetWidth(w) else t:SetHeight(h) end
     end
-    Edge(C.border, "TOPLEFT", "BOTTOMLEFT", BORDER)
+    Edge(C.edge, "TOPLEFT", "BOTTOMLEFT", BORDER)
     Edge(C.edge, "TOPRIGHT", "BOTTOMRIGHT", BORDER)
     Edge(C.edge, "TOPLEFT", "TOPRIGHT", nil, BORDER)
     Edge(C.edge, "BOTTOMLEFT", "BOTTOMRIGHT", nil, BORDER)
@@ -178,7 +178,7 @@ end
 -- Header ------------------------------------------------------------------------
 
 local TABS = {
-    { id = "home", key = "TAB_HOME" },
+    { id = "home", key = "TAB_GAMES" },
     { id = "news", key = "NEWS_TITLE" },
     { id = "stats", key = "STATISTICS" },
 }
@@ -254,7 +254,7 @@ function Window:CreateHeader()
     ns.Bell:Create(self, header, divider)
 end
 
--- Lays the tabs out from the design's left edge and marks the active one (none in a game).
+-- Lays the tabs out from the design's left edge and marks the active one.
 function Window:UpdateTabs()
     if not self.tabButtons then return end
     local x = TAB_X
@@ -598,7 +598,7 @@ function Window:OpenGame(id)
     end
     game.container:Show()
     self.activeGame = game
-    self.page, self.tab = "game", nil
+    self.page, self.tab = "game", "home"
     ns.db.lastGame = id
     ns.Nav:SetWide(false)
     ns.Nav:Refresh()
