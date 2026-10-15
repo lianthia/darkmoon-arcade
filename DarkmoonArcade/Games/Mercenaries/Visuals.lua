@@ -62,9 +62,17 @@ function MC.CreateMapCanvas(parent, w, h)
     clip:SetClipsChildren(true)
     local inner = CreateFrame("Frame", nil, clip)
     inner:SetAllPoints()
+    -- One texture per tile, made as needed: 12 for most maps, 150 for retail's large continents.
     clip.tiles = {}
-    for i = 1, 12 do
-        clip.tiles[i] = inner:CreateTexture(nil, "BACKGROUND")
+    clip.tint = { 1, 1, 1 }
+    local function Tile(i)
+        local tex = clip.tiles[i]
+        if not tex then
+            tex = inner:CreateTexture(nil, "BACKGROUND")
+            tex:SetVertexColor(unpack(clip.tint))
+            clip.tiles[i] = tex
+        end
+        return tex
     end
     clip.fallback = inner:CreateTexture(nil, "BACKGROUND", nil, -1)
     clip.fallback:SetAllPoints()
@@ -76,18 +84,26 @@ function MC.CreateMapCanvas(parent, w, h)
         local art = MC.MapArt[key]
         self.view = { u0 or 0, u1 or 1, v0 or 0, v1 or 1 }
         self.fallback:SetShown(art == nil)
-        for i, tex in ipairs(self.tiles) do
-            local file = art and art.files[i]
-            tex:SetShown(file ~= nil)
+        local count = art and #art.files or 0
+        local vu0, vu1, vv0, vv1 = unpack(self.view)
+        for i = 1, math.max(count, #self.tiles) do
+            local file = i <= count and art.files[i]
+            local tex = file and Tile(i) or self.tiles[i]
+            local shown = false
             if file then
-                local u0, u1, v0, v1 = unpack(self.view)
-                local sx, sy = w / ((u1 - u0) * art.w), h / ((v1 - v0) * art.h)
                 local row, col = math.floor((i - 1) / art.cols), (i - 1) % art.cols
-                tex:SetTexture(file)
-                tex:SetSize(art.tw * sx, art.th * sy)
-                tex:ClearAllPoints()
-                tex:SetPoint("TOPLEFT", inner, "TOPLEFT", (col * art.tw - u0 * art.w) * sx, -(row * art.th - v0 * art.h) * sy)
+                -- Only the tiles inside the view.
+                local l, t = col * art.tw / art.w, row * art.th / art.h
+                shown = l < vu1 and l + art.tw / art.w > vu0 and t < vv1 and t + art.th / art.h > vv0
+                if shown then
+                    local sx, sy = w / ((vu1 - vu0) * art.w), h / ((vv1 - vv0) * art.h)
+                    tex:SetTexture(file)
+                    tex:SetSize(art.tw * sx, art.th * sy)
+                    tex:ClearAllPoints()
+                    tex:SetPoint("TOPLEFT", inner, "TOPLEFT", (col * art.tw - vu0 * art.w) * sx, -(row * art.th - vv0 * art.h) * sy)
+                end
             end
+            if tex then tex:SetShown(shown) end
         end
     end
 
@@ -97,6 +113,7 @@ function MC.CreateMapCanvas(parent, w, h)
     end
 
     function clip:SetTint(r, g, b)
+        self.tint = { r, g, b }
         for _, tex in ipairs(self.tiles) do tex:SetVertexColor(r, g, b) end
         self.fallback:SetVertexColor(r, g, b)
     end

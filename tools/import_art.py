@@ -160,7 +160,27 @@ def launcher_thumbs():
     print("launcher thumbs", len(THUMB_ORDER))
 
 
+def zone_maps():
+    """Forever's own zone maps for retail, which lacks them (art/maps/<zone>.png, 1002x668), cut like the
+    client's maps into 4x3 tiles of 256x256 (media/maps/<zone>_<n>.tga, uncompressed, which WoW
+    surely reads). Games/Mercenaries/Retail.lua shows them."""
+    target = MEDIA / "maps"
+    target.mkdir(exist_ok=True)
+    for old in target.glob("*.tga"):
+        old.unlink()
+    for path in sorted((ROOT / "art" / "maps").glob("*.png")):
+        # The parchment's rounded corners on the window's dark instead of transparency.
+        src = Image.new("RGB", (1024, 768), (11, 7, 15))
+        art = Image.open(path).convert("RGBA")
+        src.paste(art, (0, 0), art)
+        for i in range(12):
+            row, col = divmod(i, 4)
+            src.crop((col * 256, row * 256, col * 256 + 256, row * 256 + 256)).save(target / f"{path.stem}_{i + 1}.tga")
+    print("zone maps", len(list(target.glob("*.tga"))))
+
+
 if __name__ == "__main__":
+    zone_maps()
     arcade_logo()
     moon_icon()
     mercenaries_logo()

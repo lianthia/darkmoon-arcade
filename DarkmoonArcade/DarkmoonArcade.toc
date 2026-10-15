@@ -1,4 +1,4 @@
-## Interface: 16001
+## Interface: 16001, 120100, 120105
 ## Title: Darkmoon Arcade
 ## Notes: A growing collection of mini games for long flights.
 ## Category: Mini Games
@@ -10,6 +10,7 @@
 ## AddonCompartmentFuncOnLeave: DarkmoonArcade_OnAddonCompartmentLeave
 
 Locale.lua
+Core\Client.lua
 Core\Debug.lua
 Core\Flight.lua
 Core\Scores.lua
@@ -70,6 +71,7 @@ Games\Mercenaries\Treasures.lua
 Games\Mercenaries\Enemies.lua
 Games\Mercenaries\Zones.lua
 Games\Mercenaries\MapArt.lua
+Games\Mercenaries\Retail.lua
 Games\Mercenaries\Bounty.lua
 Games\Mercenaries\Describe.lua
 Games\Mercenaries\Mercenaries.lua

@@ -184,7 +184,7 @@ local function Whisper(message)
         OnAccept = function(self, data)
             local box = self.GetEditBox and self:GetEditBox() or self.editBox or self.EditBox
             local name = box and strtrim(box:GetText() or "")
-            if name and name ~= "" then SendChatMessage(data, "WHISPER", nil, name) end
+            if name and name ~= "" then ns.SendChat(data, "WHISPER", name) end
         end,
         EditBoxOnEnterPressed = function(box)
             local popup = box:GetParent()
@@ -217,7 +217,7 @@ function Widgets.Share(channel, message)
         ns.Print(L.NOT_IN_GUILD)
         return
     end
-    SendChatMessage(message, channel)
+    ns.SendChat(message, channel)
 end
 
 -- `getMessage` returns the chat line to post, or nil when there is nothing to share.

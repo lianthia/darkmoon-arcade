@@ -1,4 +1,6 @@
-"""Renders the Mercenaries views to PNG without the game: python tests/render.py [out_dir] [view filter]
+"""Renders the Mercenaries views to PNG without the game: python tests/render.py [out_dir] [view filter] [lang]
+
+With RENDER_CLIENT=retail the addon runs as on retail and draws with the retail client's files.
 
 The addon runs against a geometry mock (render_mock.lua); every visible texture and text is drawn
 with the real art: client files and atlases from the installed WoW: Forever client (tools/casc_local.py),
@@ -6,6 +8,7 @@ addon textures from the repo. Files the client lacks are drawn green, like the c
 Models and creature portraits cannot be rendered and show as labelled placeholders.
 """
 import math
+import os
 import pathlib
 import re
 import sys
@@ -24,12 +27,16 @@ CACHE = ROOT / "tools" / ".cache"
 
 
 class Assets:
-    def __init__(self):
-        self.client = casc_local.Client()
+    def __init__(self, product="wow_classic_beta"):
+        import check_client
+        self.client = casc_local.Client(product)
         self.images = {}
-        atlases = {r["ID"]: r for r in ap.table("UiTextureAtlas")}
+
+        def table(name):
+            return check_client.table(name, self.client.version)
+        atlases = {r["ID"]: r for r in table("UiTextureAtlas")}
         self.atlas = {}
-        for m in ap.table("UiTextureAtlasMember"):
+        for m in table("UiTextureAtlasMember"):
             a = atlases.get(m["UiTextureAtlasID"])
             if a:
                 self.atlas[m["CommittedName"].lower()] = (int(a["FileDataID"]), int(a["AtlasWidth"]), int(a["AtlasHeight"]),
@@ -272,7 +279,8 @@ def main():
     out = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "tools" / ".cache" / "render"
     out.mkdir(parents=True, exist_ok=True)
     only = sys.argv[2] if len(sys.argv) > 2 else None
-    assets = Assets()
+    retail = os.environ.get("RENDER_CLIENT") == "retail"
+    assets = Assets("wow" if retail else "wow_classic_beta")
     toc = (ADDON / "DarkmoonArcade.toc").read_text(encoding="utf-8")
     files = [line.strip().replace("\\", "/") for line in toc.splitlines() if line.strip() and not line.startswith("#")]
     lua = lupa.LuaRuntime(unpack_returned_tuples=True)
@@ -284,6 +292,8 @@ def main():
     g.RENDER_LANG = sys.argv[3] if len(sys.argv) > 3 else None
     smoke = (ROOT / "tests" / "smoke.lua").read_text(encoding="utf-8")
     header = smoke[:smoke.index("\nlocal ns = {}")]
+    if retail:
+        header += "\nfunction GetBuildInfo() return \"12.1.5\", \"70391\", \"\", 120105 end\n"
     script = header + "\n" + (ROOT / "tests" / "render_mock.lua").read_text(encoding="utf-8") + "\n" + \
         (ROOT / "tests" / "render.lua").read_text(encoding="utf-8")
     g.print = lambda *a: __builtins__.print(*a)

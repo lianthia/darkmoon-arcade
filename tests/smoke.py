@@ -38,20 +38,24 @@ def main() -> int:
         if dev_files != files:
             print("DarkmoonArcade_Dev.toc is out of date: run tools/deploy.ps1")
             return 1
-    lua = lupa.LuaRuntime(unpack_returned_tuples=True)
-    g = lua.globals()
-    g.ADDON_FILES = lua.table_from(files)
-    g.ADDON_SOURCES = lua.table_from({f: (ADDON / f).read_text(encoding="utf-8") for f in files})
-    try:
-        murloc, flappy, clicks, best = lua.execute((ROOT / "tests" / "smoke.lua").read_text(encoding="utf-8"))
-    except lupa.LuaError:
-        # Errors caught inside the addon explain most failures; show them first.
-        errors = g.DarkmoonArcadeDB and g.DarkmoonArcadeDB.errors
-        if errors:
-            for i in range(1, len(errors) + 1):
-                print("captured:", errors[i].message)
-        raise
-    print(f"smoke: ok ({murloc} murloc shots, {flappy} flappy frames, best flappy score {best}, {clicks} button clicks)")
+    # Once as on WoW: Forever, once as on retail.
+    for client in ("forever", "retail"):
+        lua = lupa.LuaRuntime(unpack_returned_tuples=True)
+        g = lua.globals()
+        g.ADDON_FILES = lua.table_from(files)
+        g.ADDON_SOURCES = lua.table_from({f: (ADDON / f).read_text(encoding="utf-8") for f in files})
+        g.SMOKE_RETAIL = client == "retail"
+        try:
+            murloc, flappy, clicks, best = lua.execute((ROOT / "tests" / "smoke.lua").read_text(encoding="utf-8"))
+        except lupa.LuaError:
+            # Errors caught inside the addon explain most failures; show them first.
+            errors = g.DarkmoonArcadeDB and g.DarkmoonArcadeDB.errors
+            if errors:
+                for i in range(1, len(errors) + 1):
+                    print("captured:", errors[i].message)
+            print("failed as on", client)
+            raise
+        print(f"smoke ({client}): ok ({murloc} murloc shots, {flappy} flappy frames, best flappy score {best}, {clicks} button clicks)")
     return 0
 
 

@@ -154,7 +154,8 @@ C_Map = {
 }
 function CreateVector2D(x, y) return { x = x, y = y } end
 function GetLocale() return "deDE" end
-function GetBuildInfo() return "1.60.1", "70205", "Oct 1 2026", 16001 end
+-- SMOKE_RETAIL runs the addon as on retail (tests/smoke.py runs both).
+function GetBuildInfo() return "1.60.1", "70205", "Oct 1 2026", SMOKE_RETAIL and 120105 or 16001 end
 local knownTemplates = { SimplePanelTemplate = true, WowStyle1DropdownTemplate = true, TabSystemTemplate = true }
 TabSystemMixin = { OnLoad = function() end }
 TabSystemOwnerMixin = {

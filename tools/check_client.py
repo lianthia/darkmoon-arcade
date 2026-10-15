@@ -6,10 +6,10 @@ The asset list comes from two sources: tests/smoke.lua run with ASSET_LOG (every
 model, display and sound the addon asks for while the whole UI is clicked through), plus the
 Mercenaries data that a run never reaches in full (all maps, enemies, mercenaries and effects).
 
-Each asset is looked up in the client's own storage (tools/casc_local.py) and, for atlases and
-creature displays, in the client build's tables (wago.tools). A display that exists in both
-clients but shows a different model is reported too: the same ID would show another creature.
-Writes dist/client-check.md.
+The addon runs as it would on that client (on retail, Games/Mercenaries/Retail.lua swaps in retail's
+maps and creature displays). Each asset is looked up in the client's own storage
+(tools/casc_local.py) and, for atlases and creature displays, in the client build's tables
+(wago.tools). Writes dist/client-check.md.
 """
 import csv
 import io
@@ -39,8 +39,9 @@ def table(name, build):
     return list(csv.DictReader(io.StringIO(path.read_text(encoding="utf-8"))))
 
 
-def collect():
-    """Runs the smoke test with asset logging; returns {kind: set(values)} and where each came from."""
+def run_addon(retail=False):
+    """Runs the smoke test with asset logging, as on Forever or retail; returns the Lua globals
+    (ASSET_LOG, ADDON_NS)."""
     toc = (ADDON / "DarkmoonArcade.toc").read_text(encoding="utf-8")
     files = [line.strip().replace("\\", "/") for line in toc.splitlines() if line.strip() and not line.startswith("#")]
     lua = lupa.LuaRuntime(unpack_returned_tuples=True)
@@ -48,7 +49,14 @@ def collect():
     g.ADDON_FILES = lua.table_from(files)
     g.ADDON_SOURCES = lua.table_from({f: (ADDON / f).read_text(encoding="utf-8") for f in files})
     g.ASSET_LOG = lua.table()
+    g.SMOKE_RETAIL = retail
     lua.execute((ROOT / "tests" / "smoke.lua").read_text(encoding="utf-8"))
+    return g
+
+
+def collect(retail=False):
+    """Every asset the addon asks for, {kind: {value: where it came from}}."""
+    g = run_addon(retail)
     assets = {}
 
     def add(kind, value, source):
@@ -60,7 +68,7 @@ def collect():
     mc = g.ADDON_NS.Mercenaries
     for name, art in mc.MapArt.items():
         for fid in art.files.values():
-            add("texture", str(int(fid)), f"map {name}")
+            add("texture", str(int(fid)) if isinstance(fid, (int, float)) else fid, f"map {name}")
     for name, enemy in mc.Enemies.items():
         if enemy.display:
             add("display", str(int(enemy.display)), f"enemy {name}")
@@ -114,33 +122,20 @@ class Check:
 
 def main():
     names = sys.argv[1:] or ["forever", "retail"]
-    assets = collect()
-    checks = {name: Check(name) for name in names}
     lines = ["# Client check", ""]
-    for name, check in checks.items():
-        lines.append(f"- {name}: build {check.client.version}")
-    lines.append("")
     summary = []
-    for kind in ("texture", "atlas", "model", "display", "sound"):
-        values = assets.get(kind, {})
-        lines += [f"## {kind} ({len(values)})", ""]
-        for name, check in checks.items():
+    for name in names:
+        # The addon asks for other files on retail (Games/Mercenaries/Retail.lua): run it as there.
+        assets = collect(retail=name == "retail")
+        check = Check(name)
+        lines += [f"## {name} (build {check.client.version})", ""]
+        for kind in ("texture", "atlas", "model", "display", "sound"):
+            values = assets.get(kind, {})
             missing = sorted((v for v in values if not check.has(kind, v)), key=str)
-            summary.append(f"{kind:8} {name:8} {len(values) - len(missing):5} ok {len(missing):5} missing")
-            lines.append(f"### missing in {name}: {len(missing)}")
-            for v in missing:
-                lines.append(f"- `{v}` ({values[v]})")
+            summary.append(f"{name:8} {kind:8} {len(values) - len(missing):5} ok {len(missing):5} missing")
+            lines.append(f"### {kind}: {len(missing)} of {len(values)} missing")
+            lines += [f"- `{v}` ({values[v]})" for v in missing]
             lines.append("")
-    # Same display ID, different creature: the ID means something else in the other client.
-    if "forever" in checks and "retail" in checks:
-        f, r = checks["forever"], checks["retail"]
-        changed = []
-        for v, source in assets.get("display", {}).items():
-            i = int(float(v))
-            if i in f.displays and i in r.displays and f.displays[i][0] != r.displays[i][0]:
-                changed.append(f"- `{i}` ({source}): model {f.displays[i][0]} on forever, {r.displays[i][0]} on retail")
-        summary.append(f"display  same ID, other model on retail: {len(changed)}")
-        lines += [f"## displays with another model on retail: {len(changed)}", ""] + changed + [""]
     out = ROOT / "dist" / "client-check.md"
     out.parent.mkdir(exist_ok=True)
     out.write_text("\n".join(lines), encoding="utf-8")
