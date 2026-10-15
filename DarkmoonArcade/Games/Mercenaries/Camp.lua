@@ -696,26 +696,37 @@ function Module:BuildCollection()
     wood:SetPoint("TOPLEFT")
     self.collectionRole, self.collectionPage = "protector", 1
 
-    -- Role tabs above the book.
+    -- Role tabs above the book: the role's gem (shield, arrowhead, orb), framed under the mouse and
+    -- framed and lit for the chosen role (media/mercs/roletab_*, from Figma).
     view.tabs = {}
     for i, role in ipairs(ROLES) do
-        local tab = Kit.Medallion(view, 46)
-        tab.icon:SetTexture(MC.RoleTex("role_", role))
+        local tab = CreateFrame("Button", nil, view)
+        tab:SetSize(46, 46)
+        tab.icon = tab:CreateTexture(nil, "ARTWORK")
+        tab.icon:SetPoint("CENTER")
+        tab.icon:SetSize(96, 96)
+        tab.role, tab.hover = role, false
         tab:SetScript("OnClick", function()
             PlaySound(SOUNDKIT.IG_MAINMENU_OPTION)
             self.collectionRole, self.collectionPage = role, 1
             self:RefreshCollection()
         end)
-        Kit.Hover(tab, { grow = 1.12 })
-        tab:HookScript("OnEnter", function()
+        tab:SetScript("OnEnter", function()
+            tab.hover = true
+            self:PaintRoleTab(tab)
+            PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
             GameTooltip:SetOwner(tab, "ANCHOR_BOTTOM")
             local color = MC.RoleColor(role)
             GameTooltip:SetText(Describe.RoleName(role), color[1], color[2], color[3])
             GameTooltip:AddLine(Describe.RoleCircle(role), 1, 1, 1, true)
             GameTooltip:Show()
         end)
-        tab:HookScript("OnLeave", GameTooltip_Hide)
-        Kit.Place(tab, 40 + (i - 1) * 54, 28)
+        tab:SetScript("OnLeave", function()
+            tab.hover = false
+            self:PaintRoleTab(tab)
+            GameTooltip:Hide()
+        end)
+        Kit.Place(tab, 40 + (i - 1) * 60, 30)
         tab.marker = Marker(tab)
         tab.marker:SetSize(20, 20)
         tab.marker:SetPoint("CENTER", tab, "BOTTOMRIGHT", -2, 6)
@@ -806,6 +817,11 @@ function Module:BuildCollection()
     view.refresh = function() self:RefreshCollection() end
 end
 
+function Module:PaintRoleTab(tab)
+    local state = tab.role == self.collectionRole and "active" or (tab.hover and "hover" or "regular")
+    tab.icon:SetTexture(MC.Tex("roletab_" .. tab.role .. "_" .. state))
+end
+
 function Module:CollectionMercs()
     local list = {}
     for _, id in ipairs(MC.MERC_ORDER) do
@@ -857,8 +873,7 @@ function Module:RefreshCollection()
         if Bounty.CanImprove(store, id) then improve[MC.Mercs[id].role] = true end
     end
     for role, tab in pairs(view.tabs) do
-        Kit.SetSelected(tab, role == self.collectionRole)
-        tab.icon:SetTexture(MC.RoleTex("role_", role))
+        self:PaintRoleTab(tab)
         tab.marker:SetShown(improve[role] == true)
     end
     view.pageTitle.text:SetText(Describe.RoleName(self.collectionRole))

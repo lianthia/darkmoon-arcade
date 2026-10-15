@@ -174,6 +174,16 @@ def mercenaries_camp():
     print("mercenaries camp used width", scaled.width, "crop left", left)
 
 
+def mercenaries_roles():
+    """The role tabs of the collection (art/mercenaries_roles/<role>-<state>.png, 492x492 from Figma):
+    128x128 each, media/mercs/roletab_<role>_<state>.tga."""
+    for path in sorted((ROOT / "art" / "mercenaries_roles").glob("*.png")):
+        role, state = path.stem.split("-")
+        Image.open(path).convert("RGBA").resize((128, 128), Image.LANCZOS).save(
+            MEDIA / "mercs" / f"roletab_{role}_{state}.tga")
+    print("mercenaries role tabs")
+
+
 def zone_maps():
     """Forever's own zone maps for retail, which lacks them (art/maps/<zone>.png, 1002x668), cut like the
     client's maps into 4x3 tiles of 256x256 (media/maps/<zone>_<n>.tga, uncompressed, which WoW
@@ -194,6 +204,7 @@ def zone_maps():
 
 
 if __name__ == "__main__":
+    mercenaries_roles()
     mercenaries_camp()
     zone_maps()
     arcade_logo()
