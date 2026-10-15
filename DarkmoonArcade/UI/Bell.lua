@@ -11,6 +11,7 @@ local Bell = {}
 ns.Bell = Bell
 
 local ROWS, ROW_H, PANEL_W = 6, 40, 300
+local BADGE = 15
 
 function Bell:Create(window, header, divider)
     self.window = window
@@ -20,6 +21,21 @@ function Bell:Create(window, header, divider)
     b:SetPoint("CENTER", divider, "CENTER", -33, 0)
     b.icon = Style.Icon(b, "notification", 28)
     b.icon:SetPoint("CENTER")
+    -- The number of new achievements in a gold circle on the bell's shoulder (a pill for "9+").
+    local badge = CreateFrame("Frame", nil, b)
+    badge:SetSize(BADGE, BADGE)
+    badge:SetPoint("CENTER", b, "CENTER", 7, 6)
+    badge:SetFrameLevel(b:GetFrameLevel() + 2)
+    Style.Rounded(badge, badge, BADGE / 2, C.surface, "BACKGROUND")
+    local fill = CreateFrame("Frame", nil, badge)
+    fill:SetPoint("TOPLEFT", 1.5, -1.5)
+    fill:SetPoint("BOTTOMRIGHT", -1.5, 1.5)
+    Style.Rounded(fill, fill, (BADGE - 3) / 2, C.gold, "ARTWORK")
+    badge.text = Style.Text(fill, 9, C.ink)
+    badge.text:SetPoint("CENTER", 0.5, 0)
+    badge.text:SetJustifyH("CENTER")
+    badge:Hide()
+    b.badge = badge
     b:SetScript("OnEnter", function()
         b.hover = true
         self:Update()
@@ -50,19 +66,29 @@ local function Unlocked()
     return list
 end
 
-function Bell:HasNew()
-    local seen = ns.db.achievementsSeen or 0
+-- Achievements unlocked since the list was last opened.
+function Bell:NewCount()
+    local seen, count = ns.db.achievementsSeen or 0, 0
     for _, at in pairs(ns.db.achievements) do
-        if at > seen then return true end
+        if at > seen then count = count + 1 end
     end
-    return false
+    return count
+end
+
+function Bell:HasNew()
+    return self:NewCount() > 0
 end
 
 function Bell:Update()
     local b = self.button
     if not b then return end
-    local new = self:HasNew()
-    Style.SetIcon(b.icon, "notification" .. (new and "_active" or "") .. (b.hover and "_hover" or ""), 28)
+    local count = self:NewCount()
+    Style.SetIcon(b.icon, "notification" .. (count > 0 and "_active" or "") .. (b.hover and "_hover" or ""), 28)
+    b.badge:SetShown(count > 0)
+    if count > 0 then
+        b.badge.text:SetText(count > 9 and "9+" or tostring(count))
+        b.badge:SetWidth(count > 9 and BADGE + 7 or BADGE)
+    end
 end
 
 function Bell:CreatePanel()

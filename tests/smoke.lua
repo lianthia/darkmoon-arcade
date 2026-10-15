@@ -401,8 +401,11 @@ for id, card in pairs(Window.cards) do assert(card._shown, "all games lists " ..
 DarkmoonArcadeDB.achievementsSeen = 0
 DarkmoonArcadeDB.achievements.mb_first = DarkmoonArcadeDB.achievements.mb_first or 1
 assert(ns.Bell:HasNew(), "a new achievement")
+ns.Bell:Update()
+assert(ns.Bell.button.badge._shown and ns.Bell.button.badge.text._text == tostring(ns.Bell:NewCount()), "the badge counts them")
 ns.Bell.button._scripts.OnClick(ns.Bell.button)
 assert(ns.Bell.panel._shown and not ns.Bell:HasNew(), "opened: seen")
+assert(not ns.Bell.button.badge._shown, "no badge once seen")
 assert(ns.Bell.rows[1]._shown, "the list shows it")
 ns.Bell.catcher._scripts.OnClick(ns.Bell.catcher)
 assert(not ns.Bell.panel._shown, "a click elsewhere closes it")

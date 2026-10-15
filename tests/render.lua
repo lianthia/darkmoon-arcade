@@ -106,6 +106,13 @@ Tab("favorites", function()
     ns.Window:OpenFavorites()
 end)
 Tab("allgames", function() ns.Window:OpenAllGames() end)
+Tab("badge", function()
+    DarkmoonArcadeDB.achievementsSeen = 0
+    DarkmoonArcadeDB.achievements.mb_first, DarkmoonArcadeDB.achievements.sb_first = 100, 200
+    ns.Window.frame:Show()
+    ns.Window:OpenHub()
+    ns.Bell:Update()
+end)
 Tab("bell", function()
     DarkmoonArcadeDB.achievements.mb_first, DarkmoonArcadeDB.achievements.sb_first = 100, 200
     ns.Window:OpenHub()
