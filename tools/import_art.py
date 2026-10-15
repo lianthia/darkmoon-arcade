@@ -175,24 +175,34 @@ def mercenaries_camp():
 
 
 def mercenaries_roles():
-    """The roles' gems (art/mercenaries_roles/<role>-<state>.png, 492x492 from Figma): the collection's
-    role tabs, 128x128 with their room for frame and glow (media/mercs/roletab_<role>_<state>.tga), and
-    the role icon everywhere else, cut tight round the gem at 64x64 (media/mercs/role_<role>.tga; the
-    gems differ in shape, so the colour-blind variant role_<role>_cb is the same picture)."""
+    """The roles' gems (art/mercenaries_roles/<role>[-colorblind]-<state>.png, 492x492 from Figma): the
+    collection's role tabs, 128x128 with their room for frame and glow
+    (media/mercs/roletab_<role>[_cb]_<state>.tga), and the role icon everywhere else, cut tight round
+    the gem at 64x64 (media/mercs/role_<role>[_cb].tga). The colour-blind option uses the _cb files of
+    the roles it recolours; a role without its own colour-blind gem keeps its usual one."""
+    target = MEDIA / "mercs"
+
+    def icon(img):
+        l, t, r, b = img.getbbox()
+        side = max(r - l, b - t) + 8
+        cx, cy = (l + r) / 2, (t + b) / 2
+        box = tuple(round(v) for v in (cx - side / 2, cy - side / 2, cx + side / 2, cy + side / 2))
+        return img.crop(box).resize((64, 64), Image.LANCZOS)
+
+    gems = {}
     for path in sorted((ROOT / "art" / "mercenaries_roles").glob("*.png")):
-        role, state = path.stem.split("-")
-        img = Image.open(path).convert("RGBA")
-        img.resize((128, 128), Image.LANCZOS).save(MEDIA / "mercs" / f"roletab_{role}_{state}.tga")
+        parts = path.stem.split("-")
+        role, state = parts[0], parts[-1]
+        variant = "_cb" if "colorblind" in parts else ""
+        gems[(role, variant, state)] = Image.open(path).convert("RGBA")
+    for role in ("fighter", "protector"):
+        for state in ("regular", "hover", "active"):
+            gems.setdefault((role, "_cb", state), gems[(role, "", state)])
+    for (role, variant, state), img in gems.items():
+        img.resize((128, 128), Image.LANCZOS).save(target / f"roletab_{role}{variant}_{state}.tga")
         if state == "regular":
-            l, t, r, b = img.getbbox()
-            side = max(r - l, b - t) + 8
-            cx, cy = (l + r) / 2, (t + b) / 2
-            box = tuple(round(v) for v in (cx - side / 2, cy - side / 2, cx + side / 2, cy + side / 2))
-            icon = img.crop(box).resize((64, 64), Image.LANCZOS)
-            icon.save(MEDIA / "mercs" / f"role_{role}.tga")
-            if role in ("fighter", "protector"):
-                icon.save(MEDIA / "mercs" / f"role_{role}_cb.tga")
-    print("mercenaries role gems")
+            icon(img).save(target / f"role_{role}{variant}.tga")
+    print("mercenaries role gems", len(gems))
 
 
 def zone_maps():

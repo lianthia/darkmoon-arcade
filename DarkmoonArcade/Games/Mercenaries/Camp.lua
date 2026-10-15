@@ -819,7 +819,8 @@ end
 
 function Module:PaintRoleTab(tab)
     local state = tab.role == self.collectionRole and "active" or (tab.hover and "hover" or "regular")
-    tab.icon:SetTexture(MC.Tex("roletab_" .. tab.role .. "_" .. state))
+    local cb = MC.ColorBlind() and MC.ROLE_COLORS_CB[tab.role] and "_cb" or ""
+    tab.icon:SetTexture(MC.Tex("roletab_" .. tab.role .. cb .. "_" .. state))
 end
 
 function Module:CollectionMercs()
