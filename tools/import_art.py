@@ -160,6 +160,20 @@ def launcher_thumbs():
     print("launcher thumbs", len(THUMB_ORDER))
 
 
+def mercenaries_camp():
+    """The Mercenaries camp (art/mercenaries_camp.png, 1672x941): cut to the camp's 920:560 and scaled
+    to 1024 high at the left of a 2048x1024 texture (Games/Mercenaries/Camp.lua)."""
+    src = Image.open(ROOT / "art" / "mercenaries_camp.png").convert("RGB")
+    w = round(src.height * 920 / 560)
+    left = (src.width - w) // 2
+    cut = src.crop((left, 0, left + w, src.height))
+    scaled = cut.resize((round(1024 * w / src.height), 1024), Image.LANCZOS)
+    canvas = Image.new("RGB", (2048, 1024), (0, 0, 0))
+    canvas.paste(scaled, (0, 0))
+    canvas.save(MEDIA / "mercs" / "camp.tga")
+    print("mercenaries camp used width", scaled.width, "crop left", left)
+
+
 def zone_maps():
     """Forever's own zone maps for retail, which lacks them (art/maps/<zone>.png, 1002x668), cut like the
     client's maps into 4x3 tiles of 256x256 (media/maps/<zone>_<n>.tga, uncompressed, which WoW
@@ -180,6 +194,7 @@ def zone_maps():
 
 
 if __name__ == "__main__":
+    mercenaries_camp()
     zone_maps()
     arcade_logo()
     moon_icon()

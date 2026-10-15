@@ -13,11 +13,6 @@ local INK = { 0.24, 0.14, 0.06 }
 local ROLES = { "protector", "fighter", "caster" }
 local ROMAN = { "I", "II", "III" }
 
--- The camp stands at the Darkmoon Faire: its classic loading screen (1024x1024, a 4:3 picture
--- with a logo band at the top and a frame band at the bottom).
-local CAMP_ART = 2821800
-local CAMP_V0, CAMP_V1 = 0.255, 0.815
-
 -- What the travel point shows of each zone: a starting-zone picture, a dungeon loading screen
 -- (cropped to its painting) or, failing both, the zone's own map.
 local ZONE_ART = {
@@ -148,72 +143,113 @@ end
 
 -- Village -------------------------------------------------------------------------------------------
 
-local function Hotspot(parent, icon, size, onClick)
-    local b = Kit.Medallion(parent, size)
-    b.icon:SetTexture(icon)
-    b.plaque = Kit.Plaque(b, 168, nil, 14)
-    b.plaque:SetPoint("TOP", b, "BOTTOM", 0, 12)
-    b.sub = Kit.Ink(b, 11, { 1, 0.95, 0.85 }, "OUTLINE")
+-- The camp painting (media/mercs/camp: 1682x1024 of a 2048x1024 texture, tools/import_art.py) fills
+-- the view. Its things are the camp's places; each lights up under the mouse with its name.
+-- x, y: centre, w, h: size, all in camp units (920x560); label (and lx): where its name sits, from
+-- the centre (names near the edges move inwards).
+local SPOTS = {
+    travel = { x = 73, y = 282, w = 116, h = 112, label = 70, lx = 62 },        -- the map table
+    collection = { x = 862, y = 470, w = 150, h = 130, label = 78, lx = -50 }, -- the book
+    roadmap = { x = 424, y = 238, w = 128, h = 100, label = 64 },    -- the notice board
+    scores = { x = 736, y = 112, w = 236, h = 160, label = 86 },     -- the arena of tusks
+    achievements = { x = 668, y = 486, w = 104, h = 150, label = 88 }, -- the mailbox
+    help = { x = 160, y = 100, w = 160, h = 110, label = 66 },       -- the wagon
+}
+
+-- The party round the fire in a flat hexagon: two behind it, two at its sides, two in front, with the
+-- fire itself left in view.
+local RING = { { 300, 438 }, { 240, 368 }, { 345, 312 }, { 521, 312 }, { 626, 368 }, { 566, 438 } }
+local TOKEN_SCALE = 0.62
+
+local function Spot(parent, labels, def, onClick)
+    local b = CreateFrame("Button", nil, parent)
+    b:SetSize(def.w, def.h)
+    b:SetPoint("CENTER", parent, "TOPLEFT", def.x, -def.y)
+    b.glow = b:CreateTexture(nil, "ARTWORK")
+    b.glow:SetPoint("CENTER")
+    b.glow:SetSize(def.w * 1.25, def.h * 1.25)
+    b.glow:SetTexture(MC.Tex("soft_spot"))
+    b.glow:SetBlendMode("ADD")
+    b.glow:SetVertexColor(1, 0.8, 0.45)
+    b.glow:SetAlpha(0)
+    -- The name on a layer over the party, so it never hides behind them.
+    b.plaque = Kit.Plaque(labels, 168, nil, 14)
+    b.plaque:SetPoint("CENTER", b, "CENTER", def.lx or 0, def.label)
+    b.plaque:SetAlpha(0)
+    b.sub = Kit.Ink(b.plaque, 11, { 1, 0.95, 0.85 }, "OUTLINE")
     b.sub:SetPoint("TOP", b.plaque, "BOTTOM", 0, 8)
-    b.sub:SetWidth(200)
+    b.sub:SetWidth(180)
     b.marker = Marker(b)
-    b.marker:SetPoint("BOTTOM", b, "TOP", 0, -8)
+    b.marker:SetPoint("CENTER", b, "CENTER", 0, def.label - 4)
+    b.marker:Hide()
+    b.hover = 0
+    b:SetScript("OnEnter", function()
+        b.over = true
+        PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
+    end)
+    b:SetScript("OnLeave", function() b.over = false end)
+    -- Fades its light and name in and out.
+    b:SetScript("OnUpdate", function(_, elapsed)
+        local target = b.over and 1 or 0
+        if b.hover ~= target then
+            b.hover = target > b.hover and math.min(1, b.hover + elapsed * 6) or math.max(0, b.hover - elapsed * 6)
+            b.glow:SetAlpha(b.hover * 0.45)
+            b.plaque:SetAlpha(b.hover)
+            b.marker:SetAlpha(1 - b.hover)
+        end
+    end)
     b:SetScript("OnClick", function()
         PlaySound(SOUNDKIT.IG_MAINMENU_OPEN)
         onClick()
     end)
-    Kit.Hover(b, { grow = 1.1, lift = 4 })
     return b
 end
 
--- Where the six party members stand: a gentle arc, each with its name banner below.
-local CAMP_GAP, CAMP_Y = 124, 384
+-- A party member's details (level, role, attack, health, name) show only under the mouse.
+local function ShowDetails(slot, shown)
+    local alpha = shown and 1 or 0
+    local token = slot.token
+    for _, part in ipairs({ token.attack, token.health, token.level, token.roleIcon }) do part:SetAlpha(alpha) end
+    slot.plate:SetAlpha(alpha)
+end
 
 function Module:BuildCamp()
     local view = self:AddView("camp", CreateFrame("Frame", nil, self.container))
     local art = view:CreateTexture(nil, "BACKGROUND")
     art:SetAllPoints()
-    art:SetTexture(CAMP_ART)
-    -- The painting is 1024 wide and (v1 - v0) * 768 high on screen; show the middle at our aspect.
-    local share = (W / H) * (CAMP_V1 - CAMP_V0) * 768 / 1024
-    art:SetTexCoord(0.5 - share / 2 + 0.06, 0.5 + share / 2 + 0.06, CAMP_V0, CAMP_V1)
-    local dusk = view:CreateTexture(nil, "BACKGROUND", nil, 2)
-    dusk:SetAllPoints()
-    dusk:SetTexture(MC.Tex("vignette"))
-    dusk:SetAlpha(0.85)
+    art:SetTexture(MC.Tex("camp"))
+    art:SetTexCoord(0, 1682 / 2048, 0, 1)
 
-    -- A soft dark cloud behind the logo lifts it off the busy painting.
-    local shadow = view:CreateTexture(nil, "BORDER")
-    shadow:SetSize(360, 130)
-    shadow:SetPoint("TOP", 0, 22)
-    shadow:SetTexture(MC.Tex("soft_spot"))
-    shadow:SetVertexColor(0, 0, 0, 0.85)
-    -- The logo texture holds the title 960 wide with 32 px of room round it (347 px of 512 used);
-    -- the halo texture has the same layout and outlines the letters in soft black.
-    local LOGO_W = 230 * 1024 / 960
-    for i, name in ipairs({ "logo_shadow", "logo" }) do
-        local t = view:CreateTexture(nil, "ARTWORK", nil, i)
-        t:SetSize(LOGO_W, LOGO_W * 347 / 1024)
-        t:SetPoint("TOP", 0, -14 + 32 * LOGO_W / 1024)
-        t:SetTexture(MC.Tex(name))
-        t:SetTexCoord(0, 1, 0, 347 / 512)
-    end
-
+    -- Places first, the party above them, the places' names on top.
     local stage = CreateFrame("Frame", nil, view)
     stage:SetAllPoints()
-    stage:SetFrameLevel(view:GetFrameLevel() + 2)
+    stage:SetFrameLevel(view:GetFrameLevel() + 20)
     local plates = CreateFrame("Frame", nil, view)
     plates:SetAllPoints()
-    plates:SetFrameLevel(stage:GetFrameLevel() + 10)
+    plates:SetFrameLevel(stage:GetFrameLevel() + 30)
+    local labels = CreateFrame("Frame", nil, view)
+    labels:SetAllPoints()
+    labels:SetFrameLevel(plates:GetFrameLevel() + 10)
+    view.travel = Spot(view, labels, SPOTS.travel, function()
+        if self:Store().run then self:Route() else self:ShowView("travel") end
+    end)
+    view.collection = Spot(view, labels, SPOTS.collection, function() self:ShowView("collection") end)
+    view.roadmap = Spot(view, labels, SPOTS.roadmap, function() self:ShowView("roadmap") end)
+    view.scores = Spot(view, labels, SPOTS.scores, function() self.overlay:Show("scores") end)
+    view.achievements = Spot(view, labels, SPOTS.achievements, function() self:ShowAchievements() end)
+    view.help = Spot(view, labels, SPOTS.help, function() self:ShowHelp() end)
+
     self.campSlots = {}
     for i = 1, Bounty.PARTY_SIZE do
-        local x = W / 2 + (i - 3.5) * CAMP_GAP
-        local y = CAMP_Y - (2.5 - math.abs(i - 3.5)) * 8
+        local x, y = RING[i][1], RING[i][2]
         local token = MC.CreateToken(stage)
         token.name:Hide()
+        -- Those further front stand over those behind.
+        token:SetFrameLevel(stage:GetFrameLevel() + math.floor(y / 20))
         rawset(token, "glowTex", token.glow)
         token.glow:Show()
         token.glow:SetAlpha(0)
+        local slot
         token:SetScript("OnClick", function()
             local id = self:Store().party[i]
             if id then
@@ -221,60 +257,17 @@ function Module:BuildCamp()
                 self:ShowView("merc")
             end
         end)
-        Kit.Hover(token, { grow = 1.06, lift = 6 })
+        Kit.Hover(token, { grow = 1.08, lift = 4 })
+        token:HookScript("OnEnter", function() ShowDetails(slot, true) end)
+        token:HookScript("OnLeave", function() ShowDetails(slot, false) end)
+        Kit.SetBaseScale(token, TOKEN_SCALE)
         Kit.Place(token, x, y)
-        local plate = Kit.Banner(plates, CAMP_GAP + 8, 30, 12)
-        plate:SetPoint("TOP", view, "TOPLEFT", x, -(y + MC.TOKEN_H / 2 + 2))
-        self.campSlots[i] = { token = token, plate = plate }
+        local plate = Kit.Banner(plates, 132, 30, 12)
+        plate:SetPoint("TOP", view, "TOPLEFT", x, -(y + MC.TOKEN_H * TOKEN_SCALE / 2 - 2))
+        slot = { token = token, plate = plate }
+        ShowDetails(slot, false)
+        self.campSlots[i] = slot
     end
-
-    view.travel = Hotspot(view, "Interface\\Icons\\Spell_Arcane_PortalStormwind", 88, function()
-        if self:Store().run then self:Route() else self:ShowView("travel") end
-    end)
-    Kit.Place(view.travel, 112, 150)
-    view.collection = Hotspot(view, "Interface\\Icons\\INV_Misc_Book_11", 88, function() self:ShowView("collection") end)
-    Kit.Place(view.collection, W - 112, 150)
-    -- The high scores are a side matter: a small medallion at the foot of the camp.
-    view.scores = Hotspot(view, "Interface\\Icons\\INV_Misc_Ribbon_01", 46, function() self.overlay:Show("scores") end)
-    view.scores.plaque:ClearAllPoints()
-    view.scores.plaque:SetSize(150, 45)
-    view.scores.plaque:SetPoint("LEFT", view.scores, "RIGHT", -10, 0)
-    view.scores.sub:ClearAllPoints()
-    view.scores.sub:SetPoint("LEFT", view.scores.plaque, "RIGHT", 2, 0)
-    view.scores.sub:SetWidth(90)
-    view.scores.sub:SetJustifyH("LEFT")
-    Kit.Place(view.scores, W / 2 - 112, H - 28)
-    -- What is planned next: a medallion of the same kind in the bottom right corner.
-    view.roadmap = Hotspot(view, "Interface\\Icons\\INV_Misc_Map_01", 46, function() self:ShowView("roadmap") end)
-    view.roadmap.plaque:ClearAllPoints()
-    view.roadmap.plaque:SetSize(150, 45)
-    view.roadmap.plaque:SetPoint("LEFT", view.roadmap, "RIGHT", -10, 0)
-    view.roadmap.plaque.text:SetWidth(105)
-    view.roadmap.sub:Hide()
-    view.roadmap.marker:Hide()
-    Widgets.OnRefresh(function() view.roadmap.plaque.text:SetText(L.MC_ROADMAP) end)
-    Kit.Place(view.roadmap, W - 196, H - 28)
-
-    -- Help and achievements, small medallions in the upper corners (the launcher has no footer).
-    local function Corner(icon, key, x, onClick, plateRight)
-        local spot = Hotspot(view, icon, 40, onClick)
-        spot.plaque:ClearAllPoints()
-        spot.plaque:SetSize(150, 40)
-        if plateRight then
-            spot.plaque:SetPoint("LEFT", spot, "RIGHT", -10, 0)
-        else
-            spot.plaque:SetPoint("RIGHT", spot, "LEFT", 10, 0)
-        end
-        spot.plaque.text:SetWidth(112)
-        spot.sub:Hide()
-        spot.marker:Hide()
-        Widgets.OnRefresh(function() spot.plaque.text:SetText(L[key]) end)
-        Kit.Place(spot, x, 34)
-        return spot
-    end
-    view.help = Corner("Interface\\Icons\\INV_Misc_QuestionMark", "HELP", 34, function() self:ShowHelp() end, true)
-    view.achievements = Corner("Interface\\Icons\\Achievement_General", "ACHIEVEMENTS", W - 34,
-        function() self:ShowAchievements() end, false)
 
     view.refresh = function() self:RefreshCamp() end
 end
@@ -292,15 +285,9 @@ function Module:RefreshCamp()
             local unit = MC.PreviewUnit(store, id)
             unit.side = "ally"
             slot.token:SetData(unit)
-            Kit.FitText(slot.plate.text, Describe.MercName(id), (CAMP_GAP + 8) * 0.78 - 2, 12, 9)
+            Kit.FitText(slot.plate.text, Describe.MercName(id), 132 * 0.78 - 2, 12, 9)
         end
     end
-    -- All names share the size of the one that needed the smallest font.
-    local size = 12
-    for i, slot in ipairs(self.campSlots) do
-        if store.party[i] then size = math.min(size, select(2, slot.plate.text:GetFont()) or 12) end
-    end
-    for _, slot in ipairs(self.campSlots) do slot.plate.text:SetFont(ns.Media.FontFile(), size, "") end
     view.travel.plaque.text:SetText(run and L.MC_CONTINUE_RUN or L.MC_TRAVEL_POINT)
     view.travel.sub:SetText(run and (Describe.ZoneName(run.zone) .. (run.heroic and (" (" .. L.MC_HEROIC .. ")") or "")) or L.MC_BOUNTIES_SUB)
     view.travel.marker:SetShown(run ~= nil)
@@ -317,7 +304,13 @@ function Module:RefreshCamp()
     view.scores.plaque.text:SetText(L.HIGHSCORES)
     local best = ns.Scores.Best(self.id, "default")
     view.scores.sub:SetText(best > 0 and L.BEST:format(ns.FormatNumber(best)) or "")
-    view.scores.marker:Hide()
+    view.roadmap.plaque.text:SetText(L.MC_ROADMAP)
+    view.roadmap.sub:SetText("")
+    view.achievements.plaque.text:SetText(L.ACHIEVEMENTS)
+    local done, total = ns.Achievements.Count(self.id)
+    view.achievements.sub:SetText(("%d / %d"):format(done, total))
+    view.help.plaque.text:SetText(L.HELP)
+    view.help.sub:SetText("")
 end
 
 -- Travel point ------------------------------------------------------------------------------------
