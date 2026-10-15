@@ -12,7 +12,24 @@ local NUMBER_GETTERS = {
     GetWidth = 100, GetHeight = 100, GetAlpha = 1, GetStringWidth = 50, GetStringHeight = 12,
 }
 
+-- tools/check_client.py runs this script with ASSET_LOG set: every texture, atlas, model and sound the
+-- addon asks for is recorded, to check them against a client.
+local function Log(kind, value)
+    if ASSET_LOG and value ~= nil and value ~= "" then ASSET_LOG[#ASSET_LOG + 1] = kind .. "	" .. tostring(value) end
+end
+local function LogTexture(_, value) Log("texture", value) end
+
 local methods = {
+    SetTexture = LogTexture,
+    SetNormalTexture = LogTexture,
+    SetPushedTexture = LogTexture,
+    SetHighlightTexture = LogTexture,
+    SetDisabledTexture = LogTexture,
+    SetCheckedTexture = LogTexture,
+    SetAtlas = function(_, name) Log("atlas", name) end,
+    SetDisplayInfo = function(_, id) Log("display", id) end,
+    SetModel = function(_, file) Log("model", file) end,
+    SetModelByFileID = function(_, file) Log("model", file) end,
     GetParent = function(self) return rawget(self, "_parent") end,
     SetParent = function(self, parent) self._parent = parent end,
     SetSize = function(self, w, h) self._w, self._h = w, h end,
@@ -189,7 +206,11 @@ function UnitIsPlayer() return true end
 function UnitIsUnit() return false end
 function GetUnitName() return "Target-Realm" end
 function PlaySound() end
-function PlaySoundFile() end
+function PlaySoundFile(file) Log("sound", file) end
+function SetPortraitTextureFromCreatureDisplayID(_, id) Log("display", id) end
+if ASSET_LOG then
+    C_Texture = { GetAtlasInfo = function(name) Log("atlas", name); return { width = 64, height = 64 } end }
+end
 function strtrim(s) return (s:gsub("^%s+", ""):gsub("%s+$", "")) end
 function wipe(t) for k in pairs(t) do t[k] = nil end return t end
 function hooksecurefunc(name, hook)
@@ -218,6 +239,7 @@ for _, file in ipairs(ADDON_FILES) do
     local fn = assert(loadstring(ADDON_SOURCES[file], "@" .. file))
     fn("DarkmoonArcade", ns)
 end
+ADDON_NS = ns
 
 local function Fire(event, ...)
     for _, f in ipairs(frames) do

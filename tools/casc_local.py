@@ -17,12 +17,23 @@ ENCRYPTED = 0x8000000
 NO_NAMES = 0x10000000
 
 
-def build_config():
+def build_info(product=PRODUCT):
+    """The .build.info row of an installed product (wow_classic_beta = Forever, wow = retail)."""
     lines = (WOW / ".build.info").read_text().splitlines()
     head = [h.split("!")[0] for h in lines[0].split("|")]
     for line in lines[1:]:
         row = dict(zip(head, line.split("|")))
-        if row.get("Product") == PRODUCT:
+        if row.get("Product") == product:
+            return row
+    raise SystemExit(f"product {product} not installed")
+
+
+def build_config(product=PRODUCT):
+    lines = (WOW / ".build.info").read_text().splitlines()
+    head = [h.split("!")[0] for h in lines[0].split("|")]
+    for line in lines[1:]:
+        row = dict(zip(head, line.split("|")))
+        if row.get("Product") == product:
             key = row["Build Key"]
             text = (WOW / "Data" / "config" / key[:2] / key[2:4] / key).read_text()
             return dict(l.split(" = ", 1) for l in text.splitlines() if " = " in l)
@@ -194,8 +205,9 @@ def parse_root(raw, names=None):
 
 
 class Client:
-    def __init__(self):
-        cfg = build_config()
+    def __init__(self, product=PRODUCT):
+        cfg = build_config(product)
+        self.product, self.version = product, build_info(product)["Version"]
         self.storage = Storage()
         enc_ekey = bytes.fromhex(cfg["encoding"].split()[1])
         self.encoding = parse_encoding(self.storage.read(enc_ekey))
