@@ -6,24 +6,31 @@ local MC = ns.Mercenaries
 local Combat, Bounty, Describe = MC.Combat, MC.Bounty, MC.Describe
 local Arcade, Widgets, Scores, Media, Achievements, L = ns.Arcade, ns.Widgets, ns.Scores, ns.Media, ns.Achievements, ns.L
 
-local W, H = 840, 560
+-- Mercenaries fills the whole area right of the launcher's navigation: drawn at 920 x 560 and
+-- scaled up to it (UI/Window.lua), so it keeps the proportions of that area.
+local W, H = 920, 560
 MC.W, MC.H = W, H
 
 local Module = {
     id = "mercenaries",
     rank = 0,
+    fullArea = true,
     fieldWidth = W,
     fieldHeight = H,
     nameKey = "MC_NAME",
     descKey = "MC_DESC",
+    genreKey = "GENRE_TACTICAL_RPG",
+    taglineKey = "MC_CARD_TEXT",
     helpKey = "MC_HELP",
     tile = "tiles/mercenaries",
-    -- The main menu's stage: the Darkmoon Faire painting of the camp (its picture spans v 0.255 to
-    -- 0.815 of the file) with the game's logo.
+    updated = "1.4.0",
+    -- The launcher's spotlight, with the key art (media/launcher/mercenaries: 910x512 of 1024x512):
+    -- texture coordinates for the spotlight's picture and for the game's card.
     featured = true,
-    hero = {
-        art = 2821800, v0 = 0.255, v1 = 0.815, aspect = 1024 / (0.56 * 768),
-        logo = "mercs/logo", logoShadow = "mercs/logo_shadow", logoW = 300, logoRatio = 347 / 1024, logoV = 347 / 512,
+    spotlight = {
+        art = "launcher/mercenaries",
+        banner = { 0.0407, 0.8480, 0, 1 },
+        card = { 0, 0.8887, 0.0545, 0.9455 },
     },
     defaults = { fast = false, sounds = "ingame", colorblind = false, effects = true },
 }
@@ -886,40 +893,7 @@ function Module:OnUpdate(dt)
     end
 end
 
-function Module:DecorateTile(tile, art)
-    local displays = { 4527, 2970, 4307 } -- Thrall, Jaina, Cairne
-    for i, display in ipairs(displays) do
-        local m = CreateFrame("PlayerModel", nil, tile)
-        -- Right of the logo and below the best score.
-        m:SetSize(96, 112)
-        m:SetPoint("BOTTOMRIGHT", art, "BOTTOMRIGHT", 6 - (#displays - i) * 58, 2)
-        local function Apply()
-            pcall(m.SetDisplayInfo, m, display)
-            pcall(m.SetFacing, m, 0.5 - (i - 1) * 0.35)
-        end
-        Apply()
-        m:SetScript("OnShow", Apply)
-    end
-end
-
--- Three heroes of the old world on the main menu's stage.
-function Module:DecorateHero(stage)
-    local heroes = { { 2970, 0.45 }, { 4527, 0.15 }, { 4307, -0.25 } } -- Jaina, Thrall, Cairne
-    for i, hero in ipairs(heroes) do
-        local m = CreateFrame("PlayerModel", nil, stage)
-        m:SetSize(190, 270)
-        m:SetPoint("BOTTOMRIGHT", stage, "BOTTOMRIGHT", 30 - (#heroes - i) * 115, -26)
-        m:SetFrameLevel(stage:GetFrameLevel() + 2 + (i == 2 and 2 or 0))
-        local function Apply()
-            pcall(m.SetDisplayInfo, m, hero[1])
-            pcall(m.SetFacing, m, hero[2])
-        end
-        Apply()
-        m:SetScript("OnShow", Apply)
-    end
-end
-
--- The main menu's progress figures and the state of the current bounty.
+-- The launcher's progress figures and the state of the current bounty.
 function Module:HubInfo()
     local store = self:Store()
     local owned, cleared = 0, 0

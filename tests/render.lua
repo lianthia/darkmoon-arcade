@@ -96,6 +96,25 @@ Tab("options", function()
     OptionsPage(2)
 end)
 Tab("options_minigames", function() OptionsPage(6) end)
+-- The launcher's other pages, the bell's list, a minigame and the navigation opened over a game.
+Tab("favorites_empty", function()
+    DarkmoonArcadeDB.favorites = {}
+    ns.Window:OpenFavorites()
+end)
+Tab("favorites", function()
+    DarkmoonArcadeDB.favorites = { spellbounce = true, murlocblast = true }
+    ns.Window:OpenFavorites()
+end)
+Tab("allgames", function() ns.Window:OpenAllGames() end)
+Tab("bell", function()
+    DarkmoonArcadeDB.achievements.mb_first, DarkmoonArcadeDB.achievements.sb_first = 100, 200
+    ns.Window:OpenHub()
+    ns.Bell:Open()
+end)
+Tab("minigame", function()
+    ns.Bell:Close()
+    ns.Window:OpenGame("goblinslots")
+end)
 ns.Window:OpenHub()
 SlashCmdList.DARKMOONARCADE("mercenaries")
 if not RENDER_ONLY or RENDER_ONLY:find("window", 1, true) then

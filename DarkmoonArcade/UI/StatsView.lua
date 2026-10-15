@@ -230,6 +230,12 @@ function StatsView:Refresh()
     self:Select(self.selected)
 end
 
+function StatsView:SelectGame(id)
+    for i, page in ipairs(self.pages) do
+        if page.id == id then return self:Select(i) end
+    end
+end
+
 function StatsView:Select(index)
     self.selected = index
     for i, b in ipairs(self.entries) do

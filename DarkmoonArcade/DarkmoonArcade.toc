@@ -17,8 +17,12 @@ Core\Achievements.lua
 Core\Guild.lua
 Core\Stats.lua
 UI\Media.lua
+UI\IconAtlas.lua
 UI\Widgets.lua
+UI\Style.lua
 UI\Window.lua
+UI\Bell.lua
+UI\Nav.lua
 UI\Hub.lua
 UI\Minimap.lua
 UI\Toast.lua

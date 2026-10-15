@@ -21,7 +21,10 @@ function Achievements.Unlock(id)
     if not def or Achievements.IsDone(id) then return end
     ns.db.achievements[id] = time()
     if ns.Toast then ns.Toast:Show(def) end
-    if ns.Window then ns.Window:UpdateSidebar() end
+    if ns.Window and ns.Window.frame then
+        ns.Window:UpdateSidebar()
+        ns.Window:UpdateBell()
+    end
 end
 
 function Achievements.ForGame(gameId)

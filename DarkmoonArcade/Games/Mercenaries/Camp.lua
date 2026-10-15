@@ -254,6 +254,27 @@ function Module:BuildCamp()
     Widgets.OnRefresh(function() view.roadmap.plaque.text:SetText(L.MC_ROADMAP) end)
     Kit.Place(view.roadmap, W - 196, H - 28)
 
+    -- Help and achievements, small medallions in the upper corners (the launcher has no footer).
+    local function Corner(icon, key, x, onClick, plateRight)
+        local spot = Hotspot(view, icon, 40, onClick)
+        spot.plaque:ClearAllPoints()
+        spot.plaque:SetSize(150, 40)
+        if plateRight then
+            spot.plaque:SetPoint("LEFT", spot, "RIGHT", -10, 0)
+        else
+            spot.plaque:SetPoint("RIGHT", spot, "LEFT", 10, 0)
+        end
+        spot.plaque.text:SetWidth(112)
+        spot.sub:Hide()
+        spot.marker:Hide()
+        Widgets.OnRefresh(function() spot.plaque.text:SetText(L[key]) end)
+        Kit.Place(spot, x, 34)
+        return spot
+    end
+    view.help = Corner("Interface\\Icons\\INV_Misc_QuestionMark", "HELP", 34, function() self:ShowHelp() end, true)
+    view.achievements = Corner("Interface\\Icons\\Achievement_General", "ACHIEVEMENTS", W - 34,
+        function() self:ShowAchievements() end, false)
+
     view.refresh = function() self:RefreshCamp() end
 end
 

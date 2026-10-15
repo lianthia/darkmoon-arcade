@@ -14,6 +14,10 @@ local NUMBER_GETTERS = {
 
 local methods = {
     GetParent = function(self) return rawget(self, "_parent") end,
+    SetParent = function(self, parent) self._parent = parent end,
+    SetSize = function(self, w, h) self._w, self._h = w, h end,
+    SetWidth = function(self, w) self._w = w end,
+    SetScale = function(self, scale) self._scale = scale end,
     SetScript = function(self, name, fn) self._scripts[name] = fn end,
     GetScript = function(self, name) return self._scripts[name] end,
     IsShown = function(self) return self._shown end,
@@ -315,40 +319,79 @@ assert(not Window.frame._shown, "news only once per version")
 
 SlashCmdList.DARKMOONARCADE("")
 assert(Window.frame._shown, "window should be shown")
--- The header: a tab each for home, news, statistics and options; the game tab only with a game open.
-for _, id in ipairs({ "home", "news", "stats", "options" }) do
+-- The header: home, news and statistics; options sit at the navigation's foot.
+for _, id in ipairs({ "home", "news", "stats" }) do
     assert(Window.tabButtons[id]._shown, id .. " tab")
 end
-assert(not Window.backButton._shown, "no way back in the main menu")
--- A game replaces the tabs with the way back and its name.
-SlashCmdList.DARKMOONARCADE("murlocblast")
-assert(not Window.tabButtons.home._shown and Window.backButton._shown, "game header: the way back")
-assert(Window.gameTitle._text == ns.L[ns.Arcade.games.murlocblast.nameKey], "game header: the game's name")
-Window.backButton._scripts.OnClick(Window.backButton)
-assert(Window.hub._shown and Window.tabButtons.home._shown and not Window.activeGame, "back to the main menu")
+local Nav = ns.Nav
+assert(Window.page == "news", "the window opens on the page it showed last")
+Window:OpenHub()
+assert(Window.page == "discover" and Window.tab == "home" and Nav.wide, "the launcher opens on discover, navigation wide")
+assert(#Nav.games == #Nav.HIGHLIGHTED, "the highlighted games in the navigation")
+-- A game: no tab is active, the navigation shrinks to its icons and marks the game.
+SlashCmdList.DARKMOONARCADE("mercenaries")
+assert(Window.tab == nil and not Nav.wide and Nav.width == ns.Arcade.NAV_COLLAPSED, "game: narrow navigation")
+assert(math.abs(Window.content._w * Window.content._scale - ns.Arcade.FULL_W) < 1, "Mercenaries fills the area")
+assert(not Window.sidebar._shown and Window.frame._w == 1082, "no sidebar, the window keeps its size")
+-- A minigame outside the highlighted ones gets its own entry while it is open; the window narrows.
+SlashCmdList.DARKMOONARCADE("goblinslots")
+assert(Nav.openExtra == Nav.extra.goblinslots and Nav.extra.goblinslots._shown, "the open game's own entry")
+assert(Window.sidebar._shown and Window.frame._w < 1082 and Window.content._scale > 1, "minigame scaled, window narrower")
+SlashCmdList.DARKMOONARCADE("darkmoondeck")
+assert(Window.frame._w <= 1082 + 1e-6, "a wide minigame never makes the window wider than the launcher")
+Nav.discover._scripts.OnClick(Nav.discover)
+assert(Window.page == "discover" and not Window.activeGame and Nav.openExtra == nil, "back to discover")
 Window.tabButtons.home._scripts.OnClick(Window.tabButtons.home)
-assert(Window.hub._shown and Window.tab == "home", "home tab shows the main menu")
+assert(Window.hubPages.discover._shown and Window.tab == "home", "home tab shows discover")
 Window.frame:Hide()
 DarkmoonArcadeDB.newsSeen = "1.0.0"
 News:ShowIfNew()
 assert(Window.frame._shown and News.frame._shown, "news after an update")
 Window.tabButtons.home._scripts.OnClick(Window.tabButtons.home)
-assert(Window.hub._shown and not News.frame._shown, "back to the main menu")
--- The main menu: the featured game on its stage with the player's progress, the others in a list.
-assert(Window.featured.id == "mercenaries", "Mercenaries is featured")
-assert(Window.heroStats[1].value._text ~= nil and Window.heroStats[4].label._text ~= nil, "progress on the stage")
-assert(Window.heroPlay.label._text == ns.L.PLAY, "play, no bounty under way yet")
-assert(#Window.tiles == #ns.Arcade.order - 1, "every other game in the list")
-assert(Window.heroNews[1].title._text ~= nil, "the latest highlights on the stage")
--- The flight star: one game is starred; starring another moves it, starring it again turns it off.
-assert(#Window.stars == #ns.Arcade.order, "a star for every game")
-local star = Window.stars[1]
+assert(Window.hubPages.discover._shown and not News.frame._shown, "back to discover")
+-- Discover: the spotlight game with the player's progress, the recently updated games below.
+assert(Window.featured.id == "mercenaries", "Mercenaries in the spotlight")
+assert(Window.metrics[1].value._text ~= nil and Window.metrics[4].label._text ~= nil, "progress figures")
+assert(Window.spotPlay.label._text == ns.L.HUB_PLAY_GAME:format(ns.L.MC_NAME), "play, no bounty under way yet")
+local recent = ns.Arcade.RecentlyUpdated()
+assert(#recent == #ns.Arcade.order - 1 and recent[1] ~= Window.featured, "explore: all but the spotlight game")
+local shownCards = 0
+for _, card in pairs(Window.cards) do
+    if card._shown and card:GetParent() == Window.hubPages.discover then shownCards = shownCards + 1 end
+end
+assert(shownCards == math.min(5, #recent), "explore shows one row of cards")
+-- Favorites: the star adds a game, a second click removes it; the page lists them.
+local star
+for _, b in ipairs(Window.stars) do
+    if b.game.id == "spellbounce" then star = b end
+end
+DarkmoonArcadeDB.favorites = {}
 star._scripts.OnClick(star)
-assert(DarkmoonArcadeDB.flightGame == star.game.id, "the star picks the flight game")
+assert(ns.Arcade.IsFavorite("spellbounce"), "the star marks a favorite")
+Nav.favorites._scripts.OnClick(Nav.favorites)
+assert(Window.page == "favorites" and Window.cards.spellbounce._shown and not Window.favoritesEmpty._shown, "favorites page")
 star._scripts.OnClick(star)
-assert(DarkmoonArcadeDB.flightGame == "off", "a second click turns it off")
+assert(not ns.Arcade.IsFavorite("spellbounce") and Window.favoritesEmpty._shown, "a second click removes it")
+Nav.all._scripts.OnClick(Nav.all)
+for id, card in pairs(Window.cards) do assert(card._shown, "all games lists " .. id) end
+-- The bell: gold while an achievement is new, plain once the list was opened.
+DarkmoonArcadeDB.achievementsSeen = 0
+DarkmoonArcadeDB.achievements.mb_first = DarkmoonArcadeDB.achievements.mb_first or 1
+assert(ns.Bell:HasNew(), "a new achievement")
+ns.Bell.button._scripts.OnClick(ns.Bell.button)
+assert(ns.Bell.panel._shown and not ns.Bell:HasNew(), "opened: seen")
+assert(ns.Bell.rows[1]._shown, "the list shows it")
+ns.Bell.catcher._scripts.OnClick(ns.Bell.catcher)
+assert(not ns.Bell.panel._shown, "a click elsewhere closes it")
+-- Flights can open the favorites or the last game played.
+DarkmoonArcadeDB.flightGame = "favorites"
+Window:OpenForFlight()
+assert(Window.page == "favorites", "flights: favorites page")
+DarkmoonArcadeDB.lastGame, DarkmoonArcadeDB.flightGame = "jewelsofuldum", "last"
+Window:OpenForFlight()
+assert(Window.activeGame and Window.activeGame.id == "jewelsofuldum", "flights: the last game played")
 DarkmoonArcadeDB.flightGame = "murlocblast"
-Window:RefreshHub()
+Window:OpenHub()
 -- See-through while moving, but not under the mouse and not while standing.
 DarkmoonArcadeDB.fadeMoving, DarkmoonArcadeDB.fadeAlpha = true, 0.3
 Window.moving = true
@@ -931,6 +974,5 @@ for _, line in ipairs(printed) do
     if tostring(line):find("error") then error("captured: " .. tostring(line)) end
 end
 assert(not DarkmoonArcadeDB.errors, "errors recorded in SavedVariables")
-assert(DarkmoonArcadeDB.debug.chrome == "SimplePanelTemplate", "chrome template diagnostics")
 
 return results.murloc, results.flappy, results.clicks, results.best

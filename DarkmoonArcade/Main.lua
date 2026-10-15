@@ -33,6 +33,11 @@ local function InitDB()
     db.flightRate = db.flightRate or {}
     db.achievements = db.achievements or {}
     db.guild = db.guild or {}
+    -- Favorites came with the launcher (1.4.0); the game that used to open on flights starts as one.
+    if not db.favorites then
+        db.favorites = {}
+        if ns.Arcade.games[db.flightGame] then db.favorites[db.flightGame] = true end
+    end
     db.errors = nil
     db.debug = { build = select(4, GetBuildInfo()), locale = GetLocale() }
     ns.db = db

@@ -178,7 +178,7 @@ function M:SetJustifyV(j) self._justifyV = j end
 function M:SetWordWrap(w) self._wrap = w end
 function M:SetShadowOffset(x, y) self._shadow = (x ~= 0 or y ~= 0) end
 function M:SetSpacing(s) self._spacing = s end
-function M:GetStringWidth() return #(self._text or "") * self._size * 0.52 end
+function M:GetStringWidth() return #(self._text or "") * self._size * 0.6 end
 -- Wrapped texts: a rough line count per paragraph from the set width (UTF-8 characters, ~0.5 em each).
 function M:GetStringHeight()
     local text, size = self._text or "", self._size or 12
@@ -278,7 +278,7 @@ local function TextWidth(o)
     local text = (o._text or ""):gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", ""):gsub("|T.-|t", "WW")
     local widest = 0
     for line in (text .. "\n"):gmatch("(.-)\n") do widest = math.max(widest, #line) end
-    return widest * o._size * 0.56
+    return widest * o._size * 0.66
 end
 
 local resolving = {}

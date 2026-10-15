@@ -45,7 +45,8 @@ function SettingsPage.Definitions()
         { kind = "choice", tbl = db, key = "flightGame", label = "OPT_FLIGHT_GAME", tip = "OPT_FLIGHT_GAME_TIP",
             default = "murlocblast", onChange = function() Window:RefreshHub() end,
             choices = function()
-                local choices = { { "off", L.FLIGHT_OFF }, { "hub", L.FLIGHT_HUB } }
+                local choices = { { "off", L.FLIGHT_OFF }, { "hub", L.FLIGHT_HUB }, { "favorites", L.FLIGHT_FAVORITES },
+                    { "last", L.FLIGHT_LAST } }
                 for _, id in ipairs(ns.Arcade.order) do
                     choices[#choices + 1] = { id, L[ns.Arcade.games[id].nameKey] }
                 end
