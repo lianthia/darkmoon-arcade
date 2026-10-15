@@ -145,20 +145,26 @@ end
 
 -- The camp painting (media/mercs/camp: 1682x1024 of a 2048x1024 texture, tools/import_art.py) fills
 -- the view. Its things are the camp's places; each lights up under the mouse with its name.
+-- The places follow Hearthstone's camp: the tavern wagon holds the mercenaries, the training ground is
+-- the travel point, the fighting pit the highscores, the mailbox the announcements (roadmap), the
+-- task board by the campfire the achievements (later the tasks), the book the handbook (help).
+-- The workshop table and the merchant cart wait for equipment and dungeons.
 -- x, y: centre, w, h: size, all in camp units (920x560); label (and lx): where its name sits, from
 -- the centre (names near the edges move inwards).
 local SPOTS = {
-    travel = { x = 73, y = 282, w = 116, h = 112, label = 70, lx = 62 },        -- the map table
-    collection = { x = 862, y = 470, w = 150, h = 130, label = 78, lx = -50 }, -- the book
-    roadmap = { x = 424, y = 238, w = 128, h = 100, label = 64 },    -- the notice board
-    scores = { x = 736, y = 112, w = 236, h = 160, label = 86 },     -- the arena of tusks
-    achievements = { x = 668, y = 486, w = 104, h = 150, label = 88 }, -- the mailbox
-    help = { x = 160, y = 100, w = 160, h = 110, label = 66 },       -- the wagon
+    collection = { x = 160, y = 100, w = 160, h = 110, label = 66 },          -- the tavern wagon
+    travel = { x = 453, y = 83, w = 208, h = 119, label = 56 },               -- the training ground
+    scores = { x = 736, y = 112, w = 236, h = 160, label = 86 },              -- the fighting pit
+    roadmap = { x = 668, y = 486, w = 104, h = 150, label = 88, lx = -20 },   -- the mailbox
+    achievements = { x = 424, y = 238, w = 128, h = 100, label = 64 },        -- the task board
+    help = { x = 862, y = 470, w = 150, h = 130, label = 78, lx = -40 },      -- the book
 }
+-- How long every place shows its name when the camp opens, so a newcomer sees what is where.
+local REVEAL = 2.5
 
 -- The party round the fire in a flat hexagon: two behind it, two at its sides, two in front, with the
 -- fire itself left in view.
-local RING = { { 300, 438 }, { 240, 368 }, { 345, 312 }, { 521, 312 }, { 626, 368 }, { 566, 438 } }
+local RING = { { 335, 420 }, { 275, 366 }, { 345, 312 }, { 521, 312 }, { 591, 366 }, { 531, 420 } }
 local TOKEN_SCALE = 0.62
 
 local function Spot(parent, labels, def, onClick)
@@ -188,12 +194,14 @@ local function Spot(parent, labels, def, onClick)
         PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
     end)
     b:SetScript("OnLeave", function() b.over = false end)
-    -- Fades its light and name in and out.
+    b.reveal = 0
+    -- Fades its light and name in and out; shown for a moment when the camp opens.
     b:SetScript("OnUpdate", function(_, elapsed)
-        local target = b.over and 1 or 0
+        b.reveal = math.max(0, b.reveal - elapsed)
+        local target = (b.over or b.reveal > 0) and 1 or 0
         if b.hover ~= target then
             b.hover = target > b.hover and math.min(1, b.hover + elapsed * 6) or math.max(0, b.hover - elapsed * 6)
-            b.glow:SetAlpha(b.hover * 0.45)
+            b.glow:SetAlpha(b.hover * (b.over and 0.45 or 0.2))
             b.plaque:SetAlpha(b.hover)
             b.marker:SetAlpha(1 - b.hover)
         end
@@ -268,6 +276,12 @@ function Module:BuildCamp()
         ShowDetails(slot, false)
         self.campSlots[i] = slot
     end
+
+    -- Every place shows its name for a moment when the camp opens; they fade out one after another.
+    view.spots = { view.collection, view.travel, view.scores, view.roadmap, view.achievements, view.help }
+    view:HookScript("OnShow", function()
+        for i, spot in ipairs(view.spots) do spot.reveal = REVEAL + (i - 1) * 0.15 end
+    end)
 
     view.refresh = function() self:RefreshCamp() end
 end
