@@ -818,3 +818,28 @@ MC_MOD_XPPCT	+%d%% к опыту
 MC_MOD_COINPCT	+%d%% монет
 MC_MOD_RESIST	+%d%% к сопротивлению (%s)
 MC_MOD_RESIST_ALL	+%d%% к сопротивлению всем школам
+MC_ITEMS	Предметы
+MC_ITEMS_WORN	Надето
+MC_ITEMS_BAG	Сумка
+MC_ITEMS_NONE	Предметов пока нет. Их можно найти в добыче в подземельях.
+MC_ITEM_SLOT_LOCKED	Вторая ячейка на %d уровне
+MC_ITEM_EMPTY	Пустая ячейка
+MC_ITEM_JEWELRY	Украшение
+MC_ITEM_LEVEL	Уровень предмета %d
+MC_ITEM_ENCHANT	Чары: %s
+MC_ITEM_NO_ENCHANT	Без чар
+MC_ITEM_DISENCHANT_INTO	Распыление даст: %s
+MC_ITEM_WEAR	Надеть
+MC_ITEM_WEAR_SLOT	В ячейку %d
+MC_ITEM_REMOVE	Снять
+MC_ITEM_ENCHANT_BTN	Зачаровать
+MC_ITEM_DISENCHANT_BTN	Распылить
+MC_ITEM_DISENCHANT_SURE	Точно распылить?
+MC_ITEM_PICK_RECIPE	Выберите формулу
+MC_ITEM_NO_RECIPES	Нет известных формул для этого предмета. Их можно найти в добыче в подземельях.
+MC_ITEM_NO_JEWELRY_ENCHANT	Украшения нельзя зачаровать.
+MC_ITEM_FOUND_TITLE	Добыча!
+MC_ITEM_FOUND_SUB	Кому он достанется? Предмет навсегда останется у этого наёмника.
+MC_ITEM_FOUND_OWNED	Уже есть: распыление
+MC_ITEM_DISENCHANTED	Распылено
+MC_ITEM_GOT_MATERIAL	%dx %s в сумке материалов

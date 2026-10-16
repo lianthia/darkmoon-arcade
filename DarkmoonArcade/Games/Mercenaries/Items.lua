@@ -105,3 +105,37 @@ function Bounty.WornMods(entry)
     end
     return mods
 end
+
+-- Finds -------------------------------------------------------------------------------------------
+
+-- A found item waits in store.pendingItems until the player chose who gets it (it survives a reload).
+function Bounty.QueueItem(store, id)
+    store.pendingItems = store.pendingItems or {}
+    store.pendingItems[#store.pendingItems + 1] = id
+end
+
+function Bounty.PendingItem(store)
+    return store.pendingItems and store.pendingItems[1]
+end
+
+-- Hands the first waiting item to a recruited mercenary, or disenchants it (mercId nil). A mercenary
+-- that owns it already gets its materials instead. Returns "new" or "disenchanted", and for the latter
+-- the material and how many.
+function Bounty.ClaimItem(store, mercId, rng)
+    local id = Bounty.PendingItem(store)
+    if not id then return nil end
+    if mercId and not (store.mercs[mercId] and store.mercs[mercId].owned) then return nil end
+    table.remove(store.pendingItems, 1)
+    if #store.pendingItems == 0 then store.pendingItems = nil end
+    if mercId and Bounty.GiveItem(store, mercId, id) == "new" then return "new" end
+    return "disenchanted", Bounty.Disenchant(store, id, rng)
+end
+
+-- The items a mercenary owns but does not wear.
+function Bounty.BagItems(entry)
+    local out = {}
+    for _, id in ipairs(entry.items or {}) do
+        if not (entry.worn and (entry.worn[1] == id or entry.worn[2] == id)) then out[#out + 1] = id end
+    end
+    return out
+end

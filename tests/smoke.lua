@@ -810,6 +810,56 @@ mc.overlay:Show("confirm")
 mc:AbandonRun()
 mc.resultClose._scripts.OnClick(mc.resultClose)
 
+-- Items (dev copy until the dungeons): a find asks who gets it, the mercenary page wears, enchants and
+-- disenchants, the workshop shows the bag.
+MC.DEV = true
+local Bounty = MC.Bounty
+local first, blade = store.party[1], 5191
+Bounty.QueueItem(store, blade)
+Bounty.QueueItem(store, blade)
+mc:ShowView("camp")
+assert(mc.overlay.current == "itemfound", "a find asks who gets it")
+local takers = mc.itemFoundButtons
+assert(takers[1]._shown and takers[1].merc == first, "the party may take it")
+takers[1]._scripts.OnClick(takers[1])
+assert(Bounty.OwnsItem(store.mercs[first], blade) and store.mercs[first].worn[1] == blade, "worn at once")
+assert(mc.overlay.current == "itemfound", "the second find follows")
+takers[1]._scripts.OnClick(takers[1])
+assert(mc.overlay.current == "event" and next(store.materials), "a duplicate is disenchanted")
+assert(not Bounty.PendingItem(store), "nothing waits")
+mc.overlay:Hide()
+Bounty.GiveItem(store, first, 5443)
+for _, rid in ipairs(MC.RECIPE_ORDER) do Bounty.LearnRecipe(store, rid) end
+for mid in pairs(MC.Materials) do store.materials[mid] = 50 end
+mc.mercShown = first
+mc:ShowView("merc")
+local mv = mc.views.merc
+assert(mv.tabItems._shown, "the items tab in the dev copy")
+mv.tabItems._scripts.OnClick(mv.tabItems)
+assert(mv.itemSheet._shown and not mv.sheet._shown, "the items sheet")
+mv.bag[1]._scripts.OnClick(mv.bag[1])
+assert(mv.detail._shown and mv.disenchant._shown and mv.wear[1]._shown, "a bag item: wear or disenchant")
+mv.wear[1]._scripts.OnClick(mv.wear[1])
+assert(store.mercs[first].worn[1] == 5443, "worn from the bag, the other back in the bag")
+mv.enchant._scripts.OnClick(mv.enchant)
+assert(mv.pick._shown and mv.pickRows[1]._shown, "the formulas for armour")
+mv.pickRows[1]._scripts.OnClick(mv.pickRows[1])
+assert(Bounty.ItemEnchant(store.mercs[first], 5443), "enchanted")
+mv.bag[1]._scripts.OnClick(mv.bag[1])
+mv.disenchant._scripts.OnClick(mv.disenchant)
+assert(Bounty.OwnsItem(store.mercs[first], blade), "disenchanting asks first")
+mv.disenchant._scripts.OnClick(mv.disenchant)
+assert(not Bounty.OwnsItem(store.mercs[first], blade), "disenchanted for good")
+mc.overlay:Hide()
+mv.tabAbilities._scripts.OnClick(mv.tabAbilities)
+assert(mv.sheet._shown and not mv.itemSheet._shown, "back to the abilities")
+mc:ShowView("workshop")
+Tick(0.2)
+mc:ShowView("camp")
+store.mercs[first].items, store.mercs[first].worn, store.mercs[first].enchants = nil, nil, nil
+store.materials, store.recipes = nil, nil
+MC.DEV = false
+
 -- Spellbounce: play a whole map to its fireworks and continue on the next one.
 SlashCmdList.DARKMOONARCADE("spellbounce")
 local sb = Window.activeGame

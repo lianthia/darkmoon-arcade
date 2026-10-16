@@ -294,7 +294,7 @@ def main():
         for mid in MATERIAL_TIER:
             lines.append(f"    MC_M_{mid} = {lua_str(mat_names[loc][mid])},")
         for sid in recipes:
-            lines.append(f"    MC_E_{sid} = {lua_str(recipe_names[loc][sid])},")
+            lines.append(f"    MC_F_{sid} = {lua_str(recipe_names[loc][sid])},")
         lines.append("})")
     lines.append("")
     OUT.write_text("\n".join(lines), encoding="utf-8", newline="\n")

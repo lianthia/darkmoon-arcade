@@ -636,8 +636,12 @@ local function Complete(store, run)
         Bounty.Entry(store, id).coins = Bounty.Entry(store, id).coins + amount
         rewards.coins[id] = (rewards.coins[id] or 0) + amount
     end
+    -- Items with "+x% coins" add to their wearer's own share.
     for _, member in ipairs(run.party) do
-        if not member.guest then Give(member.id, run.heroic and 10 or 5) end
+        if not member.guest then
+            local coinPct = Bounty.WornMods(store.mercs[member.id]).coinPct or 0
+            Give(member.id, (run.heroic and 10 or 5) * (1 + coinPct))
+        end
     end
     for _, id in ipairs(zone.loot) do Give(id, (run.heroic and 25 or 12) * (first and 2 or 1)) end
     local gearMerc = zone.gear and zone.gear[key]
@@ -672,7 +676,8 @@ function Bounty.AfterBattle(store, run)
     for _, member in ipairs(run.party) do
         if not member.guest then
             local entry = store.mercs[member.id]
-            local xp = Bounty.FightXP(node, entry.level)
+            -- Items with "+x% experience" help bring new mercenaries up.
+            local xp = math.floor(Bounty.FightXP(node, entry.level) * (1 + (Bounty.WornMods(entry).xpPct or 0)) + 0.5)
             run.xp = run.xp + xp
             if Bounty.AddXP(entry, xp) > 0 then run.levelUps[#run.levelUps + 1] = member.id end
             entry.coins = entry.coins + 1

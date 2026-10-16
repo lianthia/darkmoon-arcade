@@ -201,7 +201,7 @@ function Module:BuildWorkshop()
     Kit.Place(back, W / 2, H - 30, view)
 
     -- Dev copy in debug mode: a handful of loot to try the workshop with.
-    view.devLoot = false
+    view.devLoot, view.devItem = false, false
     if MC.DEV then
         view.devLoot = Kit.Button(view, 140, 30, "MC_DEV_LOOT", function()
             local ids = {}
@@ -212,6 +212,14 @@ function Module:BuildWorkshop()
             self:RefreshWorkshop()
         end)
         Kit.Place(view.devLoot, W - 90, H - 30, view)
+        -- ... and a found item, to try who gets it.
+        view.devItem = Kit.Button(view, 140, 30, "MC_DEV_ITEM", function()
+            local ids = {}
+            for id in pairs(MC.Items) do ids[#ids + 1] = id end
+            Bounty.QueueItem(self:Store(), ids[math.random(#ids)])
+            self:ShowView("camp")
+        end)
+        Kit.Place(view.devItem, 90, H - 30, view)
     end
 
     view.refresh = function() self:RefreshWorkshop() end
@@ -221,6 +229,7 @@ function Module:RefreshWorkshop()
     local view, store = self.views.workshop, self:Store()
     self:SetScene(nil)
     if view.devLoot then view.devLoot:SetShown(MC.AutoBattleAllowed()) end
+    if view.devItem then view.devItem:SetShown(MC.AutoBattleAllowed()) end
     local bag = Bounty.Materials(store)
     for _, b in ipairs(view.slots) do SetMaterial(b, b.material, bag[b.material] or 0) end
 
@@ -239,7 +248,7 @@ function Module:RefreshWorkshop()
         row:SetShown(id ~= nil)
         if id then
             local recipe = MC.Recipes[id]
-            row.name:SetText(L["MC_E_" .. id])
+            row.name:SetText(L["MC_F_" .. id])
             row.info:SetText((recipe.kind == "weapon" and L.MC_RECIPE_WEAPON or L.MC_RECIPE_ARMOR) .. "  ·  "
                 .. RecipeBonus(recipe))
             for c, b in ipairs(row.costs) do

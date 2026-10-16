@@ -154,7 +154,8 @@ function Module:Build(container)
 
     -- The overlay comes first: views add pages of their own to it.
     self.overlay = Widgets.NewOverlay(container)
-    self.overlay.frame:SetFrameLevel(container:GetFrameLevel() + 70)
+    -- Above every view, also the camp's place names (+70 over the container).
+    self.overlay.frame:SetFrameLevel(container:GetFrameLevel() + 100)
     self:CreatePages()
 
     self.views = {}
@@ -749,6 +750,7 @@ function Module:CreatePages()
     end
 
     self:CreateResultPage()
+    self:CreateItemFoundPage()
 
     local confirm = overlay:AddPage("confirm")
     Widgets.PageTitle(confirm, "MC_ABANDON_TITLE", -150)

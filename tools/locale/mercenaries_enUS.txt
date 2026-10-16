@@ -818,3 +818,28 @@ MC_MOD_XPPCT	+%d%% experience
 MC_MOD_COINPCT	+%d%% coins
 MC_MOD_RESIST	+%d%% %s resistance
 MC_MOD_RESIST_ALL	+%d%% resistance to all schools
+MC_ITEMS	Items
+MC_ITEMS_WORN	Worn
+MC_ITEMS_BAG	Bag
+MC_ITEMS_NONE	No items yet. They are found as loot in dungeons.
+MC_ITEM_SLOT_LOCKED	Second slot at level %d
+MC_ITEM_EMPTY	Empty slot
+MC_ITEM_JEWELRY	Jewellery
+MC_ITEM_LEVEL	Item level %d
+MC_ITEM_ENCHANT	Enchanted: %s
+MC_ITEM_NO_ENCHANT	Not enchanted
+MC_ITEM_DISENCHANT_INTO	Disenchants into: %s
+MC_ITEM_WEAR	Wear
+MC_ITEM_WEAR_SLOT	Into slot %d
+MC_ITEM_REMOVE	Take off
+MC_ITEM_ENCHANT_BTN	Enchant
+MC_ITEM_DISENCHANT_BTN	Disenchant
+MC_ITEM_DISENCHANT_SURE	Really disenchant?
+MC_ITEM_PICK_RECIPE	Choose a formula
+MC_ITEM_NO_RECIPES	No known formula for this item. Formulas are found as loot in dungeons.
+MC_ITEM_NO_JEWELRY_ENCHANT	Jewellery cannot be enchanted.
+MC_ITEM_FOUND_TITLE	Loot!
+MC_ITEM_FOUND_SUB	Who gets it? The item stays with that mercenary for good.
+MC_ITEM_FOUND_OWNED	Has it: disenchanted
+MC_ITEM_DISENCHANTED	Disenchanted
+MC_ITEM_GOT_MATERIAL	%dx %s in the material bag

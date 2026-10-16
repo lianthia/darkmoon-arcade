@@ -90,5 +90,6 @@ Games\Mercenaries\Help.lua
 Games\Mercenaries\Result.lua
 Games\Mercenaries\Roadmap.lua
 Games\Mercenaries\Workshop.lua
+Games\Mercenaries\ItemsView.lua
 
 Main.lua

@@ -331,6 +331,7 @@ function Module:RefreshCamp()
     view.help.sub:SetText("")
     view.workshop.plaque.text:SetText(L.MC_WORKSHOP)
     view.workshop.sub:SetText(L.MC_WORKSHOP_SUB)
+    self:CheckPendingItems()
 end
 
 -- Travel point ------------------------------------------------------------------------------------
@@ -995,6 +996,7 @@ function Module:BuildMercView()
 
     local done = Kit.Button(view, 140, 30, "MC_DONE", function() self:ShowView("collection") end, "red")
     Kit.Place(done, W - 86, H - 20)
+    self:BuildMercItems(view)
     view.refresh = function() self:RefreshMercView() end
 end
 
@@ -1034,6 +1036,11 @@ function Module:RefreshMercView()
     end
     local gear = entry.gear or 1
     view.gearDesc:SetText(Describe.Mods(def.gear[gear].mods, def.abilities))
+    if self.itemSelMerc ~= id then
+        self.itemSelMerc, self.itemSel, self.itemPicking, self.itemSure = id, nil, false, false
+    end
+    self:RefreshMercItems()
+    view.sheet:SetShown(not view.itemSheet:IsShown())
 end
 
 -- Where a piece of equipment drops, for the tooltip of a locked one.

@@ -175,6 +175,44 @@ if Want("workshop") then
     GameTooltip:Hide()
     store.materials, store.recipes = nil, nil
 end
+if Want("items") or Want("itemfound") then
+    -- The dev copy shows the items: two worn (a level-60 mercenary), three in the bag.
+    local B = MC.Bounty
+    MC.DEV = true
+    local merc = store.party[1]
+    local entry = store.mercs[merc]
+    local level = entry.level
+    entry.level = MC.MAX_LEVEL
+    for _, id in ipairs({ 5191, 5443, 6463, 5444, 872 }) do B.GiveItem(store, merc, id) end
+    for _, id in ipairs({ 7418, 7426, 7771, 13421, 13464, 13635, 20015 }) do B.LearnRecipe(store, id) end
+    for id, n in pairs({ [10940] = 14, [10938] = 3, [10978] = 2, [11083] = 5, [11082] = 1, [11084] = 1 }) do
+        B.Materials(store)[id] = n
+    end
+    B.Enchant(store, merc, 5443, 7418)
+    if Want("items") then
+        mc.mercShown, mc.itemSelMerc = merc, merc
+        mc.mercItemsTab = true
+        mc.itemSel = { id = 6463 }
+        mc:ShowView("merc")
+        Snap("items")
+        mc.itemSel = { slot = 2 }
+        mc.itemPicking = true
+        mc:RefreshMercItems()
+        Snap("items_pick")
+        mc.itemPicking = false
+        mc.mercItemsTab = false
+    end
+    if Want("itemfound") then
+        B.QueueItem(store, 5198)
+        mc:ShowView("camp")
+        Snap("itemfound")
+        store.pendingItems = nil
+        mc.overlay:Hide()
+    end
+    entry.level, entry.items, entry.worn, entry.enchants = level, nil, nil, nil
+    store.materials, store.recipes = nil, nil
+    MC.DEV = false
+end
 mc:ShowView("collection")
 if Want("collection") then
     Snap("collection")

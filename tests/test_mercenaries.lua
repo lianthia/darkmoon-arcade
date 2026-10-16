@@ -561,6 +561,39 @@ test("disenchanting fills the bag, formulas turn it into an enchant", function()
     for id2 in pairs(TEST_ITEMS) do MC.Items[id2] = nil end
 end)
 
+test("found items wait for an owner; a duplicate or a refused one is disenchanted", function()
+    local store = NewStore()
+    local id = store.party[1]
+    local blade = 5191
+    eq(Bounty.ClaimItem(store, id), nil, "nothing waits")
+    Bounty.QueueItem(store, blade)
+    Bounty.QueueItem(store, blade)
+    Bounty.QueueItem(store, 5443)
+    eq(Bounty.ClaimItem(store, "nobody"), nil, "only a recruited mercenary")
+    eq(Bounty.PendingItem(store), blade, "still waiting")
+    eq(Bounty.ClaimItem(store, id), "new")
+    local result, mat, n = Bounty.ClaimItem(store, id, { rng = 5 })
+    eq(result, "disenchanted", "owned already")
+    eq(mat, 10978)
+    eq(n, 1)
+    eq(Bounty.ClaimItem(store, nil, { rng = 5 }), "disenchanted", "refused")
+    eq(store.pendingItems, nil)
+    eq(#Bounty.BagItems(store.mercs[id]), 0, "the blade is worn")
+end)
+
+test("comfort bonuses: more experience and coins for the wearer, nothing in the fight", function()
+    MC.Items.test_charm = { rarity = "rare", kind = "jewelry", level = 20, points = { xpPct = 4, coinPct = 2 } }
+    local store = NewStore()
+    local id = store.party[1]
+    local mods = Bounty.WornMods(store.mercs[id])
+    eq(mods.xpPct, nil)
+    Bounty.GiveItem(store, id, "test_charm")
+    mods = Bounty.WornMods(store.mercs[id])
+    assert(math.abs(mods.xpPct - 0.2) < 1e-9 and math.abs(mods.coinPct - 0.1) < 1e-9, "the charm's bonuses")
+    for key in pairs(MC.COMFORT) do assert(MC.ITEM_POINT[key], key) end
+    MC.Items.test_charm = nil
+end)
+
 test("resistances and spell damage change hits of their school", function()
     local function Hit(attackerMods, targetMods, school)
         local b = Combat.New({ Spec("a", "neutral", 20, nil, { mods = attackerMods }) },
