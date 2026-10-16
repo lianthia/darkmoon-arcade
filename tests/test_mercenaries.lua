@@ -807,6 +807,57 @@ test("dungeons: a task opens them, the path is fixed, every boss drops Classic l
     for _, rid in ipairs(run.recipesFound) do eq(MC.Recipes[rid].tier, 1, "tier 1 in normal") end
 end)
 
+test("Wailing Caverns: Verdan ends it until Hamuul's dream wakes Mutanus; the faerie dragon is rare", function()
+    local Quests = MC.Quests
+    local store = NewStore()
+    store.unlocks = { wailing = true }
+    local function Bosses(seed)
+        store.run = nil
+        local run = Bounty.NewRun(store, "wailing", false, seed)
+        local out = {}
+        for _, row in ipairs(run.map.layers) do
+            if row[1].type == "boss" then out[#out + 1] = row[1].boss end
+        end
+        return out, run
+    end
+    local dragons, runs = 0, 40
+    for seed = 1, runs do
+        local bosses = Bosses(seed * 48271 + 1700000000)
+        eq(bosses[#bosses], "verdan", "Verdan last")
+        for _, b in ipairs(bosses) do
+            assert(b ~= "mutanus", "Mutanus asleep")
+            if b == "faeriedragon" then dragons = dragons + 1 end
+        end
+    end
+    assert(dragons > 3 and dragons < runs - 5, "the faerie dragon now and then: " .. dragons)
+    -- Hamuul's second chain: the caverns with him, then 30 deviate creatures there.
+    Quests.State(store, "hamuul_naralex").step = 5
+    assert(Quests.Open(store, "hamuul_dream"))
+    Quests.OnBounty(store, { zone = "wailing", dungeon = "wailing", party = { { id = "hamuul" } } })
+    Quests.TurnIn(store, "hamuul_dream")
+    local run = { zone = "wailing", party = { { id = "hamuul" } } }
+    for _ = 1, 10 do
+        Quests.OnBattle(store, run, { phase = "won", units = {
+            a = { side = "ally", pidx = 1 },
+            e1 = { side = "enemy", id = "deviate_ravager", dead = true },
+            e2 = { side = "enemy", id = "deviate_adder", dead = true },
+            e3 = { side = "enemy", id = "druid_of_the_fang", dead = true },
+        } })
+    end
+    eq(Quests.Progress(store, "hamuul_dream"), 20, "deviate creatures only")
+    for _ = 1, 5 do
+        Quests.OnBattle(store, run, { phase = "won", units = {
+            a = { side = "ally", pidx = 1 },
+            e1 = { side = "enemy", id = "deviate_lasher", dead = true },
+            e2 = { side = "enemy", id = "deviate_guardian", dead = true },
+        } })
+    end
+    local _, unlock = Quests.TurnIn(store, "hamuul_dream")
+    eq(unlock, "wailing_mutanus")
+    local bosses = Bosses(3)
+    eq(bosses[#bosses], "mutanus", "Mutanus at the end once awake")
+end)
+
 test("dungeons: a boss in the middle offers a treasure, the last completes the run and counts for tasks", function()
     local store = NewStore()
     store.unlocks = { deadmines = true }

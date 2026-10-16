@@ -947,3 +947,19 @@ MC_ITEM_FOUND_WORN_TIP	Worn by %s now:
 MC_ITEM_FOR_SLOT	For the %s slot (%s)
 MC_ITEM_FOR_KIND	For the %s slot
 MC_ITEM_FOUND_COUNT	%d of %d
+MC_A_anacondra_s	Druid's Slumber
+MC_A_pythas_s	Thunderclap
+MC_A_cobrahn_s	Cobrahn Serpent Form
+MC_A_skum_s	Chained Bolt
+MC_A_serpentis_s	Healing Touch
+MC_A_faeriedragon_s	Sleep
+MC_A_verdan_s	Grasping Vines
+MC_A_mutanus_s	Naralex's Nightmare
+MC_ZD_wailing	The druid Naralex dreamt of healing the Barrens and fell into a nightmare. His Fanglords guard the caverns, twisted creatures crawl out. Verdan the Everliving waits at the end.
+MC_JOURNAL_RARE	Rare: appears in %d%% of runs
+MC_QK_DEVIATE	deviate creatures
+MC_QUEST_UNLOCK_wailing_mutanus	Wakes Mutanus the Devourer in the Wailing Caverns
+MC_Q_hamuul_dream_1_TITLE	Into the Nightmare
+MC_Q_hamuul_dream_1_TEXT	Hamuul goes down into the caverns where Naralex sleeps. The Fanglords must fall before the dream can be reached.
+MC_Q_hamuul_dream_2_TITLE	The Devourer Stirs
+MC_Q_hamuul_dream_2_TEXT	Every deviate creature that falls loosens the nightmare's grip. When Naralex begins to wake, the thing that feeds on his dream will rise.

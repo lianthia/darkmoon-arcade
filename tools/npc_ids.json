@@ -1067,6 +1067,97 @@
    "zhCN": "迪菲亚捕兽者"
   }
  },
+ "Deviate Adder": {
+  "de": "Deviatotter",
+  "display": 4317,
+  "id": 5048,
+  "info": "Deviate Adder is a level 18 - 19 Elite NPC. The location of this NPC is unknown.",
+  "name": "Deviate Adder",
+  "names": {
+   "esES": "Agregador descarriado",
+   "frFR": "Serpent déviant",
+   "ruRU": "Загадочный аспид",
+   "zhCN": "无毒飞蛇"
+  }
+ },
+ "Deviate Faerie Dragon": {
+  "de": "Deviatfeendrache",
+  "display": 1267,
+  "id": 5912,
+  "info": "Deviate Faerie Dragon is a level 20 Rare Elite NPC. The location of this NPC is unknown.",
+  "name": "Deviate Faerie Dragon",
+  "names": {
+   "esES": "Dragón férico descarriado",
+   "frFR": "Dragon féérique déviant",
+   "ruRU": "Загадочный волшебный дракон",
+   "zhCN": "变异精灵龙"
+  }
+ },
+ "Deviate Guardian": {
+  "de": "Deviatwächter",
+  "display": 755,
+  "id": 3637,
+  "info": "Deviate Guardian is a level 18 - 19 Elite NPC. The location of this NPC is unknown.",
+  "name": "Deviate Guardian",
+  "names": {
+   "esES": "Guardián descarriado",
+   "frFR": "Gardien déviant",
+   "ruRU": "Загадочный страж",
+   "zhCN": "变异守护者"
+  }
+ },
+ "Deviate Lasher": {
+  "de": "Deviatpeitscher",
+  "display": 8172,
+  "id": 5055,
+  "info": "Deviate Lasher is a level 19 - 20 NPC. The location of this NPC is unknown.",
+  "name": "Deviate Lasher",
+  "names": {
+   "esES": "Latigador descarriado",
+   "frFR": "Flagellant déviant",
+   "ruRU": "Загадочный плеточник",
+   "zhCN": "变异鞭笞者"
+  }
+ },
+ "Deviate Ravager": {
+  "de": "Deviatverheerer",
+  "display": 1747,
+  "id": 3636,
+  "info": "Deviate Ravager is a level 18 - 19 Elite NPC. The location of this NPC is unknown.",
+  "name": "Deviate Ravager",
+  "names": {
+   "esES": "Devastador descarriado",
+   "frFR": "Ravageur déviant",
+   "ruRU": "Загадочный опустошитель",
+   "zhCN": "变异破坏者"
+  }
+ },
+ "Deviate Stinglash": {
+  "de": "Deviatdornenpeitscher",
+  "display": 4091,
+  "id": 3631,
+  "info": "Deviate Stinglash is a level 16 - 17 Elite NPC. The location of this NPC is unknown.",
+  "name": "Deviate Stinglash",
+  "names": {
+   "esES": "Aguijolatigador descarriado",
+   "frFR": "Aiguillonneur déviant",
+   "ruRU": "Загадочный жалохлест",
+   "zhCN": "变异刺鞭蛇"
+  }
+ },
+ "Deviate Venomwing": {
+  "de": "Deviatgiftschwinge",
+  "display": 2706,
+  "id": 5756,
+  "info": "Deviate Venomwing is a level 20 - 21 Elite NPC. The location of this NPC is unknown.",
+  "name": "Deviate Venomwing",
+  "names": {
+   "esES": "Venala descarriada",
+   "frFR": "Venimeux des airs déviant",
+   "ruRU": "Загадочный крылояд",
+   "zhCN": "变异剧毒风蛇"
+  }
+ },
  "Devilsaur": {
   "de": "Teufelssaurier",
   "display": 5239,
@@ -1156,6 +1247,19 @@
    "frFR": "Drowned Skyborne",
    "ruRU": "Drowned Skyborne",
    "zhCN": "Drowned Skyborne"
+  }
+ },
+ "Druid of the Fang": {
+  "de": "Druide des Giftzahns",
+  "display": 4211,
+  "id": 3840,
+  "info": "Druid of the Fang is a level 19 - 20 Elite NPC. The location of this NPC is unknown.",
+  "name": "Druid of the Fang",
+  "names": {
+   "esES": "Druida del Colmillo",
+   "frFR": "Druide du Croc",
+   "ruRU": "Друид Клыка",
+   "zhCN": "尖牙德鲁伊"
   }
  },
  "Drywallow Crocolisk": {
@@ -1325,6 +1429,19 @@
    "frFR": "Empereur Dagran Thaurissan",
    "ruRU": "Император Дагран Тауриссан",
    "zhCN": "达格兰·索瑞森大帝"
+  }
+ },
+ "Evolving Ectoplasm": {
+  "de": "Entstehendes Ektoplasma",
+  "display": 1751,
+  "id": 3640,
+  "info": "Evolving Ectoplasm is a level 17 - 18 Elite NPC. The location of this NPC is unknown.",
+  "name": "Evolving Ectoplasm",
+  "names": {
+   "esES": "Ectoplasma en desarrollo",
+   "frFR": "Ectoplasme grandissant",
+   "ruRU": "Изменчивая эктоплазма",
+   "zhCN": "大型软浆怪"
   }
  },
  "Fandral Staghelm": {
@@ -2370,6 +2487,19 @@
    "zhCN": "Komuk"
   }
  },
+ "Kresh": {
+  "de": "Kresh",
+  "display": 5126,
+  "id": 3653,
+  "info": "Kresh is a level 20 Elite NPC. The location of this NPC is unknown.",
+  "name": "Kresh",
+  "names": {
+   "esES": "Kresh",
+   "frFR": "Kresh",
+   "ruRU": "Криг",
+   "zhCN": "克雷什"
+  }
+ },
  "Kul Tiras Sailor": {
   "de": "Matrose von Kul Tiras",
   "display": 3734,
@@ -2394,6 +2524,19 @@
    "frFR": "Guerrier de la jungle de Kurzen",
    "ruRU": "Партизан Курцена",
    "zhCN": "库尔森丛林战士"
+  }
+ },
+ "Lady Anacondra": {
+  "de": "Lady Anacondra",
+  "display": 4313,
+  "id": 3671,
+  "info": "Lady Anacondra is a level 20 Elite NPC. The location of this NPC is unknown.",
+  "name": "Lady Anacondra",
+  "names": {
+   "esES": "Lady Anacondra",
+   "frFR": "Dame Anacondra",
+   "ruRU": "Повелительница Анакондра",
+   "zhCN": "安娜科德拉"
   }
  },
  "Lady Jaina Proudmoore": {
@@ -2487,6 +2630,19 @@
    "zhCN": "魔王贝恩霍勒"
   }
  },
+ "Lord Cobrahn": {
+  "de": "Lord Kobrahn",
+  "display": 4213,
+  "id": 3669,
+  "info": "Lord Cobrahn is a level 20 Elite NPC. The location of this NPC is unknown.",
+  "name": "Lord Cobrahn",
+  "names": {
+   "esES": "Lord Cobrahn",
+   "frFR": "Seigneur Cobrahn",
+   "ruRU": "Лорд Кобран",
+   "zhCN": "考布莱恩"
+  }
+ },
  "Lord Jorach Ravenholdt": {
   "de": "Lord Jorach Ravenholdt",
   "display": 6572,
@@ -2524,6 +2680,32 @@
    "frFR": "Seigneur Melenas",
    "ruRU": "Лорд Меленас",
    "zhCN": "迈雷纳斯"
+  }
+ },
+ "Lord Pythas": {
+  "de": "Lord Pythas",
+  "display": 4214,
+  "id": 3670,
+  "info": "Lord Pythas is a level 21 Elite NPC. The location of this NPC is unknown.",
+  "name": "Lord Pythas",
+  "names": {
+   "esES": "Lord Pythas",
+   "frFR": "Seigneur Pythas",
+   "ruRU": "Лорд Питонас",
+   "zhCN": "皮萨斯"
+  }
+ },
+ "Lord Serpentis": {
+  "de": "Lord Serpentis",
+  "display": 4215,
+  "id": 3673,
+  "info": "Lord Serpentis is a level 21 Elite NPC. The location of this NPC is unknown.",
+  "name": "Lord Serpentis",
+  "names": {
+   "esES": "Lord Serpentis",
+   "frFR": "Seigneur Serpentis",
+   "ruRU": "Лорд Серпентис",
+   "zhCN": "瑟芬迪斯"
   }
  },
  "Magatha Grimtotem": {
@@ -2875,6 +3057,19 @@
    "frFR": "Ruisselier murloc",
    "ruRU": "Речной мурлок-бегун",
    "zhCN": "鱼人士兵"
+  }
+ },
+ "Mutanus the Devourer": {
+  "de": "Mutanus der Verschlinger",
+  "display": 4088,
+  "id": 3654,
+  "info": "Mutanus the Devourer is a level 22 Elite NPC. The location of this NPC is unknown.",
+  "name": "Mutanus the Devourer",
+  "names": {
+   "esES": "Mutanus el Devorador",
+   "frFR": "Mutanus le Dévoreur",
+   "ruRU": "Мутанус Пожиратель",
+   "zhCN": "吞噬者穆坦努斯"
   }
  },
  "Myzrael": {
@@ -3803,6 +3998,19 @@
    "zhCN": "劈颅猎人"
   }
  },
+ "Skum": {
+  "de": "Skum",
+  "display": 4203,
+  "id": 3674,
+  "info": "",
+  "name": "Skum",
+  "names": {
+   "esES": "Skum",
+   "frFR": "Skum",
+   "ruRU": "Шкам",
+   "zhCN": "斯卡姆"
+  }
+ },
  "Sneed": {
   "de": "Sneed",
   "display": 7125,
@@ -4310,6 +4518,19 @@
    "frFR": "Péon de la KapitalRisk",
    "ruRU": "Батрак Торговой компании",
    "zhCN": "风险投资公司雇工"
+  }
+ },
+ "Verdan the Everliving": {
+  "de": "Verdan der Ewiglebende",
+  "display": 4256,
+  "id": 5775,
+  "info": "Verdan the Everliving is a level 21 Elite NPC. The location of this NPC is unknown.",
+  "name": "Verdan the Everliving",
+  "names": {
+   "esES": "Verdan el Eterno",
+   "frFR": "Verdan l'Immortel",
+   "ruRU": "Вердан Бессмертный",
+   "zhCN": "永生者沃尔丹"
   }
  },
  "Vile Familiar": {

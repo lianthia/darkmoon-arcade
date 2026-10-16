@@ -947,3 +947,19 @@ MC_ITEM_FOUND_WORN_TIP	Lo lleva %s ahora:
 MC_ITEM_FOR_SLOT	Para la ranura %s (%s)
 MC_ITEM_FOR_KIND	Para la ranura %s
 MC_ITEM_FOUND_COUNT	%d de %d
+MC_A_anacondra_s	Somnolencia del druida
+MC_A_pythas_s	Trueno
+MC_A_cobrahn_s	Forma de serpiente de Cobrahn
+MC_A_skum_s	Descarga en cadena
+MC_A_serpentis_s	Toque curativo
+MC_A_faeriedragon_s	Dormir
+MC_A_verdan_s	Parras enredadoras
+MC_A_mutanus_s	Pesadilla de Naralex
+MC_ZD_wailing	El druida Naralex soñó con sanar Los Baldíos y cayó en una pesadilla. Sus señores colmillo guardan las cuevas y salen criaturas retorcidas. %s aguarda al final.
+MC_JOURNAL_RARE	Raro: aparece en el %d%% de las incursiones
+MC_QK_DEVIATE	criaturas descarriadas
+MC_QUEST_UNLOCK_wailing_mutanus	Despierta a Mutanus el Devorador en las Cuevas de los Lamentos
+MC_Q_hamuul_dream_1_TITLE	En la pesadilla
+MC_Q_hamuul_dream_1_TEXT	Hamuul desciende a las cuevas donde duerme Naralex. Los señores colmillo deben caer antes de llegar al sueño.
+MC_Q_hamuul_dream_2_TITLE	El Devorador se agita
+MC_Q_hamuul_dream_2_TEXT	Cada criatura descarriada que cae afloja el control de la pesadilla. Cuando Naralex empiece a despertar, lo que se alimenta de su sueño se alzará.

@@ -59,6 +59,11 @@ MC.QUEST_CHAINS = {
         { kind = "kill", race = "undead", count = 20, what = "UNDEAD" },
         { kind = "boss", zone = "duskwood" },
     } },
+    -- Into the Wailing Caverns after Naralex's dream: wakes Mutanus at their end.
+    hamuul_dream = { merc = "hamuul", requires = { chain = "hamuul_naralex" }, steps = {
+        { kind = "dungeon", dungeon = "wailing" },
+        { kind = "kill", prefix = "deviate_", zone = "wailing", count = 30, what = "DEVIATE", unlock = "wailing_mutanus" },
+    } },
     hamuul_naralex = { merc = "hamuul", steps = {
         { kind = "clear", zone = "mulgore" },
         { kind = "ability", slot = 2, count = 30 },

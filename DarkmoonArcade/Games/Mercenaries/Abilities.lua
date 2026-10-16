@@ -240,6 +240,15 @@ Define("gilnid_s", "Spell_Fire_Fireball", "fire", 5, 1, "enemy", { E("dot", 5, 3
 Define("smite_s", "INV_Gauntlets_05", "physical", 5, 2, "enemy", { E("damage", 7), E("stun") }, { ai = 0.7 })
 Define("greenskin_s", "Ability_Poisons", "nature", 5, 1, "enemy", { E("attack", 1), E("dot", 4, 3) })
 Define("cookie_s", "Spell_Holy_Heal", "holy", 4, 2, "none", { E("heal", 14, "self") }, { ai = 0.6 })
+-- Wailing Caverns: each boss's own ability from Classic.
+Define("anacondra_s", "Spell_Nature_Sleep", "nature", 3, 3, "enemy", { E("stun") }, { ai = 0.6 })
+Define("pythas_s", "Spell_Nature_ThunderClap", "nature", 6, 2, "none", { E("damage", 4, "all"), E("buff", "speed", 2, 2, "all") }, { harmful = true, ai = 0.7 })
+Define("cobrahn_s", "Spell_Nature_GuardianWard", "nature", 2, 3, "none", { E("buff", "atkPct", 0.5, 3, "self") }, { ai = 0.6 })
+Define("skum_s", "Spell_Nature_ChainLightning", "nature", 5, 1, "enemy", { E("damage", 7), E("damage", 4, "adjacent") })
+Define("serpentis_s", "Spell_Nature_HealingTouch", "nature", 6, 2, "ally", { E("heal", 20) }, { ai = 0.7 })
+Define("faeriedragon_s", "Spell_Nature_Sleep", "arcane", 3, 3, "none", { E("stun", "random") }, { harmful = true, ai = 0.6 })
+Define("verdan_s", "Spell_Nature_Earthquake", "physical", 7, 3, "none", { E("damage", 4, "all"), E("stun", "random") }, { harmful = true, ai = 0.7 })
+Define("mutanus_s", "Spell_Nature_Sleep", "shadow", 3, 2, "enemy", { E("damage", 4), E("stun") }, { ai = 0.7 })
 
 Define("galgosh_1", "Ability_Warrior_PunishingBlow", "physical", 6, 0, "enemy", { E("attack", 5) })
 Define("galgosh_2", "Spell_Nature_EarthBind", "nature", 4, 2, "enemy", { E("buff", "speed", 4, 2), E("damage", 5) })

@@ -14,7 +14,7 @@ local INK = { 0.2, 0.12, 0.05 }
 local LIST_X, LIST_W = 14, 250
 local PAGE_X = LIST_X + LIST_W + 12
 local PAGE_W = W - PAGE_X - 14
-local TOP, ROW_H, ROWS = 58, 52, 9
+local TOP, ROW_H, ROWS = 58, 52, 16
 local LOOT_ROWS = 6
 
 -- The mercenary whose task opens `unlock`.
@@ -155,6 +155,12 @@ function Module:RefreshJournal()
         local enc = zone.encounters[i]
         b:SetShown(enc ~= nil)
         if enc then
+            -- Many bosses share the list's height.
+            local rowH = math.min(ROW_H, (H - TOP - 76) / #zone.encounters)
+            b:SetHeight(rowH - 4)
+            b:ClearAllPoints()
+            b:SetPoint("TOP", 0, -8 - (i - 1) * rowH)
+            b.coin:SetScale(math.min(1, (rowH - 6) / 40))
             b.encounter = i
             local known = shown[i]
             local def = MC.Enemies[enc.boss]
@@ -164,7 +170,8 @@ function Module:RefreshJournal()
             end
             b.coin:SetMetal(enc.hidden and "gold" or "silver")
             b.name:SetText(known and L["MC_E_" .. enc.boss] or "???")
-            b.sub:SetText(enc.hidden and L.MC_JOURNAL_HIDDEN or "")
+            b.sub:SetText(enc.hidden and L.MC_JOURNAL_HIDDEN
+                or enc.chance and L.MC_JOURNAL_RARE:format(math.floor(enc.chance * 100 + 0.5)) or "")
             b.shade:SetColorTexture(1, 0.85, 0.5, i == self.journalEncounter and 0.2 or 0.06)
         end
     end
@@ -177,7 +184,8 @@ function Module:RefreshJournal()
         local merc = Dungeons.UnlockedBy(enc.hidden)
         view.bossText:SetText(L.MC_JOURNAL_HIDDEN_HINT:format(merc and Describe.MercName(merc) or "?"))
     else
-        view.bossText:SetText(enc.hidden and L.MC_JOURNAL_HIDDEN or "")
+        view.bossText:SetText(enc.hidden and L.MC_JOURNAL_HIDDEN
+            or enc.chance and L.MC_JOURNAL_RARE:format(math.floor(enc.chance * 100 + 0.5)) or "")
     end
     local loot = known and Dungeons.LootOf(id, i) or {}
     table.sort(loot, function(a, b) return a[2] > b[2] end)

@@ -251,6 +251,20 @@ if Want("dungeon") then
     mc:UpdateMapScroll(10)
     Snap("dungeon_map_start")
     MC.Bounty.Abandon(store, store.run)
+    store.run = nil
+    -- The Wailing Caverns in the Barrens, Mutanus still asleep.
+    store.unlocks.wailing = true
+    mc.travelContinent, mc.travelRegion, mc.travelZone = "kal", 2, "wailing"
+    mc:ShowView("travel")
+    Snap("dungeon_wc_travel")
+    mc:OpenJournal("wailing")
+    mc.journalEncounter = 6
+    mc:RefreshJournal()
+    Snap("dungeon_wc_journal")
+    mc:StartBounty("wailing", false)
+    mc:UpdateMapScroll(10)
+    Snap("dungeon_wc_map")
+    MC.Bounty.Abandon(store, store.run)
     store.run, store.unlocks = nil, nil
     mc.travelZone, mc.travelRegion = nil, nil
     mc:ShowView("camp")

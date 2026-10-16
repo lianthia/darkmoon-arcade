@@ -8,7 +8,8 @@
 --   region      the bounty zone whose map shows its entrance; spot: the entrance in that map (0..1)
 --   unlock      the store.unlocks key that opens it
 --   encounters  in order: boss, adds, npcs (whose loot it drops), trash before it (elite = an elite
---               fight), healer before it, hidden = the unlock that reveals it
+--               fight), healer before it, hidden = the unlock that reveals it, chance = a rare one that
+--               shows up in that share of the runs (as Classic's rare spawns)
 --   tier        the highest formula tier its bosses drop (heroic one more)
 
 local _, ns = ...
@@ -19,7 +20,7 @@ local Random = MC.Combat.Random
 local Dungeons = {}
 MC.Dungeons = Dungeons
 
-MC.DUNGEON_ORDER = { "deadmines" }
+MC.DUNGEON_ORDER = { "deadmines", "wailing" }
 
 MC.Zones.deadmines = {
     id = "deadmines", dungeon = true, continent = "ek", region = "westfall", spot = { 0.42, 0.74 },
@@ -40,6 +41,28 @@ MC.Zones.deadmines = {
             trash = { "defias_pirate", "defias_squallshaper", "defias_blackguard" }, healer = true },
     },
 }
+-- The four Fanglords, Kresh and Skum, Verdan where Naralex sleeps; Mutanus wakes once Naralex's
+-- dream is followed (Hamuul's tasks). The Deviate Faerie Dragon roams now and then.
+MC.Zones.wailing = {
+    id = "wailing", dungeon = true, continent = "kal", region = "barrens", spot = { 0.46, 0.36 },
+    min = 17, max = 24, boss = "verdan", unlock = "wailing", tier = 1,
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "anacondra", adds = { "druid_of_the_fang", "deviate_adder" }, npcs = { 3671 },
+            trash = { "druid_of_the_fang", "deviate_ravager", "deviate_stinglash", "deviate_adder" } },
+        { boss = "pythas", adds = { "druid_of_the_fang", "deviate_stinglash" }, npcs = { 3670 } },
+        { boss = "cobrahn", adds = { "druid_of_the_fang", "deviate_adder" }, npcs = { 3669 } },
+        { boss = "kresh", adds = { "deviate_guardian" }, npcs = { 3653 },
+            trash = { "deviate_guardian", "evolving_ectoplasm", "deviate_venomwing", "druid_of_the_fang" } },
+        { boss = "skum", adds = { "deviate_stinglash", "deviate_venomwing" }, npcs = { 3674 } },
+        { boss = "faeriedragon", adds = { "deviate_venomwing" }, npcs = { 5912 }, chance = 0.35 },
+        { boss = "serpentis", adds = { "druid_of_the_fang", "druid_of_the_fang", "deviate_guardian" }, npcs = { 3673 },
+            trash = { "deviate_lasher", "deviate_guardian", "deviate_ravager", "evolving_ectoplasm" }, elite = true },
+        { boss = "verdan", adds = { "deviate_lasher", "deviate_lasher", "deviate_lasher" }, npcs = { 5775 }, healer = true },
+        { boss = "mutanus", adds = { "deviate_ravager", "deviate_ravager" }, npcs = { 3654 }, hidden = "wailing_mutanus" },
+    },
+}
+
 for _, id in ipairs(MC.DUNGEON_ORDER) do
     local zone = MC.Zones[id]
     -- Every creature of the dungeon, for lists that want the zone's foes.
@@ -97,6 +120,13 @@ end
 function Dungeons.GenerateMap(rng, store, zone, heroic)
     local steps = {}
     local shown = Dungeons.Encounters(store, zone.id)
+    -- A rare encounter shows up in its share of the runs only.
+    local present = {}
+    for _, i in ipairs(shown) do
+        local chance = zone.encounters[i].chance
+        if not chance or Random(rng) < chance then present[#present + 1] = i end
+    end
+    shown = present
     for n, i in ipairs(shown) do
         local enc = zone.encounters[i]
         if enc.trash then steps[#steps + 1] = { kind = enc.elite and "elite" or "fight", pool = enc.trash } end

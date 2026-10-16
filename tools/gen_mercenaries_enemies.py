@@ -324,6 +324,15 @@ ENEMIES = {
     "goblin_engineer": ("Goblin Engineer", "caster", "goblin", 1.0, ["e_fireball", "e_explode"]),
     "goblin_craftsman": ("Goblin Craftsman", "protector", "goblin", 1.0, ["e_strike", "e_harden"]),
     "goblin_sneed": ("Sneed", "fighter", "goblin", 1.2, ["e_strike", "e_explode"]),
+    # Wailing Caverns (dungeon)
+    "druid_of_the_fang": ("Druid of the Fang", "caster", "nightelf", 1.0, ["e_lightning", "e_heal"]),
+    "deviate_ravager": ("Deviate Ravager", "fighter", "beast", 1.0, ["e_bite", "e_frenzy"]),
+    "deviate_stinglash": ("Deviate Stinglash", "fighter", "beast", 0.9, ["e_poison", "e_bite"]),
+    "deviate_guardian": ("Deviate Guardian", "protector", "beast", 1.1, ["e_claw", "e_guard"]),
+    "deviate_lasher": ("Deviate Lasher", "fighter", "elemental", 1.0, ["e_strike", "e_web"]),
+    "evolving_ectoplasm": ("Evolving Ectoplasm", "caster", "elemental", 1.0, ["e_frostbolt", "e_wave"]),
+    "deviate_venomwing": ("Deviate Venomwing", "fighter", "beast", 0.9, ["e_dive", "e_poison"]),
+    "deviate_adder": ("Deviate Adder", "fighter", "beast", 0.9, ["e_poison", "e_bite"]),
 }
 
 # key: (Wowhead name, role, race, hp, atk[, abilities, heroic ability]); without a list, the boss has its
@@ -338,6 +347,16 @@ BOSSES = {
     "smite": ("Mr. Smite", "fighter", "tauren", 220, 10, ["e_cleave", "e_thunderclap", "smite_s"], "e_enrage"),
     "greenskin": ("Captain Greenskin", "fighter", "goblin", 210, 10, ["e_strike", "e_cleave", "greenskin_s"], "e_rally"),
     "cookie": ("Cookie", "fighter", "murloc", 200, 9, ["e_strike", "e_wave", "cookie_s"], "e_frenzy"),
+    # Wailing Caverns (dungeon)
+    "anacondra": ("Lady Anacondra", "caster", "nightelf", 190, 5, ["e_lightning", "e_heal", "anacondra_s"], "e_renew"),
+    "pythas": ("Lord Pythas", "caster", "nightelf", 195, 5, ["e_lightning", "e_heal", "pythas_s"], "e_chainlight"),
+    "cobrahn": ("Lord Cobrahn", "caster", "nightelf", 200, 6, ["e_lightning", "e_poison", "cobrahn_s"], "e_heal"),
+    "kresh": ("Kresh", "protector", "beast", 250, 8, ["e_bite", "e_harden", "e_slam"], "e_guard"),
+    "skum": ("Skum", "fighter", "beast", 215, 9, ["e_bite", "e_frenzy", "skum_s"], "e_enrage"),
+    "serpentis": ("Lord Serpentis", "caster", "nightelf", 200, 6, ["e_lightning", "e_chainlight", "serpentis_s"], "e_renew"),
+    "faeriedragon": ("Deviate Faerie Dragon", "caster", "dragonkin", 185, 6, ["e_frostbolt", "e_dive", "faeriedragon_s"], "e_frenzy"),
+    "verdan": ("Verdan the Everliving", "protector", "elemental", 245, 9, ["e_slam", "e_harden", "verdan_s"], "e_thunderclap"),
+    "mutanus": ("Mutanus the Devourer", "fighter", "murloc", 230, 10, ["e_bite", "e_thunderclap", "mutanus_s"], "e_enrage"),
     "hogger": ("Hogger", "fighter", "gnoll", 210, 10),
     "thermaplugg": ("Mekgineer Thermaplugg", "caster", "gnome", 190, 6),
     "whitemane": ("High Inquisitor Whitemane", "caster", "human", 185, 5),

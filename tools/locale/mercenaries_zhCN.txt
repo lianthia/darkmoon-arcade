@@ -947,3 +947,19 @@ MC_ITEM_FOUND_WORN_TIP	%s当前装备：
 MC_ITEM_FOR_SLOT	适用于%s栏位（%s）
 MC_ITEM_FOR_KIND	适用于%s栏位
 MC_ITEM_FOUND_COUNT	%d / %d
+MC_A_anacondra_s	德鲁伊的睡眠
+MC_A_pythas_s	雷霆一击
+MC_A_cobrahn_s	考布莱恩毒蛇形态
+MC_A_skum_s	闪电链
+MC_A_serpentis_s	治疗之触
+MC_A_faeriedragon_s	催眠术
+MC_A_verdan_s	缠绕之藤
+MC_A_mutanus_s	纳拉雷克斯的梦魇
+MC_ZD_wailing	德鲁伊纳拉雷克斯梦想治愈贫瘠之地，却陷入梦魇。他的尖牙领主守卫着洞穴，扭曲的生物爬了出来。%s在尽头等待。
+MC_JOURNAL_RARE	稀有：在%d%%的探索中出现
+MC_QK_DEVIATE	变异生物
+MC_QUEST_UNLOCK_wailing_mutanus	在哀嚎洞穴中唤醒吞噬者穆坦努斯
+MC_Q_hamuul_dream_1_TITLE	深入梦魇
+MC_Q_hamuul_dream_1_TEXT	哈缪尔深入纳拉雷克斯沉睡的洞穴。在抵达梦境之前，必须击败尖牙领主。
+MC_Q_hamuul_dream_2_TITLE	吞噬者苏醒
+MC_Q_hamuul_dream_2_TEXT	每一个倒下的变异生物都会削弱梦魇的控制。当纳拉雷克斯开始苏醒，以他的梦为食的东西将会出现。

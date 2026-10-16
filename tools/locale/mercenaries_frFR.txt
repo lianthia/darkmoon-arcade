@@ -947,3 +947,19 @@ MC_ITEM_FOUND_WORN_TIP	Porté par %s actuellement :
 MC_ITEM_FOR_SLOT	Pour l'emplacement %s (%s)
 MC_ITEM_FOR_KIND	Pour l'emplacement %s
 MC_ITEM_FOUND_COUNT	%d sur %d
+MC_A_anacondra_s	Léthargie druidique
+MC_A_pythas_s	Coup de tonnerre
+MC_A_cobrahn_s	Forme de serpent de Cobrahn
+MC_A_skum_s	Eclairs en série
+MC_A_serpentis_s	Toucher guérisseur
+MC_A_faeriedragon_s	Sommeil
+MC_A_verdan_s	Lianes avides
+MC_A_mutanus_s	Cauchemar de Naralex
+MC_ZD_wailing	Le druide Naralex rêvait de guérir les Tarides et sombra dans un cauchemar. Ses seigneurs-crocs gardent les cavernes, des créatures déformées en sortent. %s attend au bout.
+MC_JOURNAL_RARE	Rare : apparaît dans %d%% des parcours
+MC_QK_DEVIATE	créatures déviantes
+MC_QUEST_UNLOCK_wailing_mutanus	Réveille Mutanus le Dévoreur dans les cavernes des Lamentations
+MC_Q_hamuul_dream_1_TITLE	Dans le cauchemar
+MC_Q_hamuul_dream_1_TEXT	Hamuul descend dans les cavernes où dort Naralex. Les seigneurs-crocs doivent tomber avant d'atteindre le rêve.
+MC_Q_hamuul_dream_2_TITLE	Le Dévoreur s'éveille
+MC_Q_hamuul_dream_2_TEXT	Chaque créature déviante qui tombe desserre l'emprise du cauchemar. Quand Naralex commencera à s'éveiller, ce qui se nourrit de son rêve se lèvera.
