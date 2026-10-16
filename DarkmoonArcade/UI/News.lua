@@ -21,13 +21,16 @@ local CAMP_ART, CAMP_V0, CAMP_V1 = 2821800, 0.255, 0.815
 -- Every release, newest first. items: icon and the number of their NEWS_<tag>_<key>_TITLE /
 -- _TEXT (tag: the version without dots); thanks: icon of the band NEWS_<tag>_THANKS;
 -- headline: the version has its own NEWS_<tag>_HEADLINE instead of "Patch x.y.z"; alpha: marked as a
--- preview in the list (drop it for the stable release).
+-- preview in the list (drop it for the stable release); art: a banner picture of its own instead of the
+-- camp painting.
 News.VERSIONS = {
     {
         -- Released as an alpha first: the list says so next to the number.
         version = "1.4.0",
         alpha = true,
         headline = true,
+        -- The Mercenaries key art (910x512 of a 1024x512 texture), round the heroes' faces.
+        art = { tex = "launcher/mercenaries", width = 910, height = 512, texWidth = 1024, texHeight = 512, v = 0.4 },
         items = {
             { icon = "INV_Misc_Spyglass_02", key = 1 },
             { icon = "INV_Jewelry_Talisman_04", key = 2 },
@@ -324,11 +327,21 @@ function News:Select(index, quiet)
     self.selected = index
     local v = News.VERSIONS[index]
     self.headline:SetText(self:Headline(v))
-    -- The painting at the banner's shape, a little further along for older versions.
     local w = self.art:GetWidth() or 780
-    local span = math.min(CAMP_V1 - CAMP_V0, (ART_H / math.max(1, w)) * 1024 / 768)
-    local top = CAMP_V0 + (CAMP_V1 - CAMP_V0 - span) * ((index - 1) % 3) / 2
-    self.picture:SetTexCoord(0, 1, top, top + span)
+    if v.art then
+        -- A picture of its own: its full width, the band round its centre `v` at the banner's shape.
+        local pw, ph = v.art.width, v.art.height
+        local span = math.min(1, (pw * ART_H / math.max(1, w)) / ph) * ph / v.art.texHeight
+        local top = math.max(0, math.min(ph / v.art.texHeight - span, v.art.v - span / 2))
+        self.picture:SetTexture(Media.Tex(v.art.tex))
+        self.picture:SetTexCoord(0, pw / v.art.texWidth, top, top + span)
+    else
+        -- The camp painting at the banner's shape, a little further along for older versions.
+        local span = math.min(CAMP_V1 - CAMP_V0, (ART_H / math.max(1, w)) * 1024 / 768)
+        local top = CAMP_V0 + (CAMP_V1 - CAMP_V0 - span) * ((index - 1) % 3) / 2
+        self.picture:SetTexture(CAMP_ART)
+        self.picture:SetTexCoord(0, 1, top, top + span)
+    end
     for i, b in ipairs(self.tabs) do
         local vi = News.VERSIONS[i]
         local chosen = i == index
