@@ -946,3 +946,4 @@ MC_ITEM_FOUND_FREE	Ranura libre
 MC_ITEM_FOUND_WORN_TIP	Lo lleva %s ahora:
 MC_ITEM_FOR_SLOT	Para la ranura %s (%s)
 MC_ITEM_FOR_KIND	Para la ranura %s
+MC_ITEM_FOUND_COUNT	%d de %d

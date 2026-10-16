@@ -482,18 +482,52 @@ local function SetSlot(f, kind, id, open, target)
     f.glow:SetShown(target)
 end
 
+-- The waiting finds side by side above the chosen one; a click (or the arrows) picks the find to give
+-- away next, so a better one can go first.
+local LOOT_ICON, LOOT_MAX = 28, 24
+
 function Module:CreateItemFoundPage()
     local page = self.overlay:AddPage("itemfound")
-    Widgets.PageTitle(page, "MC_ITEM_FOUND_TITLE", -26)
-    local card = MC.OptionButton(page, 260, 170)
-    card:SetPoint("TOP", 0, -70)
+    Widgets.PageTitle(page, "MC_ITEM_FOUND_TITLE", -18)
+    page.count = Widgets.Text(page, 12, "gray")
+    page.count:SetPoint("TOP", 0, -56)
+    page.loot = {}
+    for i = 1, LOOT_MAX do
+        local f = SlotFrame(page)
+        f:SetSize(LOOT_ICON, LOOT_ICON)
+        f.glow:SetSize(LOOT_ICON * 1.9, LOOT_ICON * 1.9)
+        f:EnableMouse(true)
+        f:SetScript("OnMouseUp", function()
+            MC.Sound("select")
+            self.foundIndex = i
+            self.overlay:Refresh()
+        end)
+        f:SetScript("OnEnter", function()
+            local id = self:Store().pendingItems and self:Store().pendingItems[i]
+            if id then self:ItemTooltip(f, id) end
+        end)
+        f:SetScript("OnLeave", GameTooltip_Hide)
+        page.loot[i] = f
+    end
+    local card = MC.OptionButton(page, 260, 160)
+    card:SetPoint("TOP", 0, -112)
     card:EnableMouse(false)
     Kit.NoHover(card)
+    page.prev = Kit.Arrow(page, -1, function()
+        self.foundIndex = math.max(1, (self.foundIndex or 1) - 1)
+        self.overlay:Refresh()
+    end)
+    page.prev:SetPoint("RIGHT", card, "LEFT", -16, 0)
+    page.next = Kit.Arrow(page, 1, function()
+        self.foundIndex = (self.foundIndex or 1) + 1
+        self.overlay:Refresh()
+    end)
+    page.next:SetPoint("LEFT", card, "RIGHT", 16, 0)
     local sub = Widgets.LocalizedText(page, 13, "blue", "MC_ITEM_FOUND_SUB")
-    sub:SetPoint("TOP", 0, -258)
+    sub:SetPoint("TOP", 0, -280)
     local buttons = {}
     for i = 1, 6 do
-        local b = MC.OptionButton(page, 120, 160)
+        local b = MC.OptionButton(page, 120, 196)
         b:SetScript("OnClick", function() self:ClaimFoundItem(b.merc) end)
         -- Its slots with what it wears; the tooltip sets the find beside what it would replace.
         b.slots = {}
@@ -504,7 +538,7 @@ function Module:CreateItemFoundPage()
         end
         b:HookScript("OnEnter", function()
             local store = self:Store()
-            local id = Bounty.PendingItem(store)
+            local id = store.pendingItems and store.pendingItems[self.foundIndex or 1]
             if not (id and b.merc) then return end
             self:ItemTooltip(b, id)
             local entry = store.mercs[b.merc]
@@ -526,13 +560,31 @@ function Module:CreateItemFoundPage()
         buttons[i] = b
     end
     local away = Kit.Button(page, 180, 30, "MC_ITEM_DISENCHANT_BTN", function() self:ClaimFoundItem(nil) end, "red")
-    away:SetPoint("TOP", 0, -470)
+    away:SetPoint("TOP", 0, -504)
     self.itemFoundButtons, self.itemFoundAway = buttons, away
     page.refresh = function()
         local store = self:Store()
-        local id = Bounty.PendingItem(store)
+        local pending = store.pendingItems or {}
+        local index = math.max(1, math.min(self.foundIndex or 1, #pending))
+        self.foundIndex = index
+        local id = pending[index]
         local item = id and MC.Items[id]
         if not item then return end
+        page.count:SetText(L.MC_ITEM_FOUND_COUNT:format(index, #pending))
+        local shown = math.min(#pending, LOOT_MAX)
+        for i, f in ipairs(page.loot) do
+            local lootId = pending[i]
+            f:SetShown(i <= shown)
+            if i <= shown then
+                SetSlot(f, 1, lootId, true, i == index)
+                f:ClearAllPoints()
+                f:SetPoint("TOP", page, "TOP", (i - (shown + 1) / 2) * (LOOT_ICON + 6), -74)
+            end
+        end
+        page.prev:SetShown(#pending > 1)
+        page.next:SetShown(#pending > 1)
+        page.prev:SetEnabled(index > 1)
+        page.next:SetEnabled(index < #pending)
         card.icon:SetTexture(item.icon)
         card.name:SetText(MC.ItemName(id))
         local kind, slotName = L[SLOT_KEYS[MC.ItemSlot(item)]], MC.SlotName(item.slot)
@@ -566,7 +618,7 @@ function Module:CreateItemFoundPage()
                 b.desc:SetText(Bounty.OwnsItem(entry, id) and L.MC_ITEM_FOUND_OWNED
                     or later and L.MC_ITEM_FOUND_LATER:format(MC.MAX_LEVEL) or "")
                 b:ClearAllPoints()
-                b:SetPoint("TOP", page, "TOP", (i - (#mercs + 1) / 2) * 130, -290)
+                b:SetPoint("TOP", page, "TOP", (i - (#mercs + 1) / 2) * 130, -300)
             end
         end
     end
@@ -574,7 +626,7 @@ end
 
 function Module:ClaimFoundItem(mercId)
     local store = self:Store()
-    local result, mat, n = Bounty.ClaimItem(store, mercId)
+    local result, mat, n = Bounty.ClaimItem(store, mercId, nil, self.foundIndex or 1)
     if not result then return end
     PlaySound(SOUNDKIT.IG_QUEST_LIST_COMPLETE)
     if result == "disenchanted" and mat then

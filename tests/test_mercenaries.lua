@@ -602,6 +602,15 @@ test("found items wait for an owner; a duplicate or a refused one is disenchante
     eq(Bounty.ClaimItem(store, nil, { rng = 5 }), "disenchanted", "refused")
     eq(store.pendingItems, nil)
     eq(#Bounty.BagItems(store.mercs[id]), 0, "the blade is worn")
+    -- Any waiting find can go first.
+    Bounty.QueueItem(store, 5444)
+    Bounty.QueueItem(store, 5191)
+    Bounty.QueueItem(store, 872)
+    eq(Bounty.ClaimItem(store, store.party[2], nil, 3), "new", "the third one first")
+    assert(Bounty.OwnsItem(store.mercs[store.party[2]], 872))
+    eq(store.pendingItems[1], 5444)
+    eq(store.pendingItems[2], 5191)
+    eq(Bounty.ClaimItem(store, store.party[2], nil, 5), nil, "no such find")
 end)
 
 test("comfort bonuses: more experience and coins for the wearer, nothing in the fight", function()

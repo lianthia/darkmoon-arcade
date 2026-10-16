@@ -2,6 +2,7 @@ local _, ns = ...
 
 -- English and German so far; the other languages fall back to English until the full release.
 ns.AddStrings("enUS", {
+    MC_ITEM_FOUND_COUNT = "%d of %d",
     MC_ITEM_FOR_KIND = "For the %s slot",
     MC_ITEM_FOR_SLOT = "For the %s slot (%s)",
     MC_ITEM_FOUND_FREE = "Slot free",
@@ -1038,6 +1039,7 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    MC_ITEM_FOUND_COUNT = "%d von %d",
     MC_ITEM_FOR_KIND = "Für den Platz %s",
     MC_ITEM_FOR_SLOT = "Für den Platz %s (%s)",
     MC_ITEM_FOUND_FREE = "Platz frei",

@@ -134,14 +134,15 @@ function Bounty.PendingItem(store)
     return store.pendingItems and store.pendingItems[1]
 end
 
--- Hands the first waiting item to a recruited mercenary, or disenchants it (mercId nil). A mercenary
--- that owns it already gets its materials instead. Returns "new" or "disenchanted", and for the latter
--- the material and how many.
-function Bounty.ClaimItem(store, mercId, rng)
-    local id = Bounty.PendingItem(store)
+-- Hands a waiting item (the `index`th, the first by default) to a recruited mercenary, or disenchants
+-- it (mercId nil). A mercenary that owns it already gets its materials instead. Returns "new" or
+-- "disenchanted", and for the latter the material and how many.
+function Bounty.ClaimItem(store, mercId, rng, index)
+    index = index or 1
+    local id = store.pendingItems and store.pendingItems[index]
     if not id then return nil end
     if mercId and not (store.mercs[mercId] and store.mercs[mercId].owned) then return nil end
-    table.remove(store.pendingItems, 1)
+    table.remove(store.pendingItems, index)
     if #store.pendingItems == 0 then store.pendingItems = nil end
     if mercId and Bounty.GiveItem(store, mercId, id) == "new" then return "new" end
     return "disenchanted", Bounty.Disenchant(store, id, rng)

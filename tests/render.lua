@@ -204,7 +204,8 @@ if Want("items") or Want("itemfound") then
         mc.mercItemsTab = false
     end
     if Want("itemfound") then
-        B.QueueItem(store, 5198)
+        for _, id in ipairs({ 5198, 5444, 5195, 1937, 5200, 6463, 5187 }) do B.QueueItem(store, id) end
+        mc.foundIndex = 2
         mc:ShowView("camp")
         Snap("itemfound")
         store.pendingItems = nil

@@ -952,6 +952,19 @@ assert(not store.run, "back from the dungeon")
 mc:ShowView("camp")
 assert(mc.overlay.current == "itemfound", "the find page after the dungeon")
 assert(mc.itemFoundButtons[1].desc._text ~= nil, "what the mercenary wears in that slot")
+-- The waiting finds side by side: the last one is picked and given away first.
+local finds = mc.overlay.pages.itemfound.loot
+local last = math.min(#store.pendingItems, #finds)
+local lastId = store.pendingItems[last]
+finds[last]._scripts.OnMouseUp(finds[last])
+assert(mc.foundIndex == last, "a find picked from the row")
+local before = #store.pendingItems
+local firstId = store.pendingItems[1]
+mc.itemFoundButtons[2]._scripts.OnClick(mc.itemFoundButtons[2])
+local left = store.pendingItems or {}
+assert(#left == before - 1 and (before == 1 or left[1] == firstId), "the picked find went out, the first still waits")
+assert(MC.Bounty.OwnsItem(store.mercs[mc.itemFoundButtons[2].merc], lastId), "the mercenary has it")
+if mc.overlay.current == "event" then mc.eventContinue._scripts.OnClick(mc.eventContinue) end
 local waiting = #store.pendingItems
 mc.itemFoundAway._scripts.OnClick(mc.itemFoundAway)
 assert(mc.overlay.current == "event", "the materials of the disenchanted find")
