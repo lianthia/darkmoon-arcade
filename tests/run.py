@@ -10,7 +10,8 @@ ADDON = ROOT / "DarkmoonArcade"
 
 def main() -> int:
     lua = lupa.LuaRuntime(unpack_returned_tuples=True)
-    lua.execute("ns = {}")
+    # Texts are not needed by the logic tests.
+    lua.execute("ns = { AddStrings = function() end }")
     loader = lua.eval(
         "function(code, name) local f, err = loadstring(code, name); if not f then error(err) end; f('DarkmoonArcade', ns) end"
     )
@@ -32,6 +33,8 @@ def main() -> int:
         "Games/Mercenaries/Enemies.lua",
         "Games/Mercenaries/Zones.lua",
         "Games/Mercenaries/Bounty.lua",
+        "Games/Mercenaries/ItemData.lua",
+        "Games/Mercenaries/Items.lua",
     ):
         loader((ADDON / rel).read_text(encoding="utf-8"), "@" + rel)
 

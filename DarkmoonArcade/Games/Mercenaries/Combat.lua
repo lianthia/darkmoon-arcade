@@ -52,6 +52,16 @@ local function Mod(u, key)
     return u.mods[key] or 0
 end
 
+-- Bonus damage of a school: its own, all damage, and for spells (any school but physical) spell damage.
+local function SchoolBonus(u, school)
+    return Mod(u, "dmgPct") + Mod(u, "school_" .. school) + (school ~= "physical" and Mod(u, "spellPct") or 0)
+end
+
+-- What reaches a target of its school: resistances (items) take off a share, at most 75 %.
+local function Resisted(tgt, school)
+    return 1 - math.min(0.75, Mod(tgt, "resist_" .. school))
+end
+
 local function Buff(u, key)
     local sum = 0
     for _, buff in ipairs(u.buffs) do
@@ -309,11 +319,11 @@ function Combat.PreviewDamage(b, u, slotIndex, tgt)
         end
     end
     if hits == 0 then return nil end
-    local mult = 1 + Mod(u, "dmgPct") + Buff(u, "dmg") + Mod(u, "school_" .. school)
+    local mult = 1 + SchoolBonus(u, school) + Buff(u, "dmg")
     local adv = BEATS[u.role] == tgt.role
     if adv then mult = mult * 2 end
     mult = mult * GapMultiplier(u, tgt)
-    mult = mult * math.max(0.1, 1 + Mod(tgt, "takenPct") + Buff(tgt, "taken"))
+    mult = mult * math.max(0.1, 1 + Mod(tgt, "takenPct") + Buff(tgt, "taken")) * Resisted(tgt, school)
     if tgt.hp < tgt.maxHp * 0.3 then mult = mult * (1 + Mod(u, "executePct")) end
     local ambush = Buff(u, "ambush")
     if ambush > 0 and (def.target == "enemy" or def.harmful) then mult = mult * (1 + ambush) end
@@ -359,11 +369,11 @@ local function Damage(ctx, src, tgt, amount, school, opts)
         Event(b, { t = "miss", src = src.uid, dst = tgt.uid })
         return 0
     end
-    local mult = 1 + Mod(src, "dmgPct") + Buff(src, "dmg") + Mod(src, "school_" .. school)
+    local mult = 1 + SchoolBonus(src, school) + Buff(src, "dmg")
     local adv = BEATS[src.role] == tgt.role
     if adv then mult = mult * 2 end
     mult = mult * GapMultiplier(src, tgt)
-    mult = mult * math.max(0.1, 1 + Mod(tgt, "takenPct") + Buff(tgt, "taken"))
+    mult = mult * math.max(0.1, 1 + Mod(tgt, "takenPct") + Buff(tgt, "taken")) * Resisted(tgt, school)
     if tgt.hp < tgt.maxHp * 0.3 then mult = mult * (1 + Mod(src, "executePct")) end
     if ctx.ambush then mult = mult * (1 + ctx.ambush) end
     local crit = Random(b) < Mod(src, "critChance")
@@ -526,7 +536,7 @@ end
 EFFECTS.dot = function(ctx, e)
     local u = ctx.unit
     local school = e.school or ctx.school
-    local tick = ctx.value(e.v) * (1 + Mod(u, "dmgPct") + Mod(u, "school_" .. school))
+    local tick = ctx.value(e.v) * (1 + SchoolBonus(u, school))
     for _, t in ipairs(Targets(ctx, e.to)) do
         if not t.dead then
             t.dots[#t.dots + 1] = { v = tick, t = e.turns or 2, school = school, src = u.uid }
@@ -690,7 +700,8 @@ local function TickDots(b, u)
             if dot.heal then
                 Heal(b, src or u, u, dot.v)
             else
-                local dmg = math.max(1, math.floor(dot.v * math.max(0.1, 1 + Mod(u, "takenPct") + Buff(u, "taken")) + 0.5))
+                local taken = math.max(0.1, 1 + Mod(u, "takenPct") + Buff(u, "taken")) * Resisted(u, dot.school)
+                local dmg = math.max(1, math.floor(dot.v * taken + 0.5))
                 Hurt(b, src, u, dmg, dot.school, { dot = true })
             end
         end

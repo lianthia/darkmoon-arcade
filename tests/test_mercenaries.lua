@@ -447,4 +447,56 @@ test("damage preview matches the hit and shows the role advantage", function()
     end
 end)
 
+-- Items ---------------------------------------------------------------------------------------------
+
+local TEST_ITEMS = {
+    test_blade = { rarity = "rare", kind = "weapon", points = { atkPct = 4, critChance = 2 } },
+    test_cloak = { rarity = "uncommon", kind = "armor", points = { resist_fire = 2, xpPct = 2 } },
+}
+
+test("items stay within their rarity's budget", function()
+    for id, item in pairs(MC.Items) do
+        assert(MC.ITEM_BUDGET[item.rarity], id .. ": rarity")
+        assert(MC.ItemPoints(item) <= MC.ITEM_BUDGET[item.rarity], id .. ": over budget")
+        for key in pairs(item.points) do assert(MC.ITEM_POINT[key], id .. ": unknown bonus " .. key) end
+    end
+end)
+
+test("items belong to one mercenary, a second slot opens at the highest level", function()
+    for id, item in pairs(TEST_ITEMS) do MC.Items[id] = item end
+    local store = NewStore()
+    local id = store.party[1]
+    eq(Bounty.GiveItem(store, id, "test_blade"), "new")
+    eq(store.mercs[id].worn[1], "test_blade", "worn at once")
+    eq(Bounty.GiveItem(store, id, "test_blade"), "duplicate")
+    eq(Bounty.GiveItem(store, id, "test_cloak"), "new")
+    eq(store.mercs[id].worn[2], nil, "one slot below the highest level")
+    assert(not Bounty.WearItem(store, id, 2, "test_cloak"), "no second slot yet")
+    store.mercs[id].level = MC.MAX_LEVEL
+    assert(Bounty.WearItem(store, id, 2, "test_cloak"), "second slot")
+    assert(not Bounty.WearItem(store, store.party[2], 1, "test_blade"), "not someone else's item")
+    -- Wearing it in the other slot swaps them.
+    assert(Bounty.WearItem(store, id, 1, "test_cloak"))
+    eq(store.mercs[id].worn[2], "test_blade")
+    local spec = Bounty.MercSpec(store, id)
+    assert(math.abs((spec.mods.critChance or 0) - 0.02) < 1e-9, "item bonus in the fight")
+    assert(math.abs((spec.mods.resist_fire or 0) - 0.08) < 1e-9, "resistance")
+    for id2 in pairs(TEST_ITEMS) do MC.Items[id2] = nil end
+end)
+
+test("resistances and spell damage change hits of their school", function()
+    local function Hit(attackerMods, targetMods, school)
+        local b = Combat.New({ Spec("a", "neutral", 20, nil, { mods = attackerMods }) },
+            { Spec("t", "neutral", 20, nil, { mods = targetMods, hp = 1000 }) }, 3)
+        local a, t = b.units[b.bench.ally[1]], b.units[b.board.enemy[1]]
+        return Combat.Damage({ b = b }, a, t, 100, school)
+    end
+    eq(Hit({}, {}, "fire"), 100, "plain")
+    eq(Hit({}, { resist_fire = 0.25 }, "fire"), 75, "fire resistance")
+    eq(Hit({}, { resist_fire = 0.25 }, "frost"), 100, "only its school")
+    eq(Hit({}, { resist_fire = 2 }, "fire"), 25, "at most 75 %")
+    eq(Hit({ spellPct = 0.2 }, {}, "fire"), 120, "spell damage")
+    eq(Hit({ spellPct = 0.2 }, {}, "physical"), 100, "not for physical hits")
+end)
+
 return passed, failed

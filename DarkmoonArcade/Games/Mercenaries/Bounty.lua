@@ -185,6 +185,7 @@ function Bounty.MercSpec(store, id, member, run)
     local mods = {}
     local gear = def.gear[entry.gear or 1]
     if gear then AddMods(mods, gear.mods) end
+    AddMods(mods, Bounty.WornMods(entry))
     if member then
         for _, t in ipairs(member.treasures) do AddMods(mods, MC.Treasures[t].mods) end
     end
