@@ -874,6 +874,18 @@ mc:ShowView("camp")
 
 -- The Deadmines (dev copy): the portal in Westfall, the adventure guide, then the whole dungeon with
 -- "Play all turns", its loot waiting in the camp afterwards.
+-- Debug mode offers to open the locked dungeon (for testing) and reveals its hidden boss, too.
+DarkmoonArcadeDB.debugMode = true
+mc.views.camp.travel._scripts.OnClick(mc.views.camp.travel)
+mc.travelContinent, mc.travelRegion, mc.travelZone = "ek", 3, "deadmines"
+mc:RefreshTravel(true)
+assert(travel.boss.devUnlock._shown, "test unlock offered")
+travel.boss.devUnlock._scripts.OnClick(travel.boss.devUnlock)
+assert(MC.Dungeons.IsOpen(store, "deadmines") and MC.Quests.Unlocked(store, "deadmines_johnson"), "opened for testing")
+assert(not travel.boss.devUnlock._shown, "nothing left to open")
+DarkmoonArcadeDB.debugMode = false
+mc.travelZone, mc.travelRegion = nil, nil
+mc:ShowView("camp")
 store.unlocks = { deadmines = true }
 local levels = {}
 for _, id in ipairs(store.party) do levels[id], store.mercs[id].level = store.mercs[id].level, MC.MAX_LEVEL end

@@ -533,6 +533,20 @@ function Module:BuildBossPanel(view)
     -- A dungeon's adventure guide, below the map.
     panel.guide = Kit.Button(view, 190, 26, "MC_JOURNAL", function() self:OpenJournal(self.travelZone) end, "blue")
     Kit.Place(panel.guide, 14 + MAP_W - 100, H - 16)
+    -- Dev copy in debug mode: opens a locked dungeon and reveals its hidden bosses, for testing.
+    panel.devUnlock = Kit.Button(view, 170, 26, "MC_DEV_UNLOCK", function()
+        local zone = MC.Zones[self.travelZone]
+        if not (zone and zone.dungeon) then return end
+        local store = self:Store()
+        store.unlocks = store.unlocks or {}
+        store.unlocks[zone.unlock] = true
+        for _, enc in ipairs(zone.encounters) do
+            if enc.hidden then store.unlocks[enc.hidden] = true end
+        end
+        PlaySound(SOUNDKIT.IG_QUEST_LIST_COMPLETE)
+        self:RefreshTravel()
+    end)
+    Kit.Place(panel.devUnlock, 14 + MAP_W - 300, H - 16)
     panel.hint = Kit.Ink(panel, 13, { 1, 0.9, 0.7 }, "OUTLINE")
     panel.hint:SetPoint("CENTER", 0, 0)
     panel.hint:SetWidth(190)
@@ -702,6 +716,8 @@ function Module:RefreshBossPanel()
     panel.hint:SetShown(zone == nil)
     panel.hint:SetText(L.MC_PICK_ZONE)
     panel.guide:SetShown(zone ~= nil and zone.dungeon == true)
+    panel.devUnlock:SetShown(zone ~= nil and zone.dungeon == true and MC.AutoBattleAllowed()
+        and not (MC.Dungeons.IsOpen(store, zid) and #MC.Dungeons.Encounters(store, zid) == #zone.encounters))
     panel.title.text:SetText((zone and zone.dungeon) and L.MC_DUNGEON or L.MC_BOSS_INFO)
     if not zone then return end
     local art = ZONE_ART[zid]
