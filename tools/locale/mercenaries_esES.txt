@@ -1124,3 +1124,6 @@ MC_Q_drekthar_frostwolf_3_TITLE	Los ogros del paso
 MC_Q_drekthar_frostwolf_3_TEXT	Los ogros saquean los rebaños Lobo Gélido. Drek'Thar los quiere fuera.
 MC_Q_drekthar_frostwolf_4_TITLE	Tierras del Interior
 MC_Q_drekthar_frostwolf_4_TEXT	Un médico brujo trol gobierna las Tierras del Interior con magia oscura. Drek'Thar lo enfrentará sin caer.
+MC_QUESTS_PARTY	En el grupo
+MC_QUESTS_BENCH	En reserva
+MC_QUESTS_DONE	Completadas

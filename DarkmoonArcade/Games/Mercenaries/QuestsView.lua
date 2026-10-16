@@ -14,8 +14,10 @@ local INK = { 0.2, 0.12, 0.05 }
 local LIST_X, LIST_W = 14, 250
 local PAGE_X = LIST_X + LIST_W + 12
 local PAGE_W = W - PAGE_X - 14
-local TOP, ROW_H = 58, 50
-local ROWS = 8
+local TOP, ROW_H, HEAD_H = 58, 50, 26
+local ROWS = 14
+-- Room for the rows on one page (the arrows sit below).
+local LIST_ROOM = H - TOP - 60 - 52
 
 local ICON_AVAILABLE = "Interface\\GossipFrame\\AvailableQuestIcon"
 local ICON_READY = "Interface\\GossipFrame\\ActiveQuestIcon"
@@ -92,7 +94,17 @@ function Module:BuildQuests()
         b.sub:SetPoint("TOPLEFT", b.name, "BOTTOMLEFT", 0, -3)
         b.sub:SetWidth(LIST_W - 60)
         b.sub:SetJustifyH("LEFT")
+        -- A section's heading uses the same row.
+        b.head = Kit.Ink(b, 12, { 1, 0.82, 0.4 }, "OUTLINE")
+        b.head:SetPoint("BOTTOMLEFT", 6, 4)
+        b.head:SetJustifyH("LEFT")
+        b.rule = b:CreateTexture(nil, "ARTWORK")
+        b.rule:SetHeight(1)
+        b.rule:SetPoint("BOTTOMLEFT", 6, 1)
+        b.rule:SetPoint("BOTTOMRIGHT", -6, 1)
+        b.rule:SetColorTexture(1, 0.82, 0.4, 0.35)
         b:SetScript("OnClick", function()
+            if not b.chain then return end
             MC.Sound("select")
             self.questShown = b.chain
             self:RefreshQuests()
@@ -168,14 +180,47 @@ end
 function Module:RefreshQuests()
     local view, store = self.views.quests, self:Store()
     self:SetScene(nil)
-    -- Running chains first, a mercenary's together; finished ones at the end.
-    local open, done = {}, {}
+    -- Sections: chains of the party's mercenaries, those on the bench, finished ones. Inside a section the
+    -- chains with a task to hand in come first.
+    local party = {}
+    for _, merc in ipairs(store.party or {}) do party[merc] = true end
+    local sections = { { key = "MC_QUESTS_PARTY", list = {} }, { key = "MC_QUESTS_BENCH", list = {} },
+        { key = "MC_QUESTS_DONE", list = {} } }
+    local open = {}
     for _, chain in ipairs(MC.QUEST_CHAIN_ORDER) do
         if Quests.Open(store, chain) then
-            table.insert(Quests.Done(store, chain) and done or open, chain)
+            local merc = MC.QUEST_CHAINS[chain].merc
+            local section = Quests.Done(store, chain) and 3 or party[merc] and 1 or 2
+            table.insert(sections[section].list, chain)
         end
     end
-    for _, chain in ipairs(done) do open[#open + 1] = chain end
+    for k = 1, 2 do
+        local list, ready, rest = sections[k].list, {}, {}
+        for _, chain in ipairs(list) do table.insert(Quests.IsReady(store, chain) and ready or rest, chain) end
+        for _, chain in ipairs(rest) do ready[#ready + 1] = chain end
+        sections[k].list = ready
+    end
+    -- The rows in order, split into pages that fit; a section going on to the next page repeats its heading.
+    local pagesList, page, room = {}, {}, LIST_ROOM
+    local function Add(entry, h)
+        if room < h and #page > 0 then
+            pagesList[#pagesList + 1] = page
+            page, room = {}, LIST_ROOM
+            if entry.chain and entry.section then Add({ head = entry.section }, HEAD_H) end
+        end
+        page[#page + 1] = entry
+        room = room - h
+    end
+    for _, section in ipairs(sections) do
+        if #section.list > 0 then
+            Add({ head = section.key }, HEAD_H)
+            for _, chain in ipairs(section.list) do
+                open[#open + 1] = chain
+                Add({ chain = chain, section = section.key }, ROW_H)
+            end
+        end
+    end
+    if #page > 0 then pagesList[#pagesList + 1] = page end
     -- The chosen chain: the one shown before, else the first with a task to hand in, else the first.
     local shown = self.questShown
     if not (shown and Quests.Open(store, shown)) then
@@ -188,27 +233,47 @@ function Module:RefreshQuests()
         end
     end
     self.questShown = shown
-    local pages = math.max(1, math.ceil(#open / ROWS))
-    local page = math.min(self.questPage or 1, pages)
-    self.questPage = page
+    local pages = math.max(1, #pagesList)
+    local pageIndex = math.min(self.questPage or 1, pages)
+    self.questPage = pageIndex
+    local entries, y = pagesList[pageIndex] or {}, 8
     for i, b in ipairs(view.rows) do
-        local chain = open[(page - 1) * ROWS + i]
-        b:SetShown(chain ~= nil)
-        b.chain = chain
-        if chain then
-            local merc = MC.QUEST_CHAINS[chain].merc
-            local task, step = Quests.Current(store, chain)
-            b.name:SetText(Describe.MercName(merc))
-            b.mark:SetTexture(not task and ICON_DONE or Quests.IsReady(store, chain) and ICON_READY or ICON_AVAILABLE)
-            b.sub:SetText(L["MC_Q_" .. chain .. "_" .. math.min(step, #MC.QUEST_CHAINS[chain].steps) .. "_TITLE"])
-            b:SetAlpha(task and 1 or 0.55)
-            b.shade:SetColorTexture(1, 0.85, 0.5, chain == shown and 0.2 or 0.06)
+        local entry = entries[i]
+        b:SetShown(entry ~= nil)
+        b.chain = entry and entry.chain
+        if entry then
+            local isHead = entry.head ~= nil and entry.chain == nil
+            local h = isHead and HEAD_H or ROW_H
+            b:SetHeight(h - 4)
+            b:ClearAllPoints()
+            b:SetPoint("TOP", 0, -y)
+            y = y + h
+            b.head:SetShown(isHead)
+            b.rule:SetShown(isHead)
+            b.mark:SetShown(not isHead)
+            b.name:SetShown(not isHead)
+            b.sub:SetShown(not isHead)
+            b:EnableMouse(not isHead)
+            if isHead then
+                b.head:SetText(L[entry.head])
+                b:SetAlpha(1)
+                b.shade:SetColorTexture(0, 0, 0, 0)
+            else
+                local chain = entry.chain
+                local merc = MC.QUEST_CHAINS[chain].merc
+                local task, step = Quests.Current(store, chain)
+                b.name:SetText(Describe.MercName(merc))
+                b.mark:SetTexture(not task and ICON_DONE or Quests.IsReady(store, chain) and ICON_READY or ICON_AVAILABLE)
+                b.sub:SetText(L["MC_Q_" .. chain .. "_" .. math.min(step, #MC.QUEST_CHAINS[chain].steps) .. "_TITLE"])
+                b:SetAlpha(task and 1 or 0.55)
+                b.shade:SetColorTexture(1, 0.85, 0.5, chain == shown and 0.2 or 0.06)
+            end
         end
     end
     view.prev:SetShown(pages > 1)
     view.next:SetShown(pages > 1)
-    view.prev:SetEnabled(page > 1)
-    view.next:SetEnabled(page < pages)
+    view.prev:SetEnabled(pageIndex > 1)
+    view.next:SetEnabled(pageIndex < pages)
     if not shown then return end
 
     local def = MC.QUEST_CHAINS[shown]

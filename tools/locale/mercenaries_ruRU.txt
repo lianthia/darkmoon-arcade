@@ -1124,3 +1124,6 @@ MC_Q_drekthar_frostwolf_3_TITLE	Огры перевала
 MC_Q_drekthar_frostwolf_3_TEXT	Огры грабят стада Северных Волков. Дрек'Тар хочет, чтобы они исчезли.
 MC_Q_drekthar_frostwolf_4_TITLE	Внутренние земли
 MC_Q_drekthar_frostwolf_4_TEXT	Тролль-знахарь правит Внутренними землями с помощью темной магии. Дрек'Тар встретит его и не падет.
+MC_QUESTS_PARTY	В отряде
+MC_QUESTS_BENCH	В запасе
+MC_QUESTS_DONE	Завершено

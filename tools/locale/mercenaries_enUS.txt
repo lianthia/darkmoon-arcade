@@ -1124,3 +1124,6 @@ MC_Q_drekthar_frostwolf_3_TITLE	Ogres of the Pass
 MC_Q_drekthar_frostwolf_3_TEXT	Ogres raid the Frostwolf herds. Drek'Thar wants them gone.
 MC_Q_drekthar_frostwolf_4_TITLE	The Hinterlands
 MC_Q_drekthar_frostwolf_4_TEXT	A troll witch doctor rules the Hinterlands with dark magic. Drek'Thar will face him and not fall.
+MC_QUESTS_PARTY	In the party
+MC_QUESTS_BENCH	On the bench
+MC_QUESTS_DONE	Completed

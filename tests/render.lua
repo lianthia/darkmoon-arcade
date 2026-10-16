@@ -222,6 +222,11 @@ if Want("quests") then
     MC.Bounty.ZoneState(store, "mulgore").normal = 1
     MC.Quests.TurnIn(store, "bolvar_defias")
     MC.Quests.State(store, "bolvar_defias").count = 7
+    -- Two mercenaries on the bench, one chain finished.
+    MC.Bounty.Entry(store, "thrall").owned = true
+    MC.Bounty.Entry(store, "jaina").owned = true
+    MC.Bounty.ZoneState(store, "durotar").normal = 1
+    MC.Quests.State(store, "mankrik_olgra").step = 5
     mc.questShown = "bolvar_defias"
     mc:ShowView("quests")
     Snap("quests")
@@ -231,6 +236,7 @@ if Want("quests") then
     mc:ShowView("camp")
     Snap("quests_camp")
     store.quests, mc.questShown = nil, nil
+    store.mercs.thrall.owned, store.mercs.jaina.owned = false, false
     MC.DEV = false
 end
 if Want("dungeon") then

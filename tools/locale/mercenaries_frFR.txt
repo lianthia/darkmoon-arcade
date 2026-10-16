@@ -1124,3 +1124,6 @@ MC_Q_drekthar_frostwolf_3_TITLE	Les ogres du col
 MC_Q_drekthar_frostwolf_3_TEXT	Des ogres pillent les troupeaux des Loups-de-givre. Drek'Thar veut qu'ils partent.
 MC_Q_drekthar_frostwolf_4_TITLE	Les Hinterlands
 MC_Q_drekthar_frostwolf_4_TEXT	Un sorcier-docteur troll règne sur les Hinterlands par la magie noire. Drek'Thar l'affrontera sans tomber.
+MC_QUESTS_PARTY	Dans le groupe
+MC_QUESTS_BENCH	En réserve
+MC_QUESTS_DONE	Terminées

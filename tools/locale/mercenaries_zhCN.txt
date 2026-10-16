@@ -1124,3 +1124,6 @@ MC_Q_drekthar_frostwolf_3_TITLE	山口的食人魔
 MC_Q_drekthar_frostwolf_3_TEXT	食人魔劫掠霜狼的畜群。德雷克塔尔要他们滚开。
 MC_Q_drekthar_frostwolf_4_TITLE	辛特兰
 MC_Q_drekthar_frostwolf_4_TEXT	一名巨魔巫医用黑暗魔法统治着辛特兰。德雷克塔尔将直面他，绝不倒下。
+MC_QUESTS_PARTY	队伍中
+MC_QUESTS_BENCH	候补
+MC_QUESTS_DONE	已完成

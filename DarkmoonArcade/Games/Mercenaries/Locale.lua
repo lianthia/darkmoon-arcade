@@ -2,6 +2,9 @@ local _, ns = ...
 
 -- English and German so far; the other languages fall back to English until the full release.
 ns.AddStrings("enUS", {
+    MC_QUESTS_PARTY = "In the party",
+    MC_QUESTS_BENCH = "On the bench",
+    MC_QUESTS_DONE = "Completed",
     MC_QK_TROGG = "troggs",
     MC_QK_DARKIRON = "Dark Iron dwarves",
     MC_QK_BLACKROCK = "Blackrock orcs",
@@ -1217,6 +1220,9 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    MC_QUESTS_PARTY = "In der Gruppe",
+    MC_QUESTS_BENCH = "Auf der Bank",
+    MC_QUESTS_DONE = "Abgeschlossen",
     MC_QK_TROGG = "Troggs",
     MC_QK_DARKIRON = "Dunkeleisenzwerge",
     MC_QK_BLACKROCK = "Schwarzfelsorcs",
