@@ -442,6 +442,46 @@ end
 
 -- Find page ----------------------------------------------------------------------------------------
 
+-- The three slots under a mercenary on the find page: the client's empty-slot pictures, or what is
+-- worn there; the slot the find goes to glows, a slot not open yet (jewellery below the highest level)
+-- is tinted red.
+local SLOT_ICON = {
+    "Interface\\PaperDoll\\UI-PaperDoll-Slot-MainHand", "Interface\\PaperDoll\\UI-PaperDoll-Slot-Chest",
+    "Interface\\PaperDoll\\UI-PaperDoll-Slot-Finger",
+}
+local SLOT_SIZE = 30
+
+local function SlotFrame(parent)
+    local f = CreateFrame("Frame", nil, parent)
+    f:SetSize(SLOT_SIZE, SLOT_SIZE)
+    f.back = f:CreateTexture(nil, "BORDER")
+    f.back:SetAllPoints()
+    f.icon = f:CreateTexture(nil, "ARTWORK")
+    f.icon:SetPoint("TOPLEFT", 2, -2)
+    f.icon:SetPoint("BOTTOMRIGHT", -2, 2)
+    f.lock = f:CreateTexture(nil, "OVERLAY")
+    f.lock:SetAllPoints(f.icon)
+    f.lock:SetColorTexture(0.75, 0.08, 0.05, 0.55)
+    f.glow = f:CreateTexture(nil, "OVERLAY", nil, 2)
+    f.glow:SetPoint("CENTER")
+    f.glow:SetSize(SLOT_SIZE * 1.9, SLOT_SIZE * 1.9)
+    f.glow:SetTexture("Interface\\Buttons\\UI-ActionButton-Border")
+    f.glow:SetBlendMode("ADD")
+    f.glow:SetVertexColor(1, 0.85, 0.3)
+    return f
+end
+
+local function SetSlot(f, kind, id, open, target)
+    local item = id and MC.Items[id]
+    f.icon:SetTexture(item and item.icon or SLOT_ICON[kind])
+    f.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+    f.icon:SetDesaturated(not open)
+    local c = item and MC.RARITY_COLORS[item.rarity] or { 0.25, 0.2, 0.15 }
+    f.back:SetColorTexture(c[1], c[2], c[3], 0.95)
+    f.lock:SetShown(not open)
+    f.glow:SetShown(target)
+end
+
 function Module:CreateItemFoundPage()
     local page = self.overlay:AddPage("itemfound")
     Widgets.PageTitle(page, "MC_ITEM_FOUND_TITLE", -26)
@@ -453,13 +493,15 @@ function Module:CreateItemFoundPage()
     sub:SetPoint("TOP", 0, -258)
     local buttons = {}
     for i = 1, 6 do
-        local b = MC.OptionButton(page, 120, 150)
+        local b = MC.OptionButton(page, 120, 160)
         b:SetScript("OnClick", function() self:ClaimFoundItem(b.merc) end)
-        -- What the mercenary wears in that slot now: a small picture at the portrait, the item's name
-        -- below, both items side by side in the tooltip.
-        b.worn = Kit.Medallion(b, 30, true)
-        b.worn:SetPoint("CENTER", b.icon, "BOTTOMRIGHT", -2, 4)
-        b.worn:EnableMouse(false)
+        -- Its slots with what it wears; the tooltip sets the find beside what it would replace.
+        b.slots = {}
+        for k = 1, #MC.ITEM_SLOT_KINDS do
+            local f = SlotFrame(b)
+            f:SetPoint("BOTTOM", b, "BOTTOM", (k - 2) * (SLOT_SIZE + 6), 12)
+            b.slots[k] = f
+        end
         b:HookScript("OnEnter", function()
             local store = self:Store()
             local id = Bounty.PendingItem(store)
@@ -484,7 +526,7 @@ function Module:CreateItemFoundPage()
         buttons[i] = b
     end
     local away = Kit.Button(page, 180, 30, "MC_ITEM_DISENCHANT_BTN", function() self:ClaimFoundItem(nil) end, "red")
-    away:SetPoint("TOP", 0, -462)
+    away:SetPoint("TOP", 0, -470)
     self.itemFoundButtons, self.itemFoundAway = buttons, away
     page.refresh = function()
         local store = self:Store()
@@ -493,7 +535,9 @@ function Module:CreateItemFoundPage()
         if not item then return end
         card.icon:SetTexture(item.icon)
         card.name:SetText(MC.ItemName(id))
-        card.desc:SetText(Describe.Mods(MC.ItemMods(item)))
+        local kind, slotName = L[SLOT_KEYS[MC.ItemSlot(item)]], MC.SlotName(item.slot)
+        local forSlot = kind == slotName and L.MC_ITEM_FOR_KIND:format(kind) or L.MC_ITEM_FOR_SLOT:format(kind, slotName)
+        card.desc:SetText(forSlot .. "\n" .. Describe.Mods(MC.ItemMods(item)))
         card:SetRarity(item.rarity)
         local mercs = {}
         for _, member in ipairs(store.run and store.run.party or {}) do
@@ -514,28 +558,13 @@ function Module:CreateItemFoundPage()
                 local entry = store.mercs[merc]
                 local slot = MC.ItemSlot(item)
                 local later = slot > MC.ItemSlots(entry)
-                local wornId = entry.worn and entry.worn[slot]
-                local worn = wornId and MC.Items[wornId]
-                b.wornId = wornId
-                b.worn:SetShown(worn ~= nil)
-                if worn then
-                    b.worn.icon:SetTexture(worn.icon)
-                    local c = MC.RARITY_COLORS[worn.rarity]
-                    b.worn.ring:SetDesaturated(true)
-                    b.worn.ring:SetVertexColor(c[1], c[2], c[3])
+                b.wornId = entry.worn and entry.worn[slot]
+                local open = MC.ItemSlots(entry)
+                for k, f in ipairs(b.slots) do
+                    SetSlot(f, k, entry.worn and entry.worn[k], k <= open, k == slot)
                 end
-                local text
-                if Bounty.OwnsItem(entry, id) then
-                    text = L.MC_ITEM_FOUND_OWNED
-                elseif later then
-                    text = L.MC_ITEM_FOUND_LATER:format(MC.MAX_LEVEL)
-                elseif worn then
-                    local ink = MC.RARITY_INKS[worn.rarity]
-                    text = ("|cff%02x%02x%02x%s|r"):format(ink[1] * 255, ink[2] * 255, ink[3] * 255, MC.ItemName(wornId))
-                else
-                    text = L.MC_ITEM_FOUND_FREE
-                end
-                b.desc:SetText(text)
+                b.desc:SetText(Bounty.OwnsItem(entry, id) and L.MC_ITEM_FOUND_OWNED
+                    or later and L.MC_ITEM_FOUND_LATER:format(MC.MAX_LEVEL) or "")
                 b:ClearAllPoints()
                 b:SetPoint("TOP", page, "TOP", (i - (#mercs + 1) / 2) * 130, -290)
             end
