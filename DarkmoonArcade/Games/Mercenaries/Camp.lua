@@ -148,7 +148,8 @@ end
 -- The places follow Hearthstone's camp: the tavern wagon holds the mercenaries, the training ground is
 -- the travel point, the fighting pit the highscores, the mailbox the announcements (roadmap), the
 -- task board by the campfire the achievements (later the tasks), the book the handbook (help).
--- The workshop table and the merchant cart wait for equipment and dungeons.
+-- The workshop table holds the material bag and the formulas (Workshop.lua; for now only in the dev
+-- copy, until items come with the dungeons); the merchant cart waits for the dungeons.
 -- x, y: centre, w, h: size, all in camp units (920x560); label (and lx): where its name sits, from
 -- the centre (names near the edges move inwards).
 local SPOTS = {
@@ -158,6 +159,7 @@ local SPOTS = {
     roadmap = { x = 668, y = 486, w = 104, h = 150, label = 88, lx = -20 },   -- the mailbox
     achievements = { x = 424, y = 238, w = 128, h = 100, label = 64 },        -- the task board
     help = { x = 862, y = 470, w = 150, h = 130, label = 78, lx = -40 },      -- the book
+    workshop = { x = 100, y = 290, w = 120, h = 110, label = 70, lx = 30 },   -- the map table
 }
 -- How long every place shows its name when the camp opens, so a newcomer sees what is where.
 local REVEAL = 2.5
@@ -246,6 +248,8 @@ function Module:BuildCamp()
     view.scores = Spot(view, labels, SPOTS.scores, function() self.overlay:Show("scores") end)
     view.achievements = Spot(view, labels, SPOTS.achievements, function() self:ShowAchievements() end)
     view.help = Spot(view, labels, SPOTS.help, function() self:ShowHelp() end)
+    view.workshop = Spot(view, labels, SPOTS.workshop, function() self:ShowView("workshop") end)
+    view.workshop:SetShown(MC.DEV)
 
     self.campSlots = {}
     for i = 1, Bounty.PARTY_SIZE do
@@ -278,7 +282,7 @@ function Module:BuildCamp()
     end
 
     -- Every place shows its name for a moment when the camp opens; they fade out one after another.
-    view.spots = { view.collection, view.travel, view.scores, view.roadmap, view.achievements, view.help }
+    view.spots = { view.collection, view.travel, view.scores, view.roadmap, view.achievements, view.help, view.workshop }
     view:HookScript("OnShow", function()
         for i, spot in ipairs(view.spots) do spot.reveal = REVEAL + (i - 1) * 0.15 end
     end)
@@ -325,6 +329,8 @@ function Module:RefreshCamp()
     view.achievements.sub:SetText(("%d / %d"):format(done, total))
     view.help.plaque.text:SetText(L.HELP)
     view.help.sub:SetText("")
+    view.workshop.plaque.text:SetText(L.MC_WORKSHOP)
+    view.workshop.sub:SetText(L.MC_WORKSHOP_SUB)
 end
 
 -- Travel point ------------------------------------------------------------------------------------

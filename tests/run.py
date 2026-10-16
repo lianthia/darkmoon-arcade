@@ -35,6 +35,7 @@ def main() -> int:
         "Games/Mercenaries/Bounty.lua",
         "Games/Mercenaries/ItemData.lua",
         "Games/Mercenaries/Items.lua",
+        "Games/Mercenaries/Enchanting.lua",
     ):
         loader((ADDON / rel).read_text(encoding="utf-8"), "@" + rel)
 

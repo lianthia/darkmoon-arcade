@@ -799,3 +799,22 @@ MC_HUB_LEVEL	Party level
 MC_HUB_ZONES	Zones cleared
 MC_HUB_RUN	Bounty under way: %s
 MC_HUB_READY	Your party is ready for the next bounty.
+MC_WORKSHOP	Workshop
+MC_WORKSHOP_SUB	Materials and enchanting
+MC_MATERIALS	Material bag
+MC_RECIPES	Formulas
+MC_RECIPES_KNOWN	%d of %d formulas known
+MC_RECIPES_NONE	No formulas yet: they are found as loot in dungeons. Each item holds one enchant.
+MC_MAT_TIER	Tier %d
+MC_MAT_OWNED	In the bag: %d
+MC_MAT_SOURCE	Disenchant items of level %d-%d.
+MC_MAT_SOURCE_UP	Disenchant items of level %d and above.
+MC_MAT_SOURCE_RARE	Shards come mostly from rare items.
+MC_MAT_SOURCE_EPIC	Disenchant epic items of level 56 and above.
+MC_RECIPE_WEAPON	Weapon
+MC_RECIPE_ARMOR	Armour
+MC_MOD_SPELLPCT	+%d%% spell damage
+MC_MOD_XPPCT	+%d%% experience
+MC_MOD_COINPCT	+%d%% coins
+MC_MOD_RESIST	+%d%% %s resistance
+MC_MOD_RESIST_ALL	+%d%% resistance to all schools

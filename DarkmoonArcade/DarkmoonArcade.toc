@@ -75,6 +75,7 @@ Games\Mercenaries\Retail.lua
 Games\Mercenaries\Bounty.lua
 Games\Mercenaries\ItemData.lua
 Games\Mercenaries\Items.lua
+Games\Mercenaries\Enchanting.lua
 Games\Mercenaries\Describe.lua
 Games\Mercenaries\Mercenaries.lua
 Games\Mercenaries\Visuals.lua
@@ -88,5 +89,6 @@ Games\Mercenaries\FxGallery.lua
 Games\Mercenaries\Help.lua
 Games\Mercenaries\Result.lua
 Games\Mercenaries\Roadmap.lua
+Games\Mercenaries\Workshop.lua
 
 Main.lua

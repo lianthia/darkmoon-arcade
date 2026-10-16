@@ -90,12 +90,18 @@ function Bounty.WearItem(store, mercId, slot, id)
     return true
 end
 
--- The bonuses of the items a mercenary wears (a second slot counts from the highest level on).
+-- The bonuses of the items a mercenary wears and their enchants (a second slot counts from the
+-- highest level on).
 function Bounty.WornMods(entry)
     local mods = {}
     for slot = 1, MC.ItemSlots(entry) do
-        local item = entry.worn and MC.Items[entry.worn[slot]]
-        if item then Bounty.AddMods(mods, MC.ItemMods(item)) end
+        local id = entry.worn and entry.worn[slot]
+        local item = MC.Items[id]
+        if item then
+            Bounty.AddMods(mods, MC.ItemMods(item))
+            local recipe = MC.Recipes[entry.enchants and entry.enchants[id]]
+            if recipe then Bounty.AddMods(mods, MC.RecipeMods(recipe)) end
+        end
     end
     return mods
 end

@@ -163,6 +163,18 @@ if Want("roadmap") then
     mc:SelectMilestone(2)
     mc:ShowView("camp")
 end
+if Want("workshop") then
+    -- A bag with some of every tier and a few formulas, one of them too dear.
+    local bag = MC.Bounty.Materials(store)
+    for id, n in pairs({ [10940] = 14, [10938] = 3, [10978] = 2, [11083] = 5, [11082] = 1, [11137] = 2, [16204] = 1 }) do bag[id] = n end
+    for _, id in ipairs({ 7418, 7788, 7454, 13536, 13898, 20034 }) do MC.Bounty.LearnRecipe(store, id) end
+    mc:ShowView("workshop")
+    Snap("workshop")
+    Enter(mc.views.workshop.slots[1])
+    Snap("workshop_tip")
+    GameTooltip:Hide()
+    store.materials, store.recipes = nil, nil
+end
 mc:ShowView("collection")
 if Want("collection") then
     Snap("collection")

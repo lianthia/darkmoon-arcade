@@ -799,3 +799,22 @@ MC_HUB_LEVEL	Nivel del grupo
 MC_HUB_ZONES	Zonas superadas
 MC_HUB_RUN	Recompensa en curso: %s
 MC_HUB_READY	Tu grupo está listo para la próxima recompensa.
+MC_WORKSHOP	Taller
+MC_WORKSHOP_SUB	Materiales y encantamiento
+MC_MATERIALS	Bolsa de materiales
+MC_RECIPES	Fórmulas
+MC_RECIPES_KNOWN	%d de %d fórmulas conocidas
+MC_RECIPES_NONE	Aún no hay fórmulas: se encuentran como botín en las mazmorras. Cada objeto admite un encantamiento.
+MC_MAT_TIER	Grado %d
+MC_MAT_OWNED	En la bolsa: %d
+MC_MAT_SOURCE	Desencanta objetos de nivel %d a %d.
+MC_MAT_SOURCE_UP	Desencanta objetos de nivel %d o superior.
+MC_MAT_SOURCE_RARE	Los fragmentos salen sobre todo de objetos raros.
+MC_MAT_SOURCE_EPIC	Desencanta objetos épicos de nivel 56 o superior.
+MC_RECIPE_WEAPON	Arma
+MC_RECIPE_ARMOR	Armadura
+MC_MOD_SPELLPCT	+%d%% de daño de hechizos
+MC_MOD_XPPCT	+%d%% de experiencia
+MC_MOD_COINPCT	+%d%% de monedas
+MC_MOD_RESIST	+%d%% de resistencia (%s)
+MC_MOD_RESIST_ALL	+%d%% de resistencia a todas las escuelas

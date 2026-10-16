@@ -484,6 +484,83 @@ test("items belong to one mercenary, a second slot opens at the highest level", 
     for id2 in pairs(TEST_ITEMS) do MC.Items[id2] = nil end
 end)
 
+test("every item can be disenchanted, every formula has known materials", function()
+    for id, item in pairs(MC.Items) do
+        assert(item.level and item.level > 0, id .. ": item level")
+        local sum = 0
+        for _, r in ipairs(MC.DisenchantResults(item)) do
+            assert(MC.Materials[r[2]], id .. ": material " .. tostring(r[2]))
+            assert(r[3] >= 1 and r[4] >= r[3], id .. ": counts")
+            sum = sum + r[1]
+        end
+        assert(math.abs(sum - 1) < 1e-9, id .. ": chances add up")
+    end
+    for id, recipe in pairs(MC.Recipes) do
+        assert(recipe.kind == "weapon" or recipe.kind == "armor", id .. ": kind")
+        assert(#recipe.cost > 0, id .. ": materials")
+        for _, cost in ipairs(recipe.cost) do assert(MC.Materials[cost[1]], id .. ": material") end
+        for key in pairs(MC.RecipeMods(recipe)) do assert(MC.ITEM_POINT[key], id .. ": bonus " .. key) end
+    end
+    eq(#MC.RECIPE_ORDER, (function() local n = 0 for _ in pairs(MC.Recipes) do n = n + 1 end return n end)())
+    -- The first dungeons' items never give more than the second tier's materials (as in Classic, their
+    -- best items reach level 26-28).
+    for _, dungeon in ipairs({ "deadmines", "wailing" }) do
+        for _, boss in ipairs(MC.DungeonLoot[dungeon]) do
+            for _, drop in ipairs(boss.drops) do
+                for _, r in ipairs(MC.DisenchantResults(MC.Items[drop[1]])) do
+                    assert(MC.Materials[r[2]].tier <= 2, dungeon .. " " .. drop[1])
+                end
+            end
+        end
+    end
+end)
+
+test("disenchanting fills the bag, formulas turn it into an enchant", function()
+    for id, item in pairs(TEST_ITEMS) do MC.Items[id] = item end
+    TEST_ITEMS.test_blade.level, TEST_ITEMS.test_cloak.level = 22, 18
+    local store = NewStore()
+    local id = store.party[1]
+    -- A rare level-22 item always gives a Small Glimmering Shard.
+    local mat, n = Bounty.Disenchant(store, "test_blade", { rng = 7 })
+    eq(mat, 10978)
+    eq(n, 1)
+    -- Uncommon armour: mostly Strange Dust, over many rolls every result shows up.
+    local seen, rng = {}, { rng = 99 }
+    for _ = 1, 400 do seen[Bounty.Disenchant(NewStore(), "test_cloak", rng)] = true end
+    assert(seen[10940] and seen[10939] and seen[10978], "dust, essence and shard")
+
+    -- Only owned items that are not worn can be disenchanted.
+    Bounty.GiveItem(store, id, "test_blade")
+    Bounty.GiveItem(store, id, "test_cloak")
+    eq(Bounty.DisenchantOwned(store, id, "test_blade"), nil, "worn")
+    eq(Bounty.DisenchantOwned(store, store.party[2], "test_cloak"), nil, "someone else's")
+
+    -- Formulas are learnt once; the enchant needs a known formula, the item's kind and the materials.
+    local strike = 7788 -- Enchant Weapon - Minor Striking: Strange Dust 2, Greater Magic Essence 1, Small Glimmering Shard 1
+    assert(not Bounty.CanEnchant(store, id, "test_blade", strike), "unknown formula")
+    assert(Bounty.LearnRecipe(store, strike))
+    assert(not Bounty.LearnRecipe(store, strike), "known already")
+    assert(not Bounty.CanEnchant(store, id, "test_blade", strike), "too few materials")
+    Bounty.AddMaterial(store, 10940, 2)
+    Bounty.AddMaterial(store, 10939, 1)
+    assert(not Bounty.CanEnchant(store, id, "test_cloak", strike), "a weapon formula on armour")
+    local before = Bounty.MercSpec(store, id).mods.atkPct or 0
+    assert(Bounty.Enchant(store, id, "test_blade", strike))
+    eq(store.materials[10940], nil, "used up")
+    eq(store.materials[10978], nil, "the shard from the first disenchant")
+    local after = Bounty.MercSpec(store, id).mods.atkPct or 0
+    assert(math.abs(after - before - MC.RECIPE_POINTS[1] * MC.ITEM_POINT.atkPct) < 1e-9, "enchant in the fight")
+    eq(MC.UnknownRecipes(store, 1)[1] ~= strike, true)
+
+    -- An item kept in the bag can go; its enchant goes with it.
+    store.mercs[id].worn[1] = nil
+    assert(Bounty.DisenchantOwned(store, id, "test_blade"))
+    assert(not Bounty.OwnsItem(store.mercs[id], "test_blade"))
+    eq(Bounty.ItemEnchant(store.mercs[id], "test_blade"), nil)
+    TEST_ITEMS.test_blade.level, TEST_ITEMS.test_cloak.level = nil, nil
+    for id2 in pairs(TEST_ITEMS) do MC.Items[id2] = nil end
+end)
+
 test("resistances and spell damage change hits of their school", function()
     local function Hit(attackerMods, targetMods, school)
         local b = Combat.New({ Spec("a", "neutral", 20, nil, { mods = attackerMods }) },

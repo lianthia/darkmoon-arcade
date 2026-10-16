@@ -162,6 +162,7 @@ function Module:Build(container)
     self:BuildTravel()
     self:BuildCollection()
     self:BuildRoadmap()
+    self:BuildWorkshop()
     self:BuildMap()
     self:BuildBattle()
     if MC.DEV then self:BuildFxGallery() end

@@ -799,3 +799,22 @@ MC_HUB_LEVEL	Niveau du groupe
 MC_HUB_ZONES	Zones conquises
 MC_HUB_RUN	Prime en cours : %s
 MC_HUB_READY	Votre groupe est prêt pour la prochaine prime.
+MC_WORKSHOP	Atelier
+MC_WORKSHOP_SUB	Matériaux et enchantement
+MC_MATERIALS	Sac de matériaux
+MC_RECIPES	Formules
+MC_RECIPES_KNOWN	%d formules connues sur %d
+MC_RECIPES_NONE	Aucune formule pour l'instant : on les trouve en butin dans les donjons. Chaque objet porte un enchantement.
+MC_MAT_TIER	Rang %d
+MC_MAT_OWNED	Dans le sac : %d
+MC_MAT_SOURCE	Désenchantez des objets de niveau %d à %d.
+MC_MAT_SOURCE_UP	Désenchantez des objets de niveau %d ou plus.
+MC_MAT_SOURCE_RARE	Les éclats viennent surtout des objets rares.
+MC_MAT_SOURCE_EPIC	Désenchantez des objets épiques de niveau 56 ou plus.
+MC_RECIPE_WEAPON	Arme
+MC_RECIPE_ARMOR	Armure
+MC_MOD_SPELLPCT	+%d%% de dégâts des sorts
+MC_MOD_XPPCT	+%d%% d'expérience
+MC_MOD_COINPCT	+%d%% de pièces
+MC_MOD_RESIST	+%d%% de résistance (%s)
+MC_MOD_RESIST_ALL	+%d%% de résistance à toutes les écoles

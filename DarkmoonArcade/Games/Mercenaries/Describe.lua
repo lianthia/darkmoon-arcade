@@ -122,6 +122,7 @@ function Describe.Mods(mods, abilities)
         local v = mods[k]
         local slot, what = k:match("^abil(%d)_(%a+)$")
         local school = k:match("^school_(%a+)$")
+        local resist = k:match("^resist_(%a+)$")
         local text
         if slot then
             local name = abilities and abilities[tonumber(slot)] and Describe.AbilityName(abilities[tonumber(slot)])
@@ -133,6 +134,8 @@ function Describe.Mods(mods, abilities)
             else
                 text = L.MC_MOD_ABIL_CD:format(name, v)
             end
+        elseif resist then
+            text = L.MC_MOD_RESIST:format(Percent(v), L["MC_SCHOOL_" .. resist])
         elseif school then
             text = L.MC_MOD_SCHOOL:format(Percent(v), DamageName(school))
         elseif type(v) == "boolean" then

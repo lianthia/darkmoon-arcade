@@ -799,3 +799,22 @@ MC_HUB_LEVEL	队伍等级
 MC_HUB_ZONES	已征服区域
 MC_HUB_RUN	进行中的悬赏：%s
 MC_HUB_READY	你的队伍已准备好迎接下一个悬赏。
+MC_WORKSHOP	工坊
+MC_WORKSHOP_SUB	材料与附魔
+MC_MATERIALS	材料包
+MC_RECIPES	配方
+MC_RECIPES_KNOWN	已知配方：%d / %d
+MC_RECIPES_NONE	尚无配方：可在地下城中作为战利品获得。每件物品只能附一种魔。
+MC_MAT_TIER	%d阶
+MC_MAT_OWNED	包中：%d
+MC_MAT_SOURCE	分解%d-%d级的物品。
+MC_MAT_SOURCE_UP	分解%d级及以上的物品。
+MC_MAT_SOURCE_RARE	碎片主要来自精良物品。
+MC_MAT_SOURCE_EPIC	分解56级及以上的史诗物品。
+MC_RECIPE_WEAPON	武器
+MC_RECIPE_ARMOR	护甲
+MC_MOD_SPELLPCT	法术伤害+%d%%
+MC_MOD_XPPCT	经验+%d%%
+MC_MOD_COINPCT	硬币+%d%%
+MC_MOD_RESIST	抗性+%d%%（%s）
+MC_MOD_RESIST_ALL	所有抗性+%d%%

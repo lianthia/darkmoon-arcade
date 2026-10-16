@@ -12,6 +12,12 @@ defense -> less damage taken, health over time -> regeneration, a proc of a scho
 wand's) -> that school's damage. Rings, necks and
 trinkets put half their points into coins per bounty (comfort). Bags, quest items and pets are left out.
 Everything fetched is cached in tools/.cache.
+
+Enchanting: Classic's enchanting materials (names and icons from Wowhead) and a choice of Classic's
+enchanting formulas: their reagents (the enchanting materials among them; rods, vials and the like are
+left out), what they enchant (weapon or armour) and which of our bonuses their effect is closest to.
+A formula's tier is that of its strongest material (MATERIAL_TIER), so strong enchants need the
+materials of hard content.
 """
 import json
 import pathlib
@@ -43,6 +49,33 @@ WEAPON_SLOTS = {"One-Hand", "Two-Hand", "Main Hand", "Off Hand", "Ranged", "Thro
 ARMOR_SLOTS = {"Head", "Shoulder", "Chest", "Robe", "Waist", "Legs", "Feet", "Wrist", "Hands", "Back",
                "Shirt", "Tabard"}
 JEWELRY_SLOTS = {"Finger", "Neck", "Trinket"}
+
+# Classic's enchanting materials and their tier (1: the first dungeons ... 4: the end of Classic).
+MATERIAL_TIER = {
+    10940: 1, 10938: 1, 10939: 1, 10978: 1,                      # Strange Dust, Magic Essences, Small Glimmering
+    10998: 2, 11083: 2, 11082: 2, 11084: 2, 11134: 2, 11138: 2,  # Astral, Soul Dust, Mystic, Glimmering/Glowing
+    11137: 3, 11135: 3, 11139: 3, 11174: 3, 11177: 3, 11176: 3, 11175: 3, 11178: 3,  # Vision, Dream, Nether, Radiant
+    16202: 4, 14343: 4, 16204: 4, 16203: 4, 14344: 4, 20725: 4,  # Eternal, Illusion, Brilliant, Nexus Crystal
+}
+# Classic enchanting formulas (spell ids), weakest to strongest.
+RECIPES = [
+    7418, 7420, 7426, 7454, 7457, 7745, 7771, 7786, 7788, 13378, 13380, 13419, 13421, 13464, 13485, 13503,
+    13522, 13536, 13538, 13626, 13635, 13657, 13687, 13693, 13822, 13836, 13898, 13915, 13937, 13941, 13943,
+    20014, 20015, 20025, 20029, 20030, 20031, 20032, 20034, 22749, 23799, 23803, 23804,
+]
+# Which bonus an enchant's effect is closest to: the first match wins.
+RECIPE_BONUS = [
+    (r"(fire) damage", "school_fire"), (r"(frost) damage|chill", "school_frost"),
+    (r"(shadow) damage|life from", "school_shadow"),
+    (r"all (?:spell )?resistances|resistance to all", "resist_all"),
+    (r"(fire|frost|nature|shadow|arcane|holy) resistance|resistance to (fire|frost|nature|shadow|arcane|holy)", "resist"),
+    (r"all stats|all attributes", "atkPct"),
+    (r"armor by|additional armor|absor|protection|defense", "takenPct"),
+    (r"spell damage|spell power|to spells|damage and healing done by magical|intellect", "spellPct"),
+    (r"strength|attack power|damage|beasts|demons", "atkPct"),
+    (r"agility", "critChance"), (r"stamina|health", "hpPct"),
+    (r"spirit|healing", "xpPct"),
+]
 
 
 def fetch(url, path):
@@ -142,6 +175,33 @@ def item_points(stats, kind, budget):
     return allocate(stats, budget)
 
 
+def item_level(html):
+    m = re.search(r"Item Level\D*(\d+)", re.sub(r"<[^>]+>", "", html))
+    return int(m.group(1)) if m else 0
+
+
+def recipe_of(sid, material_names):
+    """A formula's kind, bonus and enchanting reagents from its tooltip."""
+    en = tooltip("spell", sid, "enUS")
+    text = re.sub(r"<[^>]+>", "|", en["tooltip"]).replace("&nbsp;", " ")
+    kind = "weapon" if "Weapon" in en["name"] else "armor"
+    reagents = text.split("Reagents:", 1)[1] if "Reagents:" in text else ""
+    effect = reagents[reagents.find("Permanently"):] if "Permanently" in reagents else text
+    cost = []
+    for name, count in re.findall(r"\|([^|()]+?)\|(?: \((\d+)\))?", reagents.split("Permanently")[0]):
+        mid = material_names.get(name.strip().rstrip(","))
+        if mid:
+            cost.append((mid, int(count or 1)))
+    bonus = None
+    for pattern, key in RECIPE_BONUS:
+        m = re.search(pattern, effect, re.I)
+        if m:
+            bonus = "resist_" + (m.group(1) or m.group(2)).lower() if key == "resist" else key
+            break
+    return {"name": en["name"], "kind": kind, "bonus": bonus, "cost": cost, "effect": effect.strip("| "),
+            "tier": max((MATERIAL_TIER[mid] for mid, _ in cost), default=0)}
+
+
 def lua_str(s):
     return '"' + s.replace("\\", "\\\\").replace('"', '\\"') + '"'
 
@@ -166,11 +226,29 @@ def main():
                     continue
                 if wid not in items:
                     items[wid] = {"rarity": rarity, "kind": kind, "slot": slot, "icon": en["icon"],
+                                  "level": item_level(en["tooltip"]),
                                   "points": item_points(stats, kind, BUDGET[rarity]), "stats": stats}
                     for loc in LOCALES:
                         names[loc][wid] = tooltip("item", wid, loc)["name"]
                 drops.append((wid, rates.get(npc, {}).get(wid)))
             loot[dungeon].append({"npc": npc, "special": boss["special"], "drops": drops})
+
+    materials, material_names, mat_names = {}, {}, {loc: {} for loc in LOCALES}
+    for mid in MATERIAL_TIER:
+        en = tooltip("item", mid, "enUS")
+        materials[mid] = en["icon"]
+        material_names[en["name"]] = mid
+        for loc in LOCALES:
+            mat_names[loc][mid] = tooltip("item", mid, loc)["name"]
+    recipes, recipe_names, recipe_skipped = {}, {loc: {} for loc in LOCALES}, []
+    for sid in RECIPES:
+        r = recipe_of(sid, material_names)
+        if not r["bonus"] or not r["cost"]:
+            recipe_skipped.append(f"{sid} {r['name']}: {r['effect']}")
+            continue
+        recipes[sid] = r
+        for loc in LOCALES:
+            recipe_names[loc][sid] = tooltip("spell", sid, loc)["name"]
 
     lines = [
         "-- Generated by tools/gen_mercenaries_items.py (AtlasLoot Classic's loot and drop rates, Wowhead's",
@@ -186,7 +264,7 @@ def main():
     for wid in sorted(items):
         it = items[wid]
         points = ", ".join(f"{k} = {v}" for k, v in sorted(it["points"].items()))
-        lines.append(f'    [{wid}] = {{ rarity = "{it["rarity"]}", kind = "{it["kind"]}", '
+        lines.append(f'    [{wid}] = {{ rarity = "{it["rarity"]}", kind = "{it["kind"]}", level = {it["level"]}, '
                      f'icon = "Interface\\\\Icons\\\\{it["icon"]}", points = {{ {points} }} }},')
     lines += ["}", "", "-- Per dungeon, its bosses in order with their loot: item and chance in % (Classic's).",
               "MC.DungeonLoot = {"]
@@ -197,6 +275,15 @@ def main():
             special = f', special = "{boss["special"]}"' if boss["special"] else ""
             lines.append(f"        {{ npc = {boss['npc']}{special}, drops = {{ {drops} }} }},")
         lines.append("    },")
+    lines += ["}", "", "-- Classic's enchanting materials: tier (1 the first dungeons ... 4 the end of Classic) and icon.",
+              "MC.Materials = {"]
+    for mid in MATERIAL_TIER:
+        lines.append(f'    [{mid}] = {{ tier = {MATERIAL_TIER[mid]}, icon = "Interface\\\\Icons\\\\{materials[mid]}" }},')
+    lines += ["}", "", "-- Enchanting formulas (Classic spell ids): what they enchant, the bonus, their tier and the materials",
+              "-- they use.", "MC.Recipes = {"]
+    for sid, r in recipes.items():
+        cost = ", ".join(f"{{ {mid}, {n} }}" for mid, n in r["cost"])
+        lines.append(f'    [{sid}] = {{ kind = "{r["kind"]}", bonus = "{r["bonus"]}", tier = {r["tier"]}, cost = {{ {cost} }} }},')
     lines += ["}", ""]
     for loc in LOCALES:
         lines.append(f'ns.AddStrings("{loc}", {{')
@@ -204,6 +291,10 @@ def main():
             lines.append(f"    MC_I_{wid} = {lua_str(names[loc][wid])},")
         for npc in sorted(boss_names[loc]):
             lines.append(f"    MC_B_{npc} = {lua_str(boss_names[loc][npc])},")
+        for mid in MATERIAL_TIER:
+            lines.append(f"    MC_M_{mid} = {lua_str(mat_names[loc][mid])},")
+        for sid in recipes:
+            lines.append(f"    MC_E_{sid} = {lua_str(recipe_names[loc][sid])},")
         lines.append("})")
     lines.append("")
     OUT.write_text("\n".join(lines), encoding="utf-8", newline="\n")
@@ -214,6 +305,10 @@ def main():
               f"stats {it['stats']} -> {it['points']}")
     for s in skipped:
         print("  skipped", s)
+    for sid, r in recipes.items():
+        print(f"  recipe {sid:6} t{r['tier']} {r['kind']:6} {r['bonus']:14} {r['name']:44} {r['effect'][:70]}")
+    for s in recipe_skipped:
+        print("  skipped recipe", s)
 
 
 if __name__ == "__main__":
