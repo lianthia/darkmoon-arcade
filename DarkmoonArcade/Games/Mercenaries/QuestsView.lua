@@ -42,7 +42,7 @@ function Quests.Objective(store, chain)
     elseif task.kind == "level" then
         return L.MC_QO_LEVEL:format(name, task.level)
     elseif task.kind == "dungeon" then
-        return L.MC_QO_DUNGEON:format(L["MC_DUNGEON_" .. task.dungeon], name)
+        return L.MC_QO_DUNGEON:format(Describe.ZoneName(task.dungeon), name)
     end
     return ""
 end
@@ -161,6 +161,7 @@ function Module:BuildQuests()
     local achievements = Kit.Button(view, 140, 30, "ACHIEVEMENTS", function() self:ShowAchievements() end)
     Kit.Place(achievements, 90, H - 30, view)
 
+    title:SetFrameLevel(page:GetFrameLevel() + 10)
     view.refresh = function() self:RefreshQuests() end
 end
 

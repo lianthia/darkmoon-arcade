@@ -599,6 +599,19 @@
    "zhCN": "凯恩·血蹄"
   }
  },
+ "Captain Greenskin": {
+  "de": "Captain Greenskin",
+  "display": 7113,
+  "id": 647,
+  "info": "Captain Greenskin is a level 20 Elite NPC. The location of this NPC is unknown.",
+  "name": "Captain Greenskin",
+  "names": {
+   "esES": "Capitán Verdepel",
+   "frFR": "Capitaine Vertepeau",
+   "ruRU": "Капитан Зеленямс",
+   "zhCN": "绿皮队长"
+  }
+ },
  "Chieftain Nek'rosh": {
   "de": "Häuptling Nek'rosh",
   "display": 4915,
@@ -649,6 +662,19 @@
    "frFR": "Poing-Serré",
    "ruRU": "Clugfist",
    "zhCN": "Clugfist"
+  }
+ },
+ "Cookie": {
+  "de": "Cookie",
+  "display": 1305,
+  "id": 645,
+  "info": "",
+  "name": "Cookie",
+  "names": {
+   "esES": "El Chef",
+   "frFR": "Macaron",
+   "ruRU": "Пирожок",
+   "zhCN": "曲奇"
   }
  },
  "Corpsefeeder": {
@@ -924,6 +950,45 @@
    "zhCN": "迪菲亚黑衣卫兵"
   }
  },
+ "Defias Evoker": {
+  "de": "Rufer der Defias",
+  "display": 2318,
+  "id": 1729,
+  "info": "Defias Evoker is a level 17 - 18 Elite NPC. The location of this NPC is unknown.",
+  "name": "Defias Evoker",
+  "names": {
+   "esES": "Evocador Defias",
+   "frFR": "Evocateur défias",
+   "ruRU": "Вызыватель из Братства Справедливости",
+   "zhCN": "迪菲亚招魂师"
+  }
+ },
+ "Defias Miner": {
+  "de": "Minenarbeiter der Defias",
+  "display": 308,
+  "id": 598,
+  "info": "Defias Miner is a level 17 - 18 NPC. The location of this NPC is unknown.",
+  "name": "Defias Miner",
+  "names": {
+   "esES": "Minero Defias",
+   "frFR": "Mineur défias",
+   "ruRU": "Шахтер из Братства Справедливости",
+   "zhCN": "迪菲亚矿工"
+  }
+ },
+ "Defias Overseer": {
+  "de": "Vorarbeiter der Defias",
+  "display": 2316,
+  "id": 634,
+  "info": "Defias Overseer is a level 17 - 18 Elite NPC. The location of this NPC is unknown.",
+  "name": "Defias Overseer",
+  "names": {
+   "esES": "Sobrestante Defias",
+   "frFR": "Surveillant défias",
+   "ruRU": "Надзиратель из Братства Справедливости",
+   "zhCN": "迪菲亚监工"
+  }
+ },
  "Defias Pillager": {
   "de": "Plünderer der Defias",
   "display": 2338,
@@ -935,6 +1000,45 @@
    "frFR": "Pilleur défias",
    "ruRU": "Погромщик из Братства Справедливости",
    "zhCN": "迪菲亚抢劫者"
+  }
+ },
+ "Defias Pirate": {
+  "de": "Pirat der Defias",
+  "display": 2347,
+  "id": 657,
+  "info": "Defias Pirate is a level 19 - 20 Elite NPC. The location of this NPC is unknown.",
+  "name": "Defias Pirate",
+  "names": {
+   "esES": "Pirata Defias",
+   "frFR": "Pirate défias",
+   "ruRU": "Пират из Братства Справедливости",
+   "zhCN": "迪菲亚海盗"
+  }
+ },
+ "Defias Squallshaper": {
+  "de": "Wellenformer der Defias",
+  "display": 2349,
+  "id": 1732,
+  "info": "Defias Squallshaper is a level 19 - 20 Elite NPC. The location of this NPC is unknown.",
+  "name": "Defias Squallshaper",
+  "names": {
+   "esES": "Formarrasca Defias",
+   "frFR": "Forme-grain défias",
+   "ruRU": "Ветроплет из Братства Справедливости",
+   "zhCN": "迪菲亚塑风师"
+  }
+ },
+ "Defias Taskmaster": {
+  "de": "Zuchtmeister der Defias",
+  "display": 2440,
+  "id": 4417,
+  "info": "Defias Taskmaster is a level 18 - 19 Elite NPC. The location of this NPC is unknown.",
+  "name": "Defias Taskmaster",
+  "names": {
+   "esES": "Capataz Defias",
+   "frFR": "Sous-chef défias",
+   "ruRU": "Надсмотрщик из Братства Справедливости",
+   "zhCN": "迪菲亚工头"
   }
  },
  "Defias Thug": {
@@ -1536,6 +1640,19 @@
    "zhCN": "喋喋不休的食尸鬼"
   }
  },
+ "Gilnid": {
+  "de": "Gilnid",
+  "display": 7124,
+  "id": 1763,
+  "info": "Gilnid is a level 20 Elite NPC. The location of this NPC is unknown.",
+  "name": "Gilnid",
+  "names": {
+   "esES": "Gilnid",
+   "frFR": "Gilnid",
+   "ruRU": "Гилнид",
+   "zhCN": "基尔尼格"
+  }
+ },
  "Glassweb Spider": {
   "de": "Glasnetzspinne",
   "display": 4456,
@@ -1573,6 +1690,32 @@
    "frFR": "Ursa Pin-tordu",
    "ruRU": "Ведмедь из племени Кривой Сосны",
    "zhCN": "瘤背巨熊怪"
+  }
+ },
+ "Goblin Craftsman": {
+  "de": "Goblin-Handwerker",
+  "display": 7110,
+  "id": 1731,
+  "info": "Goblin Craftsman is a level 18 - 19 Elite NPC. The location of this NPC is unknown.",
+  "name": "Goblin Craftsman",
+  "names": {
+   "esES": "Artesano goblin",
+   "frFR": "Artisan gobelin",
+   "ruRU": "Гоблин-ремесленник",
+   "zhCN": "地精工匠"
+  }
+ },
+ "Goblin Engineer": {
+  "de": "Goblin-Ingenieur",
+  "display": 7109,
+  "id": 622,
+  "info": "Goblin Engineer is a level 18 - 19 Elite NPC. The location of this NPC is unknown.",
+  "name": "Goblin Engineer",
+  "names": {
+   "esES": "Ingeniero goblin",
+   "frFR": "Ingénieur gobelin",
+   "ruRU": "Гоблин-инженер",
+   "zhCN": "地精工程师"
   }
  },
  "Gordok Brute": {
@@ -2552,6 +2695,19 @@
    "zhCN": "无脑的僵尸"
   }
  },
+ "Miner Johnson": {
+  "de": "Minenarbeiter Johnson",
+  "display": 556,
+  "id": 3586,
+  "info": "Miner Johnson is a level 19 Rare Elite NPC. The location of this NPC is unknown.",
+  "name": "Miner Johnson",
+  "names": {
+   "esES": "Minero Johnson",
+   "frFR": "Mineur Johnson",
+   "ruRU": "Шахтер Джонсон",
+   "zhCN": "矿工约翰森"
+  }
+ },
  "Mo'grosh Ogre": {
   "de": "Oger der Mo'grosh",
   "display": 1122,
@@ -2667,6 +2823,19 @@
    "frFR": "Lion des montagnes",
    "ruRU": "Горный лев",
    "zhCN": "山地狮"
+  }
+ },
+ "Mr. Smite": {
+  "de": "Mr. Smite",
+  "display": 2026,
+  "id": 646,
+  "info": "",
+  "name": "Mr. Smite",
+  "names": {
+   "esES": "Sr. Golpin",
+   "frFR": "M. Smite",
+   "ruRU": "Мистер Каюк",
+   "zhCN": "重拳先生"
   }
  },
  "Mudfin Oracle": {
@@ -3098,6 +3267,19 @@
    "frFR": "Rexxar",
    "ruRU": "Рексар",
    "zhCN": "雷克萨"
+  }
+ },
+ "Rhahk'Zor": {
+  "de": "Rhahk'Zor",
+  "display": 14403,
+  "id": 644,
+  "info": "Rhahk'Zor is a level 19 Elite NPC. The location of this NPC is unknown.",
+  "name": "Rhahk'Zor",
+  "names": {
+   "esES": "Rhahk'Zor",
+   "frFR": "Rhahk'Zor",
+   "ruRU": "Рак'Зор",
+   "zhCN": "拉克佐"
   }
  },
  "Ridge Huntress": {
@@ -3619,6 +3801,32 @@
    "frFR": "Chasseur Skullsplitter",
    "ruRU": "Охотник из племени Дробителей Черепов",
    "zhCN": "劈颅猎人"
+  }
+ },
+ "Sneed": {
+  "de": "Sneed",
+  "display": 7125,
+  "id": 643,
+  "info": "",
+  "name": "Sneed",
+  "names": {
+   "esES": "Sneed",
+   "frFR": "Sneed",
+   "ruRU": "Снид",
+   "zhCN": "斯尼德"
+  }
+ },
+ "Sneed's Shredder": {
+  "de": "Sneeds Schredder",
+  "display": 1269,
+  "id": 642,
+  "info": "Sneed's Shredder is a level 20 Elite NPC. The location of this NPC is unknown.",
+  "name": "Sneed's Shredder",
+  "names": {
+   "esES": "Machacador de Sneed",
+   "frFR": "Déchiqueteur de Sneed",
+   "ruRU": "Крошшер Снида",
+   "zhCN": "斯尼德的伐木机"
   }
  },
  "Snickerfang Hyena": {

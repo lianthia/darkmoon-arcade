@@ -871,8 +871,89 @@ local before = store.mercs.bolvar.coins
 qv.turnIn._scripts.OnClick(qv.turnIn)
 assert(store.mercs.bolvar.coins == before + MC.Quests.COINS[1], "coins for handing in")
 mc:ShowView("camp")
-store.quests = nil
-store.mercs[first].items, store.mercs[first].worn, store.mercs[first].enchants = nil, nil, nil
+
+-- The Deadmines (dev copy): the portal in Westfall, the adventure guide, then the whole dungeon with
+-- "Play all turns", its loot waiting in the camp afterwards.
+store.unlocks = { deadmines = true }
+local levels = {}
+for _, id in ipairs(store.party) do levels[id], store.mercs[id].level = store.mercs[id].level, MC.MAX_LEVEL end
+mc.views.camp.travel._scripts.OnClick(mc.views.camp.travel)
+travel.tabs.ek._scripts.OnClick(travel.tabs.ek)
+travel.regions[3]._scripts.OnClick(travel.regions[3])
+Tick(1)
+local portal
+for _, pin in ipairs(travel.pins) do
+    if pin._shown and pin.zone == "deadmines" then portal = pin end
+end
+assert(portal, "the Deadmines' portal in Westfall")
+portal._scripts.OnClick(portal)
+assert(mc.travelZone == "deadmines" and travel.boss.guide._shown, "the dungeon with its adventure guide")
+travel.boss.guide._scripts.OnClick(travel.boss.guide)
+assert(mc.view == "journal", "the adventure guide")
+local jv = mc.views.journal
+jv.rows[2]._scripts.OnClick(jv.rows[2])
+assert(jv.bossName._text == "???", "Miner Johnson hidden")
+jv.rows[1]._scripts.OnClick(jv.rows[1])
+assert(jv.loot[1]._shown, "Rhahk'Zor's loot")
+mc:ShowView("travel")
+mc.travelZone = "deadmines"
+mc:RefreshBossPanel()
+travel.boss.choose._scripts.OnClick(travel.boss.choose)
+assert(store.run and store.run.dungeon == "deadmines" and mc.view == "map", "into the Deadmines")
+DarkmoonArcadeDB.debugMode = true
+local bossesDown = 0
+for _ = 1, 2000 do
+    local run = store.run
+    if not run or mc.overlay.current == "result" then break end
+    local current = mc.overlay.current
+    if current == "treasure" then
+        bossesDown = bossesDown + 1
+        mc.treasureButtons[1]._scripts.OnClick(mc.treasureButtons[1])
+    elseif current == "healer" then
+        local b = mc.healerButtons[1]
+        if b._shown then b._scripts.OnClick(b) else mc.healerSkip._scripts.OnClick(mc.healerSkip) end
+    elseif current == "event" then
+        mc.eventContinue._scripts.OnClick(mc.eventContinue)
+    elseif run.phase == "map" then
+        local choice = MC.Bounty.Choices(run)[1]
+        mc:SelectNode(choice.layer, choice.index, true)
+        mc.travelButton._scripts.OnClick(mc.travelButton)
+    elseif run.phase == "battle" then
+        local b = run.battle
+        if not mc.autoBattle and (b.phase == "command" or b.phase == "deploy") and not mc.playing then
+            mc:RefreshBattle()
+            mc.autoButton._scripts.OnClick(mc.autoButton)
+        end
+        Tick(1.5)
+    else
+        Tick(0.5)
+    end
+end
+assert(mc.overlay.current == "result", "the dungeon ends on the result page")
+local dmRun = store.run
+assert(dmRun.phase == "complete", "the Deadmines cleared at level 60")
+assert(bossesDown >= 6, "a treasure after every boss but the last")
+mc.resultClose._scripts.OnClick(mc.resultClose)
+assert(not store.run, "back from the dungeon")
+-- Its loot waits in the camp: every find goes to the first mercenary, or is disenchanted.
+for _ = 1, 30 do
+    if not MC.Bounty.PendingItem(store) then break end
+    if mc.overlay.current == "event" then mc.overlay:Hide() end
+    mc:ShowView("camp")
+    assert(mc.overlay.current == "itemfound", "the find page after the dungeon")
+    mc.itemFoundButtons[1]._scripts.OnClick(mc.itemFoundButtons[1])
+end
+assert(not MC.Bounty.PendingItem(store), "every find handed out")
+mc.overlay:Hide()
+for id, level in pairs(levels) do store.mercs[id].level = level end
+DarkmoonArcadeDB.debugMode = false
+mc.autoBattle = nil
+mc:ShowView("camp")
+store.quests, store.unlocks, store.pendingItems = nil, nil, nil
+store.zones.deadmines = nil
+for _, id in ipairs(MC.MERC_ORDER) do
+    if store.mercs[id] then store.mercs[id].items, store.mercs[id].worn, store.mercs[id].enchants = nil, nil, nil end
+end
 store.materials, store.recipes = nil, nil
 MC.DEV = false
 

@@ -722,7 +722,7 @@ test("tasks: a mercenary has several chains, a sequel opens after its chain, old
     assert(not Quests.Open(store, "test_sequel"), "nor below its level")
     store.mercs.bolvar.level = 20
     assert(Quests.Open(store, "test_sequel"))
-    eq(#Quests.ChainsOf(store, "bolvar"), 2, "both chains")
+    eq(#Quests.ChainsOf(store, "bolvar"), 3, "his Defias chain, its sequel into the Deadmines and the test chain")
     -- A dungeon cleared with him counts; a bounty does not.
     local run = { zone = "westfall", party = { { id = "bolvar" } } }
     Quests.OnBounty(store, run)
@@ -738,6 +738,92 @@ test("tasks: a mercenary has several chains, a sequel opens after its chain, old
     old.quests = { bolvar = { step = 3, count = 4 } }
     eq(Quests.State(old, "bolvar_defias").step, 3)
     eq(old.quests.bolvar, nil)
+end)
+
+-- Dungeons -----------------------------------------------------------------------------------------
+
+test("dungeons: a task opens them, the path is fixed, every boss drops Classic loot, the last ends it", function()
+    local Dungeons, Quests = MC.Dungeons, MC.Quests
+    for _, id in ipairs(MC.DUNGEON_ORDER) do
+        local zone = MC.Zones[id]
+        assert(zone.dungeon and MC.Zones[zone.region], id .. ": entrance in a bounty zone")
+        for i, enc in ipairs(zone.encounters) do
+            assert(MC.Enemies[enc.boss] and MC.Enemies[enc.boss].boss, id .. " " .. i .. ": boss")
+            for _, a in ipairs(enc.adds) do assert(MC.Enemies[a], id .. " " .. i .. ": add " .. a) end
+            for _, t in ipairs(enc.trash or {}) do assert(MC.Enemies[t], id .. " " .. i .. ": trash " .. t) end
+            assert(#Dungeons.LootOf(id, i) > 0, id .. " " .. i .. ": loot")
+        end
+        for _, eid in ipairs(zone.pool) do
+            for _, aid in ipairs(MC.Enemies[eid].abilities) do assert(MC.Abilities[aid], eid .. ": " .. aid) end
+        end
+    end
+    for _, enc in ipairs(MC.Zones.deadmines.encounters) do
+        local def = MC.Enemies[enc.boss]
+        for _, aid in ipairs(def.abilities) do assert(MC.Abilities[aid], enc.boss .. ": " .. aid) end
+        assert(MC.Abilities[def.heroic], enc.boss .. ": heroic")
+    end
+
+    local store = NewStore()
+    eq(Bounty.NewRun(store, "deadmines", false, 5), nil, "closed until the task")
+    store.unlocks = { deadmines = true }
+    local run = Bounty.NewRun(store, "deadmines", false, 5)
+    assert(run and run.dungeon == "deadmines")
+    -- One stop per layer; the hidden Miner Johnson is not there yet; the last stop is VanCleef.
+    local bosses = {}
+    for l, row in ipairs(run.map.layers) do
+        eq(#row, 1, "one stop per layer")
+        if row[1].type == "boss" then bosses[#bosses + 1] = row[1].boss end
+        if l < #run.map.layers then eq(row[1].links[1], 1) end
+    end
+    eq(#bosses, 7)
+    eq(bosses[#bosses], "vancleef")
+    for _, b in ipairs(bosses) do assert(b ~= "minerjohnson", "Johnson hidden") end
+    eq(run.map.layers[#run.map.layers][1].final, true)
+    store.run = nil
+    store.unlocks.deadmines_johnson = true
+    run = Bounty.NewRun(store, "deadmines", false, 5)
+    local johnson = false
+    for _, row in ipairs(run.map.layers) do johnson = johnson or row[1].boss == "minerjohnson" end
+    assert(johnson, "Johnson once revealed")
+
+    -- Loot after a boss: Classic's chances; over many kills of Rhahk'Zor both his items drop, the
+    -- common hammer far more often.
+    local counts = {}
+    local node = { type = "boss", boss = "rhahkzor", encounter = 1, final = false }
+    for _ = 1, 300 do Dungeons.Loot(store, run, node) end
+    for _, item in ipairs(run.itemsFound) do counts[item] = (counts[item] or 0) + 1 end
+    assert((counts[5187] or 0) > 150 and (counts[872] or 0) > 2 and (counts[872] or 0) < 40, "Classic's odds")
+    eq(#store.pendingItems, #run.itemsFound, "every find waits for an owner")
+    assert(#run.recipesFound > 0, "formulas now and then")
+    for _, rid in ipairs(run.recipesFound) do eq(MC.Recipes[rid].tier, 1, "tier 1 in normal") end
+end)
+
+test("dungeons: a boss in the middle offers a treasure, the last completes the run and counts for tasks", function()
+    local store = NewStore()
+    store.unlocks = { deadmines = true }
+    local run = Bounty.NewRun(store, "deadmines", false, 9)
+    -- Stand at the first boss and win.
+    for l, row in ipairs(run.map.layers) do
+        if row[1].type == "boss" then
+            run.layer, run.index = l, 1
+            break
+        end
+    end
+    run.battle = { phase = "won", units = {} }
+    Bounty.AfterBattle(store, run)
+    eq(run.phase, "treasure", "a treasure after a boss in the middle")
+    -- The last boss.
+    run.offer, run.phase = nil, "map"
+    run.layer, run.index = #run.map.layers, 1
+    run.battle = { phase = "won", units = {} }
+    Bounty.AfterBattle(store, run)
+    eq(run.phase, "complete")
+    eq(Bounty.ZoneState(store, "deadmines").normal, 1, "heroic opens after a clear")
+    -- A dungeon task counts the clear.
+    MC.Quests.State(store, "bolvar_defias").step = 5
+    run.party = { { id = "bolvar", treasures = {} } }
+    MC.Quests.OnBounty(store, run)
+    assert(MC.Quests.IsReady(store, "bolvar_deadmines"), "Into the Deadmines")
 end)
 
 test("resistances and spell damage change hits of their school", function()

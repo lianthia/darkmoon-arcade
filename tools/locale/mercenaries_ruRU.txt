@@ -917,3 +917,26 @@ MC_Q_hamuul_naralex_3_TITLE	Искаженные Степи
 MC_Q_hamuul_naralex_3_TEXT	Звери Степей становятся дикими и странными, словно что-то увидело их такими во сне. Проредите их.
 MC_Q_hamuul_naralex_4_TITLE	Сон Наралекса
 MC_Q_hamuul_naralex_4_TEXT	Друид Наралекс спустился в пещеры, чтобы исцелить землю, и так и не проснулся. Его кошмар расползается. Станьте достаточно сильны, чтобы последовать за ним.
+MC_A_rhahkzor_s	Удар Рак-Зора
+MC_A_minerjohnson_s	Кровопускание
+MC_A_sneed_s	Запугивание
+MC_A_gilnid_s	Расплавленный металл
+MC_A_smite_s	Кара, Мощный удар
+MC_A_greenskin_s	Ядовитый гарпун
+MC_A_cookie_s	Пышка
+MC_ZD_deadmines	Под Луноручьем Братство Справедливости строит в старой шахте боевой корабль. Пробейтесь сквозь шахтеров, гоблинов и пиратов к %s.
+MC_DUNGEON	Подземелье
+MC_DUNGEON_LOCKED	Открывается заданием: %s.
+MC_JOURNAL	Путеводитель
+MC_JOURNAL_HIDDEN	Скрытый босс
+MC_JOURNAL_HIDDEN_HINT	Появится после задания: %s.
+MC_JOURNAL_OWNED	Есть у: %s
+MC_JOURNAL_FORMULAS	Каждый босс может обучить формуле чар (до ранга %d, в героическом режиме %d).
+MC_LOOT_FOUND	Добыча: %s
+MC_FORMULA_LEARNT	Изучена формула: %s
+MC_QO_DUNGEON	Пройдите подземелье «%s», когда %s в отряде.
+MC_QUEST_UNLOCK_deadmines_johnson	Открывает шахтера Джонсона в Мертвых копях
+MC_Q_bolvar_deadmines_1_TITLE	В Мертвые копи
+MC_Q_bolvar_deadmines_1_TEXT	Сердце братства бьется под Луноручьем. Болвар сам спускается вниз, чтобы остановить его.
+MC_Q_bolvar_deadmines_2_TITLE	Тайна шахтера
+MC_Q_bolvar_deadmines_2_TEXT	Шахтеры шепчутся о некоем Джонсоне, знающем тайные штольни. Проредите ряды братства внизу, и он покажется.

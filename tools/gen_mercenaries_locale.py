@@ -22,6 +22,7 @@ LANGS = ["frFR", "esES", "ruRU", "zhCN"]
 # Area IDs of the bounty zones in the client's AreaTable.
 AREAS = {
     "elwynn": 12, "dunmorogh": 1, "tirisfal": 85, "teldrassil": 141, "durotar": 14, "mulgore": 215,
+    "deadmines": 1581, "wailing": 718,
     "zephras": 16593, "westfall": 40, "lochmodan": 38, "silverpine": 130, "darkshore": 148, "barrens": 17,
     "redridge": 44, "stonetalon": 406, "ashenvale": 331, "duskwood": 10, "wetlands": 11, "hillsbrad": 267,
     "thousandneedles": 400, "alterac": 36, "arathi": 45, "desolace": 405, "shendralas": 16651,

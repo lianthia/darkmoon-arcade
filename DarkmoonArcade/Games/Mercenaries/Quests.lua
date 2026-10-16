@@ -36,6 +36,11 @@ MC.QUEST_CHAINS = {
         { kind = "boss", zone = "westfall" },
         { kind = "level", level = 17, unlock = "deadmines" },
     } },
+    -- Into the Deadmines after the brotherhood: reveals Miner Johnson there.
+    bolvar_deadmines = { merc = "bolvar", requires = { chain = "bolvar_defias" }, steps = {
+        { kind = "dungeon", dungeon = "deadmines" },
+        { kind = "kill", prefix = "defias_", zone = "deadmines", count = 30, what = "DEFIAS", unlock = "deadmines_johnson" },
+    } },
     mankrik_olgra = { merc = "mankrik", steps = {
         { kind = "clear", zone = "durotar" },
         { kind = "kill", prefix = { "razormane_", "bristleback_" }, count = 10, what = "QUILBOAR" },

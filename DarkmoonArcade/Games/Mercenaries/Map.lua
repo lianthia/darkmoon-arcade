@@ -213,7 +213,7 @@ end
 
 function Module:NodeIcon(run, node, visited)
     if node.type == "boss" then
-        local boss = MC.Zones[run.zone].boss
+        local boss = node.boss or MC.Zones[run.zone].boss
         return "Interface\\Icons\\" .. (MC.BOSS_ICON[boss] or "INV_Misc_Bone_HumanSkull_01"), MC.Enemies[boss].display
     end
     if node.type == "boon" then return MC.RoleTex("role_", node.role) end
@@ -359,7 +359,7 @@ function Module:ShowNodeInfo(layer, index)
     local lines = {}
     if node.enemies then
         -- The strongest foe stands for the encounter: the boss, or the first of the group.
-        local lead = kind == "boss" and MC.Zones[run.zone].boss or node.enemies[1]
+        local lead = kind == "boss" and (node.boss or MC.Zones[run.zone].boss) or node.enemies[1]
         local def = MC.Enemies[lead]
         view.infoToken:Show()
         view.infoIcon:Hide()

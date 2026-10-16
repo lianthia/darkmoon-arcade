@@ -362,6 +362,7 @@ end
 function Bounty.NewRun(store, zoneId, heroic, seed)
     local zone = MC.Zones[zoneId]
     if not zone or (heroic and not Bounty.HeroicUnlocked(store, zoneId)) then return nil end
+    if zone.dungeon and not MC.Dungeons.IsOpen(store, zoneId) then return nil end
     local run = {
         zone = zoneId, heroic = heroic or false, rng = Combat.Seed(seed),
         layer = 0, index = nil, phase = "map",
@@ -373,7 +374,12 @@ function Bounty.NewRun(store, zoneId, heroic, seed)
         run.party[#run.party + 1] = { id = id, dead = false, treasures = {} }
         run.startLevels[id] = Bounty.Entry(store, id).level
     end
-    run.map = Bounty.GenerateMap(run, zone, heroic)
+    if zone.dungeon then
+        run.dungeon = zoneId
+        run.map = MC.Dungeons.GenerateMap(run, store, zone, heroic)
+    else
+        run.map = Bounty.GenerateMap(run, zone, heroic)
+    end
     store.run = run
     return run
 end
@@ -684,7 +690,13 @@ function Bounty.AfterBattle(store, run)
         end
     end
     if node.type == "boss" then
-        Complete(store, run)
+        -- A dungeon's bosses drop loot; only its last one ends the run, the others offer treasures.
+        if run.dungeon then MC.Dungeons.Loot(store, run, node) end
+        if node.final == false then
+            OfferTreasure(store, run, true)
+        else
+            Complete(store, run)
+        end
     else
         OfferTreasure(store, run, node.type == "elite")
     end

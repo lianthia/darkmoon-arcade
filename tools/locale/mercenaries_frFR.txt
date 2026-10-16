@@ -917,3 +917,26 @@ MC_Q_hamuul_naralex_3_TITLE	Les Tarides déformées
 MC_Q_hamuul_naralex_3_TEXT	Les bêtes des Tarides deviennent sauvages et étranges, comme si quelque chose les avait rêvées ainsi. Réduisez leur nombre.
 MC_Q_hamuul_naralex_4_TITLE	Le rêve de Naralex
 MC_Q_hamuul_naralex_4_TEXT	Le druide Naralex est entré dans les cavernes pour guérir la terre et ne s'est jamais réveillé. Son cauchemar se répand. Devenez assez fort pour le suivre.
+MC_A_rhahkzor_s	Frappe de Rhahk'Zor
+MC_A_minerjohnson_s	Pourfendre
+MC_A_sneed_s	Terrifier
+MC_A_gilnid_s	Métal en fusion
+MC_A_smite_s	Puissant soufflet
+MC_A_greenskin_s	Harpon empoisonné
+MC_A_cookie_s	Cuisine de Macaron
+MC_ZD_deadmines	Sous Ruisselune, la Confrérie défias construit un navire de guerre dans une vieille mine. Frayez-vous un chemin parmi mineurs, gobelins et pirates jusqu'à %s.
+MC_DUNGEON	Donjon
+MC_DUNGEON_LOCKED	S'ouvre avec une tâche de %s.
+MC_JOURNAL	Guide de l'aventurier
+MC_JOURNAL_HIDDEN	Boss caché
+MC_JOURNAL_HIDDEN_HINT	Apparaît après une tâche de %s.
+MC_JOURNAL_OWNED	Possédé : %s
+MC_JOURNAL_FORMULAS	Chaque boss peut enseigner une formule d'enchantement (jusqu'au rang %d, héroïque %d).
+MC_LOOT_FOUND	Butin : %s
+MC_FORMULA_LEARNT	Formule apprise : %s
+MC_QO_DUNGEON	Terminez %s avec %s dans le groupe.
+MC_QUEST_UNLOCK_deadmines_johnson	Révèle le mineur Johnson dans les Mortemines
+MC_Q_bolvar_deadmines_1_TITLE	Dans les Mortemines
+MC_Q_bolvar_deadmines_1_TEXT	Le cœur de la confrérie bat sous Ruisselune. Bolvar descend lui-même pour l'arrêter.
+MC_Q_bolvar_deadmines_2_TITLE	Le secret d'un mineur
+MC_Q_bolvar_deadmines_2_TEXT	Les mineurs parlent à voix basse d'un certain Johnson qui connaît des galeries cachées. Réduisez les rangs de la confrérie en bas, et il se montrera.

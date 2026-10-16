@@ -314,10 +314,30 @@ ENEMIES = {
     "doomguard_commander": ("Doomguard Commander", "fighter", "demon", 1.3, ["e_cleave", "e_shadowword"]),
     "felguard_elite": ("Felguard Elite", "protector", "demon", 1.2, ["e_cleave", "e_guard"]),
     "jaedenar_legionnaire": ("Jaedenar Legionnaire", "fighter", "satyr", 1.0, ["e_strike", "e_bloodlust"]),
+    # The Deadmines (dungeon)
+    "defias_miner": ("Defias Miner", "fighter", "human", 1.0, ["e_strike", "e_sunder"]),
+    "defias_overseer": ("Defias Overseer", "protector", "human", 1.1, ["e_strike", "e_guard"]),
+    "defias_taskmaster": ("Defias Taskmaster", "fighter", "human", 1.1, ["e_strike", "e_rally"]),
+    "defias_evoker": ("Defias Evoker", "caster", "human", 1.0, ["e_fireball", "e_frostbolt"]),
+    "defias_pirate": ("Defias Pirate", "fighter", "human", 1.0, ["e_strike", "e_cleave"]),
+    "defias_squallshaper": ("Defias Squallshaper", "caster", "human", 1.0, ["e_frostbolt", "e_heal"]),
+    "goblin_engineer": ("Goblin Engineer", "caster", "goblin", 1.0, ["e_fireball", "e_explode"]),
+    "goblin_craftsman": ("Goblin Craftsman", "protector", "goblin", 1.0, ["e_strike", "e_harden"]),
+    "goblin_sneed": ("Sneed", "fighter", "goblin", 1.2, ["e_strike", "e_explode"]),
 }
 
-# key: (Wowhead name, role, race, hp, atk, abilities, heroic ability)
+# key: (Wowhead name, role, race, hp, atk[, abilities, heroic ability]); without a list, the boss has its
+# own key_1..3 and key_h. Dungeon bosses mostly fight with the creatures' abilities plus one of their own
+# from Classic (key_s).
 BOSSES = {
+    # The Deadmines (dungeon); VanCleef is the Westfall boss.
+    "rhahkzor": ("Rhahk'Zor", "protector", "ogre", 240, 9, ["e_slam", "e_guard", "rhahkzor_s"], "e_thunderclap"),
+    "minerjohnson": ("Miner Johnson", "fighter", "human", 215, 10, ["e_strike", "e_sunder", "minerjohnson_s"], "e_enrage"),
+    "sneed": ("Sneed's Shredder", "protector", "construct", 235, 9, ["e_slam", "e_harden", "sneed_s"], "e_frenzy"),
+    "gilnid": ("Gilnid", "caster", "goblin", 195, 6, ["e_firebolt", "e_explode", "gilnid_s"], "e_flamestrike"),
+    "smite": ("Mr. Smite", "fighter", "tauren", 220, 10, ["e_cleave", "e_thunderclap", "smite_s"], "e_enrage"),
+    "greenskin": ("Captain Greenskin", "fighter", "goblin", 210, 10, ["e_strike", "e_cleave", "greenskin_s"], "e_rally"),
+    "cookie": ("Cookie", "fighter", "murloc", 200, 9, ["e_strike", "e_wave", "cookie_s"], "e_frenzy"),
     "hogger": ("Hogger", "fighter", "gnoll", 210, 10),
     "thermaplugg": ("Mekgineer Thermaplugg", "caster", "gnome", 190, 6),
     "whitemane": ("High Inquisitor Whitemane", "caster", "human", 185, 5),
@@ -396,12 +416,14 @@ def main():
             f'    {key} = {{ npc = {npc}, display = {display}, role = "{role}", race = "{race}", '
             f"hp = {round(hp * scale)}, atk = {atk}, abilities = {lua_list(abilities)} }},"
         )
-    for key, (name, role, race, hp, atk) in BOSSES.items():
+    for key, spec in BOSSES.items():
+        name, role, race, hp, atk = spec[:5]
         npc, display = ids(name)
-        abilities = [f"{key}_{i}" for i in (1, 2, 3)]
+        abilities = spec[5] if len(spec) > 5 else [f"{key}_{i}" for i in (1, 2, 3)]
+        heroic = spec[6] if len(spec) > 6 else f"{key}_h"
         lines.append(
             f'    {key} = {{ npc = {npc}, display = {display}, role = "{role}", race = "{race}", '
-            f'hp = {hp}, atk = {atk}, boss = true, abilities = {lua_list(abilities)}, heroic = "{key}_h" }},'
+            f'hp = {hp}, atk = {atk}, boss = true, abilities = {lua_list(abilities)}, heroic = "{heroic}" }},'
         )
     lines.append("}")
     lines.append("")

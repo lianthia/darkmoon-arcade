@@ -232,6 +232,26 @@ if Want("quests") then
     store.quests, mc.questShown = nil, nil
     MC.DEV = false
 end
+if Want("dungeon") then
+    -- The Deadmines: portal and panel on the travel map, the adventure guide, the path.
+    MC.DEV = true
+    store.unlocks = { deadmines = true }
+    mc.travelContinent, mc.travelRegion, mc.travelZone = "ek", 3, "deadmines"
+    mc:ShowView("travel")
+    Snap("dungeon_travel")
+    mc:OpenJournal("deadmines")
+    Snap("dungeon_journal")
+    mc.journalEncounter = 8
+    mc:RefreshJournal()
+    Snap("dungeon_journal_vancleef")
+    mc:StartBounty("deadmines", false)
+    Snap("dungeon_map")
+    MC.Bounty.Abandon(store, store.run)
+    store.run, store.unlocks = nil, nil
+    mc.travelZone, mc.travelRegion = nil, nil
+    mc:ShowView("camp")
+    MC.DEV = false
+end
 mc:ShowView("collection")
 if Want("collection") then
     Snap("collection")

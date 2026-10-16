@@ -232,6 +232,14 @@ Define("vancleef_1", "Ability_Warrior_Disarm", "physical", 4, 0, "enemy", { E("a
 Define("vancleef_2", "Ability_Rogue_Ambush", "physical", 3, 2, "enemy", { E("damage", 12) })
 Define("vancleef_3", "Ability_Warrior_BattleShout", "physical", 6, 2, "none", { E("buff", "atk", 3, nil, "allies") }, { ai = 0.7 })
 Define("vancleef_h", "Ability_Rogue_Sprint", "physical", 1, 3, "none", { E("buff", "speed", -3, 2, "allies") })
+-- The Deadmines: each boss's own ability from Classic (the others are the creatures').
+Define("rhahkzor_s", "INV_Gauntlets_05", "physical", 6, 2, "enemy", { E("damage", 9), E("stun") }, { ai = 0.7 })
+Define("minerjohnson_s", "Ability_Gouge", "physical", 4, 1, "enemy", { E("attack", 1), E("dot", 4, 3) })
+Define("sneed_s", "Ability_Physical_Taunt", "physical", 3, 3, "enemy", { E("stun") }, { ai = 0.6 })
+Define("gilnid_s", "Spell_Fire_Fireball", "fire", 5, 1, "enemy", { E("dot", 5, 3), E("buff", "speed", 2, 2) })
+Define("smite_s", "INV_Gauntlets_05", "physical", 5, 2, "enemy", { E("damage", 7), E("stun") }, { ai = 0.7 })
+Define("greenskin_s", "Ability_Poisons", "nature", 5, 1, "enemy", { E("attack", 1), E("dot", 4, 3) })
+Define("cookie_s", "Spell_Holy_Heal", "holy", 4, 2, "none", { E("heal", 14, "self") }, { ai = 0.6 })
 
 Define("galgosh_1", "Ability_Warrior_PunishingBlow", "physical", 6, 0, "enemy", { E("attack", 5) })
 Define("galgosh_2", "Spell_Nature_EarthBind", "nature", 4, 2, "enemy", { E("buff", "speed", 4, 2), E("damage", 5) })

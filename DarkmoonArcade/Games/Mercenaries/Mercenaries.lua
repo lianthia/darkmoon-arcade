@@ -165,6 +165,7 @@ function Module:Build(container)
     self:BuildRoadmap()
     self:BuildWorkshop()
     self:BuildQuests()
+    self:BuildJournal()
     self:BuildMap()
     self:BuildBattle()
     if MC.DEV then self:BuildFxGallery() end

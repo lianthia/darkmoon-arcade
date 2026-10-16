@@ -48,6 +48,8 @@ local BOSS_ICON = {
     winterfall = "Spell_Frost_FrostShock", cthun = "INV_Misc_Eye_01", archimonde = "Spell_Shadow_CurseOfAchimonde",
 }
 MC.BOSS_ART, MC.BOSS_ICON = BOSS_ART, BOSS_ICON
+-- A dungeon's entrance on the travel map: a portal (as on WoW's maps).
+local DUNGEON_ICON = "Spell_Arcane_PortalStormWind"
 
 -- Regions of each continent the travel point zooms into.
 local REGIONS = {
@@ -432,6 +434,13 @@ function Module:BuildTravel()
             GameTooltip:SetText(Describe.ZoneName(pin.zone), 1, 0.82, 0)
             GameTooltip:AddLine(L.MC_LEVEL_RANGE:format(zone.min, zone.max), 1, 1, 1)
             GameTooltip:AddLine(L["MC_E_" .. zone.boss], 0.8, 0.8, 0.8)
+            if zone.dungeon then
+                GameTooltip:AddLine(L.MC_DUNGEON, 0.4, 0.7, 1)
+                if not MC.Dungeons.IsOpen(self:Store(), pin.zone) then
+                    local merc = MC.Dungeons.UnlockedBy(zone.unlock)
+                    GameTooltip:AddLine(L.MC_DUNGEON_LOCKED:format(merc and Describe.MercName(merc) or "?"), 1, 0.4, 0.3, true)
+                end
+            end
             GameTooltip:Show()
         end)
         pin:HookScript("OnLeave", GameTooltip_Hide)
@@ -521,6 +530,9 @@ function Module:BuildBossPanel(view)
         self:StartBounty(self.travelZone, self.travelHeroic or false)
     end)
     Kit.Place(panel.choose, 119, 466, panel)
+    -- A dungeon's adventure guide, below the map.
+    panel.guide = Kit.Button(view, 190, 26, "MC_JOURNAL", function() self:OpenJournal(self.travelZone) end, "blue")
+    Kit.Place(panel.guide, 14 + MAP_W - 100, H - 16)
     panel.hint = Kit.Ink(panel, 13, { 1, 0.9, 0.7 }, "OUTLINE")
     panel.hint:SetPoint("CENTER", 0, 0)
     panel.hint:SetWidth(190)
@@ -563,8 +575,11 @@ function Module:PlacePins()
     local spots = {}
     for _, pin in ipairs(view.pins) do
         if pin:IsShown() then
-            local r = MC.ZoneMaps[pin.zone].rect
-            local x, y = view.map:Point((r[1] + r[2]) / 2, (r[3] + r[4]) / 2)
+            local zone = MC.Zones[pin.zone]
+            local r = MC.ZoneMaps[zone.region or pin.zone].rect
+            local fx, fy = 0.5, 0.5
+            if zone.spot then fx, fy = zone.spot[1], zone.spot[2] end
+            local x, y = view.map:Point(r[1] + (r[2] - r[1]) * fx, r[3] + (r[4] - r[3]) * fy)
             spots[#spots + 1] = { pin = pin, x = x, y = y }
         end
     end
@@ -648,6 +663,29 @@ function Module:RefreshTravel(resetView)
             end
         end
     end
+    -- Dungeon entrances: a portal in the zone that holds them, dim until a task opens them.
+    for _, did in ipairs(MC.DUNGEON_ORDER) do
+        local dungeon = MC.Zones[did]
+        local region = regions[self.travelRegion or 0]
+        local here = false
+        for _, zid in ipairs(region and region.zones or {}) do
+            if zid == dungeon.region then here = true end
+        end
+        if MC.DEV and zoomed and here and used < #view.pins then
+            used = used + 1
+            local pin = view.pins[used]
+            pin.zone, pin.region = did, self.travelRegion
+            local open = MC.Dungeons.IsOpen(store, did)
+            local state = Bounty.ZoneState(store, did)
+            pin:SetIcon("Interface\\Icons\\" .. DUNGEON_ICON)
+            pin.icon:SetDesaturated(not open)
+            pin:SetMetal(state.heroic > 0 and "gold" or (state.normal > 0 and "silver" or "bronze"))
+            pin.check:SetShown(state.normal > 0)
+            pin.label:SetText(Describe.ZoneName(did))
+            Kit.SetSelected(pin, self.travelZone == did, true)
+            pin:Show()
+        end
+    end
     for i = used + 1, #view.pins do view.pins[i]:Hide() end
     self:PlacePins()
     self:RefreshBossPanel()
@@ -663,6 +701,8 @@ function Module:RefreshBossPanel()
     end
     panel.hint:SetShown(zone == nil)
     panel.hint:SetText(L.MC_PICK_ZONE)
+    panel.guide:SetShown(zone ~= nil and zone.dungeon == true)
+    panel.title.text:SetText((zone and zone.dungeon) and L.MC_DUNGEON or L.MC_BOSS_INFO)
     if not zone then return end
     local art = ZONE_ART[zid]
     panel.picture:SetShown(art ~= nil)
@@ -675,7 +715,7 @@ function Module:RefreshBossPanel()
         -- Classic loading screens: the painting sits between the logo band and the bottom band.
         panel.picture:SetTexCoord(0.15, 0.85, 0.26, 0.74)
     else
-        panel.pictureMap:SetMap(zid, MC.ZoneView(214 / 118))
+        panel.pictureMap:SetMap(zone.region or zid, MC.ZoneView(214 / 118))
     end
     local def = MC.Enemies[zone.boss]
     local bossLevel = Bounty.BossLevel(zone, self.travelHeroic)
@@ -700,6 +740,15 @@ function Module:RefreshBossPanel()
     local partyLevel = math.floor(Bounty.PartyLevel(store))
     local needed = self.travelHeroic and Bounty.HEROIC_LEVEL or zone.min
     panel.warning:SetText(partyLevel < needed and L.MC_WARN_LEVEL:format(partyLevel, needed) or "")
+    if zone.dungeon then
+        panel.name.text:SetText(Describe.ZoneName(zid))
+        panel.levels:SetText(L.MC_DUNGEON .. "  ·  " .. L.MC_LEVEL_RANGE:format(zone.min, zone.max))
+        if not MC.Dungeons.IsOpen(store, zid) then
+            local merc = MC.Dungeons.UnlockedBy(zone.unlock)
+            panel.choose:SetEnabled(false)
+            panel.warning:SetText(L.MC_DUNGEON_LOCKED:format(merc and Describe.MercName(merc) or "?"))
+        end
+    end
 end
 
 -- Collection --------------------------------------------------------------------------------------

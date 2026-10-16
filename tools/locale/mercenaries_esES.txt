@@ -917,3 +917,26 @@ MC_Q_hamuul_naralex_3_TITLE	Los Baldíos retorcidos
 MC_Q_hamuul_naralex_3_TEXT	Las bestias de Los Baldíos se vuelven salvajes y extrañas, como si algo las hubiera soñado así. Reduce su número.
 MC_Q_hamuul_naralex_4_TITLE	El sueño de Naralex
 MC_Q_hamuul_naralex_4_TEXT	El druida Naralex entró en las cuevas para sanar la tierra y nunca despertó. Su pesadilla se extiende. Hazte lo bastante fuerte para seguirlo.
+MC_A_rhahkzor_s	Puñetazo de Rhahk'Zor
+MC_A_minerjohnson_s	Desgarrar
+MC_A_sneed_s	Aterrorizar
+MC_A_gilnid_s	Metal de arrabio
+MC_A_smite_s	Embate acometedor
+MC_A_greenskin_s	Harpón envenenado
+MC_A_cookie_s	Cocina de Chefita
+MC_ZD_deadmines	Bajo Arroyo de la Luna, la Hermandad Defias construye un buque de guerra en una vieja mina. Ábrete paso entre mineros, goblins y piratas hasta %s.
+MC_DUNGEON	Mazmorra
+MC_DUNGEON_LOCKED	Se abre con una tarea de %s.
+MC_JOURNAL	Guía de aventuras
+MC_JOURNAL_HIDDEN	Jefe oculto
+MC_JOURNAL_HIDDEN_HINT	Aparece tras una tarea de %s.
+MC_JOURNAL_OWNED	En posesión: %s
+MC_JOURNAL_FORMULAS	Cada jefe puede enseñar una fórmula de encantamiento (hasta grado %d, heroico %d).
+MC_LOOT_FOUND	Botín: %s
+MC_FORMULA_LEARNT	Fórmula aprendida: %s
+MC_QO_DUNGEON	Completa %s con %s en el grupo.
+MC_QUEST_UNLOCK_deadmines_johnson	Revela al minero Johnson en las Minas de la Muerte
+MC_Q_bolvar_deadmines_1_TITLE	A las Minas de la Muerte
+MC_Q_bolvar_deadmines_1_TEXT	El corazón de la hermandad late bajo Arroyo de la Luna. Bolvar baja en persona para detenerlo.
+MC_Q_bolvar_deadmines_2_TITLE	El secreto de un minero
+MC_Q_bolvar_deadmines_2_TEXT	Los mineros susurran sobre un tal Johnson que conoce túneles ocultos. Reduce las filas de la hermandad allí abajo y se dejará ver.

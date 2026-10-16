@@ -187,6 +187,18 @@ function Module:RefreshResult()
         for _, id in ipairs(found) do names[#names + 1] = MC.TreasureName(id) end
         out[#out + 1] = L.MC_TREASURES_FOUND:format(table.concat(names, ", "))
     end
+    -- A dungeon's loot (to be handed to a mercenary back in the camp) and formulas learnt.
+    if run.itemsFound and #run.itemsFound > 0 then
+        local names = {}
+        for _, id in ipairs(run.itemsFound) do
+            local c = MC.RARITY_COLORS[MC.Items[id].rarity]
+            names[#names + 1] = ("|cff%02x%02x%02x%s|r"):format(c[1] * 255, c[2] * 255, c[3] * 255, MC.ItemName(id))
+        end
+        out[#out + 1] = L.MC_LOOT_FOUND:format(table.concat(names, ", "))
+    end
+    for _, id in ipairs(run.recipesFound or {}) do
+        out[#out + 1] = "|cff66b3ff" .. L.MC_FORMULA_LEARNT:format(L["MC_F_" .. id]) .. "|r"
+    end
     -- Tasks this bounty finished: to be handed in at the task board.
     if run.questsReady and #run.questsReady > 0 then
         local names = {}
