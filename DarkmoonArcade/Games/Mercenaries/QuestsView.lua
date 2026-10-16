@@ -1,5 +1,5 @@
 -- The task board (by the campfire): the open chains on the left (several per mercenary; finished ones
--- dimmed at the end, a page at a time), the chosen task on a quest page on the right - its story, objective with progress, reward and "Hand in".
+-- dimmed at the end, scrolling), the chosen task on a quest page on the right - its story, objective with progress, reward and "Hand in".
 -- Until the dungeons come, only the dev copy opens it; the board shows the achievements otherwise.
 
 local _, ns = ...
@@ -15,9 +15,9 @@ local LIST_X, LIST_W = 14, 250
 local PAGE_X = LIST_X + LIST_W + 12
 local PAGE_W = W - PAGE_X - 14
 local TOP, ROW_H, HEAD_H = 58, 50, 26
-local ROWS = 14
--- Room for the rows on one page (the arrows sit below).
-local LIST_ROOM = H - TOP - 60 - 52
+local LIST_H = H - TOP - 60
+-- The list scrolls inside its panel (mouse wheel); a thin bar on the right shows where.
+local WHEEL_STEP, BAR_W = 50, 4
 
 local ICON_AVAILABLE = "Interface\\GossipFrame\\AvailableQuestIcon"
 local ICON_READY = "Interface\\GossipFrame\\ActiveQuestIcon"
@@ -71,11 +71,25 @@ function Module:BuildQuests()
     fill:SetAllPoints()
     fill:SetColorTexture(0.08, 0.05, 0.03, 0.78)
     Widgets.Rim(list, list)
+    local clip = CreateFrame("Frame", nil, list)
+    clip:SetSize(LIST_W, LIST_H - 8)
+    clip:SetPoint("TOPLEFT", 0, -4)
+    clip:SetClipsChildren(true)
+    clip:EnableMouseWheel(true)
+    clip:SetScript("OnMouseWheel", function(_, delta) self:ScrollQuests(-delta * WHEEL_STEP) end)
+    local content = CreateFrame("Frame", nil, clip)
+    content:SetSize(LIST_W, LIST_H)
+    content:SetPoint("TOPLEFT")
+    view.clip, view.content = clip, content
+    view.bar = list:CreateTexture(nil, "OVERLAY")
+    view.bar:SetWidth(BAR_W)
+    view.bar:SetColorTexture(1, 0.82, 0.4, 0.5)
     view.rows = {}
-    for i = 1, ROWS do
-        local b = CreateFrame("Button", nil, list)
-        b:SetSize(LIST_W - 16, ROW_H - 4)
-        b:SetPoint("TOP", 0, -8 - (i - 1) * ROW_H)
+    self.questScroll = 0
+    function view.Row(i)
+        if view.rows[i] then return view.rows[i] end
+        local b = CreateFrame("Button", nil, content)
+        b:SetSize(LIST_W - 20, ROW_H - 4)
         b.shade = b:CreateTexture(nil, "BACKGROUND")
         b.shade:SetAllPoints()
         b.shade:SetColorTexture(1, 0.85, 0.5, 0.06)
@@ -109,19 +123,11 @@ function Module:BuildQuests()
             self.questShown = b.chain
             self:RefreshQuests()
         end)
+        b:EnableMouseWheel(true)
+        b:SetScript("OnMouseWheel", function(_, delta) self:ScrollQuests(-delta * WHEEL_STEP) end)
         view.rows[i] = b
+        return b
     end
-
-    view.prev = Kit.Arrow(list, -1, function()
-        self.questPage = math.max(1, (self.questPage or 1) - 1)
-        self:RefreshQuests()
-    end)
-    view.prev:SetPoint("BOTTOMLEFT", 6, 4)
-    view.next = Kit.Arrow(list, 1, function()
-        self.questPage = (self.questPage or 1) + 1
-        self:RefreshQuests()
-    end)
-    view.next:SetPoint("BOTTOMRIGHT", -6, 4)
 
     -- The quest page.
     local page = CreateFrame("Frame", nil, view)
@@ -200,27 +206,17 @@ function Module:RefreshQuests()
         for _, chain in ipairs(rest) do ready[#ready + 1] = chain end
         sections[k].list = ready
     end
-    -- The rows in order, split into pages that fit; a section going on to the next page repeats its heading.
-    local pagesList, page, room = {}, {}, LIST_ROOM
-    local function Add(entry, h)
-        if room < h and #page > 0 then
-            pagesList[#pagesList + 1] = page
-            page, room = {}, LIST_ROOM
-            if entry.chain and entry.section then Add({ head = entry.section }, HEAD_H) end
-        end
-        page[#page + 1] = entry
-        room = room - h
-    end
+    -- The rows in order: each section's heading, then its chains.
+    local entries = {}
     for _, section in ipairs(sections) do
         if #section.list > 0 then
-            Add({ head = section.key }, HEAD_H)
+            entries[#entries + 1] = { head = section.key }
             for _, chain in ipairs(section.list) do
                 open[#open + 1] = chain
-                Add({ chain = chain, section = section.key }, ROW_H)
+                entries[#entries + 1] = { chain = chain }
             end
         end
     end
-    if #page > 0 then pagesList[#pagesList + 1] = page end
     -- The chosen chain: the one shown before, else the first with a task to hand in, else the first.
     local shown = self.questShown
     if not (shown and Quests.Open(store, shown)) then
@@ -233,10 +229,8 @@ function Module:RefreshQuests()
         end
     end
     self.questShown = shown
-    local pages = math.max(1, #pagesList)
-    local pageIndex = math.min(self.questPage or 1, pages)
-    self.questPage = pageIndex
-    local entries, y = pagesList[pageIndex] or {}, 8
+    for i = 1, #entries do view.Row(i) end
+    local y = 4
     for i, b in ipairs(view.rows) do
         local entry = entries[i]
         b:SetShown(entry ~= nil)
@@ -270,10 +264,9 @@ function Module:RefreshQuests()
             end
         end
     end
-    view.prev:SetShown(pages > 1)
-    view.next:SetShown(pages > 1)
-    view.prev:SetEnabled(pageIndex > 1)
-    view.next:SetEnabled(pageIndex < pages)
+    self.questListHeight = y + 4
+    view.content:SetHeight(math.max(LIST_H, y + 4))
+    self:ScrollQuests(0)
     if not shown then return end
 
     local def = MC.QUEST_CHAINS[shown]
@@ -303,11 +296,30 @@ function Module:RefreshQuests()
     view.turnIn:SetEnabled(ready)
 end
 
+-- Scrolls the list by `delta` (kept inside its ends) and moves the bar.
+function Module:ScrollQuests(delta)
+    local view = self.views.quests
+    local room = LIST_H - 8
+    local max = math.max(0, (self.questListHeight or 0) - room)
+    self.questScroll = math.max(0, math.min(max, (self.questScroll or 0) + delta))
+    view.content:ClearAllPoints()
+    view.content:SetPoint("TOPLEFT", view.clip, "TOPLEFT", 0, self.questScroll)
+    view.bar:SetShown(max > 0)
+    if max > 0 then
+        local barH = math.max(24, room * room / (room + max))
+        view.bar:SetHeight(barH)
+        view.bar:ClearAllPoints()
+        view.bar:SetPoint("TOPRIGHT", view.clip, "TOPRIGHT", -3, -(room - barH) * self.questScroll / max)
+    end
+end
+
 function Module:TurnInQuest()
     local store, merc = self:Store(), self.questShown
     local coins, unlock = Quests.TurnIn(store, merc)
     if not coins then return end
+    -- As in WoW: the quest complete sound and the coins.
     PlaySound(SOUNDKIT.IG_QUEST_LIST_COMPLETE)
+    if SOUNDKIT.LOOT_WINDOW_COIN_SOUND then PlaySound(SOUNDKIT.LOOT_WINDOW_COIN_SOUND) end
     self:RefreshQuests()
     if unlock then
         self.overlay:Show("event", {
