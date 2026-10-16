@@ -11,7 +11,7 @@ end
 ns.AddStrings("enUS", {
     NEWS_140_HEADLINE = "Alpha: the new arcade",
     NEWS_140_1_TITLE = "A new launcher",
-    NEWS_140_1_TEXT = "Your games on the left, Mercenaries in the spotlight and the latest updates on the start page – like the Battle.net app.",
+    NEWS_140_1_TEXT = "Your games on the left, Mercenaries in the spotlight and the latest updates on the start page.",
     NEWS_140_2_TITLE = "Favorites",
     NEWS_140_2_TEXT = "Mark games with the star; Favorites and All games list them. Flights can open your favorites or the game you played last.",
     NEWS_140_3_TITLE = "The camp",
@@ -219,7 +219,7 @@ ns.AddStrings("enUS", {
 ns.AddStrings("deDE", {
     NEWS_140_HEADLINE = "Alpha: die neue Spielhalle",
     NEWS_140_1_TITLE = "Ein neuer Launcher",
-    NEWS_140_1_TEXT = "Links deine Spiele, auf der Startseite Mercenaries im Rampenlicht und die zuletzt aktualisierten Spiele – wie in der Battle.net-App.",
+    NEWS_140_1_TEXT = "Links deine Spiele, auf der Startseite Mercenaries im Rampenlicht und die zuletzt aktualisierten Spiele.",
     NEWS_140_2_TITLE = "Favoriten",
     NEWS_140_2_TEXT = "Markiere Spiele mit dem Stern; Favoriten und Alle Spiele listen sie auf. Flüge können deine Favoriten oder das zuletzt gespielte Spiel öffnen.",
     NEWS_140_3_TITLE = "Das Lager",
@@ -424,7 +424,7 @@ ns.AddStrings("deDE", {
 ns.AddStrings("frFR", {
     NEWS_140_HEADLINE = "Alpha : la nouvelle salle d'arcade",
     NEWS_140_1_TITLE = "Un nouveau lanceur",
-    NEWS_140_1_TEXT = "Vos jeux à gauche, Mercenaries à l'affiche et les dernières mises à jour sur la page d'accueil – comme l'application Battle.net.",
+    NEWS_140_1_TEXT = "Vos jeux à gauche, Mercenaries à l'affiche et les dernières mises à jour sur la page d'accueil.",
     NEWS_140_2_TITLE = "Favoris",
     NEWS_140_2_TEXT = "Marquez des jeux avec l'étoile ; Favoris et Tous les jeux les listent. Les vols peuvent ouvrir vos favoris ou le dernier jeu joué.",
     NEWS_140_3_TITLE = "Le camp",
@@ -625,7 +625,7 @@ ns.AddStrings("frFR", {
 ns.AddStrings("esES", {
     NEWS_140_HEADLINE = "Alfa: la nueva sala recreativa",
     NEWS_140_1_TITLE = "Un nuevo lanzador",
-    NEWS_140_1_TEXT = "Tus juegos a la izquierda, Mercenaries destacado y las últimas actualizaciones en la página de inicio, como en la aplicación de Battle.net.",
+    NEWS_140_1_TEXT = "Tus juegos a la izquierda, Mercenaries destacado y las últimas actualizaciones en la página de inicio.",
     NEWS_140_2_TITLE = "Favoritos",
     NEWS_140_2_TEXT = "Marca juegos con la estrella; Favoritos y Todos los juegos los muestran. Los vuelos pueden abrir tus favoritos o el último juego jugado.",
     NEWS_140_3_TITLE = "El campamento",
@@ -826,7 +826,7 @@ ns.AddStrings("esES", {
 ns.AddStrings("ruRU", {
     NEWS_140_HEADLINE = "Альфа: новый игровой зал",
     NEWS_140_1_TITLE = "Новый лаунчер",
-    NEWS_140_1_TEXT = "Слева ваши игры, на главной странице Mercenaries в центре внимания и последние обновления – как в приложении Battle.net.",
+    NEWS_140_1_TEXT = "Слева ваши игры, на главной странице Mercenaries в центре внимания и последние обновления.",
     NEWS_140_2_TITLE = "Избранное",
     NEWS_140_2_TEXT = "Отмечайте игры звездой; их покажут разделы «Избранное» и «Все игры». В полёте может открываться избранное или последняя игра.",
     NEWS_140_3_TITLE = "Лагерь",
@@ -1028,7 +1028,7 @@ ns.AddStrings("ruRU", {
 ns.AddStrings("zhCN", {
     NEWS_140_HEADLINE = "测试版：全新的游乐场",
     NEWS_140_1_TITLE = "全新启动器",
-    NEWS_140_1_TEXT = "左侧是你的游戏，首页聚焦佣兵并展示最近更新的游戏，就像战网应用一样。",
+    NEWS_140_1_TEXT = "左侧是你的游戏，首页聚焦佣兵并展示最近更新的游戏。",
     NEWS_140_2_TITLE = "收藏",
     NEWS_140_2_TEXT = "用星标标记游戏，在“收藏”和“全部游戏”中查看。飞行时可以打开你的收藏或上次玩的游戏。",
     NEWS_140_3_TITLE = "营地",
