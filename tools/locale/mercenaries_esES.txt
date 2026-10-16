@@ -1169,3 +1169,49 @@ MC_A_electrocutioner_s	Megavoltio
 MC_A_pummeler_s	Paliza popular
 MC_A_agathelos_s	Arrasada
 MC_A_charlga_s	Descarga en cadena
+MC_Z_sm_graveyard	Monasterio Escarlata: Cementerio
+MC_Z_sm_library	Monasterio Escarlata: Biblioteca
+MC_Z_sm_armory	Monasterio Escarlata: Armería
+MC_Z_sm_cathedral	Monasterio Escarlata: Catedral
+MC_ZD_sm_graveyard	Tras el monasterio la Cruzada entierra a sus muertos, que no descansan. %s guarda la cripta.
+MC_ZD_sm_library	Los eruditos de la Cruzada acumulan saber prohibido en la biblioteca. %s guarda sus secretos.
+MC_ZD_sm_armory	En la armería la Cruzada entrena a sus reclutas. %s, el campeón escarlata, aguarda rivales dignos.
+MC_ZD_sm_cathedral	El comandante Mograine dirige a la élite de la Cruzada en la catedral. %s espera en el altar.
+MC_ZD_downs	En los túmulos de los jabaespines la Plaga ha encontrado aliados. El exánime %s los gobierna desde abajo.
+MC_ZD_uldaman	Troggs y enanos Forjatiniebla excavan la cámara de los titanes en Tierras Inhóspitas. En lo más hondo despierta %s.
+MC_Q_tirion_monastery_1_TITLE	El corazón escarlata
+MC_Q_tirion_monastery_1_TEXT	Melenablanca ha caído, pero la Cruzada aún controla su catedral. Tirion entra para recordarles lo que significa la Luz.
+MC_Q_tirion_monastery_2_TITLE	No más fanáticos
+MC_Q_tirion_monastery_2_TEXT	Cada cruzado que cae es un fanático menos que caza inocentes.
+MC_Q_jaina_doan_1_TITLE	Saber prohibido
+MC_Q_jaina_doan_1_TEXT	Doan ha caído, pero la biblioteca aún guarda magia que la Cruzada nunca debió tener. Jaina quiere verla en persona.
+MC_Q_jaina_doan_2_TITLE	Quemar las páginas
+MC_Q_jaina_doan_2_TEXT	Limpia la biblioteca de sus guardianes antes de que vuelvan sus secretos contra el mundo.
+MC_Q_saurfang_herod_1_TITLE	El campeón escarlata
+MC_Q_saurfang_herod_1_TEXT	Herod presumía de que ningún orco podría con él. Colmillosauro quiere ver su armería con sus propios ojos.
+MC_Q_saurfang_herod_2_TITLE	Filas rotas
+MC_Q_saurfang_herod_2_TEXT	Quebranta a los soldados de la Cruzada en sus propias salas.
+MC_Q_benedictus_downs_1_TITLE	Traed la Luz
+MC_Q_benedictus_downs_1_TEXT	Amnennar ha caído, pero la Plaga aún se agita en los túmulos. El arzobispo lleva la Luz en persona.
+MC_Q_benedictus_downs_2_TITLE	Descanso para los muertos
+MC_Q_benedictus_downs_2_TEXT	Cada cadáver alzado que vuelve a caer es un alma devuelta a su descanso.
+MC_Q_magni_uldaman_1_TITLE	La cámara de los titanes
+MC_Q_magni_uldaman_1_TEXT	Archaedas duerme de nuevo y la Liga de Expedicionarios quiere los secretos de Uldaman. Magni encabeza la marcha.
+MC_Q_magni_uldaman_2_TITLE	Despejar la excavación
+MC_Q_magni_uldaman_2_TEXT	Los troggs Bóvedapétrea infestan las salas que los enanos quieren estudiar. Expúlsalos.
+MC_A_vishas_s	Palabra de las Sombras: Dolor
+MC_A_thalnos_s	Pica llameante
+MC_A_loksey_s	Ansia de sangre
+MC_A_doan_s	Detonación
+MC_A_herod_s	Huracán
+MC_A_mograine_s	Golpe del cruzado
+MC_A_tutenkash_s	Pulverizador de tela de araña
+MC_A_mordresh_s	Nova de Fuego
+MC_A_amnennar_s	Ira de Amnennar
+MC_A_ironaya_s	Machaque arqueado
+MC_A_grimlok_s	Encoger
+MC_ZG_sm	Monasterio Escarlata
+MC_ZW_sm_graveyard	Cementerio
+MC_ZW_sm_library	Biblioteca
+MC_ZW_sm_armory	Armería
+MC_ZW_sm_cathedral	Catedral

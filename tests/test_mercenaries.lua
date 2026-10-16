@@ -755,6 +755,18 @@ end)
 
 -- Dungeons -----------------------------------------------------------------------------------------
 
+test("dungeons: wings of a group share one portal, long wings fight several trash waves", function()
+    local Dungeons = MC.Dungeons
+    eq(#Dungeons.Wings("sm_library"), 4)
+    eq(Dungeons.Wings("sm_cathedral")[1], "sm_graveyard")
+    eq(#Dungeons.Wings("deadmines"), 1)
+    -- The Armory: three trash fights (the last elite), the spirit healer, Herod.
+    local map = Dungeons.GenerateMap({ rng = 4242 }, NewStore(), MC.Zones.sm_armory, false)
+    local kinds = {}
+    for _, row in ipairs(map.layers) do kinds[#kinds + 1] = row[1].type end
+    eq(table.concat(kinds, " "), "fight fight elite healer boss")
+end)
+
 test("dungeons: always open, the path is fixed, a hidden boss on a side branch, Classic loot, the last ends it", function()
     local Dungeons, Quests = MC.Dungeons, MC.Quests
     for _, id in ipairs(MC.DUNGEON_ORDER) do

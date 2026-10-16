@@ -7,6 +7,7 @@
   "name": "Agathelos the Raging",
   "names": {
    "esES": "Agathelos el Furioso",
+   "frFR": "Agathelos l'Enragé",
    "ruRU": "Агателос Свирепый",
    "zhCN": "暴怒的阿迦赛罗斯"
   }
@@ -50,7 +51,46 @@
    "zhCN": "阿库麦尔钳嘴龟"
   }
  },
+ "Amnennar the Coldbringer": {
+  "de": "Amnennar der Kältebringer",
+  "display": 7971,
+  "id": 7358,
+  "info": "Amnennar the Coldbringer is a level 41 Elite NPC. The location of this NPC is unknown.",
+  "name": "Amnennar the Coldbringer",
+  "names": {
+   "esES": "Amnennar el Gélido",
+   "frFR": "Amnennar le Porte-froid",
+   "ruRU": "Амненнар Хладовей",
+   "zhCN": "寒冰之王亚门纳尔"
+  }
+ },
+ "Ancient Stone Keeper": {
+  "de": "Uralter Steinbewahrer",
+  "display": 10798,
+  "id": 7206,
+  "info": "Ancient Stone Keeper is a level 44 Elite NPC. The location of this NPC is unknown.",
+  "name": "Ancient Stone Keeper",
+  "names": {
+   "esES": "Vigilante pétreo anciano",
+   "frFR": "Ancien Gardien des pierres",
+   "ruRU": "Древний Хранитель Камня",
+   "zhCN": "古代的石头看守者"
+  }
+ },
  "Anetheron": null,
+ "Anguished Dead": {
+  "de": "Gequälter Toter",
+  "display": 10255,
+  "id": 6426,
+  "info": "Anguished Dead is a level 31 - 33 Elite NPC. The location of this NPC is unknown.",
+  "name": "Anguished Dead",
+  "names": {
+   "esES": "Muerto angustioso",
+   "frFR": "Mort angoissé",
+   "ruRU": "Тоскующий мертвец",
+   "zhCN": "痛苦的死者"
+  }
+ },
  "Anubisath Sentinel": {
   "de": "Wächter des Anubisath",
   "display": 15347,
@@ -75,6 +115,19 @@
    "frFR": "Garde Ragenclume",
    "ruRU": "Охранник из клана Ярости Горна",
    "zhCN": "铁怒卫士"
+  }
+ },
+ "Arcanist Doan": {
+  "de": "Arkanist Doan",
+  "display": 5266,
+  "id": 6487,
+  "info": "Arcanist Doan is a level 37 Elite NPC. The location of this NPC is unknown.",
+  "name": "Arcanist Doan",
+  "names": {
+   "esES": "Arcanista Doan",
+   "frFR": "Arcaniste Doan",
+   "ruRU": "Чародей Доан",
+   "zhCN": "奥法师杜安"
   }
  },
  "Arch Druid Hamuul Runetotem": {
@@ -208,6 +261,19 @@
   }
  },
  "Azgalor": null,
+ "Azshir the Sleepless": {
+  "de": "Azshir der Schlaflose",
+  "display": 5534,
+  "id": 6490,
+  "info": "Azshir the Sleepless is a level 33 Rare Elite NPC. The location of this NPC is unknown.",
+  "name": "Azshir the Sleepless",
+  "names": {
+   "esES": "Azshir el Insomne",
+   "frFR": "Azshir le Sans-sommeil",
+   "ruRU": "Азшир Неспящий",
+   "zhCN": "永醒的艾希尔"
+  }
+ },
  "Azuregos": {
   "de": "Azuregos",
   "display": 11460,
@@ -219,6 +285,19 @@
    "frFR": "Azuregos",
    "ruRU": "Азурегос",
    "zhCN": "艾索雷葛斯"
+  }
+ },
+ "Baelog": {
+  "de": "Baelog",
+  "display": 5710,
+  "id": 6906,
+  "info": "Baelog is a level 41 Elite NPC. The location of this NPC is unknown.",
+  "name": "Baelog",
+  "names": {
+   "esES": "Baelog",
+   "frFR": "Baelog",
+   "ruRU": "Бейлог",
+   "zhCN": "巴尔洛戈"
   }
  },
  "Barak Kodobane": {
@@ -557,6 +636,19 @@
    "frFR": "Harpie Rougefurie",
    "ruRU": "Гарпия из стаи Кровавой Ярости",
    "zhCN": "血怒鹰身人"
+  }
+ },
+ "Bloodmage Thalnos": {
+  "de": "Blutmagier Thalnos",
+  "display": 11396,
+  "id": 4543,
+  "info": "Bloodmage Thalnos is a level 34 Elite NPC. The location of this NPC is unknown.",
+  "name": "Bloodmage Thalnos",
+  "names": {
+   "esES": "Mago sangriento Thalnos",
+   "frFR": "Mage de sang Thalnos",
+   "ruRU": "Волшебник Крови Талнос",
+   "zhCN": "血法师萨尔诺斯"
   }
  },
  "Bloodscalp Shaman": {
@@ -1157,6 +1249,32 @@
    "zhCN": "亡首侍僧"
   }
  },
+ "Death's Head Cultist": {
+  "de": "Kultistin der Totenköpfe",
+  "display": 6098,
+  "id": 7872,
+  "info": "Death's Head Cultist is a level 33 - 34 Elite NPC. The location of this NPC is unknown.",
+  "name": "Death's Head Cultist",
+  "names": {
+   "esES": "Fiel Caramuerte",
+   "frFR": "Sectateur de la Tête de Mort",
+   "ruRU": "Сектантка из племени Мертвой Головы",
+   "zhCN": "亡首教徒"
+  }
+ },
+ "Death's Head Necromancer": {
+  "de": "Nekromant der Totenköpfe",
+  "display": 11381,
+  "id": 7337,
+  "info": "Death's Head Necromancer is a level 36 - 37 Elite NPC. The location of this NPC is unknown.",
+  "name": "Death's Head Necromancer",
+  "names": {
+   "esES": "Nigromante Caramuerte",
+   "frFR": "Nécromancienne de la Tête de Mort",
+   "ruRU": "Некромант из племени Мертвой Головы",
+   "zhCN": "亡首通灵师"
+  }
+ },
  "Deathsworn Captain": {
   "de": "Todeshöriger Captain",
   "display": 3224,
@@ -1716,6 +1834,32 @@
    "zhCN": "土灵管理者"
   }
  },
+ "Earthen Guardian": {
+  "de": "Irdener Wächter",
+  "display": 6026,
+  "id": 7076,
+  "info": "Earthen Guardian is a level 44 - 45 NPC. The location of this NPC is unknown.",
+  "name": "Earthen Guardian",
+  "names": {
+   "esES": "Guardián de tierra",
+   "frFR": "Gardien terrestre",
+   "ruRU": "Глиняный землестраж",
+   "zhCN": "土灵守护者"
+  }
+ },
+ "Earthen Rocksmasher": {
+  "de": "Irdener Felsbrecher",
+  "display": 6010,
+  "id": 7011,
+  "info": "Earthen Rocksmasher is a level 42 - 43 NPC. The location of this NPC is unknown.",
+  "name": "Earthen Rocksmasher",
+  "names": {
+   "esES": "Machacapiedras de tierra",
+   "frFR": "Brise-roc terrestre",
+   "ruRU": "Глиняный камнекрушитель",
+   "zhCN": "土灵碎岩者"
+  }
+ },
  "Eastsea Raider": {
   "de": "Eastsea Raider",
   "display": 140459,
@@ -1807,6 +1951,19 @@
    "zhCN": "达格兰·索瑞森大帝"
   }
  },
+ "Eric \"The Swift\"": {
+  "de": "Eric \"Der Flinke\"",
+  "display": 5708,
+  "id": 6907,
+  "info": "Eric \"The Swift\" is a level 40 Elite NPC. The location of this NPC is unknown.",
+  "name": "Eric \"The Swift\"",
+  "names": {
+   "esES": "Eric \"El Suave\"",
+   "frFR": "Eric \"l'Agile\"",
+   "ruRU": "Эрик \"Быстрый\"",
+   "zhCN": "埃瑞克"
+  }
+ },
  "Evolving Ectoplasm": {
   "de": "Entstehendes Ektoplasma",
   "display": 1751,
@@ -1818,6 +1975,19 @@
    "frFR": "Ectoplasme grandissant",
    "ruRU": "Изменчивая эктоплазма",
    "zhCN": "大型软浆怪"
+  }
+ },
+ "Fallen Champion": {
+  "de": "Gestürzter Held",
+  "display": 5230,
+  "id": 6488,
+  "info": "Fallen Champion is a level 33 Rare Elite NPC. The location of this NPC is unknown.",
+  "name": "Fallen Champion",
+  "names": {
+   "esES": "Campeón caído",
+   "frFR": "Champion mort",
+   "ruRU": "Павший воитель",
+   "zhCN": "死灵勇士"
   }
  },
  "Fandral Staghelm": {
@@ -2042,6 +2212,19 @@
    "zhCN": "霜刃雌豹"
   }
  },
+ "Frozen Soul": {
+  "de": "Eisseele",
+  "display": 146,
+  "id": 7352,
+  "info": "Frozen Soul is a level 37 - 38 Elite NPC. The location of this NPC is unknown.",
+  "name": "Frozen Soul",
+  "names": {
+   "esES": "Alma gélida",
+   "frFR": "Ame glacée",
+   "ruRU": "Хладная душа",
+   "zhCN": "冰冻之魂"
+  }
+ },
  "Gahz'rilla": {
   "de": "Gahz'rilla",
   "display": 7271,
@@ -2079,6 +2262,19 @@
    "frFR": "Chasse-vent galak",
    "ruRU": "Ветроловка из племени Галак",
    "zhCN": "加拉克逐风者"
+  }
+ },
+ "Galgann Firehammer": {
+  "de": "Galgann Feuerhammer",
+  "display": 6059,
+  "id": 7291,
+  "info": "",
+  "name": "Galgann Firehammer",
+  "names": {
+   "esES": "Galgann Flamartillo",
+   "frFR": "Galgann Firehammer",
+   "ruRU": "Галганн Огнемолот",
+   "zhCN": "加加恩·火锤"
   }
  },
  "Gath'Ilzogg": {
@@ -2209,6 +2405,19 @@
    "frFR": "Limon gluant",
    "ruRU": "Липкий слизнюк",
    "zhCN": "粘稠的软泥怪"
+  }
+ },
+ "Glutton": {
+  "de": "Nimmersatt",
+  "display": 7864,
+  "id": 8567,
+  "info": "Glutton is a level 40 Elite NPC. The location of this NPC is unknown.",
+  "name": "Glutton",
+  "names": {
+   "esES": "Glotón",
+   "frFR": "Glouton",
+   "ruRU": "Обжора",
+   "zhCN": "暴食者"
   }
  },
  "Gnarlpine Ursa": {
@@ -2367,6 +2576,19 @@
    "zhCN": "灰雾先知"
   }
  },
+ "Grimlok": {
+  "de": "Grimlok",
+  "display": 11165,
+  "id": 4854,
+  "info": "Grimlok is a level 45 Elite NPC. The location of this NPC is unknown.",
+  "name": "Grimlok",
+  "names": {
+   "esES": "Grimlok",
+   "frFR": "Grimlok",
+   "ruRU": "Гримлок",
+   "zhCN": "格瑞姆洛克"
+  }
+ },
  "Grimtotem Geomancer": {
   "de": "Geomant der Grimmtotem",
   "display": 10227,
@@ -2497,6 +2719,19 @@
    "zhCN": "鬼怪仆从"
   }
  },
+ "Haunting Phantasm": {
+  "de": "Spuktrugbild",
+  "display": 4629,
+  "id": 6427,
+  "info": "Haunting Phantasm is a level 32 - 33 Elite NPC. The location of this NPC is unknown.",
+  "name": "Haunting Phantasm",
+  "names": {
+   "esES": "Fantasma encantado",
+   "frFR": "Illusion spectrale",
+   "ruRU": "Блуждающий фантазм",
+   "zhCN": "鬼魅幻影"
+  }
+ },
  "Heavy War Golem": {
   "de": "Schwerer Kriegsgolem",
   "display": 10801,
@@ -2510,6 +2745,19 @@
    "zhCN": "重型作战傀儡"
   }
  },
+ "Herod": {
+  "de": "Herod",
+  "display": 2041,
+  "id": 3975,
+  "info": "Herod is a level 40 Elite NPC. The location of this NPC is unknown.",
+  "name": "Herod",
+  "names": {
+   "esES": "Herod",
+   "frFR": "Herod",
+   "ruRU": "Герод",
+   "zhCN": "赫洛德"
+  }
+ },
  "High Chief Winterfall": {
   "de": "Oberhäuptling der Winterfelle",
   "display": 9491,
@@ -2521,6 +2769,19 @@
    "frFR": "Grand chef Tombe-hiver",
    "ruRU": "Верховный вождь племени Зимней Спячки",
    "zhCN": "冬泉酋长"
+  }
+ },
+ "High Inquisitor Fairbanks": {
+  "de": "Hochinquisitor Fairbanks",
+  "display": 2605,
+  "id": 4542,
+  "info": "High Inquisitor Fairbanks is a level 40 Elite NPC. The location of this NPC is unknown.",
+  "name": "High Inquisitor Fairbanks",
+  "names": {
+   "esES": "Alto inquisidor Ribalimpia",
+   "frFR": "Grand Inquisiteur Fairbanks",
+   "ruRU": "Верховный инквизитор Фэйрбанкс",
+   "zhCN": "大检察官法尔班克斯"
   }
  },
  "High Inquisitor Whitemane": {
@@ -2692,6 +2953,19 @@
    "zhCN": "霍格"
   }
  },
+ "Houndmaster Loksey": {
+  "de": "Hundemeister Loksey",
+  "display": 2040,
+  "id": 3974,
+  "info": "Houndmaster Loksey is a level 34 Elite NPC. The location of this NPC is unknown.",
+  "name": "Houndmaster Loksey",
+  "names": {
+   "esES": "Domador de jaurías Loksey",
+   "frFR": "Maître-chien Loksey",
+   "ruRU": "Псарь Локси",
+   "zhCN": "驯犬者洛克希"
+  }
+ },
  "Ice Claw Bear": {
   "de": "Eisklauenbär",
   "display": 8840,
@@ -2745,6 +3019,45 @@
    "zhCN": "地狱火哨兵"
   }
  },
+ "Interrogator Vishas": {
+  "de": "Befrager Vishas",
+  "display": 2044,
+  "id": 3983,
+  "info": "Interrogator Vishas is a level 32 Elite NPC. The location of this NPC is unknown.",
+  "name": "Interrogator Vishas",
+  "names": {
+   "esES": "Interrogador Vishas",
+   "frFR": "Interrogateur Vishas",
+   "ruRU": "Дознаватель Вишас",
+   "zhCN": "审讯员韦沙斯"
+  }
+ },
+ "Ironaya": {
+  "de": "Ironaya",
+  "display": 6089,
+  "id": 7228,
+  "info": "Ironaya is a level 40 Elite NPC. The location of this NPC is unknown.",
+  "name": "Ironaya",
+  "names": {
+   "esES": "Hierraya",
+   "frFR": "Ironaya",
+   "ruRU": "Иронайа",
+   "zhCN": "艾隆纳亚"
+  }
+ },
+ "Ironspine": {
+  "de": "Eisenrücken",
+  "display": 5231,
+  "id": 6489,
+  "info": "Ironspine is a level 33 Rare Elite NPC. The location of this NPC is unknown.",
+  "name": "Ironspine",
+  "names": {
+   "esES": "Dorsacerado",
+   "frFR": "Echine-de-fer",
+   "ruRU": "Железноспин",
+   "zhCN": "铁脊死灵"
+  }
+ },
  "Irradiated Pillager": {
   "de": "Bestrahlter Plünderer",
   "display": 976,
@@ -2769,6 +3082,19 @@
    "frFR": "Gelée irradiée",
    "ruRU": "Облученная слизь",
    "zhCN": "辐射泥浆怪"
+  }
+ },
+ "Jadespine Basilisk": {
+  "de": "Jaderückenbasilisk",
+  "display": 4486,
+  "id": 4863,
+  "info": "Jadespine Basilisk is a level 39 - 40 Elite NPC. The location of this NPC is unknown.",
+  "name": "Jadespine Basilisk",
+  "names": {
+   "esES": "Basilisco Dorsaljade",
+   "frFR": "Basilic Jadéchine",
+   "ruRU": "Нефритовый василиск",
+   "zhCN": "玉脊蜥蜴"
   }
  },
  "Jaedenar Adept": {
@@ -3526,6 +3852,19 @@
    "zhCN": "Mordent Evenshade"
   }
  },
+ "Mordresh Fire Eye": {
+  "de": "Mordresh Feuerauge",
+  "display": 8055,
+  "id": 7357,
+  "info": "Mordresh Fire Eye is a level 39 Elite NPC. The location of this NPC is unknown.",
+  "name": "Mordresh Fire Eye",
+  "names": {
+   "esES": "Mordresh Ojo de Fuego",
+   "frFR": "Mordresh Oeil-de-feu",
+   "ruRU": "Мордреш Огненный Глаз",
+   "zhCN": "火眼莫德雷斯"
+  }
+ },
  "Mosshide Gnoll": {
   "de": "Gnoll der Moosfelle",
   "display": 3199,
@@ -3721,6 +4060,19 @@
    "zhCN": "夜刃豹"
   }
  },
+ "Obsidian Sentinel": {
+  "de": "Obsidianschildwache",
+  "display": 5285,
+  "id": 7023,
+  "info": "Obsidian Sentinel is a level 42 Elite NPC. The location of this NPC is unknown.",
+  "name": "Obsidian Sentinel",
+  "names": {
+   "esES": "Centinela Obsidiano",
+   "frFR": "Sentinelle d'obsidienne",
+   "ruRU": "Обсидиановый часовой",
+   "zhCN": "黑曜石哨兵"
+  }
+ },
  "Odo the Blindwatcher": {
   "de": "Odo der Blindseher",
   "display": 522,
@@ -3745,6 +4097,19 @@
    "frFR": "Lorgnesilex",
    "ruRU": "Огглфлинт",
    "zhCN": "奥格弗林特"
+  }
+ },
+ "Olaf": {
+  "de": "Olaf",
+  "display": 5709,
+  "id": 6908,
+  "info": "Olaf is a level 40 Elite NPC. The location of this NPC is unknown.",
+  "name": "Olaf",
+  "names": {
+   "esES": "Olaf",
+   "frFR": "Olaf",
+   "ruRU": "Олаф",
+   "zhCN": "奥拉夫"
   }
  },
  "Old Serra'kis": {
@@ -3891,6 +4256,19 @@
    "zhCN": "瘟疫犬"
   }
  },
+ "Plaguemaw the Rotting": {
+  "de": "Plaguemaw der Faulende",
+  "display": 6124,
+  "id": 7356,
+  "info": "Plaguemaw the Rotting is a level 40 Elite NPC. The location of this NPC is unknown.",
+  "name": "Plaguemaw the Rotting",
+  "names": {
+   "esES": "Fauzpeste el Putrefacto",
+   "frFR": "Pestegueule le Pourrissant",
+   "ruRU": "Чумобрюх Гнилой",
+   "zhCN": "腐烂的普雷莫尔"
+  }
+ },
  "Plainstrider": {
   "de": "Ebenenschreiter",
   "display": 1219,
@@ -4009,6 +4387,19 @@
    "zhCN": "怒焰穴居人"
   }
  },
+ "Ragglesnout": {
+  "de": "Struppmähne",
+  "display": 11382,
+  "id": 7354,
+  "info": "Ragglesnout is a level 40 Elite NPC. The location of this NPC is unknown.",
+  "name": "Ragglesnout",
+  "names": {
+   "esES": "Morrandrajos",
+   "frFR": "Groinfendu",
+   "ruRU": "Круглорыл",
+   "zhCN": "拉戈斯诺特"
+  }
+ },
  "Raging Agam'ar": {
   "de": "Tobender Agam'ar",
   "display": 2453,
@@ -4059,6 +4450,19 @@
    "frFR": "Tranchegriffe le Boucher",
    "ruRU": "Остроклык Мясник",
    "zhCN": "屠夫拉佐克劳"
+  }
+ },
+ "Razorfen Battleguard": {
+  "de": "Schlachtwache von Razorfen",
+  "display": 6108,
+  "id": 7873,
+  "info": "Razorfen Battleguard is a level 33 - 34 Elite NPC. The location of this NPC is unknown.",
+  "name": "Razorfen Battleguard",
+  "names": {
+   "esES": "Guardia de batalla de Rajacieno",
+   "frFR": "Garde de guerre de Tranchebauge",
+   "ruRU": "Боевой страж племени Иглошкурых",
+   "zhCN": "剃刀沼泽护卫者"
   }
  },
  "Razorfen Defender": {
@@ -4202,6 +4606,19 @@
    "frFR": "Rethilgore",
    "ruRU": "Ретилгор",
    "zhCN": "雷希戈尔"
+  }
+ },
+ "Revelosh": {
+  "de": "Revelosh",
+  "display": 5945,
+  "id": 6910,
+  "info": "Revelosh is a level 40 Elite NPC. The location of this NPC is unknown.",
+  "name": "Revelosh",
+  "names": {
+   "esES": "Revelosh",
+   "frFR": "Revelosh",
+   "ruRU": "Ревелош",
+   "zhCN": "鲁维罗什"
   }
  },
  "Rexxar": {
@@ -4413,6 +4830,97 @@
    "zhCN": "盐齿鳄鱼"
   }
  },
+ "Scarlet Abbot": {
+  "de": "Scharlachroter Abt",
+  "display": 2492,
+  "id": 4303,
+  "info": "Scarlet Abbot is a level 39 - 40 Elite NPC. The location of this NPC is unknown.",
+  "name": "Scarlet Abbot",
+  "names": {
+   "esES": "Abad Escarlata",
+   "frFR": "Abbé écarlate",
+   "ruRU": "Аббат из Алого ордена",
+   "zhCN": "血色修士"
+  }
+ },
+ "Scarlet Adept": {
+  "de": "Scharlachroter Adept",
+  "display": 5726,
+  "id": 4296,
+  "info": "Scarlet Adept is a level 33 - 34 Elite NPC. The location of this NPC is unknown.",
+  "name": "Scarlet Adept",
+  "names": {
+   "esES": "Adepto Escarlata",
+   "frFR": "Adepte écarlate",
+   "ruRU": "Адепт из Алого ордена",
+   "zhCN": "血色老兵"
+  }
+ },
+ "Scarlet Beastmaster": {
+  "de": "Scharlachroter Bestienmeister",
+  "display": 2497,
+  "id": 4288,
+  "info": "Scarlet Beastmaster is a level 34 - 35 Elite NPC. The location of this NPC is unknown.",
+  "name": "Scarlet Beastmaster",
+  "names": {
+   "esES": "Maestro de bestias Escarlata",
+   "frFR": "Belluaire écarlate",
+   "ruRU": "Зверолов из Алого ордена",
+   "zhCN": "血色驯兽员"
+  }
+ },
+ "Scarlet Centurion": {
+  "de": "Scharlachroter Zenturio",
+  "display": 2499,
+  "id": 4301,
+  "info": "Scarlet Centurion is a level 38 - 39 Elite NPC. The location of this NPC is unknown.",
+  "name": "Scarlet Centurion",
+  "names": {
+   "esES": "Centurión Escarlata",
+   "frFR": "Centurion écarlate",
+   "ruRU": "Центурион из Алого ордена",
+   "zhCN": "血色百夫长"
+  }
+ },
+ "Scarlet Champion": {
+  "de": "Scharlachroter Held",
+  "display": 2460,
+  "id": 4302,
+  "info": "Scarlet Champion is a level 39 - 40 Elite NPC. The location of this NPC is unknown.",
+  "name": "Scarlet Champion",
+  "names": {
+   "esES": "Campeón Escarlata",
+   "frFR": "Champion écarlate",
+   "ruRU": "Воитель из Алого ордена",
+   "zhCN": "血色勇士"
+  }
+ },
+ "Scarlet Chaplain": {
+  "de": "Scharlachroter Kaplan",
+  "display": 2501,
+  "id": 4299,
+  "info": "Scarlet Chaplain is a level 34 - 36 Elite NPC. The location of this NPC is unknown.",
+  "name": "Scarlet Chaplain",
+  "names": {
+   "esES": "Capellán Escarlata",
+   "frFR": "Chapelain écarlate",
+   "ruRU": "Капеллан из Алого ордена",
+   "zhCN": "血色牧师"
+  }
+ },
+ "Scarlet Commander Mograine": {
+  "de": "Scharlachroter Kommandant Mograine",
+  "display": 2042,
+  "id": 3976,
+  "info": "Scarlet Commander Mograine is a level 42 Elite NPC. The location of this NPC is unknown.",
+  "name": "Scarlet Commander Mograine",
+  "names": {
+   "esES": "Comandante Escarlata Mograine",
+   "frFR": "Commandant écarlate Mograine",
+   "ruRU": "Командир Могрейн из Алого ордена",
+   "zhCN": "血色十字军指挥官莫格莱尼"
+  }
+ },
  "Scarlet Convert": {
   "de": "Scharlachroter Konvertit",
   "display": 2403,
@@ -4424,6 +4932,71 @@
    "frFR": "Converti écarlate",
    "ruRU": "Новообращенный из Алого ордена",
    "zhCN": "血色信徒"
+  }
+ },
+ "Scarlet Defender": {
+  "de": "Scharlachroter Verteidiger",
+  "display": 2462,
+  "id": 4298,
+  "info": "Scarlet Defender is a level 37 - 38 Elite NPC. The location of this NPC is unknown.",
+  "name": "Scarlet Defender",
+  "names": {
+   "esES": "Defensor Escarlata",
+   "frFR": "Défenseur écarlate",
+   "ruRU": "Защитник из Алого ордена",
+   "zhCN": "血色防御者"
+  }
+ },
+ "Scarlet Diviner": {
+  "de": "Scharlachroter Rutengänger",
+  "display": 2507,
+  "id": 4291,
+  "info": "Scarlet Diviner is a level 34 - 35 Elite NPC. The location of this NPC is unknown.",
+  "name": "Scarlet Diviner",
+  "names": {
+   "esES": "Adivinador Escarlata",
+   "frFR": "Devin écarlate",
+   "ruRU": "Гадатель из Алого ордена",
+   "zhCN": "血色教士"
+  }
+ },
+ "Scarlet Evoker": {
+  "de": "Scharlachroter Rufer",
+  "display": 2509,
+  "id": 4289,
+  "info": "Scarlet Evoker is a level 36 - 37 Elite NPC. The location of this NPC is unknown.",
+  "name": "Scarlet Evoker",
+  "names": {
+   "esES": "Evocador Escarlata",
+   "frFR": "Evocateur écarlate",
+   "ruRU": "Вызыватель из Алого ордена",
+   "zhCN": "血色招魂师"
+  }
+ },
+ "Scarlet Gallant": {
+  "de": "Scharlachroter Kavalier",
+  "display": 2463,
+  "id": 4287,
+  "info": "Scarlet Gallant is a level 33 - 34 Elite NPC. The location of this NPC is unknown.",
+  "name": "Scarlet Gallant",
+  "names": {
+   "esES": "Gallardo Escarlata",
+   "frFR": "Vaillant écarlate",
+   "ruRU": "Орденоносец из Алого ордена",
+   "zhCN": "血色豪侠"
+  }
+ },
+ "Scarlet Guardsman": {
+  "de": "Scharlachroter Gardist",
+  "display": 2511,
+  "id": 4290,
+  "info": "Scarlet Guardsman is a level 36 - 37 Elite NPC. The location of this NPC is unknown.",
+  "name": "Scarlet Guardsman",
+  "names": {
+   "esES": "Custodio Escarlata",
+   "frFR": "Gardien écarlate",
+   "ruRU": "Охранник из Алого ордена",
+   "zhCN": "血色卫兵"
   }
  },
  "Scarlet Knight": {
@@ -4476,6 +5049,110 @@
    "frFR": "Moine écarlate",
    "ruRU": "Монах из Алого ордена",
    "zhCN": "血色僧侣"
+  }
+ },
+ "Scarlet Myrmidon": {
+  "de": "Scharlachroter Myrmidone",
+  "display": 2514,
+  "id": 4295,
+  "info": "Scarlet Myrmidon is a level 37 - 38 Elite NPC. The location of this NPC is unknown.",
+  "name": "Scarlet Myrmidon",
+  "names": {
+   "esES": "Myrmidón Escarlata",
+   "frFR": "Myrmidon écarlate",
+   "ruRU": "Мирмидон из Алого ордена",
+   "zhCN": "血色仆从"
+  }
+ },
+ "Scarlet Protector": {
+  "de": "Scharlachroter Beschützer",
+  "display": 2476,
+  "id": 4292,
+  "info": "Scarlet Protector is a level 36 - 37 Elite NPC. The location of this NPC is unknown.",
+  "name": "Scarlet Protector",
+  "names": {
+   "esES": "Protector Escarlata",
+   "frFR": "Protecteur écarlate",
+   "ruRU": "Заступник из Алого ордена",
+   "zhCN": "血色保卫者"
+  }
+ },
+ "Scarlet Scryer": {
+  "de": "Scharlachroter Wahrsager",
+  "display": 2518,
+  "id": 4293,
+  "info": "Scarlet Scryer is a level 30 - 31 Elite NPC. The location of this NPC is unknown.",
+  "name": "Scarlet Scryer",
+  "names": {
+   "esES": "Arúspice Escarlata",
+   "frFR": "Clairvoyant écarlate",
+   "ruRU": "Провидец из Алого ордена",
+   "zhCN": "血色占卜师"
+  }
+ },
+ "Scarlet Sentry": {
+  "de": "Scharlachroter Wachposten",
+  "display": 2520,
+  "id": 4283,
+  "info": "Scarlet Sentry is a level 30 - 31 Elite NPC. The location of this NPC is unknown.",
+  "name": "Scarlet Sentry",
+  "names": {
+   "esES": "Argos Escarlata",
+   "frFR": "Sentinelle écarlate",
+   "ruRU": "Караульный из Алого ордена",
+   "zhCN": "血色哨兵"
+  }
+ },
+ "Scarlet Torturer": {
+  "de": "Scharlachroter Folterknecht",
+  "display": 2607,
+  "id": 4306,
+  "info": "Scarlet Torturer is a level 30 - 31 Elite NPC. The location of this NPC is unknown.",
+  "name": "Scarlet Torturer",
+  "names": {
+   "esES": "Torturador Escarlata",
+   "frFR": "Tortionnaire écarlate",
+   "ruRU": "Истязатель из Алого ордена",
+   "zhCN": "血色拷问者"
+  }
+ },
+ "Scarlet Tracking Hound": {
+  "de": "Scharlachroter Fährtenleserhund",
+  "display": 2709,
+  "id": 4304,
+  "info": "Scarlet Tracking Hound is a level 33 - 34 Elite NPC. The location of this NPC is unknown.",
+  "name": "Scarlet Tracking Hound",
+  "names": {
+   "esES": "Sabueso Escarlata",
+   "frFR": "Chien de chasse écarlate",
+   "ruRU": "Ищейка из Алого ордена",
+   "zhCN": "血色捕猎犬"
+  }
+ },
+ "Scarlet Trainee": {
+  "de": "Scharlachroter Lehrling",
+  "display": 2467,
+  "id": 6575,
+  "info": "Scarlet Trainee is a level 30 NPC. The location of this NPC is unknown.",
+  "name": "Scarlet Trainee",
+  "names": {
+   "esES": "Practicante Escarlata",
+   "frFR": "Jeune recrue écarlate",
+   "ruRU": "Новобранец из Алого ордена",
+   "zhCN": "血色预备兵"
+  }
+ },
+ "Scarlet Wizard": {
+  "de": "Scharlachroter Hexer",
+  "display": 2525,
+  "id": 4300,
+  "info": "Scarlet Wizard is a level 38 - 39 Elite NPC. The location of this NPC is unknown.",
+  "name": "Scarlet Wizard",
+  "names": {
+   "esES": "Zahorí Escarlata",
+   "frFR": "Sorcier écarlate",
+   "ruRU": "Волшебник из Алого ордена",
+   "zhCN": "血色巫师"
   }
  },
  "Scholomance Dark Summoner": {
@@ -4634,6 +5311,19 @@
    "zhCN": "影牙狼人卫兵"
   }
  },
+ "Shadowforge Darkweaver": {
+  "de": "Dunkelwirker der Schattenschmiede",
+  "display": 4933,
+  "id": 2740,
+  "info": "Shadowforge Darkweaver is a level 36 - 37 NPC. The location of this NPC is unknown.",
+  "name": "Shadowforge Darkweaver",
+  "names": {
+   "esES": "Tejeoscuro Forjatiniebla",
+   "frFR": "Tisseur d’ombre Ombreforge",
+   "ruRU": "Тенегорнский темнопряд",
+   "zhCN": "暗炉巫师"
+  }
+ },
  "Shadowforge Flame Keeper": {
   "de": "Flammenbewahrer der Schattenschmiede",
   "display": 9309,
@@ -4645,6 +5335,19 @@
    "frFR": "Gardien des flammes Ombreforge",
    "ruRU": "Тенегорнский хранитель огня",
    "zhCN": "暗炉持火者"
+  }
+ },
+ "Shadowforge Ruffian": {
+  "de": "Grobian der Schattenschmiede",
+  "display": 6053,
+  "id": 4845,
+  "info": "Shadowforge Ruffian is a level 36 - 37 Elite NPC. The location of this NPC is unknown.",
+  "name": "Shadowforge Ruffian",
+  "names": {
+   "esES": "Rufián Forjatiniebla",
+   "frFR": "Forban Ombreforge",
+   "ruRU": "Тенегорнский бузотер",
+   "zhCN": "暗炉恶棍"
   }
  },
  "Shadowgale Manticore": {
@@ -4921,6 +5624,45 @@
    "zhCN": "恶鞭战士"
   }
  },
+ "Splinterbone Centurion": {
+  "de": "Splitterknochenzenturio",
+  "display": 7848,
+  "id": 7346,
+  "info": "Splinterbone Centurion is a level 38 - 39 NPC. The location of this NPC is unknown.",
+  "name": "Splinterbone Centurion",
+  "names": {
+   "esES": "Centurión Astillóseo",
+   "frFR": "Centurion Os-brisés",
+   "ruRU": "Центурион-костещеп",
+   "zhCN": "碎骨百夫长"
+  }
+ },
+ "Splinterbone Skeleton": {
+  "de": "Splitterknochenskelett",
+  "display": 7550,
+  "id": 7343,
+  "info": "Splinterbone Skeleton is a level 35 NPC. The location of this NPC is unknown.",
+  "name": "Splinterbone Skeleton",
+  "names": {
+   "esES": "Esqueleto Astillóseo",
+   "frFR": "Squelette Os-brisés",
+   "ruRU": "Скелет-костещеп",
+   "zhCN": "碎骨骷髅"
+  }
+ },
+ "Splinterbone Warrior": {
+  "de": "Splitterknochenkrieger",
+  "display": 5231,
+  "id": 7344,
+  "info": "Splinterbone Warrior is a level 37 - 38 NPC. The location of this NPC is unknown.",
+  "name": "Splinterbone Warrior",
+  "names": {
+   "esES": "Guerrero Astillóseo",
+   "frFR": "Guerrier Os-brisés",
+   "ruRU": "Воин-костещеп",
+   "zhCN": "碎骨战士"
+  }
+ },
  "Stegodon": {
   "de": "Stegodon",
   "display": 5241,
@@ -4960,6 +5702,19 @@
    "zhCN": "石头看守者"
   }
  },
+ "Stone Steward": {
+  "de": "Steinbehüter",
+  "display": 2234,
+  "id": 4860,
+  "info": "Stone Steward is a level 44 Elite NPC. The location of this NPC is unknown.",
+  "name": "Stone Steward",
+  "names": {
+   "esES": "Asistente de piedra",
+   "frFR": "Régisseur des pierres",
+   "ruRU": "Каменный распорядитель",
+   "zhCN": "石头管理者"
+  }
+ },
  "Stonelash Pincer": {
   "de": "Steinpanzerzange",
   "display": 15384,
@@ -4997,6 +5752,58 @@
    "frFR": "Trogg Brisepierre",
    "ruRU": "Трогг из племени Камнедробов",
    "zhCN": "碎石穴居人"
+  }
+ },
+ "Stonevault Ambusher": {
+  "de": "Wegelagerer der Steingrufttroggs",
+  "display": 763,
+  "id": 7175,
+  "info": "Stonevault Ambusher is a level 35 NPC. The location of this NPC is unknown.",
+  "name": "Stonevault Ambusher",
+  "names": {
+   "esES": "Emboscador Grutacanto",
+   "frFR": "Embusqué Cavepierre",
+   "ruRU": "Душитель из племени Каменного Свода",
+   "zhCN": "石窟伏击者"
+  }
+ },
+ "Stonevault Brawler": {
+  "de": "Muskelprotz der Steingrufttroggs",
+  "display": 11166,
+  "id": 4855,
+  "info": "Stonevault Brawler is a level 43 - 44 Elite NPC. The location of this NPC is unknown.",
+  "name": "Stonevault Brawler",
+  "names": {
+   "esES": "Camorrista Grutacanto",
+   "frFR": "Bagarreur Cavepierre",
+   "ruRU": "Буян из племени Каменного Свода",
+   "zhCN": "石窟争斗者"
+  }
+ },
+ "Stonevault Geomancer": {
+  "de": "Geomant der Steingrufttroggs",
+  "display": 1194,
+  "id": 4853,
+  "info": "Stonevault Geomancer is a level 43 - 44 Elite NPC. The location of this NPC is unknown.",
+  "name": "Stonevault Geomancer",
+  "names": {
+   "esES": "Geomántico Grutacanto",
+   "frFR": "Géomancien Cavepierre",
+   "ruRU": "Геомант из племени Каменного Свода",
+   "zhCN": "石窟地占师"
+  }
+ },
+ "Stonevault Oracle": {
+  "de": "Orakel der Steingrufttroggs",
+  "display": 160,
+  "id": 4852,
+  "info": "Stonevault Oracle is a level 37 - 38 Elite NPC. The location of this NPC is unknown.",
+  "name": "Stonevault Oracle",
+  "names": {
+   "esES": "Oráculo Grutacanto",
+   "frFR": "Oracle Cavepierre",
+   "ruRU": "Оракул из племени Каменного Свода",
+   "zhCN": "石窟智者"
   }
  },
  "Stonevault Seer": {
@@ -5194,6 +6001,32 @@
    "zhCN": "提里奥·弗丁"
   }
  },
+ "Tomb Fiend": {
+  "de": "Grabmalsatanskreatur",
+  "display": 6842,
+  "id": 7349,
+  "info": "Tomb Fiend is a level 35 NPC. The location of this NPC is unknown.",
+  "name": "Tomb Fiend",
+  "names": {
+   "esES": "Maligno de las tumbas",
+   "frFR": "Démon des tombes",
+   "ruRU": "Некрорахнид-гробовщик",
+   "zhCN": "墓穴魔"
+  }
+ },
+ "Tomb Reaver": {
+  "de": "Grabmalhäscher",
+  "display": 3004,
+  "id": 7351,
+  "info": "Tomb Reaver is a level 37 Elite NPC. The location of this NPC is unknown.",
+  "name": "Tomb Reaver",
+  "names": {
+   "esES": "Atracador de las tumbas",
+   "frFR": "Ravageur des tombes",
+   "ruRU": "Разоритель могил",
+   "zhCN": "墓穴劫掠者"
+  }
+ },
  "Torn Fin Tidehunter": {
   "de": "Gezeitenjäger der Fetzenflossen",
   "display": 1079,
@@ -5231,6 +6064,19 @@
    "frFR": "Kobold Rat des tunnels",
    "ruRU": "Кобольд-туннельщик",
    "zhCN": "坑道鼠狗头人"
+  }
+ },
+ "Tuten'kash": {
+  "de": "Tuten'kash",
+  "display": 7845,
+  "id": 7355,
+  "info": "Tuten'kash is a level 40 Elite NPC. The location of this NPC is unknown.",
+  "name": "Tuten'kash",
+  "names": {
+   "esES": "Tuten'kash",
+   "frFR": "Tuten'kash",
+   "ruRU": "Тутен'каш",
+   "zhCN": "图特卡什"
   }
  },
  "Twilight Acolyte": {
@@ -5337,6 +6183,19 @@
    "zhCN": "安戈洛猩猩"
   }
  },
+ "Unfettered Spirit": {
+  "de": "Ungefesselter Geist",
+  "display": 5430,
+  "id": 4308,
+  "info": "Unfettered Spirit is a level 31 - 32 NPC. The location of this NPC is unknown.",
+  "name": "Unfettered Spirit",
+  "names": {
+   "esES": "Espíritu encadenado",
+   "frFR": "Esprit libéré",
+   "ruRU": "Освобожденный дух",
+   "zhCN": "自由的幽魂"
+  }
+ },
  "Varok Saurfang": null,
  "Venom Web Spider": {
   "de": "Giftweberspinne",
@@ -5349,6 +6208,19 @@
    "frFR": "Araignée Tisse-venin",
    "ruRU": "Ядовитый кругопряд",
    "zhCN": "结网毒蜘蛛"
+  }
+ },
+ "Venomlash Scorpid": {
+  "de": "Giftpeitscherskorpid",
+  "display": 2488,
+  "id": 7022,
+  "info": "Venomlash Scorpid is a level 39 - 40 Elite NPC. The location of this NPC is unknown.",
+  "name": "Venomlash Scorpid",
+  "names": {
+   "esES": "Escórpido lativenenoso",
+   "frFR": "Scorpide empoisonneur",
+   "ruRU": "Ядоносный скорпид",
+   "zhCN": "毒鞭蝎"
   }
  },
  "Venture Co. Laborer": {

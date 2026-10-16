@@ -7,9 +7,11 @@
 -- work as for bounties; it is not in MC.ZONE_ORDER, so bounty lists and achievements leave it out.
 --   region      the bounty zone whose map shows its entrance; spot: the entrance in that map (0..1)
 --   encounters  in order: boss, adds, npcs (whose loot it drops), trash before it (elite = an elite
---               fight), healer before it, hidden = the unlock that reveals it, chance = a rare one that
+--               fight, the last of `waves` fights), healer before it, hidden = the unlock that reveals it, chance = a rare one that
 --               shows up in that share of the runs (as Classic's rare spawns)
 --   tier        the highest formula tier its bosses drop (heroic one more)
+--   group       wings of one place (the Scarlet Monastery): one portal on the map, the wings picked in
+--               its panel
 
 local _, ns = ...
 local MC = ns.Mercenaries
@@ -19,7 +21,8 @@ local Random = MC.Combat.Random
 local Dungeons = {}
 MC.Dungeons = Dungeons
 
-MC.DUNGEON_ORDER = { "ragefire", "deadmines", "wailing", "shadowfang", "blackfathom", "stockade", "gnomeregan", "kraul" }
+MC.DUNGEON_ORDER = { "ragefire", "deadmines", "wailing", "shadowfang", "blackfathom", "stockade", "gnomeregan", "kraul",
+    "sm_graveyard", "sm_library", "sm_armory", "sm_cathedral", "downs", "uldaman" }
 
 MC.Zones.deadmines = {
     id = "deadmines", dungeon = true, continent = "ek", region = "westfall", spot = { 0.42, 0.74 },
@@ -175,6 +178,100 @@ MC.Zones.kraul = {
     },
 }
 
+-- The Scarlet Monastery in Tirisfal: four wings, each its own run, as in Classic.
+MC.Zones.sm_graveyard = {
+    id = "sm_graveyard", dungeon = true, group = "sm", continent = "ek", region = "tirisfal", spot = { 0.84, 0.3 },
+    min = 26, max = 36, boss = "thalnos", tier = 2,
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "vishas", adds = { "scarlet_torturer", "scarlet_sentry" }, npcs = { 3983 },
+            trash = { "scarlet_torturer", "scarlet_sentry", "scarlet_scryer" }, waves = 2 },
+        { boss = "ironspine", adds = { "anguished_dead" }, npcs = { 6489 }, chance = 0.35 },
+        { boss = "azshir", adds = { "haunting_phantasm" }, npcs = { 6490 }, chance = 0.35 },
+        { boss = "fallenchampion", adds = { "anguished_dead" }, npcs = { 6488 }, chance = 0.35 },
+        { boss = "thalnos", adds = { "haunting_phantasm", "unfettered_spirit", "anguished_dead" }, npcs = { 4543 },
+            trash = { "haunting_phantasm", "anguished_dead", "unfettered_spirit" }, elite = true, healer = true },
+    },
+}
+
+MC.Zones.sm_library = {
+    id = "sm_library", dungeon = true, group = "sm", continent = "ek", region = "tirisfal", spot = { 0.84, 0.3 },
+    min = 29, max = 39, boss = "doan", tier = 3,
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "loksey", adds = { "scarlet_tracking_hound", "scarlet_tracking_hound", "scarlet_beastmaster" }, npcs = { 3974 },
+            trash = { "scarlet_adept", "scarlet_gallant", "scarlet_monk", "scarlet_beastmaster" }, waves = 2 },
+        { boss = "doan", adds = { "scarlet_adept", "scarlet_diviner", "scarlet_chaplain" }, npcs = { 6487 },
+            trash = { "scarlet_gallant", "scarlet_chaplain", "scarlet_diviner", "scarlet_adept" }, waves = 2, elite = true,
+            healer = true },
+    },
+}
+
+MC.Zones.sm_armory = {
+    id = "sm_armory", dungeon = true, group = "sm", continent = "ek", region = "tirisfal", spot = { 0.84, 0.3 },
+    min = 32, max = 42, boss = "herod", tier = 3,
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "herod", adds = { "scarlet_trainee", "scarlet_trainee", "scarlet_trainee" }, npcs = { 3975 },
+            trash = { "scarlet_defender", "scarlet_myrmidon", "scarlet_guardsman", "scarlet_protector", "scarlet_evoker" },
+            waves = 3, elite = true, healer = true },
+    },
+}
+
+MC.Zones.sm_cathedral = {
+    id = "sm_cathedral", dungeon = true, group = "sm", continent = "ek", region = "tirisfal", spot = { 0.84, 0.3 },
+    min = 35, max = 45, boss = "whitemane", tier = 3,
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "fairbanks", adds = { "scarlet_chaplain", "scarlet_abbot" }, npcs = { 4542 },
+            trash = { "scarlet_monk", "scarlet_chaplain", "scarlet_abbot", "scarlet_wizard" } },
+        { boss = "mograine", adds = { "scarlet_champion", "scarlet_centurion" }, npcs = { 3976 },
+            trash = { "scarlet_centurion", "scarlet_champion", "scarlet_wizard", "scarlet_abbot" }, waves = 2, elite = true },
+        { boss = "whitemane", adds = { "scarlet_abbot", "scarlet_champion", "scarlet_abbot" }, npcs = { 3977 }, healer = true },
+    },
+}
+
+-- Razorfen Downs: the quilboar's barrows, where the lich Amnennar raises the Scourge.
+MC.Zones.downs = {
+    id = "downs", dungeon = true, continent = "kal", region = "barrens", spot = { 0.56, 0.88 },
+    min = 35, max = 45, boss = "amnennar", tier = 3,
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "tutenkash", adds = { "tomb_fiend", "tomb_fiend" }, npcs = { 7355 },
+            trash = { "razorfen_battleguard", "deaths_head_cultist", "splinterbone_skeleton", "tomb_fiend" } },
+        { boss = "plaguemaw", adds = { "tomb_reaver" }, npcs = { 7356 } },
+        { boss = "mordresh", adds = { "splinterbone_warrior", "deaths_head_necromancer" }, npcs = { 7357 },
+            trash = { "splinterbone_warrior", "splinterbone_skeleton", "deaths_head_necromancer" } },
+        { boss = "glutton", adds = { "splinterbone_centurion" }, npcs = { 8567 } },
+        { boss = "ragglesnout", adds = { "deaths_head_necromancer" }, npcs = { 7354 }, chance = 0.35 },
+        { boss = "amnennar", adds = { "frozen_soul", "splinterbone_centurion", "frozen_soul" }, npcs = { 7358 },
+            trash = { "tomb_reaver", "splinterbone_centurion", "frozen_soul" }, elite = true, healer = true },
+    },
+}
+
+-- Uldaman: the titans' vault in the Badlands, dug open by troggs and the Shadowforge dwarves.
+MC.Zones.uldaman = {
+    id = "uldaman", dungeon = true, continent = "ek", region = "badlands", spot = { 0.44, 0.12 },
+    min = 41, max = 51, boss = "archaedas", tier = 3,
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "baelog", adds = { "eric_swift", "olaf" }, npcs = { 6906, 6907, 6908 },
+            trash = { "stonevault_ambusher", "stonevault_oracle", "shadowforge_ruffian", "shadowforge_darkweaver" } },
+        { boss = "revelosh", adds = { "stonevault_geomancer", "stonevault_oracle" }, npcs = { 6910 },
+            trash = { "stonevault_brawler", "stonevault_geomancer", "stonevault_oracle" } },
+        { boss = "ironaya", adds = { "earthen_guardian" }, npcs = { 7228 },
+            trash = { "earthen_rocksmasher", "earthen_guardian", "stone_steward" }, elite = true },
+        { boss = "obsidian", adds = { "stone_steward" }, npcs = { 7023 } },
+        { boss = "stonekeeper", adds = { "stone_steward", "earthen_guardian" }, npcs = { 7206 } },
+        { boss = "galgann", adds = { "shadowforge_ruffian", "shadowforge_darkweaver" }, npcs = { 7291 },
+            trash = { "shadowforge_ruffian", "shadowforge_darkweaver", "jadespine_basilisk", "venomlash_scorpid" } },
+        { boss = "grimlok", adds = { "stonevault_brawler", "stonevault_geomancer" }, npcs = { 4854 },
+            trash = { "stonevault_brawler", "venomlash_scorpid", "jadespine_basilisk" } },
+        { boss = "archaedas", adds = { "earthen_guardian", "stone_steward", "earthen_guardian" }, npcs = { 2748 },
+            trash = { "earthen_guardian", "earthen_rocksmasher", "stone_steward" }, elite = true, healer = true },
+    },
+}
+
 for _, id in ipairs(MC.DUNGEON_ORDER) do
     local zone = MC.Zones[id]
     -- Every creature of the dungeon, for lists that want the zone's foes.
@@ -232,6 +329,17 @@ end
 -- The path: one stop per layer, linked straight on.
 -- The path: one stop per layer, linked straight on. A hidden boss is a side branch beside a passage:
 -- open once its task is done (optional then), locked before - the party walks past it.
+-- The wings of a dungeon's group in order (just the dungeon when it has none).
+function Dungeons.Wings(id)
+    local group = MC.Zones[id].group
+    if not group then return { id } end
+    local out = {}
+    for _, did in ipairs(MC.DUNGEON_ORDER) do
+        if MC.Zones[did].group == group then out[#out + 1] = did end
+    end
+    return out
+end
+
 function Dungeons.GenerateMap(rng, store, zone, heroic)
     -- A rare encounter shows up in its share of the runs only.
     local present = {}
@@ -245,7 +353,10 @@ function Dungeons.GenerateMap(rng, store, zone, heroic)
     local steps = {}
     for _, i in ipairs(present) do
         local enc = zone.encounters[i]
-        if enc.trash then steps[#steps + 1] = { { kind = enc.elite and "elite" or "fight", pool = enc.trash } } end
+        local waves = enc.trash and (enc.waves or 1) or 0
+        for w = 1, waves do
+            steps[#steps + 1] = { { kind = enc.elite and w == waves and "elite" or "fight", pool = enc.trash } }
+        end
         if enc.healer then steps[#steps + 1] = { { kind = "healer" } } end
         if enc.hidden then
             steps[#steps + 1] = { { kind = "pass" }, { kind = "boss", encounter = i, hidden = enc.hidden } }

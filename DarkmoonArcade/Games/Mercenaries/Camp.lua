@@ -519,6 +519,23 @@ function Module:BuildBossPanel(view)
     panel.name:SetPoint("TOP", panel.token, "BOTTOM", 0, 6)
     panel.levels = Widgets.Text(panel, 11, "white")
     panel.levels:SetPoint("TOP", panel.name, "BOTTOM", 0, -2)
+    -- The wings of a group (the Scarlet Monastery): arrows beside the line page through them.
+    local function Wing(step)
+        local wings = MC.Dungeons.Wings(self.travelZone)
+        for i, did in ipairs(wings) do
+            if did == self.travelZone then
+                self.travelZone = wings[(i - 1 + step) % #wings + 1]
+                break
+            end
+        end
+        self:RefreshTravel()
+    end
+    panel.wingPrev = Kit.Arrow(panel, -1, function() Wing(-1) end)
+    panel.wingPrev:SetSize(26, 26)
+    panel.wingPrev:SetPoint("RIGHT", panel.levels, "LEFT", -4, 0)
+    panel.wingNext = Kit.Arrow(panel, 1, function() Wing(1) end)
+    panel.wingNext:SetSize(26, 26)
+    panel.wingNext:SetPoint("LEFT", panel.levels, "RIGHT", 4, 0)
 
     local note = CreateFrame("Frame", nil, panel)
     note:SetSize(214, 92)
@@ -704,13 +721,21 @@ function Module:RefreshTravel(resetView)
             end
         end
     end
-    -- Dungeon entrances: a portal in the zone that holds them, dim until a task opens them.
+    -- Dungeon entrances: a portal in the zone that holds them; the wings of a group share one (it
+    -- stands for the wing picked last).
+    local groups = {}
+    local picked = self.travelZone and MC.Zones[self.travelZone]
     for _, did in ipairs(MC.DUNGEON_ORDER) do
         local dungeon = MC.Zones[did]
         local region = regions[self.travelRegion or 0]
         local here = false
         for _, zid in ipairs(region and region.zones or {}) do
             if zid == dungeon.region then here = true end
+        end
+        if dungeon.group then
+            if groups[dungeon.group] then here = false end
+            groups[dungeon.group] = true
+            if picked and picked.group == dungeon.group then did, dungeon = self.travelZone, picked end
         end
         if MC.DEV and zoomed and here and used < #view.pins then
             used = used + 1
@@ -721,7 +746,7 @@ function Module:RefreshTravel(resetView)
             pin.icon:SetDesaturated(false)
             pin:SetMetal(state.heroic > 0 and "gold" or (state.normal > 0 and "silver" or "bronze"))
             pin.check:SetShown(state.normal > 0)
-            pin.label:SetText(Describe.ZoneName(did))
+            pin.label:SetText(dungeon.group and L["MC_ZG_" .. dungeon.group] or Describe.ZoneName(did))
             Kit.SetSelected(pin, self.travelZone == did, true)
             pin:Show()
         end
@@ -742,6 +767,8 @@ function Module:RefreshBossPanel()
     panel.hint:SetShown(zone == nil)
     panel.hint:SetText(L.MC_PICK_ZONE)
     panel.guide:SetShown(zone ~= nil and zone.dungeon == true)
+    panel.wingPrev:SetShown(zone ~= nil and zone.group ~= nil)
+    panel.wingNext:SetShown(zone ~= nil and zone.group ~= nil)
     panel.devUnlock:SetShown(zone ~= nil and zone.dungeon == true and MC.AutoBattleAllowed()
         and not (MC.Dungeons.IsOpen(store, zid) and #MC.Dungeons.Encounters(store, zid) == #zone.encounters))
     panel.title.text:SetText((zone and zone.dungeon) and L.MC_DUNGEON or L.MC_BOSS_INFO)
@@ -783,8 +810,9 @@ function Module:RefreshBossPanel()
     local needed = self.travelHeroic and Bounty.HEROIC_LEVEL or zone.min
     panel.warning:SetText(partyLevel < needed and L.MC_WARN_LEVEL:format(partyLevel, needed) or "")
     if zone.dungeon then
-        panel.name.text:SetText(Describe.ZoneName(zid))
-        panel.levels:SetText(L.MC_DUNGEON .. "  ·  " .. L.MC_LEVEL_RANGE:format(zone.min, zone.max))
+        panel.name.text:SetText(zone.group and L["MC_ZG_" .. zone.group] or Describe.ZoneName(zid))
+        panel.levels:SetText((zone.group and L["MC_ZW_" .. zid] or L.MC_DUNGEON) .. "  ·  "
+            .. L.MC_LEVEL_RANGE:format(zone.min, zone.max))
     end
 end
 

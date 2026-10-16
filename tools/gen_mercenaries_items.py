@@ -42,6 +42,12 @@ DUNGEONS = {
     "stockade": "TheStockade",
     "gnomeregan": "Gnomeregan",
     "kraul": "RazorfenKraul",
+    "sm_graveyard": "ScarletMonasteryGraveyard",
+    "sm_library": "ScarletMonasteryLibrary",
+    "sm_armory": "ScarletMonasteryArmory",
+    "sm_cathedral": "ScarletMonasteryCathedral",
+    "downs": "RazorfenDowns",
+    "uldaman": "Uldaman",
 }
 # Wowhead's locale numbers.
 LOCALES = {"enUS": 0, "deDE": 3, "frFR": 2, "esES": 6, "ruRU": 7, "zhCN": 4}

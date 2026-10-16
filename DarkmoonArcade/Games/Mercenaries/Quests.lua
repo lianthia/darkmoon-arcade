@@ -208,6 +208,26 @@ MC.QUEST_CHAINS = {
         { kind = "dungeon", dungeon = "kraul" },
         { kind = "kill", prefix = { "razorfen_", "deaths_head_" }, zone = "kraul", count = 25, what = "RAZORFEN" },
     } },
+    tirion_monastery = { merc = "tirion", requires = { chain = "tirion_exile", cleared = "sm_cathedral" }, steps = {
+        { kind = "dungeon", dungeon = "sm_cathedral" },
+        { kind = "kill", prefix = "scarlet_", zone = "sm_cathedral", count = 25, what = "SCARLET" },
+    } },
+    jaina_doan = { merc = "jaina", requires = { chain = "jaina_theramore", cleared = "sm_library" }, steps = {
+        { kind = "dungeon", dungeon = "sm_library" },
+        { kind = "kill", prefix = "scarlet_", zone = "sm_library", count = 20, what = "SCARLET" },
+    } },
+    saurfang_herod = { merc = "saurfang", requires = { chain = "saurfang_warrior", cleared = "sm_armory" }, steps = {
+        { kind = "dungeon", dungeon = "sm_armory" },
+        { kind = "kill", prefix = "scarlet_", zone = "sm_armory", count = 25, what = "SCARLET" },
+    } },
+    benedictus_downs = { merc = "benedictus", requires = { chain = "benedictus_light", cleared = "downs" }, steps = {
+        { kind = "dungeon", dungeon = "downs" },
+        { kind = "kill", race = "undead", zone = "downs", count = 25, what = "UNDEAD" },
+    } },
+    magni_uldaman = { merc = "magni", requires = { chain = "magni_gnomeregan", cleared = "uldaman" }, steps = {
+        { kind = "dungeon", dungeon = "uldaman" },
+        { kind = "kill", prefix = "stonevault_", zone = "uldaman", count = 25, what = "TROGG" },
+    } },
 }
 -- The chains in the order of the collection, a mercenary's chains in the order they follow.
 MC.QUEST_CHAIN_ORDER = {}

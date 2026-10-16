@@ -1169,3 +1169,49 @@ MC_A_electrocutioner_s	Megavolt
 MC_A_pummeler_s	Crowd Pummel
 MC_A_agathelos_s	Rampage
 MC_A_charlga_s	Chain Bolt
+MC_Z_sm_graveyard	Scarlet Monastery: Graveyard
+MC_Z_sm_library	Scarlet Monastery: Library
+MC_Z_sm_armory	Scarlet Monastery: Armory
+MC_Z_sm_cathedral	Scarlet Monastery: Cathedral
+MC_ZD_sm_graveyard	Behind the monastery the Crusade buries its dead, and they do not rest. Bloodmage Thalnos guards the crypt.
+MC_ZD_sm_library	The Crusade's scholars hoard forbidden lore in the library. Arcanist Doan keeps its secrets.
+MC_ZD_sm_armory	In the armory the Crusade trains its recruits. Herod, the Scarlet Champion, waits for worthy foes.
+MC_ZD_sm_cathedral	Commander Mograine leads the Crusade's elite in the cathedral. High Inquisitor Whitemane waits at the altar.
+MC_ZD_downs	In the quilboar's barrows the Scourge has found allies. The lich Amnennar the Coldbringer rules them from below.
+MC_ZD_uldaman	Troggs and the Shadowforge dwarves dig through the titans' vault in the Badlands. Deep inside, Archaedas wakes.
+MC_Q_tirion_monastery_1_TITLE	The Scarlet Heart
+MC_Q_tirion_monastery_1_TEXT	Whitemane has fallen, yet the Crusade still holds its cathedral. Tirion goes in to remind them what the Light means.
+MC_Q_tirion_monastery_2_TITLE	Zealots No More
+MC_Q_tirion_monastery_2_TEXT	Every crusader who falls is one less zealot hunting the innocent.
+MC_Q_jaina_doan_1_TITLE	Forbidden Lore
+MC_Q_jaina_doan_1_TEXT	Doan is gone, but the library still holds magic the Crusade should never have had. Jaina wants to see it herself.
+MC_Q_jaina_doan_2_TITLE	Burn the Pages
+MC_Q_jaina_doan_2_TEXT	Clear the library of its keepers before they turn its secrets on the world.
+MC_Q_saurfang_herod_1_TITLE	The Scarlet Champion
+MC_Q_saurfang_herod_1_TEXT	Herod boasted that no orc could stand against him. Saurfang wants to see his armory for himself.
+MC_Q_saurfang_herod_2_TITLE	Broken Ranks
+MC_Q_saurfang_herod_2_TEXT	Break the Crusade's soldiers in their own halls.
+MC_Q_benedictus_downs_1_TITLE	Bring the Light
+MC_Q_benedictus_downs_1_TEXT	Amnennar has fallen, but the Scourge still stirs in the barrows. The archbishop carries the Light down himself.
+MC_Q_benedictus_downs_2_TITLE	Rest for the Dead
+MC_Q_benedictus_downs_2_TEXT	Every risen corpse that falls again is a soul given back its rest.
+MC_Q_magni_uldaman_1_TITLE	The Titans' Vault
+MC_Q_magni_uldaman_1_TEXT	Archaedas sleeps again, and the Explorers' League wants Uldaman's secrets. Magni leads the way himself.
+MC_Q_magni_uldaman_2_TITLE	Clearing the Dig
+MC_Q_magni_uldaman_2_TEXT	The Stonevault troggs swarm the halls the dwarves want to study. Drive them out.
+MC_A_vishas_s	Shadow Word: Pain
+MC_A_thalnos_s	Flame Spike
+MC_A_loksey_s	Bloodlust
+MC_A_doan_s	Detonation
+MC_A_herod_s	Whirlwind
+MC_A_mograine_s	Crusader Strike
+MC_A_tutenkash_s	Web Spray
+MC_A_mordresh_s	Fire Nova
+MC_A_amnennar_s	Amnennar's Wrath
+MC_A_ironaya_s	Arcing Smash
+MC_A_grimlok_s	Shrink
+MC_ZG_sm	Scarlet Monastery
+MC_ZW_sm_graveyard	Graveyard
+MC_ZW_sm_library	Library
+MC_ZW_sm_armory	Armory
+MC_ZW_sm_cathedral	Cathedral

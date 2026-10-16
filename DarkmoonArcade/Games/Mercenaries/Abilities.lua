@@ -259,6 +259,18 @@ Define("electrocutioner_s", "Spell_Nature_ChainLightning", "nature", 6, 2, "none
 Define("pummeler_s", "INV_Gauntlets_04", "physical", 7, 2, "none", { E("attack", 0, "all", true) }, { harmful = true })
 Define("agathelos_s", "Spell_Nature_NaturesWrath", "physical", 7, 3, "none", { E("damage", 4, "all"), E("stun", "random") }, { harmful = true, ai = 0.7 })
 Define("charlga_s", "Spell_Nature_ChainLightning", "nature", 5, 1, "enemy", { E("damage", 7), E("damage", 4, "adjacent") })
+-- Scarlet Monastery, Razorfen Downs, Uldaman: the bosses' own abilities from Classic.
+Define("vishas_s", "Spell_Shadow_ShadowWordPain", "shadow", 4, 1, "enemy", { E("dot", 5, 3) })
+Define("thalnos_s", "Spell_Fire_FlameShock", "fire", 5, 1, "enemy", { E("damage", 8), E("damage", 3, "adjacent") })
+Define("loksey_s", "Spell_Nature_BloodLust", "nature", 2, 3, "none", { E("buff", "dmg", 0.25, 2, "allies") }, { ai = 0.6 })
+Define("doan_s", "Spell_Fire_SelfDestruct", "arcane", 7, 3, "none", { E("damage", 6, "all") }, { harmful = true, ai = 0.7 })
+Define("herod_s", "Ability_Whirlwind", "physical", 6, 2, "none", { E("attack", 0, "all", true) }, { harmful = true })
+Define("mograine_s", "Spell_Holy_HolySmite", "holy", 4, 1, "enemy", { E("damage", 9) })
+Define("tutenkash_s", "Ability_Ensnare", "nature", 3, 3, "none", { E("stun", "random") }, { harmful = true, ai = 0.6 })
+Define("mordresh_s", "Spell_Fire_SealOfFire", "fire", 6, 2, "none", { E("damage", 5, "all") }, { harmful = true, ai = 0.7 })
+Define("amnennar_s", "Spell_Frost_Glacier", "frost", 6, 2, "none", { E("damage", 5, "all"), E("buff", "speed", 2, 2, "all") }, { harmful = true, ai = 0.7 })
+Define("ironaya_s", "Ability_Warrior_Cleave", "physical", 5, 1, "enemy", { E("damage", 9), E("damage", 5, "adjacent") })
+Define("grimlok_s", "Spell_Shadow_AntiShadow", "nature", 3, 2, "enemy", { E("buff", "dmg", -0.4, 3) }, { ai = 0.6 })
 
 Define("galgosh_1", "Ability_Warrior_PunishingBlow", "physical", 6, 0, "enemy", { E("attack", 5) })
 Define("galgosh_2", "Spell_Nature_EarthBind", "nature", 4, 2, "enemy", { E("buff", "speed", 4, 2), E("damage", 5) })
