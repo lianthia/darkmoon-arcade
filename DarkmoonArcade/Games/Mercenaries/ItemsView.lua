@@ -453,13 +453,39 @@ function Module:CreateItemFoundPage()
     sub:SetPoint("TOP", 0, -258)
     local buttons = {}
     for i = 1, 6 do
-        local b = MC.OptionButton(page, 120, 124)
+        local b = MC.OptionButton(page, 120, 150)
         b:SetScript("OnClick", function() self:ClaimFoundItem(b.merc) end)
+        -- What the mercenary wears in that slot now: a small picture at the portrait, the item's name
+        -- below, both items side by side in the tooltip.
+        b.worn = Kit.Medallion(b, 30, true)
+        b.worn:SetPoint("CENTER", b.icon, "BOTTOMRIGHT", -2, 4)
+        b.worn:EnableMouse(false)
+        b:HookScript("OnEnter", function()
+            local store = self:Store()
+            local id = Bounty.PendingItem(store)
+            if not (id and b.merc) then return end
+            self:ItemTooltip(b, id)
+            local entry = store.mercs[b.merc]
+            local worn = b.wornId and MC.Items[b.wornId]
+            GameTooltip:AddLine(" ")
+            if worn then
+                local c = MC.RARITY_COLORS[worn.rarity]
+                GameTooltip:AddLine(L.MC_ITEM_FOUND_WORN_TIP:format(Describe.MercName(b.merc)), 1, 0.82, 0)
+                GameTooltip:AddLine(MC.ItemName(b.wornId), c[1], c[2], c[3])
+                GameTooltip:AddLine(Describe.Mods(MC.ItemMods(worn)), 1, 1, 1, true)
+                local recipe = Bounty.ItemEnchant(entry, b.wornId)
+                if recipe then GameTooltip:AddLine(L.MC_ITEM_ENCHANT:format(L["MC_F_" .. recipe]), 0.3, 1, 0.3, true) end
+            else
+                GameTooltip:AddLine(L.MC_ITEM_FOUND_FREE, 0.6, 1, 0.6)
+            end
+            GameTooltip:Show()
+        end)
+        b:HookScript("OnLeave", GameTooltip_Hide)
         buttons[i] = b
     end
     local away = Kit.Button(page, 180, 30, "MC_ITEM_DISENCHANT_BTN", function() self:ClaimFoundItem(nil) end, "red")
-    away:SetPoint("TOP", 0, -440)
-    self.itemFoundButtons = buttons
+    away:SetPoint("TOP", 0, -462)
+    self.itemFoundButtons, self.itemFoundAway = buttons, away
     page.refresh = function()
         local store = self:Store()
         local id = Bounty.PendingItem(store)
@@ -485,9 +511,31 @@ function Module:CreateItemFoundPage()
                     b.icon:SetTexture(MC.RoleTex("role_", MC.Mercs[merc].role))
                 end
                 b.name:SetText(Describe.MercName(merc))
-                local later = MC.ItemSlot(item) > MC.ItemSlots(store.mercs[merc])
-                b.desc:SetText(Bounty.OwnsItem(store.mercs[merc], id) and L.MC_ITEM_FOUND_OWNED
-                    or later and L.MC_ITEM_FOUND_LATER:format(MC.MAX_LEVEL) or "")
+                local entry = store.mercs[merc]
+                local slot = MC.ItemSlot(item)
+                local later = slot > MC.ItemSlots(entry)
+                local wornId = entry.worn and entry.worn[slot]
+                local worn = wornId and MC.Items[wornId]
+                b.wornId = wornId
+                b.worn:SetShown(worn ~= nil)
+                if worn then
+                    b.worn.icon:SetTexture(worn.icon)
+                    local c = MC.RARITY_COLORS[worn.rarity]
+                    b.worn.ring:SetDesaturated(true)
+                    b.worn.ring:SetVertexColor(c[1], c[2], c[3])
+                end
+                local text
+                if Bounty.OwnsItem(entry, id) then
+                    text = L.MC_ITEM_FOUND_OWNED
+                elseif later then
+                    text = L.MC_ITEM_FOUND_LATER:format(MC.MAX_LEVEL)
+                elseif worn then
+                    local ink = MC.RARITY_INKS[worn.rarity]
+                    text = ("|cff%02x%02x%02x%s|r"):format(ink[1] * 255, ink[2] * 255, ink[3] * 255, MC.ItemName(wornId))
+                else
+                    text = L.MC_ITEM_FOUND_FREE
+                end
+                b.desc:SetText(text)
                 b:ClearAllPoints()
                 b:SetPoint("TOP", page, "TOP", (i - (#mercs + 1) / 2) * 130, -290)
             end

@@ -942,3 +942,5 @@ MC_Q_bolvar_deadmines_2_TITLE	A Miner's Secret
 MC_Q_bolvar_deadmines_2_TEXT	The miners whisper of one Johnson who knows hidden shafts. Thin the brotherhood's ranks below, and he will show himself.
 MC_RESULT_TREASURES	Treasures
 MC_RESULT_LOOT	Loot (waits in the camp)
+MC_ITEM_FOUND_FREE	Slot free
+MC_ITEM_FOUND_WORN_TIP	Worn by %s now:

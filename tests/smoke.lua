@@ -947,12 +947,20 @@ assert(dmRun.phase == "complete", "the Deadmines cleared at level 60")
 assert(bossesDown >= 6, "a treasure after every boss but the last")
 mc.resultClose._scripts.OnClick(mc.resultClose)
 assert(not store.run, "back from the dungeon")
--- Its loot waits in the camp: every find goes to the first mercenary, or is disenchanted.
+-- Its loot waits in the camp. The first find is disenchanted: after its materials, "Continue" brings
+-- the next find at once. The others go to the first mercenary (owned ones turn into materials).
+mc:ShowView("camp")
+assert(mc.overlay.current == "itemfound", "the find page after the dungeon")
+assert(mc.itemFoundButtons[1].desc._text ~= nil, "what the mercenary wears in that slot")
+local waiting = #store.pendingItems
+mc.itemFoundAway._scripts.OnClick(mc.itemFoundAway)
+assert(mc.overlay.current == "event", "the materials of the disenchanted find")
+mc.eventContinue._scripts.OnClick(mc.eventContinue)
+if waiting > 1 then assert(mc.overlay.current == "itemfound", "the next find follows at once") end
 for _ = 1, 30 do
     if not MC.Bounty.PendingItem(store) then break end
-    if mc.overlay.current == "event" then mc.overlay:Hide() end
-    mc:ShowView("camp")
-    assert(mc.overlay.current == "itemfound", "the find page after the dungeon")
+    if mc.overlay.current == "event" then mc.eventContinue._scripts.OnClick(mc.eventContinue) end
+    assert(mc.overlay.current == "itemfound", "every find asks in turn")
     mc.itemFoundButtons[1]._scripts.OnClick(mc.itemFoundButtons[1])
 end
 assert(not MC.Bounty.PendingItem(store), "every find handed out")

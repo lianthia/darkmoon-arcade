@@ -2,6 +2,8 @@ local _, ns = ...
 
 -- English and German so far; the other languages fall back to English until the full release.
 ns.AddStrings("enUS", {
+    MC_ITEM_FOUND_FREE = "Slot free",
+    MC_ITEM_FOUND_WORN_TIP = "Worn by %s now:",
     MC_RESULT_TREASURES = "Treasures",
     MC_RESULT_LOOT = "Loot (waits in the camp)",
     MC_DEV_UNLOCK = "Test: unlock",
@@ -1034,6 +1036,8 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    MC_ITEM_FOUND_FREE = "Platz frei",
+    MC_ITEM_FOUND_WORN_TIP = "Trägt %s derzeit:",
     MC_RESULT_TREASURES = "Schätze",
     MC_RESULT_LOOT = "Beute (wartet im Lager)",
     MC_DEV_UNLOCK = "Test: freischalten",

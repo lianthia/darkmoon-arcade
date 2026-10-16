@@ -942,3 +942,5 @@ MC_Q_bolvar_deadmines_2_TITLE	矿工的秘密
 MC_Q_bolvar_deadmines_2_TEXT	矿工们低声谈论一个知道隐秘矿道的约翰森。削减下面兄弟会的人数，他就会现身。
 MC_RESULT_TREASURES	宝藏
 MC_RESULT_LOOT	战利品（在营地等待）
+MC_ITEM_FOUND_FREE	栏位空闲
+MC_ITEM_FOUND_WORN_TIP	%s当前装备：

@@ -942,3 +942,5 @@ MC_Q_bolvar_deadmines_2_TITLE	Le secret d'un mineur
 MC_Q_bolvar_deadmines_2_TEXT	Les mineurs parlent à voix basse d'un certain Johnson qui connaît des galeries cachées. Réduisez les rangs de la confrérie en bas, et il se montrera.
 MC_RESULT_TREASURES	Trésors
 MC_RESULT_LOOT	Butin (attend au camp)
+MC_ITEM_FOUND_FREE	Emplacement libre
+MC_ITEM_FOUND_WORN_TIP	Porté par %s actuellement :
