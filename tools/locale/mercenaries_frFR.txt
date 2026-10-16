@@ -958,3 +958,169 @@ MC_Q_hamuul_dream_1_TITLE	Le Dévoreur s'éveille
 MC_Q_hamuul_dream_1_TEXT	Chaque créature déviante qui tombe desserre l'emprise du cauchemar. Quand Naralex commencera à s'éveiller, ce qui se nourrit de son rêve se lèvera.
 MC_NODE_PASS	Passage
 MC_PASS_INFO	Passer devant le boss caché.
+MC_QK_TROGG	troggs
+MC_QK_DARKIRON	nains Sombrefer
+MC_QK_BLACKROCK	orcs Rochenoire
+MC_QK_SCARLET	croisés écarlates
+MC_QK_SYNDICATE	membres du Syndicat
+MC_QK_OGRE	ogres
+MC_QK_WORGEN	worgens
+MC_QK_TROLL	trolls
+MC_QK_DRAGONMAW	orcs Gueule-de-dragon
+MC_QK_CROCOLISK	crocilisques
+MC_QK_MURLOC	murlocs
+MC_QK_SATYR	satyres
+MC_QK_GRIMTOTEM	taurens Totem-sinistre
+MC_QK_FANG	druides du Croc
+MC_Q_magni_ironforge_1_TITLE	Le foyer du roi de la Montagne
+MC_Q_magni_ironforge_1_TEXT	Avant que le roi de Forgefer ne parte, ses propres vallées doivent être sûres.
+MC_Q_magni_ironforge_2_TITLE	Des troggs sous terre
+MC_Q_magni_ironforge_2_TEXT	Des troggs sortent de chaque mine que creusent les nains. Magni veut les y renvoyer.
+MC_Q_magni_ironforge_3_TITLE	La menace Sombrefer
+MC_Q_magni_ironforge_3_TEXT	Le clan Sombrefer complote contre Forgefer, comme depuis la guerre des Trois Marteaux.
+MC_Q_magni_ironforge_4_TITLE	Gueule-de-dragon aux portes
+MC_Q_magni_ironforge_4_TEXT	Les Gueule-de-dragon tiennent les Paluns, la route entre les royaumes nains. Magni brisera leur chef sans tomber.
+MC_Q_tirion_exile_1_TITLE	Un chevalier sans ordre
+MC_Q_tirion_exile_1_TEXT	Privé de son titre, Tirion manie encore son marteau pour la Lumière.
+MC_Q_tirion_exile_2_TITLE	L'ombre du Fléau
+MC_Q_tirion_exile_2_TEXT	Les morts marchent à nouveau. Tirion a vu ce qu'ils ont fait à Lordaeron.
+MC_Q_tirion_exile_3_TITLE	Là où tout a commencé
+MC_Q_tirion_exile_3_TEXT	À Hautebrande, Tirion épargna jadis un orc et perdit tout. Il y retourne.
+MC_Q_tirion_exile_4_TITLE	La résolution de Fordring
+MC_Q_tirion_exile_4_TEXT	La force d'un vieux chevalier grandit à chaque combat. Qu'elle grandisse.
+MC_Q_eitrigg_oldclan_1_TITLE	Vieux clan, nouvelle voie
+MC_Q_eitrigg_oldclan_1_TEXT	Eitrigg combattait jadis aux côtés des Rochenoire. Désormais il les combat.
+MC_Q_eitrigg_oldclan_2_TITLE	Le vieux rempart
+MC_Q_eitrigg_oldclan_2_TEXT	Derrière le bouclier d'Eitrigg, les jeunes sont à l'abri.
+MC_Q_eitrigg_oldclan_3_TITLE	Les Carmines en flammes
+MC_Q_eitrigg_oldclan_3_TEXT	Le chef Rochenoire des Carmines doit tomber, et Eitrigg doit le voir debout.
+MC_Q_eitrigg_oldclan_4_TITLE	Vieilles dettes
+MC_Q_eitrigg_oldclan_4_TEXT	Les Paluns abritent de vieux ennemis des clans. Eitrigg règle ce qui reste.
+MC_Q_taelan_crusade_1_TITLE	Fils de la Croisade
+MC_Q_taelan_crusade_1_TEXT	Taelan a grandi parmi la Croisade écarlate à Tirisfal.
+MC_Q_taelan_crusade_2_TITLE	Doutes
+MC_Q_taelan_crusade_2_TEXT	Ce que la Croisade fait au nom de la Lumière ne lui convient plus.
+MC_Q_taelan_crusade_3_TITLE	Terre consacrée
+MC_Q_taelan_crusade_3_TEXT	Là où se tient Taelan, le sol brûle pour la Lumière.
+MC_Q_taelan_crusade_4_TITLE	Sur les pas du père
+MC_Q_taelan_crusade_4_TEXT	Le fils de Tirion se rend à Hautebrande, où l'exil de son père a commencé.
+MC_Q_saurfang_warrior_1_TITLE	Le vieux guerrier
+MC_Q_saurfang_warrior_1_TEXT	Saurcroc a mené plus de guerres que la plupart des orcs n'ont vu d'hivers.
+MC_Q_saurfang_warrior_2_TITLE	Pillards galak
+MC_Q_saurfang_warrior_2_TEXT	Les centaures galak pillent les caravanes de la Horde dans les Mille pointes.
+MC_Q_saurfang_warrior_3_TITLE	Vengeance
+MC_Q_saurfang_warrior_3_TEXT	Chaque coup reçu est rendu deux fois. Saurcroc ne connaît pas d'autre voie.
+MC_Q_saurfang_warrior_4_TITLE	Les Hautes-terres
+MC_Q_saurfang_warrior_4_TEXT	Dans les Hautes-terres d'Arathi, un pouvoir ancien s'éveille. Saurcroc l'affrontera sans tomber.
+MC_Q_windsor_marshal_1_TITLE	Maréchal de Hurlevent
+MC_Q_windsor_marshal_1_TEXT	Le maréchal Windsor mène les hommes de Hurlevent dans les montagnes d'Alterac.
+MC_Q_windsor_marshal_2_TITLE	Le Syndicat
+MC_Q_windsor_marshal_2_TEXT	Les nobles déchus d'Alterac dirigent une bande de voleurs. Windsor la dispersera.
+MC_Q_windsor_marshal_3_TITLE	Des ogres dans les collines
+MC_Q_windsor_marshal_3_TEXT	Des clans d'ogres tiennent les cols. Le maréchal a besoin qu'ils soient libres.
+MC_Q_windsor_marshal_4_TITLE	Vers les Terres ingrates
+MC_Q_windsor_marshal_4_TEXT	Dans les Terres ingrates s'éveille un ancien gardien. Windsor l'affrontera sans tomber.
+MC_Q_rexxar_wild_1_TITLE	La chasse de Misha
+MC_Q_rexxar_wild_1_TEXT	Rexxar et son ourse Misha chassent ce qui menace la nature.
+MC_Q_rexxar_wild_2_TITLE	Les plaies des Serres-Rocheuses
+MC_Q_rexxar_wild_2_TEXT	La KapitalRisk rase les forêts des Serres-Rocheuses. Rexxar y va en personne.
+MC_Q_rexxar_wild_3_TITLE	L'ourse et le maître des bêtes
+MC_Q_rexxar_wild_3_TEXT	Misha frappe là où Rexxar pointe. Qu'ils frappent souvent.
+MC_Q_rexxar_wild_4_TITLE	Le roi de la jungle
+MC_Q_rexxar_wild_4_TEXT	La grande panthère de Strangleronce règne sur sa jungle. Rexxar l'affrontera debout.
+MC_Q_sylvanas_forsaken_1_TITLE	La Dame noire
+MC_Q_sylvanas_forsaken_1_TEXT	Sylvanas mène les Réprouvés depuis Tirisfal, libérés de la volonté du roi-liche.
+MC_Q_sylvanas_forsaken_2_TITLE	Les worgens des Pins-Argentés
+MC_Q_sylvanas_forsaken_2_TEXT	Des worgens rôdent dans les Pins-Argentés. La Dame noire veut ses frontières nettes.
+MC_Q_sylvanas_forsaken_3_TITLE	La folie d'Arugal
+MC_Q_sylvanas_forsaken_3_TEXT	L'archimage qui invoqua les worgens se terre dans son donjon. Sylvanas l'affrontera sans tomber.
+MC_Q_sylvanas_forsaken_4_TITLE	Flèches flétrissantes
+MC_Q_sylvanas_forsaken_4_TEXT	Les flèches d'une banshee pourrissent ce qu'elles touchent. Qu'elles volent.
+MC_Q_voljin_darkspear_1_TITLE	Le foyer des Sombrelances
+MC_Q_voljin_darkspear_1_TEXT	La tribu de Vol'jin a trouvé un foyer en Durotar. Il doit rester sûr.
+MC_Q_voljin_darkspear_2_TITLE	Troll contre troll
+MC_Q_voljin_darkspear_2_TEXT	Toutes les tribus trolls ne suivent pas la Horde. Vol'jin répond à ceux qui menacent les siens.
+MC_Q_voljin_darkspear_3_TITLE	Le maléfice du chasseur des ombres
+MC_Q_voljin_darkspear_3_TEXT	Un chasseur des ombres change ses ennemis en grenouilles. Que Vol'jin montre son art.
+MC_Q_voljin_darkspear_4_TITLE	La jungle d'antan
+MC_Q_voljin_darkspear_4_TEXT	Les trolls venaient de Strangleronce. Vol'jin y retourne et affronte son maître debout.
+MC_Q_renzik_shiv_1_TITLE	Le territoire du Surineur
+MC_Q_renzik_shiv_1_TEXT	Renzik travaille dans l'ombre d'Elwynn pour le SI:7.
+MC_Q_renzik_shiv_2_TITLE	Foulards rouges
+MC_Q_renzik_shiv_2_TEXT	Le SI:7 veut les plans des Défias, et Renzik les obtient discrètement.
+MC_Q_renzik_shiv_3_TITLE	Sales coups
+MC_Q_renzik_shiv_3_TEXT	Un coup à l'œil met fin à bien des combats avant qu'ils ne commencent.
+MC_Q_renzik_shiv_4_TITLE	Veille de nuit
+MC_Q_renzik_shiv_4_TEXT	Une chose rapiécée hante les routes du bois de la Pénombre. Renzik la verra tomber et repartira.
+MC_Q_renzik_loose_ends_1_TITLE	Fils à couper
+MC_Q_renzik_loose_ends_1_TEXT	VanCleef est tombé, mais le SI:7 veut s'assurer qu'il ne reste rien dans les mines. Renzik descend lui-même.
+MC_Q_renzik_loose_ends_2_TITLE	Le fil du Surineur
+MC_Q_renzik_loose_ends_2_TEXT	C'est l'entraînement qui fait la lame. Renzik garde la sienne affûtée.
+MC_Q_jorach_ravenholdt_1_TITLE	L'appel de Ravenholdt
+MC_Q_jorach_ravenholdt_1_TEXT	Lord Jorach Ravenholdt dirige la guilde des assassins depuis les collines d'Alterac.
+MC_Q_jorach_ravenholdt_2_TITLE	Voleurs et assassins
+MC_Q_jorach_ravenholdt_2_TEXT	Le Syndicat donne mauvaise réputation aux voleurs. Ravenholdt s'en charge.
+MC_Q_jorach_ravenholdt_3_TITLE	Un coup aux reins
+MC_Q_jorach_ravenholdt_3_TEXT	Un assassin n'a besoin que d'un instant. Les coups aux reins le lui offrent.
+MC_Q_jorach_ravenholdt_4_TITLE	Le dernier noble
+MC_Q_jorach_ravenholdt_4_TEXT	Le dernier prétendant d'Alterac se cache dans ses ruines. Jorach l'achèvera et repartira debout.
+MC_Q_natpagle_fishing_1_TITLE	Partir pêcher
+MC_Q_natpagle_fishing_1_TEXT	Nat Pagle veut juste pêcher en paix dans le marécage d'Âprefange.
+MC_Q_natpagle_fishing_2_TITLE	Mâchoires claquantes
+MC_Q_natpagle_fishing_2_TEXT	Les crocilisques lui volent sans cesse sa prise. Nat en a assez.
+MC_Q_natpagle_fishing_3_TITLE	Prise fraîche
+MC_Q_natpagle_fishing_3_TEXT	Un poisson frais arrange presque tout. Nat partage sa prise.
+MC_Q_natpagle_fishing_4_TITLE	La menace murloc
+MC_Q_natpagle_fishing_4_TEXT	Là où il y a de l'eau, il y a des murlocs. Et là où il y a des murlocs, les poissons fuient.
+MC_Q_jaina_theramore_1_TITLE	L'île de l'archimage
+MC_Q_jaina_theramore_1_TEXT	Sur l'île de Zephras, Jaina veille sur une magie ancienne.
+MC_Q_jaina_theramore_2_TITLE	Éclairs de givre
+MC_Q_jaina_theramore_2_TEXT	Peu de mages lancent le givre comme Jaina. Montrez-le.
+MC_Q_jaina_theramore_3_TITLE	L'ombre de Dalaran
+MC_Q_jaina_theramore_3_TEXT	Des apprentis de Dalaran s'agitent dans les Pins-Argentés. Jaina va voir pourquoi.
+MC_Q_jaina_theramore_4_TITLE	Le dragon noir
+MC_Q_jaina_theramore_4_TEXT	Onyxia se cache près de Theramore sous l'apparence d'une noble. Jaina l'affrontera sans tomber.
+MC_Q_thrall_warchief_1_TITLE	Chef de guerre de la Horde
+MC_Q_thrall_warchief_1_TEXT	Thrall a bâti Orgrimmar en Durotar. Il protège ce que son peuple a construit.
+MC_Q_thrall_warchief_2_TITLE	La voix de la tempête
+MC_Q_thrall_warchief_2_TEXT	Les éléments répondent au chef de guerre. Que la foudre bondisse d'ennemi en ennemi.
+MC_Q_thrall_warchief_3_TITLE	Vieilles chaînes
+MC_Q_thrall_warchief_3_TEXT	Les Gueule-de-dragon gardent encore des dragons rouges enchaînés. Thrall sait ce que signifient les chaînes.
+MC_Q_thrall_warchief_4_TITLE	L'ombre de Grim Batol
+MC_Q_thrall_warchief_4_TEXT	Le chef des Gueule-de-dragon tient les Paluns. Thrall le brisera sans tomber.
+MC_Q_tyrande_elune_1_TITLE	Grande prêtresse
+MC_Q_tyrande_elune_1_TEXT	Tyrande guide les elfes de la nuit depuis Teldrassil dans la lumière d'Élune.
+MC_Q_tyrande_elune_2_TITLE	La grâce d'Élune
+MC_Q_tyrande_elune_2_TEXT	La déesse soigne par sa prêtresse. Qu'elle soigne souvent.
+MC_Q_tyrande_elune_3_TITLE	Le rivage des ténèbres
+MC_Q_tyrande_elune_3_TEXT	La corruption s'étend le long de Sombrivage. Tyrande y va elle-même.
+MC_Q_tyrande_elune_4_TITLE	La souillure des satyres
+MC_Q_tyrande_elune_4_TEXT	Les satyres, jadis elfes de la nuit, empoisonnent encore les forêts. La prêtresse d'Élune répond.
+MC_Q_magatha_grimtotem_1_TITLE	La vieille matriarche
+MC_Q_magatha_grimtotem_1_TEXT	Magatha observe Mulgore depuis la cime des Anciens, et elle n'oublie rien.
+MC_Q_magatha_grimtotem_2_TITLE	Affaires de clan
+MC_Q_magatha_grimtotem_2_TEXT	Tous les Totem-sinistre n'obéissent pas à leur matriarche. Magatha s'occupe des autres.
+MC_Q_magatha_grimtotem_3_TITLE	Ennemis affaiblis
+MC_Q_magatha_grimtotem_3_TEXT	Un ennemi affaibli est un ennemi vaincu. Les malédictions de Magatha y veillent.
+MC_Q_magatha_grimtotem_4_TITLE	Les Aiguilles
+MC_Q_magatha_grimtotem_4_TEXT	Parmi les aiguilles de pierre, un ancien pouvoir est devenu trop audacieux. Magatha le remettra à sa place sans tomber.
+MC_Q_magatha_whispers_1_TITLE	Murmures dans les cavernes
+MC_Q_magatha_whispers_1_TEXT	Verdan tombé, Magatha entend les cavernes murmurer de pouvoir. Elle va écouter.
+MC_Q_magatha_whispers_2_TITLE	Les secrets du Croc
+MC_Q_magatha_whispers_2_TEXT	Les druides du Croc savent plier le rêve. Magatha veut ce savoir pour elle.
+MC_Q_fandral_staghelm_1_TITLE	La fierté de l'archidruide
+MC_Q_fandral_staghelm_1_TEXT	Fandral dirige le Cercle cénarien, et il veut reprendre les terres de Désolace.
+MC_Q_fandral_staghelm_2_TITLE	Éclat lunaire
+MC_Q_fandral_staghelm_2_TEXT	La lune brûle ceux qui blessent la terre.
+MC_Q_fandral_staghelm_3_TITLE	La plaie des satyres
+MC_Q_fandral_staghelm_3_TEXT	Les satyres répandent la souillure de la Légion. L'archidruide les extirpera.
+MC_Q_fandral_staghelm_4_TITLE	Féralas envahie
+MC_Q_fandral_staghelm_4_TEXT	Le roi ogre de Féralas règne sur des ruines des anciens elfes. Fandral l'affrontera debout.
+MC_Q_drekthar_frostwolf_1_TITLE	Ancien des Loups-de-givre
+MC_Q_drekthar_frostwolf_1_TEXT	Drek'Thar, le chaman aveugle des Loups-de-givre, veille sur les vallées d'Alterac.
+MC_Q_drekthar_frostwolf_2_TITLE	Le froid du Nord
+MC_Q_drekthar_frostwolf_2_TEXT	Les esprits du givre répondent au vieux chaman. Qu'ils mordent.
+MC_Q_drekthar_frostwolf_3_TITLE	Les ogres du col
+MC_Q_drekthar_frostwolf_3_TEXT	Des ogres pillent les troupeaux des Loups-de-givre. Drek'Thar veut qu'ils partent.
+MC_Q_drekthar_frostwolf_4_TITLE	Les Hinterlands
+MC_Q_drekthar_frostwolf_4_TEXT	Un sorcier-docteur troll règne sur les Hinterlands par la magie noire. Drek'Thar l'affrontera sans tomber.

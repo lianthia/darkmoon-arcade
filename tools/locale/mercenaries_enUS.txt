@@ -958,3 +958,169 @@ MC_Q_hamuul_dream_1_TITLE	The Devourer Stirs
 MC_Q_hamuul_dream_1_TEXT	Every deviate creature that falls loosens the nightmare's grip. When Naralex begins to wake, the thing that feeds on his dream will rise.
 MC_NODE_PASS	Passage
 MC_PASS_INFO	Walk on past the hidden boss.
+MC_QK_TROGG	troggs
+MC_QK_DARKIRON	Dark Iron dwarves
+MC_QK_BLACKROCK	Blackrock orcs
+MC_QK_SCARLET	Scarlet Crusaders
+MC_QK_SYNDICATE	Syndicate members
+MC_QK_OGRE	ogres
+MC_QK_WORGEN	worgen
+MC_QK_TROLL	trolls
+MC_QK_DRAGONMAW	Dragonmaw orcs
+MC_QK_CROCOLISK	crocolisks
+MC_QK_MURLOC	murlocs
+MC_QK_SATYR	satyrs
+MC_QK_GRIMTOTEM	Grimtotem tauren
+MC_QK_FANG	Druids of the Fang
+MC_Q_magni_ironforge_1_TITLE	The Mountain King's Home
+MC_Q_magni_ironforge_1_TEXT	Before Ironforge's king rides out, his own valleys must be safe.
+MC_Q_magni_ironforge_2_TITLE	Troggs Below
+MC_Q_magni_ironforge_2_TEXT	Troggs crawl from every mine the dwarves dig. Magni wants them sent back.
+MC_Q_magni_ironforge_3_TITLE	The Dark Iron Threat
+MC_Q_magni_ironforge_3_TEXT	The Dark Iron clan schemes against Ironforge, as it has since the War of the Three Hammers.
+MC_Q_magni_ironforge_4_TITLE	Dragonmaw at the Gate
+MC_Q_magni_ironforge_4_TEXT	The Dragonmaw hold the Wetlands, the road between the dwarven kingdoms. Magni will break their chief and stay standing.
+MC_Q_tirion_exile_1_TITLE	A Knight Without Order
+MC_Q_tirion_exile_1_TEXT	Stripped of his title, Tirion still swings his hammer for the Light.
+MC_Q_tirion_exile_2_TITLE	The Scourge's Shadow
+MC_Q_tirion_exile_2_TEXT	The dead walk again. Tirion has seen what they did to Lordaeron.
+MC_Q_tirion_exile_3_TITLE	Where It Began
+MC_Q_tirion_exile_3_TEXT	In Hillsbrad Tirion once spared an orc and lost everything. He goes back.
+MC_Q_tirion_exile_4_TITLE	Fordring's Resolve
+MC_Q_tirion_exile_4_TEXT	An old knight's strength grows with every battle. Let it grow.
+MC_Q_eitrigg_oldclan_1_TITLE	Old Clan, New Path
+MC_Q_eitrigg_oldclan_1_TEXT	Eitrigg once fought beside the Blackrock. Now he fights them.
+MC_Q_eitrigg_oldclan_2_TITLE	The Old Wall
+MC_Q_eitrigg_oldclan_2_TEXT	Behind Eitrigg's shield the young stand safe.
+MC_Q_eitrigg_oldclan_3_TITLE	Redridge Burning
+MC_Q_eitrigg_oldclan_3_TEXT	The Blackrock chief in Redridge must fall, and Eitrigg must see it standing.
+MC_Q_eitrigg_oldclan_4_TITLE	Old Debts
+MC_Q_eitrigg_oldclan_4_TEXT	The Wetlands hold old enemies of the clans. Eitrigg settles what is left.
+MC_Q_taelan_crusade_1_TITLE	Son of the Crusade
+MC_Q_taelan_crusade_1_TEXT	Taelan grew up among the Scarlet Crusade in Tirisfal.
+MC_Q_taelan_crusade_2_TITLE	Doubts
+MC_Q_taelan_crusade_2_TEXT	What the Crusade does in the Light's name no longer sits right with him.
+MC_Q_taelan_crusade_3_TITLE	Hallowed Ground
+MC_Q_taelan_crusade_3_TEXT	Where Taelan stands, the ground burns for the Light.
+MC_Q_taelan_crusade_4_TITLE	Father's Footsteps
+MC_Q_taelan_crusade_4_TEXT	Tirion's son walks to Hillsbrad, where his father's exile began.
+MC_Q_saurfang_warrior_1_TITLE	The Old Warrior
+MC_Q_saurfang_warrior_1_TEXT	Saurfang has fought more wars than most orcs have seen winters.
+MC_Q_saurfang_warrior_2_TITLE	Galak Raiders
+MC_Q_saurfang_warrior_2_TEXT	The Galak centaurs raid the Horde's caravans in Thousand Needles.
+MC_Q_saurfang_warrior_3_TITLE	Revenge
+MC_Q_saurfang_warrior_3_TEXT	Every blow taken comes back twice. Saurfang knows no other way.
+MC_Q_saurfang_warrior_4_TITLE	The Highlands
+MC_Q_saurfang_warrior_4_TEXT	In the Arathi Highlands an ancient power stirs. Saurfang will face it and not fall.
+MC_Q_windsor_marshal_1_TITLE	Marshal of Stormwind
+MC_Q_windsor_marshal_1_TEXT	Marshal Windsor leads Stormwind's men into the Alterac Mountains.
+MC_Q_windsor_marshal_2_TITLE	The Syndicate
+MC_Q_windsor_marshal_2_TEXT	Alterac's fallen nobles rule a band of thieves now. Windsor will scatter it.
+MC_Q_windsor_marshal_3_TITLE	Ogres in the Hills
+MC_Q_windsor_marshal_3_TEXT	Ogre clans hold the passes. The marshal needs them open.
+MC_Q_windsor_marshal_4_TITLE	Into the Badlands
+MC_Q_windsor_marshal_4_TEXT	In the Badlands an ancient keeper wakes. Windsor will face it and keep his feet.
+MC_Q_rexxar_wild_1_TITLE	Misha's Hunt
+MC_Q_rexxar_wild_1_TEXT	Rexxar and his bear Misha hunt what threatens the wild.
+MC_Q_rexxar_wild_2_TITLE	Stonetalon's Wounds
+MC_Q_rexxar_wild_2_TEXT	The Venture Co. tears down Stonetalon's forests. Rexxar goes himself.
+MC_Q_rexxar_wild_3_TITLE	Bear and Beastmaster
+MC_Q_rexxar_wild_3_TEXT	Misha strikes where Rexxar points. Let them strike often.
+MC_Q_rexxar_wild_4_TITLE	King of the Jungle
+MC_Q_rexxar_wild_4_TEXT	The great panther of Stranglethorn rules its jungle. Rexxar will meet it standing.
+MC_Q_sylvanas_forsaken_1_TITLE	The Dark Lady
+MC_Q_sylvanas_forsaken_1_TEXT	Sylvanas leads the Forsaken from Tirisfal, free of the Lich King's will.
+MC_Q_sylvanas_forsaken_2_TITLE	Silverpine's Worgen
+MC_Q_sylvanas_forsaken_2_TEXT	Worgen roam Silverpine's forests. The Dark Lady wants her borders clean.
+MC_Q_sylvanas_forsaken_3_TITLE	Arugal's Folly
+MC_Q_sylvanas_forsaken_3_TEXT	The archmage who called the worgen sits in his keep. Sylvanas will face him and not fall.
+MC_Q_sylvanas_forsaken_4_TITLE	Withering Arrows
+MC_Q_sylvanas_forsaken_4_TEXT	A banshee's arrows rot what they touch. Let them fly.
+MC_Q_voljin_darkspear_1_TITLE	Darkspear Home
+MC_Q_voljin_darkspear_1_TEXT	Vol'jin's tribe found a home in Durotar. It must stay safe.
+MC_Q_voljin_darkspear_2_TITLE	Troll Against Troll
+MC_Q_voljin_darkspear_2_TEXT	Not every troll tribe follows the Horde. Vol'jin answers those who threaten his own.
+MC_Q_voljin_darkspear_3_TITLE	The Shadow Hunter's Hex
+MC_Q_voljin_darkspear_3_TEXT	A shadow hunter turns foes into frogs. Let Vol'jin show his craft.
+MC_Q_voljin_darkspear_4_TITLE	Jungle of Old
+MC_Q_voljin_darkspear_4_TEXT	The trolls came from Stranglethorn. Vol'jin returns and faces its master standing.
+MC_Q_renzik_shiv_1_TITLE	The Shiv's Turf
+MC_Q_renzik_shiv_1_TEXT	Renzik works the shadows of Elwynn for SI:7.
+MC_Q_renzik_shiv_2_TITLE	Red Bandanas
+MC_Q_renzik_shiv_2_TEXT	SI:7 wants the Defias' plans, and Renzik gets them the quiet way.
+MC_Q_renzik_shiv_3_TITLE	Dirty Tricks
+MC_Q_renzik_shiv_3_TEXT	A gouge to the eye ends many fights before they begin.
+MC_Q_renzik_shiv_4_TITLE	Night Watch
+MC_Q_renzik_shiv_4_TEXT	Something stitched stalks Duskwood's roads. Renzik will see it fall and walk away.
+MC_Q_renzik_loose_ends_1_TITLE	Loose Ends
+MC_Q_renzik_loose_ends_1_TEXT	VanCleef has fallen, but SI:7 wants to be sure nothing is left in the mines. Renzik goes down himself.
+MC_Q_renzik_loose_ends_2_TITLE	The Shiv's Edge
+MC_Q_renzik_loose_ends_2_TEXT	Practice makes the blade. Renzik keeps his sharp.
+MC_Q_jorach_ravenholdt_1_TITLE	Ravenholdt's Call
+MC_Q_jorach_ravenholdt_1_TEXT	Lord Jorach Ravenholdt leads the assassins' guild from the Alterac hills.
+MC_Q_jorach_ravenholdt_2_TITLE	Thieves and Assassins
+MC_Q_jorach_ravenholdt_2_TEXT	The Syndicate gives rogues a bad name. Ravenholdt settles that.
+MC_Q_jorach_ravenholdt_3_TITLE	A Blow to the Kidneys
+MC_Q_jorach_ravenholdt_3_TEXT	An assassin needs only a moment. Kidney shots buy it.
+MC_Q_jorach_ravenholdt_4_TITLE	The Last Noble
+MC_Q_jorach_ravenholdt_4_TEXT	Alterac's last pretender hides in his ruins. Jorach will finish him and leave standing.
+MC_Q_natpagle_fishing_1_TITLE	Gone Fishing
+MC_Q_natpagle_fishing_1_TEXT	Nat Pagle just wants to fish in Dustwallow Marsh in peace.
+MC_Q_natpagle_fishing_2_TITLE	Snapping Jaws
+MC_Q_natpagle_fishing_2_TEXT	Crocolisks keep stealing his catch. Nat has had enough.
+MC_Q_natpagle_fishing_3_TITLE	Fresh Catch
+MC_Q_natpagle_fishing_3_TEXT	A fresh fish fixes most things. Nat shares his catch.
+MC_Q_natpagle_fishing_4_TITLE	The Murloc Menace
+MC_Q_natpagle_fishing_4_TEXT	Wherever there is water, there are murlocs. And where there are murlocs, the fish run.
+MC_Q_jaina_theramore_1_TITLE	The Archmage's Island
+MC_Q_jaina_theramore_1_TEXT	On Zephras Isle Jaina keeps watch over old magic.
+MC_Q_jaina_theramore_2_TITLE	Bolts of Frost
+MC_Q_jaina_theramore_2_TEXT	Few mages throw frost like Jaina. Show it.
+MC_Q_jaina_theramore_3_TITLE	Dalaran's Shadow
+MC_Q_jaina_theramore_3_TEXT	Apprentices of Dalaran meddle in Silverpine. Jaina goes to see why.
+MC_Q_jaina_theramore_4_TITLE	The Black Dragon
+MC_Q_jaina_theramore_4_TEXT	Onyxia hides near Theramore in a noble's shape. Jaina will face her and not fall.
+MC_Q_thrall_warchief_1_TITLE	Warchief of the Horde
+MC_Q_thrall_warchief_1_TEXT	Thrall built Orgrimmar in Durotar. He protects what his people built.
+MC_Q_thrall_warchief_2_TITLE	The Storm's Voice
+MC_Q_thrall_warchief_2_TEXT	The elements answer the Warchief. Let lightning leap from foe to foe.
+MC_Q_thrall_warchief_3_TITLE	Old Chains
+MC_Q_thrall_warchief_3_TEXT	The Dragonmaw still hold red dragons in chains. Thrall knows what chains mean.
+MC_Q_thrall_warchief_4_TITLE	Grim Batol's Shadow
+MC_Q_thrall_warchief_4_TEXT	The Dragonmaw's chief holds the Wetlands. Thrall will break him and stay standing.
+MC_Q_tyrande_elune_1_TITLE	High Priestess
+MC_Q_tyrande_elune_1_TEXT	Tyrande leads the night elves from Teldrassil in Elune's light.
+MC_Q_tyrande_elune_2_TITLE	Elune's Mercy
+MC_Q_tyrande_elune_2_TEXT	The goddess heals through her priestess. Let her heal often.
+MC_Q_tyrande_elune_3_TITLE	The Shore of Darkness
+MC_Q_tyrande_elune_3_TEXT	Corruption spreads along Darkshore. Tyrande goes herself.
+MC_Q_tyrande_elune_4_TITLE	The Satyr Taint
+MC_Q_tyrande_elune_4_TEXT	Satyrs, once night elves, still poison the forests. Elune's priestess answers.
+MC_Q_magatha_grimtotem_1_TITLE	The Elder Crone
+MC_Q_magatha_grimtotem_1_TEXT	Magatha watches Mulgore from Thunder Bluff's Elder Rise, and she remembers everything.
+MC_Q_magatha_grimtotem_2_TITLE	Clan Matters
+MC_Q_magatha_grimtotem_2_TEXT	Not all Grimtotem obey their matriarch. Magatha deals with those who don't.
+MC_Q_magatha_grimtotem_3_TITLE	Weakened Foes
+MC_Q_magatha_grimtotem_3_TEXT	A weak foe is a beaten foe. Magatha's curses see to it.
+MC_Q_magatha_grimtotem_4_TITLE	The Needles
+MC_Q_magatha_grimtotem_4_TEXT	Among the needles of stone an old power has grown too bold. Magatha will humble it and stay standing.
+MC_Q_magatha_whispers_1_TITLE	Whispers in the Caverns
+MC_Q_magatha_whispers_1_TEXT	With Verdan fallen, Magatha hears the caverns whisper of power. She goes to listen.
+MC_Q_magatha_whispers_2_TITLE	The Fang's Secrets
+MC_Q_magatha_whispers_2_TEXT	The Druids of the Fang know how to bend the dream. Magatha wants that knowledge for herself.
+MC_Q_fandral_staghelm_1_TITLE	The Arch Druid's Pride
+MC_Q_fandral_staghelm_1_TEXT	Fandral leads the Cenarion Circle, and he wants Desolace's land back.
+MC_Q_fandral_staghelm_2_TITLE	Moonfire
+MC_Q_fandral_staghelm_2_TEXT	The moon burns those who wound the earth.
+MC_Q_fandral_staghelm_3_TITLE	The Satyr Plague
+MC_Q_fandral_staghelm_3_TEXT	Satyrs spread the Legion's taint. The Arch Druid will root them out.
+MC_Q_fandral_staghelm_4_TITLE	Feralas Overgrown
+MC_Q_fandral_staghelm_4_TEXT	The ogre king of Feralas rules ruins of the ancient elves. Fandral will face him standing.
+MC_Q_drekthar_frostwolf_1_TITLE	Frostwolf Elder
+MC_Q_drekthar_frostwolf_1_TEXT	Drek'Thar, the blind shaman of the Frostwolves, keeps watch over Alterac's valleys.
+MC_Q_drekthar_frostwolf_2_TITLE	The Cold of the North
+MC_Q_drekthar_frostwolf_2_TEXT	The spirits of frost answer the old shaman. Let them bite.
+MC_Q_drekthar_frostwolf_3_TITLE	Ogres of the Pass
+MC_Q_drekthar_frostwolf_3_TEXT	Ogres raid the Frostwolf herds. Drek'Thar wants them gone.
+MC_Q_drekthar_frostwolf_4_TITLE	The Hinterlands
+MC_Q_drekthar_frostwolf_4_TEXT	A troll witch doctor rules the Hinterlands with dark magic. Drek'Thar will face him and not fall.

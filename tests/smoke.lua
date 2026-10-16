@@ -621,6 +621,22 @@ for _, language in ipairs({ "enUS", "deDE", "frFR", "esES", "ruRU", "zhCN" }) do
         assert(ns.L["MC_RM_" .. stone.key .. "_TITLE"], language .. " milestone title " .. stone.key)
         assert(ns.L["MC_RM_" .. stone.key .. "_TEXT"]:find("•"), language .. " milestone " .. stone.key)
     end
+    -- Every task of every chain has its story and an objective with every name filled in.
+    local probe = { mercs = store.mercs, zones = store.zones, quests = { v = 2 } }
+    for cid, chain in pairs(ns.Mercenaries.QUEST_CHAINS) do
+        for i, task in ipairs(chain.steps) do
+            for _, part in ipairs({ "_TITLE", "_TEXT" }) do
+                local key = "MC_Q_" .. cid .. "_" .. i .. part
+                assert(ns.L[key] ~= key, language .. " " .. key)
+            end
+            probe.quests[cid] = { step = i, count = 0 }
+            local objective = ns.Mercenaries.Quests.Objective(probe, cid)
+            assert(objective ~= "" and not objective:find("MC_"), language .. " objective " .. cid .. " " .. i .. ": " .. objective)
+            if task.unlock then
+                assert(ns.L["MC_QUEST_UNLOCK_" .. task.unlock] ~= "MC_QUEST_UNLOCK_" .. task.unlock, language .. " unlock " .. task.unlock)
+            end
+        end
+    end
 end
 ns.SetLanguage(DarkmoonArcadeDB.language)
 -- Effect gallery (dev copy only): builds, plays every effect, keeps tuning and ratings.

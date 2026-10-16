@@ -958,3 +958,169 @@ MC_Q_hamuul_dream_1_TITLE	El Devorador se agita
 MC_Q_hamuul_dream_1_TEXT	Cada criatura descarriada que cae afloja el control de la pesadilla. Cuando Naralex empiece a despertar, lo que se alimenta de su sueño se alzará.
 MC_NODE_PASS	Pasaje
 MC_PASS_INFO	Seguir adelante sin el jefe oculto.
+MC_QK_TROGG	troggs
+MC_QK_DARKIRON	enanos Hierro Negro
+MC_QK_BLACKROCK	orcos Roca Negra
+MC_QK_SCARLET	cruzados escarlata
+MC_QK_SYNDICATE	miembros de La Hermandad
+MC_QK_OGRE	ogros
+MC_QK_WORGEN	huargen
+MC_QK_TROLL	trols
+MC_QK_DRAGONMAW	orcos Faucedraco
+MC_QK_CROCOLISK	crocoliscos
+MC_QK_MURLOC	múrlocs
+MC_QK_SATYR	sátiros
+MC_QK_GRIMTOTEM	tauren Tótem Siniestro
+MC_QK_FANG	druidas del Colmillo
+MC_Q_magni_ironforge_1_TITLE	El hogar del Rey de la Montaña
+MC_Q_magni_ironforge_1_TEXT	Antes de que el rey de Forjaz parta, sus propios valles deben estar a salvo.
+MC_Q_magni_ironforge_2_TITLE	Troggs de las profundidades
+MC_Q_magni_ironforge_2_TEXT	Los troggs salen de cada mina que cavan los enanos. Magni quiere devolverlos.
+MC_Q_magni_ironforge_3_TITLE	La amenaza Hierro Negro
+MC_Q_magni_ironforge_3_TEXT	El clan Hierro Negro conspira contra Forjaz, como desde la Guerra de los Tres Martillos.
+MC_Q_magni_ironforge_4_TITLE	Faucedraco a las puertas
+MC_Q_magni_ironforge_4_TEXT	Los Faucedraco dominan los Humedales, el camino entre los reinos enanos. Magni derrotará a su jefe sin caer.
+MC_Q_tirion_exile_1_TITLE	Un caballero sin orden
+MC_Q_tirion_exile_1_TEXT	Despojado de su título, Tirion aún blande su martillo por la Luz.
+MC_Q_tirion_exile_2_TITLE	La sombra de la Plaga
+MC_Q_tirion_exile_2_TEXT	Los muertos caminan de nuevo. Tirion vio lo que hicieron a Lordaeron.
+MC_Q_tirion_exile_3_TITLE	Donde todo empezó
+MC_Q_tirion_exile_3_TEXT	En Trabalomas Tirion perdonó a un orco y lo perdió todo. Ahora regresa.
+MC_Q_tirion_exile_4_TITLE	La determinación de Vadín
+MC_Q_tirion_exile_4_TEXT	La fuerza de un viejo caballero crece con cada batalla. Que crezca.
+MC_Q_eitrigg_oldclan_1_TITLE	Viejo clan, nuevo camino
+MC_Q_eitrigg_oldclan_1_TEXT	Eitrigg luchó una vez junto a los Roca Negra. Ahora lucha contra ellos.
+MC_Q_eitrigg_oldclan_2_TITLE	El viejo muro
+MC_Q_eitrigg_oldclan_2_TEXT	Tras el escudo de Eitrigg los jóvenes están a salvo.
+MC_Q_eitrigg_oldclan_3_TITLE	Montañas Crestagrana en llamas
+MC_Q_eitrigg_oldclan_3_TEXT	El jefe Roca Negra de Crestagrana debe caer, y Eitrigg debe verlo en pie.
+MC_Q_eitrigg_oldclan_4_TITLE	Viejas deudas
+MC_Q_eitrigg_oldclan_4_TEXT	Los Humedales guardan viejos enemigos de los clanes. Eitrigg salda lo pendiente.
+MC_Q_taelan_crusade_1_TITLE	Hijo de la Cruzada
+MC_Q_taelan_crusade_1_TEXT	Taelan creció entre la Cruzada Escarlata en Tirisfal.
+MC_Q_taelan_crusade_2_TITLE	Dudas
+MC_Q_taelan_crusade_2_TEXT	Lo que la Cruzada hace en nombre de la Luz ya no le parece bien.
+MC_Q_taelan_crusade_3_TITLE	Tierra consagrada
+MC_Q_taelan_crusade_3_TEXT	Donde se alza Taelan, el suelo arde por la Luz.
+MC_Q_taelan_crusade_4_TITLE	Tras los pasos del padre
+MC_Q_taelan_crusade_4_TEXT	El hijo de Tirion va a Trabalomas, donde empezó el exilio de su padre.
+MC_Q_saurfang_warrior_1_TITLE	El viejo guerrero
+MC_Q_saurfang_warrior_1_TEXT	Colmillosauro ha luchado en más guerras que inviernos han visto muchos orcos.
+MC_Q_saurfang_warrior_2_TITLE	Asaltantes galak
+MC_Q_saurfang_warrior_2_TEXT	Los centauros galak saquean las caravanas de la Horda en Las Mil Agujas.
+MC_Q_saurfang_warrior_3_TITLE	Revancha
+MC_Q_saurfang_warrior_3_TEXT	Cada golpe recibido vuelve dos veces. Colmillosauro no conoce otro camino.
+MC_Q_saurfang_warrior_4_TITLE	Las Tierras Altas
+MC_Q_saurfang_warrior_4_TEXT	En las Tierras Altas de Arathi despierta un poder antiguo. Colmillosauro lo enfrentará sin caer.
+MC_Q_windsor_marshal_1_TITLE	Mariscal de Ventormenta
+MC_Q_windsor_marshal_1_TEXT	El mariscal Windsor lleva a los hombres de Ventormenta a las Montañas de Alterac.
+MC_Q_windsor_marshal_2_TITLE	La Hermandad
+MC_Q_windsor_marshal_2_TEXT	Los nobles caídos de Alterac dirigen ahora una banda de ladrones. Windsor la disolverá.
+MC_Q_windsor_marshal_3_TITLE	Ogros en las colinas
+MC_Q_windsor_marshal_3_TEXT	Clanes de ogros dominan los pasos. El mariscal necesita que estén libres.
+MC_Q_windsor_marshal_4_TITLE	Hacia las Tierras Inhóspitas
+MC_Q_windsor_marshal_4_TEXT	En las Tierras Inhóspitas despierta un antiguo guardián. Windsor lo enfrentará sin caer.
+MC_Q_rexxar_wild_1_TITLE	La caza de Misha
+MC_Q_rexxar_wild_1_TEXT	Rexxar y su osa Misha cazan lo que amenaza la naturaleza.
+MC_Q_rexxar_wild_2_TITLE	Las heridas del Espolón
+MC_Q_rexxar_wild_2_TEXT	Ventura y Cía. arrasa los bosques del Espolón. Rexxar va en persona.
+MC_Q_rexxar_wild_3_TITLE	Osa y señor de las bestias
+MC_Q_rexxar_wild_3_TEXT	Misha golpea donde señala Rexxar. Que golpeen a menudo.
+MC_Q_rexxar_wild_4_TITLE	El rey de la jungla
+MC_Q_rexxar_wild_4_TEXT	La gran pantera de la Vega de Tuercespina gobierna su jungla. Rexxar la enfrentará en pie.
+MC_Q_sylvanas_forsaken_1_TITLE	La Dama Oscura
+MC_Q_sylvanas_forsaken_1_TEXT	Sylvanas guía a los Renegados desde Tirisfal, libres de la voluntad del Rey Exánime.
+MC_Q_sylvanas_forsaken_2_TITLE	Los huargen de Bosque de Argénteos
+MC_Q_sylvanas_forsaken_2_TEXT	Los huargen recorren Bosque de Argénteos. La Dama Oscura quiere sus fronteras limpias.
+MC_Q_sylvanas_forsaken_3_TITLE	La locura de Arugal
+MC_Q_sylvanas_forsaken_3_TEXT	El archimago que invocó a los huargen se oculta en su torre. Sylvanas lo enfrentará sin caer.
+MC_Q_sylvanas_forsaken_4_TITLE	Flechas marchitas
+MC_Q_sylvanas_forsaken_4_TEXT	Las flechas de una alma en pena pudren lo que tocan. Que vuelen.
+MC_Q_voljin_darkspear_1_TITLE	El hogar de los Lanza Negra
+MC_Q_voljin_darkspear_1_TEXT	La tribu de Vol'jin encontró un hogar en Durotar. Debe seguir a salvo.
+MC_Q_voljin_darkspear_2_TITLE	Trol contra trol
+MC_Q_voljin_darkspear_2_TEXT	No todas las tribus trol siguen a la Horda. Vol'jin responde a quienes amenazan a los suyos.
+MC_Q_voljin_darkspear_3_TITLE	El maleficio del cazador de las sombras
+MC_Q_voljin_darkspear_3_TEXT	Un cazador de las sombras convierte enemigos en ranas. Que Vol'jin muestre su arte.
+MC_Q_voljin_darkspear_4_TITLE	La jungla de antaño
+MC_Q_voljin_darkspear_4_TEXT	Los trols vinieron de Tuercespina. Vol'jin regresa y enfrenta a su amo en pie.
+MC_Q_renzik_shiv_1_TITLE	El territorio del Navaja
+MC_Q_renzik_shiv_1_TEXT	Renzik trabaja en las sombras de Elwynn para el IV:7.
+MC_Q_renzik_shiv_2_TITLE	Pañuelos rojos
+MC_Q_renzik_shiv_2_TEXT	El IV:7 quiere los planes de los Defias, y Renzik los consigue en silencio.
+MC_Q_renzik_shiv_3_TITLE	Trucos sucios
+MC_Q_renzik_shiv_3_TEXT	Un golpe al ojo acaba con muchas peleas antes de empezar.
+MC_Q_renzik_shiv_4_TITLE	Guardia nocturna
+MC_Q_renzik_shiv_4_TEXT	Algo cosido acecha los caminos del Bosque del Ocaso. Renzik lo verá caer y se irá.
+MC_Q_renzik_loose_ends_1_TITLE	Cabos sueltos
+MC_Q_renzik_loose_ends_1_TEXT	VanCleef ha caído, pero el IV:7 quiere asegurarse de que no queda nada en las minas. Renzik baja en persona.
+MC_Q_renzik_loose_ends_2_TITLE	El filo del Navaja
+MC_Q_renzik_loose_ends_2_TEXT	La práctica forja la hoja. Renzik mantiene la suya afilada.
+MC_Q_jorach_ravenholdt_1_TITLE	La llamada de Ravenholdt
+MC_Q_jorach_ravenholdt_1_TEXT	Lord Jorach Ravenholdt dirige el gremio de asesinos desde las colinas de Alterac.
+MC_Q_jorach_ravenholdt_2_TITLE	Ladrones y asesinos
+MC_Q_jorach_ravenholdt_2_TEXT	La Hermandad da mala fama a los pícaros. Ravenholdt lo arregla.
+MC_Q_jorach_ravenholdt_3_TITLE	Un golpe a los riñones
+MC_Q_jorach_ravenholdt_3_TEXT	Un asesino solo necesita un instante. Los golpes a los riñones se lo dan.
+MC_Q_jorach_ravenholdt_4_TITLE	El último noble
+MC_Q_jorach_ravenholdt_4_TEXT	El último pretendiente de Alterac se oculta en sus ruinas. Jorach acabará con él y se irá en pie.
+MC_Q_natpagle_fishing_1_TITLE	Me voy a pescar
+MC_Q_natpagle_fishing_1_TEXT	Nat Pagle solo quiere pescar en paz en el Marjal Revolcafango.
+MC_Q_natpagle_fishing_2_TITLE	Fauces que muerden
+MC_Q_natpagle_fishing_2_TEXT	Los crocoliscos no paran de robarle la pesca. Nat ya está harto.
+MC_Q_natpagle_fishing_3_TITLE	Captura fresca
+MC_Q_natpagle_fishing_3_TEXT	Un pescado fresco lo arregla casi todo. Nat comparte su captura.
+MC_Q_natpagle_fishing_4_TITLE	La amenaza múrloc
+MC_Q_natpagle_fishing_4_TEXT	Donde hay agua hay múrlocs. Y donde hay múrlocs, los peces huyen.
+MC_Q_jaina_theramore_1_TITLE	La isla de la archimaga
+MC_Q_jaina_theramore_1_TEXT	En la isla Zephras Jaina vigila una magia antigua.
+MC_Q_jaina_theramore_2_TITLE	Descargas de escarcha
+MC_Q_jaina_theramore_2_TEXT	Pocos magos lanzan escarcha como Jaina. Demuéstralo.
+MC_Q_jaina_theramore_3_TITLE	La sombra de Dalaran
+MC_Q_jaina_theramore_3_TEXT	Aprendices de Dalaran actúan en Bosque de Argénteos. Jaina va a ver por qué.
+MC_Q_jaina_theramore_4_TITLE	El dragón negro
+MC_Q_jaina_theramore_4_TEXT	Onyxia se esconde cerca de Theramore bajo forma de noble. Jaina la enfrentará sin caer.
+MC_Q_thrall_warchief_1_TITLE	Jefe de Guerra de la Horda
+MC_Q_thrall_warchief_1_TEXT	Thrall construyó Orgrimmar en Durotar. Protege lo que su pueblo levantó.
+MC_Q_thrall_warchief_2_TITLE	La voz de la tormenta
+MC_Q_thrall_warchief_2_TEXT	Los elementos responden al Jefe de Guerra. Que el rayo salte de enemigo en enemigo.
+MC_Q_thrall_warchief_3_TITLE	Viejas cadenas
+MC_Q_thrall_warchief_3_TEXT	Los Faucedraco aún tienen dragones rojos encadenados. Thrall sabe lo que significan las cadenas.
+MC_Q_thrall_warchief_4_TITLE	La sombra de Grim Batol
+MC_Q_thrall_warchief_4_TEXT	El jefe Faucedraco domina los Humedales. Thrall lo derrotará sin caer.
+MC_Q_tyrande_elune_1_TITLE	Suma sacerdotisa
+MC_Q_tyrande_elune_1_TEXT	Tyrande guía a los elfos de la noche desde Teldrassil bajo la luz de Elune.
+MC_Q_tyrande_elune_2_TITLE	La merced de Elune
+MC_Q_tyrande_elune_2_TEXT	La diosa sana a través de su sacerdotisa. Que sane a menudo.
+MC_Q_tyrande_elune_3_TITLE	La costa de la oscuridad
+MC_Q_tyrande_elune_3_TEXT	La corrupción se extiende por Costa Oscura. Tyrande va en persona.
+MC_Q_tyrande_elune_4_TITLE	La mancha de los sátiros
+MC_Q_tyrande_elune_4_TEXT	Los sátiros, antaño elfos de la noche, aún envenenan los bosques. La sacerdotisa de Elune responde.
+MC_Q_magatha_grimtotem_1_TITLE	La anciana
+MC_Q_magatha_grimtotem_1_TEXT	Magatha vigila Mulgore desde la Cima de los Ancestros, y lo recuerda todo.
+MC_Q_magatha_grimtotem_2_TITLE	Asuntos del clan
+MC_Q_magatha_grimtotem_2_TEXT	No todos los Tótem Siniestro obedecen a su matriarca. Magatha se ocupa de los demás.
+MC_Q_magatha_grimtotem_3_TITLE	Enemigos debilitados
+MC_Q_magatha_grimtotem_3_TEXT	Un enemigo débil es un enemigo vencido. Las maldiciones de Magatha se encargan.
+MC_Q_magatha_grimtotem_4_TITLE	Las Agujas
+MC_Q_magatha_grimtotem_4_TEXT	Entre las agujas de piedra un viejo poder se ha vuelto demasiado osado. Magatha lo humillará sin caer.
+MC_Q_magatha_whispers_1_TITLE	Susurros en las cuevas
+MC_Q_magatha_whispers_1_TEXT	Caído Verdan, Magatha oye a las cuevas susurrar sobre poder. Va a escuchar.
+MC_Q_magatha_whispers_2_TITLE	Los secretos del Colmillo
+MC_Q_magatha_whispers_2_TEXT	Los druidas del Colmillo saben doblegar el sueño. Magatha quiere ese saber para sí.
+MC_Q_fandral_staghelm_1_TITLE	El orgullo del archidruida
+MC_Q_fandral_staghelm_1_TEXT	Fandral dirige el Círculo Cenarion y quiere recuperar la tierra de Desolace.
+MC_Q_fandral_staghelm_2_TITLE	Fuego lunar
+MC_Q_fandral_staghelm_2_TEXT	La luna quema a quienes hieren la tierra.
+MC_Q_fandral_staghelm_3_TITLE	La plaga de sátiros
+MC_Q_fandral_staghelm_3_TEXT	Los sátiros propagan la mancha de la Legión. El archidruida los erradicará.
+MC_Q_fandral_staghelm_4_TITLE	Feralas invadida
+MC_Q_fandral_staghelm_4_TEXT	El rey ogro de Feralas gobierna ruinas de los antiguos elfos. Fandral lo enfrentará en pie.
+MC_Q_drekthar_frostwolf_1_TITLE	Anciano Lobo Gélido
+MC_Q_drekthar_frostwolf_1_TEXT	Drek'Thar, el chamán ciego de los Lobo Gélido, vigila los valles de Alterac.
+MC_Q_drekthar_frostwolf_2_TITLE	El frío del norte
+MC_Q_drekthar_frostwolf_2_TEXT	Los espíritus de la escarcha responden al viejo chamán. Que muerdan.
+MC_Q_drekthar_frostwolf_3_TITLE	Los ogros del paso
+MC_Q_drekthar_frostwolf_3_TEXT	Los ogros saquean los rebaños Lobo Gélido. Drek'Thar los quiere fuera.
+MC_Q_drekthar_frostwolf_4_TITLE	Tierras del Interior
+MC_Q_drekthar_frostwolf_4_TEXT	Un médico brujo trol gobierna las Tierras del Interior con magia oscura. Drek'Thar lo enfrentará sin caer.

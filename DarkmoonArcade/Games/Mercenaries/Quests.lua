@@ -69,6 +69,122 @@ MC.QUEST_CHAINS = {
         { kind = "kill", race = "beast", zone = "barrens", count = 15, what = "BEAST" },
         { kind = "dungeon", dungeon = "wailing" },
     } },
+    magni_ironforge = { merc = "magni", steps = {
+        { kind = "clear", zone = "dunmorogh" },
+        { kind = "kill", race = "trogg", count = 15, what = "TROGG" },
+        { kind = "kill", prefix = "dark_iron_", count = 10, what = "DARKIRON" },
+        { kind = "boss", zone = "wetlands" },
+    } },
+    tirion_exile = { merc = "tirion", steps = {
+        { kind = "ability", slot = 1, count = 40 },
+        { kind = "kill", race = "undead", count = 20, what = "UNDEAD" },
+        { kind = "clear", zone = "hillsbrad", with = true },
+        { kind = "level", level = 30 },
+    } },
+    eitrigg_oldclan = { merc = "eitrigg", steps = {
+        { kind = "kill", prefix = "blackrock_", count = 15, what = "BLACKROCK" },
+        { kind = "ability", slot = 2, count = 20 },
+        { kind = "boss", zone = "redridge" },
+        { kind = "clear", zone = "wetlands", with = true },
+    } },
+    taelan_crusade = { merc = "taelan", steps = {
+        { kind = "clear", zone = "tirisfal" },
+        { kind = "kill", prefix = "scarlet_", count = 20, what = "SCARLET" },
+        { kind = "ability", slot = 2, count = 25 },
+        { kind = "clear", zone = "hillsbrad", with = true },
+    } },
+    saurfang_warrior = { merc = "saurfang", steps = {
+        { kind = "clear", zone = "thousandneedles" },
+        { kind = "kill", prefix = "galak_", count = 20, what = "CENTAUR" },
+        { kind = "ability", slot = 1, count = 40 },
+        { kind = "boss", zone = "arathi" },
+    } },
+    windsor_marshal = { merc = "windsor", steps = {
+        { kind = "clear", zone = "alterac" },
+        { kind = "kill", prefix = "syndicate_", count = 20, what = "SYNDICATE" },
+        { kind = "kill", race = "ogre", count = 20, what = "OGRE" },
+        { kind = "boss", zone = "badlands" },
+    } },
+    rexxar_wild = { merc = "rexxar", steps = {
+        { kind = "kill", race = "beast", count = 25, what = "BEAST" },
+        { kind = "clear", zone = "stonetalon", with = true },
+        { kind = "ability", slot = 1, count = 40 },
+        { kind = "boss", zone = "stranglethorn" },
+    } },
+    sylvanas_forsaken = { merc = "sylvanas", steps = {
+        { kind = "clear", zone = "tirisfal" },
+        { kind = "kill", race = "worgen", count = 15, what = "WORGEN" },
+        { kind = "boss", zone = "silverpine" },
+        { kind = "ability", slot = 2, count = 30 },
+    } },
+    voljin_darkspear = { merc = "voljin", steps = {
+        { kind = "clear", zone = "durotar" },
+        { kind = "kill", race = "troll", count = 20, what = "TROLL" },
+        { kind = "ability", slot = 2, count = 25 },
+        { kind = "boss", zone = "stranglethorn" },
+    } },
+    renzik_shiv = { merc = "renzik", steps = {
+        { kind = "clear", zone = "elwynn" },
+        { kind = "kill", prefix = "defias_", count = 15, what = "DEFIAS" },
+        { kind = "ability", slot = 2, count = 25 },
+        { kind = "boss", zone = "duskwood" },
+    } },
+    renzik_loose_ends = { merc = "renzik", requires = { chain = "renzik_shiv", cleared = "deadmines" }, steps = {
+        { kind = "dungeon", dungeon = "deadmines" },
+        { kind = "ability", slot = 1, count = 60 },
+    } },
+    jorach_ravenholdt = { merc = "jorach", steps = {
+        { kind = "clear", zone = "alterac" },
+        { kind = "kill", prefix = "syndicate_", count = 25, what = "SYNDICATE" },
+        { kind = "ability", slot = 2, count = 30 },
+        { kind = "boss", zone = "alterac" },
+    } },
+    natpagle_fishing = { merc = "natpagle", steps = {
+        { kind = "clear", zone = "dustwallow" },
+        { kind = "kill", prefix = { "sawtooth_", "drywallow_" }, count = 15, what = "CROCOLISK" },
+        { kind = "ability", slot = 2, count = 30 },
+        { kind = "kill", race = "murloc", count = 25, what = "MURLOC" },
+    } },
+    jaina_theramore = { merc = "jaina", steps = {
+        { kind = "clear", zone = "zephras" },
+        { kind = "ability", slot = 2, count = 40 },
+        { kind = "clear", zone = "silverpine", with = true },
+        { kind = "boss", zone = "dustwallow" },
+    } },
+    thrall_warchief = { merc = "thrall", steps = {
+        { kind = "clear", zone = "durotar" },
+        { kind = "ability", slot = 1, count = 40 },
+        { kind = "kill", prefix = "dragonmaw_", count = 15, what = "DRAGONMAW" },
+        { kind = "boss", zone = "wetlands" },
+    } },
+    tyrande_elune = { merc = "tyrande", steps = {
+        { kind = "clear", zone = "teldrassil" },
+        { kind = "ability", slot = 2, count = 30 },
+        { kind = "clear", zone = "darkshore", with = true },
+        { kind = "kill", race = "satyr", count = 15, what = "SATYR" },
+    } },
+    magatha_grimtotem = { merc = "magatha", steps = {
+        { kind = "clear", zone = "mulgore" },
+        { kind = "kill", prefix = "grimtotem_", count = 15, what = "GRIMTOTEM" },
+        { kind = "ability", slot = 2, count = 25 },
+        { kind = "boss", zone = "thousandneedles" },
+    } },
+    magatha_whispers = { merc = "magatha", requires = { chain = "magatha_grimtotem", cleared = "wailing" }, steps = {
+        { kind = "dungeon", dungeon = "wailing" },
+        { kind = "kill", prefix = "druid_of_the_fang", zone = "wailing", count = 15, what = "FANG" },
+    } },
+    fandral_staghelm = { merc = "fandral", steps = {
+        { kind = "clear", zone = "desolace" },
+        { kind = "ability", slot = 1, count = 40 },
+        { kind = "kill", race = "satyr", count = 20, what = "SATYR" },
+        { kind = "boss", zone = "feralas" },
+    } },
+    drekthar_frostwolf = { merc = "drekthar", steps = {
+        { kind = "clear", zone = "alterac" },
+        { kind = "ability", slot = 1, count = 40 },
+        { kind = "kill", race = "ogre", count = 20, what = "OGRE" },
+        { kind = "boss", zone = "hinterlands" },
+    } },
 }
 -- The chains in the order of the collection, a mercenary's chains in the order they follow.
 MC.QUEST_CHAIN_ORDER = {}

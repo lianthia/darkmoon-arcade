@@ -958,3 +958,169 @@ MC_Q_hamuul_dream_1_TITLE	Пожиратель пробуждается
 MC_Q_hamuul_dream_1_TEXT	Каждое павшее загадочное существо ослабляет хватку кошмара. Когда Наралекс начнет просыпаться, восстанет то, что питается его сном.
 MC_NODE_PASS	Проход
 MC_PASS_INFO	Пройти мимо скрытого босса.
+MC_QK_TROGG	троггов
+MC_QK_DARKIRON	дворфов Черного Железа
+MC_QK_BLACKROCK	орков Черной горы
+MC_QK_SCARLET	воинов Алого ордена
+MC_QK_SYNDICATE	членов Синдиката
+MC_QK_OGRE	огров
+MC_QK_WORGEN	воргенов
+MC_QK_TROLL	троллей
+MC_QK_DRAGONMAW	орков Драконьей Пасти
+MC_QK_CROCOLISK	кроколисков
+MC_QK_MURLOC	мурлоков
+MC_QK_SATYR	сатиров
+MC_QK_GRIMTOTEM	тауренов Зловещего Тотема
+MC_QK_FANG	друидов Клыка
+MC_Q_magni_ironforge_1_TITLE	Дом Короля-горы
+MC_Q_magni_ironforge_1_TEXT	Прежде чем король Стальгорна отправится в путь, его собственные долины должны быть в безопасности.
+MC_Q_magni_ironforge_2_TITLE	Трогги из глубин
+MC_Q_magni_ironforge_2_TEXT	Трогги вылезают из каждой шахты, что роют дворфы. Магни хочет загнать их обратно.
+MC_Q_magni_ironforge_3_TITLE	Угроза Черного Железа
+MC_Q_magni_ironforge_3_TEXT	Клан Черного Железа плетет заговоры против Стальгорна со времен Войны Трех Молотов.
+MC_Q_magni_ironforge_4_TITLE	Драконья Пасть у ворот
+MC_Q_magni_ironforge_4_TEXT	Драконья Пасть держит Болотину – путь между королевствами дворфов. Магни сокрушит их вождя и устоит.
+MC_Q_tirion_exile_1_TITLE	Рыцарь без ордена
+MC_Q_tirion_exile_1_TEXT	Лишенный титула, Тирион все еще поднимает молот во имя Света.
+MC_Q_tirion_exile_2_TITLE	Тень Плети
+MC_Q_tirion_exile_2_TEXT	Мертвые снова ходят. Тирион видел, что они сделали с Лордероном.
+MC_Q_tirion_exile_3_TITLE	Где все началось
+MC_Q_tirion_exile_3_TEXT	В Хилсбраде Тирион когда-то пощадил орка и потерял все. Он возвращается.
+MC_Q_tirion_exile_4_TITLE	Решимость Фордринга
+MC_Q_tirion_exile_4_TEXT	Сила старого рыцаря растет с каждой битвой. Пусть растет.
+MC_Q_eitrigg_oldclan_1_TITLE	Старый клан, новый путь
+MC_Q_eitrigg_oldclan_1_TEXT	Когда-то Эйтригг сражался рядом с Черной горой. Теперь он сражается с ними.
+MC_Q_eitrigg_oldclan_2_TITLE	Старая стена
+MC_Q_eitrigg_oldclan_2_TEXT	За щитом Эйтригга молодые в безопасности.
+MC_Q_eitrigg_oldclan_3_TITLE	Красногорье в огне
+MC_Q_eitrigg_oldclan_3_TEXT	Вождь Черной горы в Красногорье должен пасть, и Эйтригг должен увидеть это стоя.
+MC_Q_eitrigg_oldclan_4_TITLE	Старые долги
+MC_Q_eitrigg_oldclan_4_TEXT	В Болотине живут старые враги кланов. Эйтригг сводит последние счеты.
+MC_Q_taelan_crusade_1_TITLE	Сын ордена
+MC_Q_taelan_crusade_1_TEXT	Таэлан вырос среди Алого ордена в Тирисфале.
+MC_Q_taelan_crusade_2_TITLE	Сомнения
+MC_Q_taelan_crusade_2_TEXT	То, что орден творит во имя Света, больше ему не по душе.
+MC_Q_taelan_crusade_3_TITLE	Освященная земля
+MC_Q_taelan_crusade_3_TEXT	Где стоит Таэлан, земля горит во имя Света.
+MC_Q_taelan_crusade_4_TITLE	По следам отца
+MC_Q_taelan_crusade_4_TEXT	Сын Тириона идет в Хилсбрад, где началось изгнание его отца.
+MC_Q_saurfang_warrior_1_TITLE	Старый воин
+MC_Q_saurfang_warrior_1_TEXT	Саурфанг прошел больше войн, чем многие орки видели зим.
+MC_Q_saurfang_warrior_2_TITLE	Налетчики Галак
+MC_Q_saurfang_warrior_2_TEXT	Кентавры Галак грабят караваны Орды в Тысяче Игл.
+MC_Q_saurfang_warrior_3_TITLE	Реванш
+MC_Q_saurfang_warrior_3_TEXT	Каждый пропущенный удар возвращается вдвойне. Саурфанг не знает другого пути.
+MC_Q_saurfang_warrior_4_TITLE	Нагорье
+MC_Q_saurfang_warrior_4_TEXT	В Нагорье Арати пробуждается древняя сила. Саурфанг встретит ее и не падет.
+MC_Q_windsor_marshal_1_TITLE	Маршал Штормграда
+MC_Q_windsor_marshal_1_TEXT	Маршал Виндзор ведет людей Штормграда в Альтеракские горы.
+MC_Q_windsor_marshal_2_TITLE	Синдикат
+MC_Q_windsor_marshal_2_TEXT	Павшие дворяне Альтерака теперь правят шайкой воров. Виндзор разгонит ее.
+MC_Q_windsor_marshal_3_TITLE	Огры в холмах
+MC_Q_windsor_marshal_3_TEXT	Кланы огров держат перевалы. Маршалу нужно их освободить.
+MC_Q_windsor_marshal_4_TITLE	В Бесплодные земли
+MC_Q_windsor_marshal_4_TEXT	В Бесплодных землях пробуждается древний хранитель. Виндзор встретит его и устоит.
+MC_Q_rexxar_wild_1_TITLE	Охота Миши
+MC_Q_rexxar_wild_1_TEXT	Рексар и его медведица Миша охотятся на тех, кто угрожает дикой природе.
+MC_Q_rexxar_wild_2_TITLE	Раны Когтистых гор
+MC_Q_rexxar_wild_2_TEXT	Торговая компания вырубает леса Когтистых гор. Рексар идет сам.
+MC_Q_rexxar_wild_3_TITLE	Медведь и Повелитель зверей
+MC_Q_rexxar_wild_3_TEXT	Миша бьет туда, куда указывает Рексар. Пусть бьют почаще.
+MC_Q_rexxar_wild_4_TITLE	Король джунглей
+MC_Q_rexxar_wild_4_TEXT	Великая пантера Тернистой долины правит своими джунглями. Рексар встретит ее стоя.
+MC_Q_sylvanas_forsaken_1_TITLE	Темная госпожа
+MC_Q_sylvanas_forsaken_1_TEXT	Сильвана ведет Отрекшихся из Тирисфаля, свободных от воли Короля-лича.
+MC_Q_sylvanas_forsaken_2_TITLE	Воргены Серебряного бора
+MC_Q_sylvanas_forsaken_2_TEXT	Воргены рыщут по Серебряному бору. Темная госпожа хочет очистить свои границы.
+MC_Q_sylvanas_forsaken_3_TITLE	Безумие Аругала
+MC_Q_sylvanas_forsaken_3_TEXT	Архимаг, призвавший воргенов, сидит в своей крепости. Сильвана встретит его и не падет.
+MC_Q_sylvanas_forsaken_4_TITLE	Иссушающие стрелы
+MC_Q_sylvanas_forsaken_4_TEXT	Стрелы банши гноят все, чего касаются. Пусть летят.
+MC_Q_voljin_darkspear_1_TITLE	Дом Черного Копья
+MC_Q_voljin_darkspear_1_TEXT	Племя Вол'джина нашло дом в Дуротаре. Он должен оставаться в безопасности.
+MC_Q_voljin_darkspear_2_TITLE	Тролль против тролля
+MC_Q_voljin_darkspear_2_TEXT	Не все племена троллей идут за Ордой. Вол'джин отвечает тем, кто угрожает его народу.
+MC_Q_voljin_darkspear_3_TITLE	Сглаз Ловца теней
+MC_Q_voljin_darkspear_3_TEXT	Ловец теней превращает врагов в лягушек. Пусть Вол'джин покажет свое мастерство.
+MC_Q_voljin_darkspear_4_TITLE	Древние джунгли
+MC_Q_voljin_darkspear_4_TEXT	Тролли пришли из Тернистой долины. Вол'джин возвращается и встречает ее хозяина стоя.
+MC_Q_renzik_shiv_1_TITLE	Владения Заточки
+MC_Q_renzik_shiv_1_TEXT	Ренцик работает в тенях Элвинна на ШРУ.
+MC_Q_renzik_shiv_2_TITLE	Красные платки
+MC_Q_renzik_shiv_2_TEXT	ШРУ нужны планы Справедливости, и Ренцик добывает их тихо.
+MC_Q_renzik_shiv_3_TITLE	Грязные приемы
+MC_Q_renzik_shiv_3_TEXT	Удар в глаз заканчивает многие бои до их начала.
+MC_Q_renzik_shiv_4_TITLE	Ночной дозор
+MC_Q_renzik_shiv_4_TEXT	Нечто сшитое бродит по дорогам Сумеречного леса. Ренцик увидит его падение и уйдет.
+MC_Q_renzik_loose_ends_1_TITLE	Незавершенные дела
+MC_Q_renzik_loose_ends_1_TEXT	Ван Клиф пал, но ШРУ хочет убедиться, что в шахтах ничего не осталось. Ренцик спускается сам.
+MC_Q_renzik_loose_ends_2_TITLE	Острие Заточки
+MC_Q_renzik_loose_ends_2_TEXT	Клинок закаляется практикой. Ренцик держит свой острым.
+MC_Q_jorach_ravenholdt_1_TITLE	Зов Равенхольдта
+MC_Q_jorach_ravenholdt_1_TEXT	Лорд Джорах Равенхольдт возглавляет гильдию убийц в холмах Альтерака.
+MC_Q_jorach_ravenholdt_2_TITLE	Воры и убийцы
+MC_Q_jorach_ravenholdt_2_TEXT	Синдикат позорит разбойников. Равенхольдт разберется.
+MC_Q_jorach_ravenholdt_3_TITLE	Удар по почкам
+MC_Q_jorach_ravenholdt_3_TEXT	Убийце нужен лишь миг. Удары по почкам его дают.
+MC_Q_jorach_ravenholdt_4_TITLE	Последний дворянин
+MC_Q_jorach_ravenholdt_4_TEXT	Последний претендент Альтерака прячется в руинах. Джорах прикончит его и уйдет на ногах.
+MC_Q_natpagle_fishing_1_TITLE	Ушел на рыбалку
+MC_Q_natpagle_fishing_1_TEXT	Нат Пэгл просто хочет спокойно рыбачить на Пылевых топях.
+MC_Q_natpagle_fishing_2_TITLE	Щелкающие челюсти
+MC_Q_natpagle_fishing_2_TEXT	Кроколиски все время крадут его улов. С Ната хватит.
+MC_Q_natpagle_fishing_3_TITLE	Свежий улов
+MC_Q_natpagle_fishing_3_TEXT	Свежая рыба лечит почти все. Нат делится уловом.
+MC_Q_natpagle_fishing_4_TITLE	Угроза мурлоков
+MC_Q_natpagle_fishing_4_TEXT	Где вода, там мурлоки. А где мурлоки, там рыба уходит.
+MC_Q_jaina_theramore_1_TITLE	Остров архимага
+MC_Q_jaina_theramore_1_TEXT	На острове Зефрас Джайна следит за древней магией.
+MC_Q_jaina_theramore_2_TITLE	Ледяные стрелы
+MC_Q_jaina_theramore_2_TEXT	Немногие маги метают лед, как Джайна. Покажи это.
+MC_Q_jaina_theramore_3_TITLE	Тень Даларана
+MC_Q_jaina_theramore_3_TEXT	Ученики Даларана хозяйничают в Серебряном бору. Джайна хочет узнать почему.
+MC_Q_jaina_theramore_4_TITLE	Черный дракон
+MC_Q_jaina_theramore_4_TEXT	Ониксия скрывается у Терамора в облике знатной дамы. Джайна встретит ее и не падет.
+MC_Q_thrall_warchief_1_TITLE	Вождь Орды
+MC_Q_thrall_warchief_1_TEXT	Тралл построил Оргриммар в Дуротаре. Он защищает то, что создал его народ.
+MC_Q_thrall_warchief_2_TITLE	Голос бури
+MC_Q_thrall_warchief_2_TEXT	Стихии отвечают вождю. Пусть молния скачет от врага к врагу.
+MC_Q_thrall_warchief_3_TITLE	Старые цепи
+MC_Q_thrall_warchief_3_TEXT	Драконья Пасть до сих пор держит красных драконов в цепях. Тралл знает, что такое цепи.
+MC_Q_thrall_warchief_4_TITLE	Тень Грим Батола
+MC_Q_thrall_warchief_4_TEXT	Вождь Драконьей Пасти держит Болотину. Тралл сломит его и устоит.
+MC_Q_tyrande_elune_1_TITLE	Верховная жрица
+MC_Q_tyrande_elune_1_TEXT	Тиранда ведет ночных эльфов с Тельдрассила в свете Элуны.
+MC_Q_tyrande_elune_2_TITLE	Милость Элуны
+MC_Q_tyrande_elune_2_TEXT	Богиня исцеляет через свою жрицу. Пусть исцеляет почаще.
+MC_Q_tyrande_elune_3_TITLE	Берег тьмы
+MC_Q_tyrande_elune_3_TEXT	Порча расползается по Темным берегам. Тиранда идет сама.
+MC_Q_tyrande_elune_4_TITLE	Скверна сатиров
+MC_Q_tyrande_elune_4_TEXT	Сатиры, некогда ночные эльфы, все еще отравляют леса. Жрица Элуны отвечает.
+MC_Q_magatha_grimtotem_1_TITLE	Старая карга
+MC_Q_magatha_grimtotem_1_TEXT	Магата следит за Мулгором с Вершины Старейшин и помнит все.
+MC_Q_magatha_grimtotem_2_TITLE	Дела клана
+MC_Q_magatha_grimtotem_2_TEXT	Не все из Зловещего Тотема слушаются матриарха. Магата разберется с остальными.
+MC_Q_magatha_grimtotem_3_TITLE	Ослабленные враги
+MC_Q_magatha_grimtotem_3_TEXT	Слабый враг – побежденный враг. Проклятия Магаты позаботятся об этом.
+MC_Q_magatha_grimtotem_4_TITLE	Иглы
+MC_Q_magatha_grimtotem_4_TEXT	Среди каменных игл древняя сила стала слишком дерзкой. Магата усмирит ее и устоит.
+MC_Q_magatha_whispers_1_TITLE	Шепот в пещерах
+MC_Q_magatha_whispers_1_TEXT	После падения Вердана Магата слышит, как пещеры шепчут о силе. Она идет послушать.
+MC_Q_magatha_whispers_2_TITLE	Тайны Клыка
+MC_Q_magatha_whispers_2_TEXT	Друиды Клыка умеют подчинять сон. Магата хочет это знание для себя.
+MC_Q_fandral_staghelm_1_TITLE	Гордость верховного друида
+MC_Q_fandral_staghelm_1_TEXT	Фэндрал возглавляет Круг Кенария и хочет вернуть земли Пустоши.
+MC_Q_fandral_staghelm_2_TITLE	Лунный огонь
+MC_Q_fandral_staghelm_2_TEXT	Луна сжигает тех, кто ранит землю.
+MC_Q_fandral_staghelm_3_TITLE	Чума сатиров
+MC_Q_fandral_staghelm_3_TEXT	Сатиры несут скверну Легиона. Верховный друид искоренит их.
+MC_Q_fandral_staghelm_4_TITLE	Заросший Фералас
+MC_Q_fandral_staghelm_4_TEXT	Король огров Фераласа правит руинами древних эльфов. Фэндрал встретит его стоя.
+MC_Q_drekthar_frostwolf_1_TITLE	Старейшина Северного Волка
+MC_Q_drekthar_frostwolf_1_TEXT	Дрек'Тар, слепой шаман Северных Волков, следит за долинами Альтерака.
+MC_Q_drekthar_frostwolf_2_TITLE	Северный холод
+MC_Q_drekthar_frostwolf_2_TEXT	Духи холода отвечают старому шаману. Пусть кусают.
+MC_Q_drekthar_frostwolf_3_TITLE	Огры перевала
+MC_Q_drekthar_frostwolf_3_TEXT	Огры грабят стада Северных Волков. Дрек'Тар хочет, чтобы они исчезли.
+MC_Q_drekthar_frostwolf_4_TITLE	Внутренние земли
+MC_Q_drekthar_frostwolf_4_TEXT	Тролль-знахарь правит Внутренними землями с помощью темной магии. Дрек'Тар встретит его и не падет.
