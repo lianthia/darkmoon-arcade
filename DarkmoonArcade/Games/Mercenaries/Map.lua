@@ -16,7 +16,9 @@ local MAP_LEFT, MAP_RIGHT = 206, W - 206
 local MAP_CX = (MAP_LEFT + MAP_RIGHT) / 2
 local ART_W, ART_H = MAP_RIGHT - MAP_LEFT, H - 20
 -- Room above the top stop (under the title) and below the start; the least room between layers.
-local PATH_TOP, PATH_BOTTOM, MIN_SPACING = 114, 38, 84
+local PATH_TOP, PATH_BOTTOM, MIN_SPACING = 124, 38, 84
+-- The window onto the path starts below the title banner, so stops never peek out above it.
+local CLIP_TOP = 78
 -- How far a winding path swings from the middle, and how quickly.
 local WIND, WIND_STEP = 130, 0.8
 local SCROLL_EASE, WHEEL_STEP = 6, 70
@@ -71,7 +73,8 @@ function Module:BuildMap()
 
     -- The path lives on a sheet as tall as it needs, seen through the parchment's window.
     local clip = CreateFrame("Frame", nil, view)
-    clip:SetAllPoints(art)
+    clip:SetSize(ART_W, ART_H - CLIP_TOP)
+    clip:SetPoint("TOPLEFT", art, "TOPLEFT", 0, -CLIP_TOP)
     clip:SetClipsChildren(true)
     clip:SetFrameLevel(art:GetFrameLevel() + 3)
     clip:EnableMouseWheel(true)
@@ -118,6 +121,15 @@ function Module:BuildMap()
     local top = CreateFrame("Frame", nil, view)
     top:SetAllPoints()
     top:SetFrameLevel(nodes:GetFrameLevel() + 10)
+    -- A soft shadow where the path slips under the title banner.
+    local shade = top:CreateTexture(nil, "BACKGROUND")
+    shade:SetSize(ART_W, 28)
+    shade:SetPoint("TOPLEFT", art, "TOPLEFT", 0, -CLIP_TOP)
+    shade:SetColorTexture(1, 1, 1, 1)
+    local dark, clear = { 0.18, 0.1, 0.04, 0.55 }, { 0.18, 0.1, 0.04, 0 }
+    if not (CreateColor and pcall(shade.SetGradient, shade, "VERTICAL", CreateColor(unpack(clear)), CreateColor(unpack(dark)))) then
+        shade:SetColorTexture(0.18, 0.1, 0.04, 0.25)
+    end
     local plaque = Kit.Plaque(top, 300, nil, 16)
     plaque:SetPoint("TOP", view, "TOPLEFT", MAP_CX, -4)
     view.title = plaque.text
@@ -217,7 +229,7 @@ end
 function Module:SetMapScroll(v)
     self.mapScroll = v
     self.mapContent:ClearAllPoints()
-    self.mapContent:SetPoint("TOPLEFT", self.mapClip, "TOPLEFT", 0, v)
+    self.mapContent:SetPoint("TOPLEFT", self.mapClip, "TOPLEFT", 0, v + CLIP_TOP)
 end
 
 -- Eases towards the target; the opening journey runs from the top down at its own pace.

@@ -11,9 +11,10 @@ local StatsView = {}
 ns.StatsView = StatsView
 
 local PAD = Style.PAGE_PAD
-local CELL_H, LINE, BAR_ROW = 62, 28, 28
+local CELL_H, LINE, BAR_ROW = 72, 28, 28
 
--- A plate of figures: value on the left, its label on the right, `perRow` to a row.
+-- A plate of figures, `perRow` to a row: each its label above its value, so long values (a time, a
+-- game's name) never run into the label.
 local function Figures(page, count, perRow, width)
     local rows = math.ceil(count / perRow)
     local plate = Style.Panel(page)
@@ -22,13 +23,18 @@ local function Figures(page, count, perRow, width)
     local cellW = width / perRow
     for i = 1, count do
         local col, row = (i - 1) % perRow, math.floor((i - 1) / perRow)
-        local left, right = col * cellW + 24, (col + 1) * cellW - 24
+        local left = col * cellW + 24
         local cell = {}
-        cell.value = Style.Text(plate, 22, C.text)
-        cell.value:SetPoint("TOPLEFT", left, -18 - row * CELL_H)
         cell.label = Style.Text(plate, 11, C.muted)
-        cell.label:SetPoint("TOPRIGHT", plate, "TOPLEFT", right, -28 - row * CELL_H)
-        cell.label:SetJustifyH("RIGHT")
+        cell.label:SetPoint("TOPLEFT", left, -16 - row * CELL_H)
+        cell.label:SetWidth(cellW - 48)
+        cell.label:SetJustifyH("LEFT")
+        cell.label:SetWordWrap(false)
+        cell.value = Style.Text(plate, 22, C.text)
+        cell.value:SetPoint("TOPLEFT", cell.label, "BOTTOMLEFT", 0, -6)
+        cell.value:SetWidth(cellW - 48)
+        cell.value:SetJustifyH("LEFT")
+        cell.value:SetWordWrap(false)
         if col > 0 then
             local rule = Style.Line(plate, C.border, "ARTWORK")
             rule:SetWidth(1)
