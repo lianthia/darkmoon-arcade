@@ -185,6 +185,29 @@ MC.QUEST_CHAINS = {
         { kind = "kill", race = "ogre", count = 20, what = "OGRE" },
         { kind = "boss", zone = "hinterlands" },
     } },
+    thrall_ragefire = { merc = "thrall", requires = { chain = "thrall_warchief", cleared = "ragefire" }, steps = {
+        { kind = "dungeon", dungeon = "ragefire" },
+        { kind = "kill", prefix = "searing_blade_", zone = "ragefire", count = 20, what = "SEARINGBLADE" },
+    } },
+    sylvanas_arugal = { merc = "sylvanas", requires = { chain = "sylvanas_forsaken", cleared = "shadowfang" }, steps = {
+        { kind = "dungeon", dungeon = "shadowfang" },
+        { kind = "kill", race = "worgen", zone = "shadowfang", count = 25, what = "WORGEN" },
+    } },
+    shandris_blackfathom = { merc = "shandris", requires = { chain = "shandris_sentinel" }, steps = {
+        { kind = "kill", prefix = "twilight_", zone = "blackfathom", count = 20, what = "TWILIGHT", unlock = "blackfathom_aquanis" },
+    } },
+    windsor_stockade = { merc = "windsor", requires = { chain = "windsor_marshal", cleared = "stockade" }, steps = {
+        { kind = "dungeon", dungeon = "stockade" },
+        { kind = "kill", prefix = "defias_", zone = "stockade", count = 30, what = "DEFIAS" },
+    } },
+    magni_gnomeregan = { merc = "magni", requires = { chain = "magni_ironforge", cleared = "gnomeregan" }, steps = {
+        { kind = "dungeon", dungeon = "gnomeregan" },
+        { kind = "kill", prefix = "irradiated_", zone = "gnomeregan", count = 20, what = "IRRADIATED" },
+    } },
+    cairne_kraul = { merc = "cairne", requires = { chain = "cairne_mulgore", cleared = "kraul" }, steps = {
+        { kind = "dungeon", dungeon = "kraul" },
+        { kind = "kill", prefix = { "razorfen_", "deaths_head_" }, zone = "kraul", count = 25, what = "RAZORFEN" },
+    } },
 }
 -- The chains in the order of the collection, a mercenary's chains in the order they follow.
 MC.QUEST_CHAIN_ORDER = {}

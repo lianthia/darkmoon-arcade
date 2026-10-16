@@ -284,7 +284,25 @@ if Want("dungeon") then
     mc:UpdateMapScroll(10)
     Snap("dungeon_wc_map")
     MC.Bounty.Abandon(store, store.run)
-    store.run, store.unlocks = nil, nil
+    store.run = nil
+    -- The others: travel pin, guide on the final boss and the path of each.
+    for _, d in ipairs({ { "ragefire", "kal", 2 }, { "shadowfang", "ek", 1 }, { "blackfathom", "kal", 1 },
+        { "stockade", "ek", 3 }, { "gnomeregan", "ek", 2 }, { "kraul", "kal", 2 } }) do
+        local id = d[1]
+        mc.travelContinent, mc.travelRegion, mc.travelZone = d[2], d[3], id
+        mc:ShowView("travel")
+        Snap("dungeon_" .. id .. "_travel")
+        mc:OpenJournal(id)
+        mc.journalEncounter = #MC.Zones[id].encounters
+        mc:RefreshJournal()
+        Snap("dungeon_" .. id .. "_journal")
+        mc:StartBounty(id, false)
+        mc:UpdateMapScroll(10)
+        Snap("dungeon_" .. id .. "_map")
+        MC.Bounty.Abandon(store, store.run)
+        store.run = nil
+    end
+    store.unlocks = nil
     mc.travelZone, mc.travelRegion = nil, nil
     mc:ShowView("camp")
     MC.DEV = false

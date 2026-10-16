@@ -1127,3 +1127,45 @@ MC_Q_drekthar_frostwolf_4_TEXT	A troll witch doctor rules the Hinterlands with d
 MC_QUESTS_PARTY	In the party
 MC_QUESTS_BENCH	On the bench
 MC_QUESTS_DONE	Completed
+MC_ZD_ragefire	Beneath Orgrimmar troggs and the Searing Blade cult dig for fire. Bazzalan leads them from the depths.
+MC_ZD_shadowfang	Archmage Arugal called the worgen into Baron Silverlaine's keep. Its ghosts and wolves wait for him at the top.
+MC_ZD_blackfathom	In the drowned temple of Elune the Twilight's Hammer serves Aku'mai. Naga and old beasts guard the way down.
+MC_ZD_stockade	The prisoners of Stormwind's jail have risen. Bazil Thredd leads the riot from the cells.
+MC_ZD_gnomeregan	The gnomes' capital lies poisoned and overrun by troggs. Their traitor Mekgineer Thermaplugg rules it from its heart.
+MC_ZD_kraul	Deep in the thorn maze of the southern Barrens the quilboar gather. Charlga Razorflank, the crone, holds the heart of the Kraul.
+MC_QK_SEARINGBLADE	Searing Blade cultists
+MC_QK_TWILIGHT	Twilight's Hammer cultists
+MC_QK_IRRADIATED	irradiated creatures
+MC_QK_RAZORFEN	Razorfen quilboar
+MC_QUEST_UNLOCK_blackfathom_aquanis	Raises Baron Aquanis in Blackfathom Deeps
+MC_Q_thrall_ragefire_1_TITLE	Fire Beneath Orgrimmar
+MC_Q_thrall_ragefire_1_TEXT	Bazzalan is gone, but the Searing Blade still hides beneath the city. Thrall goes down himself.
+MC_Q_thrall_ragefire_2_TITLE	Cleansing the Chasm
+MC_Q_thrall_ragefire_2_TEXT	Every cultist that falls is one less traitor in the Horde's capital.
+MC_Q_sylvanas_arugal_1_TITLE	The Archmage's Keep
+MC_Q_sylvanas_arugal_1_TEXT	Arugal is dead, but his keep still breeds worgen. The Dark Lady wants to see it with her own eyes.
+MC_Q_sylvanas_arugal_2_TITLE	No More Worgen
+MC_Q_sylvanas_arugal_2_TEXT	Clear the keep of the worgen, so none ever reach the Forsaken's lands.
+MC_Q_shandris_blackfathom_1_TITLE	The Baron of the Deep
+MC_Q_shandris_blackfathom_1_TEXT	The Twilight's Hammer guard a fathom stone in the deeps. Break their hold, and the water lord it binds will rise.
+MC_Q_windsor_stockade_1_TITLE	Riot in the Stockade
+MC_Q_windsor_stockade_1_TEXT	Bazil Thredd has fallen, but the cells still boil. The marshal restores order himself.
+MC_Q_windsor_stockade_2_TITLE	Behind Bars
+MC_Q_windsor_stockade_2_TEXT	Every Defias in the cells goes back where he belongs.
+MC_Q_magni_gnomeregan_1_TITLE	Our Allies' City
+MC_Q_magni_gnomeregan_1_TEXT	Thermaplugg has fallen, but Gnomeregan is far from saved. Magni goes down beside the gnomes.
+MC_Q_magni_gnomeregan_2_TITLE	The Poisoned Halls
+MC_Q_magni_gnomeregan_2_TEXT	The radiation twisted troggs and slime alike. Clear the halls for the gnomes' return.
+MC_Q_cairne_kraul_1_TITLE	The Thorn Maze
+MC_Q_cairne_kraul_1_TEXT	Charlga has fallen, but the quilboar still gather in the Kraul. Cairne goes in to end it.
+MC_Q_cairne_kraul_2_TITLE	Thinning the Herd
+MC_Q_cairne_kraul_2_TEXT	The quilboar raid Mulgore from here. Cairne will see their numbers fall.
+MC_A_taragaman_s	Fire Nova
+MC_A_silverlaine_s	Veil of Shadow
+MC_A_sarevess_s	Forked Lightning
+MC_A_kelris_s	Mind Blast
+MC_A_bazil_s	Smoke Bomb
+MC_A_electrocutioner_s	Megavolt
+MC_A_pummeler_s	Crowd Pummel
+MC_A_agathelos_s	Rampage
+MC_A_charlga_s	Chain Bolt

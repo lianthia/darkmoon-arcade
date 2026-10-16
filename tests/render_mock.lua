@@ -146,11 +146,12 @@ end
 function M:SetDrawLayer(layer, sub) self._layer, self._sub = LAYERS[layer] or 3, sub or 0 end
 
 function M:SetTexture(file)
-    self._file, self._atlas, self._solid = file, nil, nil
+    -- As in WoW a new texture replaces a creature portrait.
+    self._file, self._atlas, self._solid, self._portrait = file, nil, nil, nil
 end
-function M:SetAtlas(name, useSize) self._atlas, self._file, self._solid = name, nil, nil end
+function M:SetAtlas(name, useSize) self._atlas, self._file, self._solid, self._portrait = name, nil, nil, nil end
 function M:GetAtlas() return self._atlas end
-function M:SetColorTexture(r, g, b, a) self._solid = { r, g, b, a or 1 }; self._file, self._atlas = nil, nil end
+function M:SetColorTexture(r, g, b, a) self._solid = { r, g, b, a or 1 }; self._file, self._atlas, self._portrait = nil, nil, nil end
 function M:SetTexCoord(a, b, c, d, e, f, g, h)
     if e then self._coord = { a, g, b, h } else self._coord = { a, b, c, d } end
 end

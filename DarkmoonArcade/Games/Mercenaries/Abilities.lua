@@ -249,6 +249,16 @@ Define("serpentis_s", "Spell_Nature_HealingTouch", "nature", 6, 2, "ally", { E("
 Define("faeriedragon_s", "Spell_Nature_Sleep", "arcane", 3, 3, "none", { E("stun", "random") }, { harmful = true, ai = 0.6 })
 Define("verdan_s", "Spell_Nature_Earthquake", "physical", 7, 3, "none", { E("damage", 4, "all"), E("stun", "random") }, { harmful = true, ai = 0.7 })
 Define("mutanus_s", "Spell_Nature_Sleep", "shadow", 3, 2, "enemy", { E("damage", 4), E("stun") }, { ai = 0.7 })
+-- Ragefire Chasm to Razorfen Kraul: the bosses' own abilities from Classic.
+Define("taragaman_s", "Spell_Fire_SealOfFire", "fire", 6, 2, "none", { E("damage", 5, "all") }, { harmful = true, ai = 0.7 })
+Define("silverlaine_s", "Spell_Shadow_GatherShadows", "shadow", 4, 2, "enemy", { E("damage", 4), E("buff", "dmg", -0.3, 2) }, { ai = 0.7 })
+Define("sarevess_s", "Spell_Nature_ChainLightning", "nature", 6, 2, "none", { E("damage", 4, "all") }, { harmful = true, ai = 0.7 })
+Define("kelris_s", "Spell_Shadow_UnholyFrenzy", "shadow", 5, 1, "enemy", { E("damage", 10) })
+Define("bazil_s", "Ability_Hibernation", "physical", 3, 3, "none", { E("stun", "random") }, { harmful = true, ai = 0.6 })
+Define("electrocutioner_s", "Spell_Nature_ChainLightning", "nature", 6, 2, "none", { E("damage", 5, "all") }, { harmful = true, ai = 0.7 })
+Define("pummeler_s", "INV_Gauntlets_04", "physical", 7, 2, "none", { E("attack", 0, "all", true) }, { harmful = true })
+Define("agathelos_s", "Spell_Nature_NaturesWrath", "physical", 7, 3, "none", { E("damage", 4, "all"), E("stun", "random") }, { harmful = true, ai = 0.7 })
+Define("charlga_s", "Spell_Nature_ChainLightning", "nature", 5, 1, "enemy", { E("damage", 7), E("damage", 4, "adjacent") })
 
 Define("galgosh_1", "Ability_Warrior_PunishingBlow", "physical", 6, 0, "enemy", { E("attack", 5) })
 Define("galgosh_2", "Spell_Nature_EarthBind", "nature", 4, 2, "enemy", { E("buff", "speed", 4, 2), E("damage", 5) })

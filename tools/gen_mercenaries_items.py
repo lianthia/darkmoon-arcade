@@ -23,6 +23,7 @@ import json
 import pathlib
 import re
 import time
+import urllib.error
 import urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -35,6 +36,12 @@ ATLASLOOT = "https://raw.githubusercontent.com/Hoizame/AtlasLootClassic/master/A
 DUNGEONS = {
     "deadmines": "TheDeadmines",
     "wailing": "WailingCaverns",
+    "ragefire": "Ragefire",
+    "shadowfang": "ShadowfangKeep",
+    "blackfathom": "BlackfathomDeeps",
+    "stockade": "TheStockade",
+    "gnomeregan": "Gnomeregan",
+    "kraul": "RazorfenKraul",
 }
 # Wowhead's locale numbers.
 LOCALES = {"enUS": 0, "deDE": 3, "frFR": 2, "esES": 6, "ruRU": 7, "zhCN": 4}
@@ -125,8 +132,15 @@ def atlasloot():
 
 
 def tooltip(kind, wid, locale):
+    """Wowhead's tooltip, or None for something Classic does not have (AtlasLoot lists a few later items)."""
     url = f"https://nether.wowhead.com/tooltip/{kind}/{wid}?dataEnv=4&locale={LOCALES[locale]}"
-    return json.loads(fetch(url, CACHE / "wowhead" / f"{kind}-{wid}-{locale}.json"))
+    path = CACHE / "wowhead" / f"{kind}-{wid}-{locale}.json"
+    try:
+        return json.loads(fetch(url, path))
+    except urllib.error.HTTPError as exc:
+        if exc.code != 404:
+            raise
+        return None
 
 
 def stats_of(html):
@@ -234,6 +248,9 @@ def main():
             drops = []
             for wid in boss["items"]:
                 en = tooltip("item", wid, "enUS")
+                if not en:
+                    skipped.append(f"{wid} (not in Classic)")
+                    continue
                 rarity = QUALITY.get(en.get("quality"))
                 stats, slot, kind = stats_of(en["tooltip"])
                 if not rarity or not kind:

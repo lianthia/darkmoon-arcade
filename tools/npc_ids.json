@@ -1,4 +1,29 @@
 {
+ "Agathelos the Raging": {
+  "de": "Agathelos der Tobende",
+  "display": 2450,
+  "id": 4422,
+  "info": "",
+  "name": "Agathelos the Raging",
+  "names": {
+   "esES": "Agathelos el Furioso",
+   "ruRU": "Агателос Свирепый",
+   "zhCN": "暴怒的阿迦赛罗斯"
+  }
+ },
+ "Aggem Thorncurse": {
+  "de": "Aggem Dornfluch",
+  "display": 6097,
+  "id": 4424,
+  "info": "",
+  "name": "Aggem Thorncurse",
+  "names": {
+   "esES": "Aggem Malaespina",
+   "frFR": "Aggem Mantépine",
+   "ruRU": "Аггем Терновое Проклятие",
+   "zhCN": "阿格姆"
+  }
+ },
  "Aku'mai": {
   "de": "Aku'mai",
   "display": 2837,
@@ -10,6 +35,19 @@
    "frFR": "Aku'mai",
    "ruRU": "Аку'май",
    "zhCN": "阿库麦尔"
+  }
+ },
+ "Aku'mai Snapjaw": {
+  "de": "Aku'mai-Schnappkiefer",
+  "display": 5026,
+  "id": 4825,
+  "info": "",
+  "name": "Aku'mai Snapjaw",
+  "names": {
+   "esES": "Quijaforte Aku'mai",
+   "frFR": "Gueule d'acier d'Aku'mai",
+   "ruRU": "Хрустогрыз Аку'май",
+   "zhCN": "阿库麦尔钳嘴龟"
   }
  },
  "Anetheron": null,
@@ -196,6 +234,19 @@
    "zhCN": "巴拉克·科多班恩"
   }
  },
+ "Baron Aquanis": {
+  "de": "Baron Aquanis",
+  "display": 110,
+  "id": 12876,
+  "info": "",
+  "name": "Baron Aquanis",
+  "names": {
+   "esES": "Barón Aquanis",
+   "frFR": "Baron Aquanis",
+   "ruRU": "Барон Акванис",
+   "zhCN": "阿奎尼斯男爵"
+  }
+ },
  "Baron Rivendare": {
   "de": "Baron Rivendare",
   "display": 10729,
@@ -207,6 +258,45 @@
    "frFR": "Baron Rivendare",
    "ruRU": "Барон Ривендер",
    "zhCN": "瑞文戴尔男爵"
+  }
+ },
+ "Baron Silverlaine": {
+  "de": "Baron Silverlaine",
+  "display": 3222,
+  "id": 3887,
+  "info": "",
+  "name": "Baron Silverlaine",
+  "names": {
+   "esES": "Barón Filargenta",
+   "frFR": "Baron d'Argelaine",
+   "ruRU": "Барон Сребролен",
+   "zhCN": "席瓦莱恩男爵"
+  }
+ },
+ "Bazil Thredd": {
+  "de": "Bazil Thredd",
+  "display": 1621,
+  "id": 1716,
+  "info": "",
+  "name": "Bazil Thredd",
+  "names": {
+   "esES": "Bazil Thredd",
+   "frFR": "Bazil Thredd",
+   "ruRU": "Базиль Тредд",
+   "zhCN": "巴基尔·斯瑞德"
+  }
+ },
+ "Bazzalan": {
+  "de": "Bazzalan",
+  "display": 2007,
+  "id": 11519,
+  "info": "",
+  "name": "Bazzalan",
+  "names": {
+   "esES": "Bazzalan",
+   "frFR": "Bazzalan",
+   "ruRU": "Баззалан",
+   "zhCN": "巴扎兰"
   }
  },
  "Black Broodling": {
@@ -233,6 +323,19 @@
    "frFR": "Myrmidon de Brassenoire",
    "ruRU": "Мирмидон Непроглядной Пучины",
    "zhCN": "黑暗深渊仆从"
+  }
+ },
+ "Blackfathom Oracle": {
+  "de": "Blackfathom-Orakel",
+  "display": 4976,
+  "id": 4803,
+  "info": "",
+  "name": "Blackfathom Oracle",
+  "names": {
+   "esES": "Oráculo Brazanegra",
+   "frFR": "Oracle de Brassenoire",
+   "ruRU": "Оракул Непроглядной Пучины",
+   "zhCN": "黑暗深渊智者"
   }
  },
  "Blackfathom Tide Priestess": {
@@ -365,6 +468,19 @@
    "zhCN": "Blademaster Kaijo"
   }
  },
+ "Bleak Worg": {
+  "de": "Kahler Worg",
+  "display": 801,
+  "id": 3861,
+  "info": "",
+  "name": "Bleak Worg",
+  "names": {
+   "esES": "Lupo lóbrego",
+   "frFR": "Worg pâle",
+   "ruRU": "Бесцветный ворг",
+   "zhCN": "灰色座狼"
+  }
+ },
  "Bleakheart Satyr": {
   "de": "Satyr der Herzschinder",
   "display": 2007,
@@ -389,6 +505,19 @@
    "frFR": "Horreur corrompue",
    "ruRU": "Зачумленный ужас",
    "zhCN": "荒芜水元素"
+  }
+ },
+ "Blind Hunter": {
+  "de": "Blinder Jäger",
+  "display": 4735,
+  "id": 4425,
+  "info": "",
+  "name": "Blind Hunter",
+  "names": {
+   "esES": "Cazador ciego",
+   "frFR": "Chasseur aveugle",
+   "ruRU": "Слепой охотник",
+   "zhCN": "盲眼猎手"
   }
  },
  "Blind Screecher": {
@@ -547,6 +676,19 @@
    "zhCN": "Bristleback Skullcrusher"
   }
  },
+ "Bruegal Ironknuckle": {
+  "de": "Bruegal Eisenfaust",
+  "display": 2142,
+  "id": 1720,
+  "info": "",
+  "name": "Bruegal Ironknuckle",
+  "names": {
+   "esES": "Bruegal Nudoferro",
+   "frFR": "Bruegal Ironknuckle",
+   "ruRU": "Бругал Железный Кулак",
+   "zhCN": "布鲁高·铁拳"
+  }
+ },
  "Burning Blade Summoner": {
   "de": "Beschwörer der Burning Blade",
   "display": 4709,
@@ -612,6 +754,32 @@
    "zhCN": "绿皮队长"
   }
  },
+ "Caverndeep Ambusher": {
+  "de": "Wegelagerer der Tiefentroggs",
+  "display": 764,
+  "id": 6207,
+  "info": "",
+  "name": "Caverndeep Ambusher",
+  "names": {
+   "esES": "Emboscador Cueva Honda",
+   "frFR": "Embusqué des Basses-cavernes",
+   "ruRU": "Душитель из пещерных глубин",
+   "zhCN": "洞窟伏击者"
+  }
+ },
+ "Charlga Razorflank": {
+  "de": "Charlga Razorflank",
+  "display": 4642,
+  "id": 4421,
+  "info": "",
+  "name": "Charlga Razorflank",
+  "names": {
+   "esES": "Charlga Filonavaja",
+   "frFR": "Charlga Trancheflanc",
+   "ruRU": "Чарлга Остробок",
+   "zhCN": "卡尔加·刺肋"
+  }
+ },
  "Chieftain Nek'rosh": {
   "de": "Häuptling Nek'rosh",
   "display": 4915,
@@ -662,6 +830,19 @@
    "frFR": "Poing-Serré",
    "ruRU": "Clugfist",
    "zhCN": "Clugfist"
+  }
+ },
+ "Commander Springvale": {
+  "de": "Kommandant Springvale",
+  "display": 3223,
+  "id": 4278,
+  "info": "",
+  "name": "Commander Springvale",
+  "names": {
+   "esES": "Comandante Vallefont",
+   "frFR": "Commandant Springvale",
+   "ruRU": "Командир Ручьедол",
+   "zhCN": "指挥官斯普林瓦尔"
   }
  },
  "Cookie": {
@@ -729,6 +910,19 @@
    "zhCN": "水浪流放者"
   }
  },
+ "Crowd Pummeler 9-60": {
+  "de": "Meuteverprügler 9-60",
+  "display": 6774,
+  "id": 6229,
+  "info": "",
+  "name": "Crowd Pummeler 9-60",
+  "names": {
+   "esES": "Gopleamasa 9-60",
+   "frFR": "Faucheur de foule 9-60",
+   "ruRU": "Толпогон 9-60",
+   "zhCN": "群体打击者9-60"
+  }
+ },
  "Crushridge Mage": {
   "de": "Crushridge-Magier",
   "display": 6705,
@@ -792,6 +986,32 @@
    "frFR": "Apprenti de Dalaran",
    "ruRU": "Даларанский ученик",
    "zhCN": "达拉然学徒"
+  }
+ },
+ "Dark Iron Agent": {
+  "de": "Agent der Dunkeleisenzwerge",
+  "display": 3456,
+  "id": 6212,
+  "info": "",
+  "name": "Dark Iron Agent",
+  "names": {
+   "esES": "Agente Hierro Negro",
+   "frFR": "Agent Sombrefer",
+   "ruRU": "Посланник из клана Черного Железа",
+   "zhCN": "黑铁密探"
+  }
+ },
+ "Dark Iron Ambassador": {
+  "de": "Botschafter der Dunkeleisenzwerge",
+  "display": 6669,
+  "id": 6228,
+  "info": "",
+  "name": "Dark Iron Ambassador",
+  "names": {
+   "esES": "Embajador Hierro Negro",
+   "frFR": "Ambassadeur Sombrefer",
+   "ruRU": "Посол из клана Черного Железа",
+   "zhCN": "黑铁大师"
   }
  },
  "Dark Iron Dwarf": {
@@ -911,6 +1131,45 @@
    "zhCN": "死木战士"
   }
  },
+ "Death Speaker Jargba": {
+  "de": "Todessprecher Jargba",
+  "display": 4644,
+  "id": 4428,
+  "info": "",
+  "name": "Death Speaker Jargba",
+  "names": {
+   "esES": "Médium Jargba",
+   "frFR": "Nécrorateur Jargba",
+   "ruRU": "Вестник смерти Джаргба",
+   "zhCN": "亡语者贾格巴"
+  }
+ },
+ "Death's Head Acolyte": {
+  "de": "Akolyth der Totenköpfe",
+  "display": 6093,
+  "id": 4515,
+  "info": "",
+  "name": "Death's Head Acolyte",
+  "names": {
+   "esES": "Acólito Caramuerte",
+   "frFR": "Acolyte de la Tête de Mort",
+   "ruRU": "Послушница из племени Мертвой Головы",
+   "zhCN": "亡首侍僧"
+  }
+ },
+ "Deathsworn Captain": {
+  "de": "Todeshöriger Captain",
+  "display": 3224,
+  "id": 3872,
+  "info": "",
+  "name": "Deathsworn Captain",
+  "names": {
+   "esES": "Capitán Juramorte",
+   "frFR": "Capitaine Ligemort",
+   "ruRU": "Капитан служителей Смерти",
+   "zhCN": "死亡之誓"
+  }
+ },
  "Decrepit Pylon Protector": {
   "de": "Verfallener Pylonenbeschützer",
   "display": 137523,
@@ -950,6 +1209,32 @@
    "zhCN": "迪菲亚黑衣卫兵"
   }
  },
+ "Defias Captive": {
+  "de": "Inhaftierter Defias",
+  "display": 2144,
+  "id": 1707,
+  "info": "",
+  "name": "Defias Captive",
+  "names": {
+   "esES": "Cautivo Defias",
+   "frFR": "Captif défias",
+   "ruRU": "Пленник из Братства Справедливости",
+   "zhCN": "迪菲亚俘虏"
+  }
+ },
+ "Defias Convict": {
+  "de": "Eingekerkerter Defias",
+  "display": 2145,
+  "id": 1711,
+  "info": "",
+  "name": "Defias Convict",
+  "names": {
+   "esES": "Presidiario Defias",
+   "frFR": "Détenu défias",
+   "ruRU": "Каторжник из Братства Справедливости",
+   "zhCN": "迪菲亚罪犯"
+  }
+ },
  "Defias Evoker": {
   "de": "Rufer der Defias",
   "display": 2318,
@@ -961,6 +1246,32 @@
    "frFR": "Evocateur défias",
    "ruRU": "Вызыватель из Братства Справедливости",
    "zhCN": "迪菲亚招魂师"
+  }
+ },
+ "Defias Inmate": {
+  "de": "Verurteilter Defias",
+  "display": 2146,
+  "id": 1708,
+  "info": "",
+  "name": "Defias Inmate",
+  "names": {
+   "esES": "Recluso Defias",
+   "frFR": "Interné défias",
+   "ruRU": "Заключенный из Братства Справедливости",
+   "zhCN": "迪菲亚狱友"
+  }
+ },
+ "Defias Insurgent": {
+  "de": "Aufrührer der Defias",
+  "display": 2147,
+  "id": 1715,
+  "info": "",
+  "name": "Defias Insurgent",
+  "names": {
+   "esES": "Insurgente Defias",
+   "frFR": "Insurgé défias",
+   "ruRU": "Мятежник из Братства Справедливости",
+   "zhCN": "迪菲亚叛军"
   }
  },
  "Defias Miner": {
@@ -1013,6 +1324,19 @@
    "frFR": "Pirate défias",
    "ruRU": "Пират из Братства Справедливости",
    "zhCN": "迪菲亚海盗"
+  }
+ },
+ "Defias Prisoner": {
+  "de": "Gefangener Defias",
+  "display": 2148,
+  "id": 1706,
+  "info": "",
+  "name": "Defias Prisoner",
+  "names": {
+   "esES": "Prisionero Defias",
+   "frFR": "Prisonnier défias",
+   "ruRU": "Узник из Братства Справедливости",
+   "zhCN": "迪菲亚囚徒"
   }
  },
  "Defias Squallshaper": {
@@ -1169,6 +1493,19 @@
    "frFR": "Diablosaure",
    "ruRU": "Девизавр",
    "zhCN": "魔暴龙"
+  }
+ },
+ "Dextren Ward": {
+  "de": "Dextren Ward",
+  "display": 2149,
+  "id": 1663,
+  "info": "",
+  "name": "Dextren Ward",
+  "names": {
+   "esES": "Dextren Tutor",
+   "frFR": "Dextren Ward",
+   "ruRU": "Декстрен Вард",
+   "zhCN": "迪克斯特·瓦德"
   }
  },
  "Diseased Wolf": {
@@ -1340,6 +1677,32 @@
    "zhCN": "火烟食人魔"
   }
  },
+ "Earthborer": {
+  "de": "Erdbohrer",
+  "display": 11010,
+  "id": 11320,
+  "info": "",
+  "name": "Earthborer",
+  "names": {
+   "esES": "Cavatierra",
+   "frFR": "Fouisseur",
+   "ruRU": "Землеед",
+   "zhCN": "钻土虫"
+  }
+ },
+ "Earthcaller Halmgar": {
+  "de": "Erdenrufer Halmgar",
+  "display": 6102,
+  "id": 4842,
+  "info": "",
+  "name": "Earthcaller Halmgar",
+  "names": {
+   "esES": "Clamor de Tierra Halmgar",
+   "frFR": "Implorateur de la terre Halmgar",
+   "ruRU": "Заклинательница земли Халмгар",
+   "zhCN": "唤地者哈穆加"
+  }
+ },
  "Earthen Custodian": {
   "de": "Irdener Wärter",
   "display": 6025,
@@ -1416,6 +1779,19 @@
    "frFR": "Ancien tigre de Strangleronce",
    "ruRU": "Старый тигр Тернистой долины",
    "zhCN": "老年荆棘谷猛虎"
+  }
+ },
+ "Electrocutioner 6000": {
+  "de": "Elektrokutor 6000",
+  "display": 6915,
+  "id": 6235,
+  "info": "",
+  "name": "Electrocutioner 6000",
+  "names": {
+   "esES": "Electrocutor 6000",
+   "frFR": "Electrocuteur 6000",
+   "ruRU": "Электрошокер 6000",
+   "zhCN": "电刑器6000型"
   }
  },
  "Emperor Dagran Thaurissan": {
@@ -1508,6 +1884,19 @@
    "frFR": "Créature des tourbières",
    "ruRU": "Болотный житель",
    "zhCN": "沼泽定居者"
+  }
+ },
+ "Fenrus the Devourer": {
+  "de": "Fenrus der Verschlinger",
+  "display": 2352,
+  "id": 4274,
+  "info": "",
+  "name": "Fenrus the Devourer",
+  "names": {
+   "esES": "Fenrus el Devorador",
+   "frFR": "Fenrus le Dévoreur",
+   "ruRU": "Фенрус Пожиратель",
+   "zhCN": "吞噬者芬鲁斯"
   }
  },
  "Feral Scar Yeti": {
@@ -1705,6 +2094,19 @@
    "zhCN": "加塞尔佐格"
   }
  },
+ "Gelihast": {
+  "de": "Gelihast",
+  "display": 1773,
+  "id": 6243,
+  "info": "",
+  "name": "Gelihast",
+  "names": {
+   "esES": "Gelihast",
+   "frFR": "Gelihast",
+   "ruRU": "Гелихаст",
+   "zhCN": "格里哈斯特"
+  }
+ },
  "Gelkis Earthcaller": {
   "de": "Erdenrufer der Gelkis",
   "display": 9424,
@@ -1729,6 +2131,19 @@
    "frFR": "Gerenzo Wrenchwhistle",
    "ruRU": "Геренцо Терминатрикс",
    "zhCN": "格雷苏"
+  }
+ },
+ "Ghamoo-ra": {
+  "de": "Ghamoo-ra",
+  "display": 5027,
+  "id": 4887,
+  "info": "",
+  "name": "Ghamoo-ra",
+  "names": {
+   "esES": "Ghamoo-ra",
+   "frFR": "Ghamoo-ra",
+   "ruRU": "Гхаму-ра",
+   "zhCN": "加摩拉"
   }
  },
  "Ghostmaw": {
@@ -2004,6 +2419,32 @@
    "zhCN": "恐怖图腾践踏者"
   }
  },
+ "Grubbis": {
+  "de": "Grubbis",
+  "display": 144378,
+  "id": 7361,
+  "info": "",
+  "name": "Grubbis",
+  "names": {
+   "esES": "Grubbis",
+   "frFR": "Grubbis",
+   "ruRU": "Грязнюк",
+   "zhCN": "格鲁比斯"
+  }
+ },
+ "Hamhock": {
+  "de": "Hamhock",
+  "display": 3250,
+  "id": 1717,
+  "info": "",
+  "name": "Hamhock",
+  "names": {
+   "esES": "Hamhock",
+   "frFR": "Hamhock",
+   "ruRU": "Хрупконог",
+   "zhCN": "哈姆霍克"
+  }
+ },
  "Harvest Golem": {
   "de": "Erntegolem",
   "display": 367,
@@ -2041,6 +2482,19 @@
    "frFR": "Lige de la corruption Fielfurie",
    "ruRU": "Скверноподданный из племени Ярой Ненависти",
    "zhCN": "怨怒魔仆"
+  }
+ },
+ "Haunted Servitor": {
+  "de": "Verhexter Bediensteter",
+  "display": 3229,
+  "id": 3875,
+  "info": "",
+  "name": "Haunted Servitor",
+  "names": {
+   "esES": "Servidor encantado",
+   "frFR": "Serviteur hanté",
+   "ruRU": "Призрачный служитель",
+   "zhCN": "鬼怪仆从"
   }
  },
  "Heavy War Golem": {
@@ -2291,6 +2745,32 @@
    "zhCN": "地狱火哨兵"
   }
  },
+ "Irradiated Pillager": {
+  "de": "Bestrahlter Plünderer",
+  "display": 976,
+  "id": 6329,
+  "info": "",
+  "name": "Irradiated Pillager",
+  "names": {
+   "esES": "Saqueador irradiado",
+   "frFR": "Pilleur irradié",
+   "ruRU": "Облученный погромщик",
+   "zhCN": "辐射抢劫者"
+  }
+ },
+ "Irradiated Slime": {
+  "de": "Bestrahlter Brühschleimer",
+  "display": 358,
+  "id": 6218,
+  "info": "",
+  "name": "Irradiated Slime",
+  "names": {
+   "esES": "Babosa irradiada",
+   "frFR": "Gelée irradiée",
+   "ruRU": "Облученная слизь",
+   "zhCN": "辐射泥浆怪"
+  }
+ },
  "Jaedenar Adept": {
   "de": "Adept von Jaedenar",
   "display": 6390,
@@ -2367,6 +2847,32 @@
    "frFR": "Légionnaire de Jaedenar",
    "ruRU": "Джеденарский легионер",
    "zhCN": "加德纳尔军团士兵"
+  }
+ },
+ "Jergosh the Invoker": {
+  "de": "Jergosh der Herbeirufer",
+  "display": 11429,
+  "id": 11518,
+  "info": "",
+  "name": "Jergosh the Invoker",
+  "names": {
+   "esES": "Jergosh el Conjurador",
+   "frFR": "Jergosh l'Invocateur",
+   "ruRU": "Жергош Призыватель Духов",
+   "zhCN": "祈求者耶戈什"
+  }
+ },
+ "Kam Deepfury": {
+  "de": "Kam Deepfury",
+  "display": 825,
+  "id": 1666,
+  "info": "",
+  "name": "Kam Deepfury",
+  "names": {
+   "esES": "Kam Furiahonda",
+   "frFR": "Kam Deepfury",
+   "ruRU": "Кам Гневливый",
+   "zhCN": "卡姆·深怒"
   }
  },
  "Kaz'rogal": null,
@@ -2487,6 +2993,19 @@
    "zhCN": "Komuk"
   }
  },
+ "Kraul Bat": {
+  "de": "Kral-Fledermaus",
+  "display": 138630,
+  "id": 4538,
+  "info": "",
+  "name": "Kraul Bat",
+  "names": {
+   "esES": "Murciélago del Horado",
+   "frFR": "Chauve-souris du kraal",
+   "ruRU": "Лабиринтовый нетопырь",
+   "zhCN": "沼泽蝙蝠"
+  }
+ },
  "Kresh": {
   "de": "Kresh",
   "display": 5126,
@@ -2550,6 +3069,19 @@
    "frFR": "Dame Jaina Proudmoore",
    "ruRU": "Леди Джайна Праудмур",
    "zhCN": "吉安娜·普罗德摩尔"
+  }
+ },
+ "Lady Sarevess": {
+  "de": "Lady Sarevess",
+  "display": 4979,
+  "id": 4831,
+  "info": "",
+  "name": "Lady Sarevess",
+  "names": {
+   "esES": "Lady Sarevess",
+   "frFR": "Dame Sarevess",
+   "ruRU": "Леди Саревесс",
+   "zhCN": "萨利维丝"
   }
  },
  "Lady Sylvanas Windrunner": {
@@ -2708,6 +3240,19 @@
    "zhCN": "瑟芬迪斯"
   }
  },
+ "Lupine Horror": {
+  "de": "Werwolfschrecken",
+  "display": 2446,
+  "id": 3863,
+  "info": "",
+  "name": "Lupine Horror",
+  "names": {
+   "esES": "Horror Lupino",
+   "frFR": "Horreur Lupine",
+   "ruRU": "Волчий ужас",
+   "zhCN": "暗牙恐狼"
+  }
+ },
  "Magatha Grimtotem": {
   "de": "Magatha Grimmtotem",
   "display": 4510,
@@ -2851,6 +3396,32 @@
    "zhCN": "雷吉纳德·温德索尔元帅"
   }
  },
+ "Mechanized Sentry": {
+  "de": "Mechanischer Wachposten",
+  "display": 6978,
+  "id": 6233,
+  "info": "",
+  "name": "Mechanized Sentry",
+  "names": {
+   "esES": "Argos mecanizado",
+   "frFR": "Sentinelle mécanique",
+   "ruRU": "Механический караульный",
+   "zhCN": "机械哨兵"
+  }
+ },
+ "Mechano-Tank": {
+  "de": "Mechanopanzer",
+  "display": 5926,
+  "id": 6225,
+  "info": "",
+  "name": "Mechano-Tank",
+  "names": {
+   "esES": "Mecanotanque",
+   "frFR": "Mécano-Tank",
+   "ruRU": "Механотанк",
+   "zhCN": "步行坦克"
+  }
+ },
  "Mekgineer Thermaplugg": {
   "de": "Robogenieur Thermaplugg",
   "display": 6980,
@@ -2901,6 +3472,19 @@
    "frFR": "Ogre Mo'grosh",
    "ruRU": "Огр из клана Мо'Грош",
    "zhCN": "莫格罗什食人魔"
+  }
+ },
+ "Molten Elemental": {
+  "de": "Geschmolzener Elementar",
+  "display": 2075,
+  "id": 11321,
+  "info": "",
+  "name": "Molten Elemental",
+  "names": {
+   "esES": "Elemental fundido",
+   "frFR": "Elémentaire de lave",
+   "ruRU": "Оплавленный элементаль",
+   "zhCN": "熔岩元素"
   }
  },
  "Moonrage Whitescalp": {
@@ -3137,6 +3721,45 @@
    "zhCN": "夜刃豹"
   }
  },
+ "Odo the Blindwatcher": {
+  "de": "Odo der Blindseher",
+  "display": 522,
+  "id": 4279,
+  "info": "",
+  "name": "Odo the Blindwatcher",
+  "names": {
+   "esES": "Odo el Cegato",
+   "frFR": "Odo l'Aveugle",
+   "ruRU": "Одо Слепой Страж",
+   "zhCN": "盲眼守卫奥杜"
+  }
+ },
+ "Oggleflint": {
+  "de": "Flintauge",
+  "display": 11611,
+  "id": 11517,
+  "info": "",
+  "name": "Oggleflint",
+  "names": {
+   "esES": "Ogglesílex",
+   "frFR": "Lorgnesilex",
+   "ruRU": "Огглфлинт",
+   "zhCN": "奥格弗林特"
+  }
+ },
+ "Old Serra'kis": {
+  "de": "Old Serra'kis",
+  "display": 1816,
+  "id": 4830,
+  "info": "",
+  "name": "Old Serra'kis",
+  "names": {
+   "esES": "Viejo Serra'kis",
+   "frFR": "Vieux Serra'kis",
+   "ruRU": "Старина Серракис",
+   "zhCN": "瑟拉吉斯"
+  }
+ },
  "Onyxia": {
   "de": "Onyxia",
   "display": 8570,
@@ -3203,6 +3826,19 @@
   }
  },
  "Overlord Mugg": null,
+ "Overlord Ramtusk": {
+  "de": "Oberanführer Rammhauer",
+  "display": 4652,
+  "id": 4420,
+  "info": "",
+  "name": "Overlord Ramtusk",
+  "names": {
+   "esES": "Señor Supremo Colmicarnero",
+   "frFR": "Seigneur Brusquebroche",
+   "ruRU": "Властитель Таранный Клык",
+   "zhCN": "主宰拉姆塔斯"
+  }
+ },
  "Overlord Saurfang": {
   "de": "Hochfürst Saurfang",
   "display": 14732,
@@ -3347,6 +3983,32 @@
   }
  },
  "Rage Winterchill": null,
+ "Ragefire Shaman": {
+  "de": "Ragefire-Schamane",
+  "display": 11610,
+  "id": 11319,
+  "info": "",
+  "name": "Ragefire Shaman",
+  "names": {
+   "esES": "Chamán Furia Ardiente",
+   "frFR": "Chaman Ragefeu",
+   "ruRU": "Шаман Огненной пропасти",
+   "zhCN": "怒焰萨满祭司"
+  }
+ },
+ "Ragefire Trogg": {
+  "de": "Ragefire-Trogg",
+  "display": 11609,
+  "id": 11318,
+  "info": "",
+  "name": "Ragefire Trogg",
+  "names": {
+   "esES": "Trogg Furia Ardiente",
+   "frFR": "Trogg Ragefeu",
+   "ruRU": "Трогг Огненной пропасти",
+   "zhCN": "怒焰穴居人"
+  }
+ },
  "Raging Agam'ar": {
   "de": "Tobender Agam'ar",
   "display": 2453,
@@ -3384,6 +4046,84 @@
    "frFR": "Ravasaure chasseur",
    "ruRU": "Равазавр-охотник",
    "zhCN": "狩猎暴掠龙"
+  }
+ },
+ "Razorclaw the Butcher": {
+  "de": "Klingenklaue der Metzger",
+  "display": 524,
+  "id": 3886,
+  "info": "",
+  "name": "Razorclaw the Butcher",
+  "names": {
+   "esES": "Zarpador el Carnicero",
+   "frFR": "Tranchegriffe le Boucher",
+   "ruRU": "Остроклык Мясник",
+   "zhCN": "屠夫拉佐克劳"
+  }
+ },
+ "Razorfen Defender": {
+  "de": "Verteidiger von Razorfen",
+  "display": 6103,
+  "id": 4442,
+  "info": "",
+  "name": "Razorfen Defender",
+  "names": {
+   "esES": "Defensor de Rajacieno",
+   "frFR": "Défenseur de Tranchebauge",
+   "ruRU": "Защитник из племени Иглошкурых",
+   "zhCN": "剃刀沼泽防御者"
+  }
+ },
+ "Razorfen Geomancer": {
+  "de": "Geomant von Razorfen",
+  "display": 4647,
+  "id": 4520,
+  "info": "",
+  "name": "Razorfen Geomancer",
+  "names": {
+   "esES": "Geomántica de Rajacieno",
+   "frFR": "Géomancienne de Tranchebauge",
+   "ruRU": "Геомант племени Иглошкурых",
+   "zhCN": "剃刀沼泽地占师"
+  }
+ },
+ "Razorfen Spearhide": {
+  "de": "Speerbalg von Razorfen",
+  "display": 6078,
+  "id": 4438,
+  "info": "",
+  "name": "Razorfen Spearhide",
+  "names": {
+   "esES": "Cuerolanza de Rajacieno",
+   "frFR": "Lanceur de Tranchebauge",
+   "ruRU": "Копьешкур из племени Иглошкурых",
+   "zhCN": "剃刀沼泽刺鬃守卫"
+  }
+ },
+ "Razorfen Totemic": {
+  "de": "Totemiker von Razorfen",
+  "display": 6112,
+  "id": 4440,
+  "info": "",
+  "name": "Razorfen Totemic",
+  "names": {
+   "esES": "Totémica de Rajacieno",
+   "frFR": "Totémique de Tranchebauge",
+   "ruRU": "Тотемист племени Иглошкурых",
+   "zhCN": "剃刀沼泽图腾师"
+  }
+ },
+ "Razorfen Warrior": {
+  "de": "Krieger von Razorfen",
+  "display": 6109,
+  "id": 4435,
+  "info": "",
+  "name": "Razorfen Warrior",
+  "names": {
+   "esES": "Guerrero de Rajacieno",
+   "frFR": "Guerrier de Tranchebauge",
+   "ruRU": "Воин племени Иглошкурых",
+   "zhCN": "剃刀沼泽战士"
   }
  },
  "Razormane Thornweaver": {
@@ -3449,6 +4189,19 @@
    "frFR": "Renzik \"le kriss\"",
    "ruRU": "Рензик Нож",
    "zhCN": "“剃刀”雷吉克"
+  }
+ },
+ "Rethilgore": {
+  "de": "Rethilgore",
+  "display": 524,
+  "id": 3914,
+  "info": "",
+  "name": "Rethilgore",
+  "names": {
+   "esES": "Rethilgore",
+   "frFR": "Rethilgore",
+   "ruRU": "Ретилгор",
+   "zhCN": "雷希戈尔"
   }
  },
  "Rexxar": {
@@ -3790,6 +4543,32 @@
    "zhCN": "天灾士兵"
   }
  },
+ "Searing Blade Cultist": {
+  "de": "Searingblade-Kultist",
+  "display": 11434,
+  "id": 11322,
+  "info": "",
+  "name": "Searing Blade Cultist",
+  "names": {
+   "esES": "Fiel abrasador",
+   "frFR": "Sectateur de la Lame brûlante",
+   "ruRU": "Сектант из клана Огненного Клинка",
+   "zhCN": "燃刃信徒"
+  }
+ },
+ "Searing Blade Enforcer": {
+  "de": "Searingblade-Vollstrecker",
+  "display": 11430,
+  "id": 11323,
+  "info": "",
+  "name": "Searing Blade Enforcer",
+  "names": {
+   "esES": "Déspota abrasador",
+   "frFR": "Massacreur de la Lame brûlante",
+   "ruRU": "Головорез из клана Огненного Клинка",
+   "zhCN": "燃刃执行者"
+  }
+ },
  "Shade of Eranikus": {
   "de": "Eranikus' Schemen",
   "display": 7806,
@@ -3803,6 +4582,19 @@
    "zhCN": "伊兰尼库斯的阴影"
   }
  },
+ "Shadowfang Darksoul": {
+  "de": "Shadowfang-Dunkelseele",
+  "display": 657,
+  "id": 3855,
+  "info": "",
+  "name": "Shadowfang Darksoul",
+  "names": {
+   "esES": "Almanegra Colmillo Oscuro",
+   "frFR": "Ténébreux d'Ombrecroc",
+   "ruRU": "Темный дух из крепости Темного Клыка",
+   "zhCN": "影牙魔魂狼人"
+  }
+ },
  "Shadowfang Moonwalker": {
   "de": "Shadowfang-Mondwandler",
   "display": 729,
@@ -3814,6 +4606,32 @@
    "frFR": "Marche-lune d'Ombrecroc",
    "ruRU": "Лунолюб Серого Клыка",
    "zhCN": "影牙夜行者"
+  }
+ },
+ "Shadowfang Ragetooth": {
+  "de": "Shadowfang-Wutzahn",
+  "display": 736,
+  "id": 3859,
+  "info": "",
+  "name": "Shadowfang Ragetooth",
+  "names": {
+   "esES": "Furiadiente Colmillo Oscuro",
+   "frFR": "Enragé d'Ombrecroc",
+   "ruRU": "Ярозуб Серого Клыка",
+   "zhCN": "影牙暴怒者"
+  }
+ },
+ "Shadowfang Wolfguard": {
+  "de": "Shadowfang-Wolfswache",
+  "display": 203,
+  "id": 3854,
+  "info": "",
+  "name": "Shadowfang Wolfguard",
+  "names": {
+   "esES": "Guardialobo Colmillo Oscuro",
+   "frFR": "Garde-loup d'Ombrecroc",
+   "ruRU": "Волкостраж Темного Клыка",
+   "zhCN": "影牙狼人卫兵"
   }
  },
  "Shadowforge Flame Keeper": {
@@ -4259,6 +5077,45 @@
    "zhCN": "焦油爬行者"
   }
  },
+ "Taragaman the Hungerer": {
+  "de": "Taragaman der Hungerleider",
+  "display": 7970,
+  "id": 11520,
+  "info": "",
+  "name": "Taragaman the Hungerer",
+  "names": {
+   "esES": "Taragaman el Hambriento",
+   "frFR": "Taragaman l'Affameur",
+   "ruRU": "Тарагаман Ненасытный",
+   "zhCN": "饥饿者塔拉加曼"
+  }
+ },
+ "Targorr the Dread": {
+  "de": "Targorr der Schreckliche",
+  "display": 517,
+  "id": 1696,
+  "info": "",
+  "name": "Targorr the Dread",
+  "names": {
+   "esES": "Targor el Pavoroso",
+   "frFR": "Targorr le Terrifiant",
+   "ruRU": "Таргорр Ужасный",
+   "zhCN": "可怕的塔格尔"
+  }
+ },
+ "Techbot": {
+  "de": "Techbot",
+  "display": 7288,
+  "id": 6231,
+  "info": "",
+  "name": "Techbot",
+  "names": {
+   "esES": "Tecnobot",
+   "frFR": "Techbot",
+   "ruRU": "Техбот",
+   "zhCN": "尖端机器人"
+  }
+ },
  "Thrall": {
   "de": "Thrall",
   "display": 4527,
@@ -4428,6 +5285,32 @@
    "zhCN": "暮光地王"
   }
  },
+ "Twilight Lord Kelris": {
+  "de": "Twilight-Lord Kelris",
+  "display": 4939,
+  "id": 4832,
+  "info": "",
+  "name": "Twilight Lord Kelris",
+  "names": {
+   "esES": "Señor Crepuscular Kelris",
+   "frFR": "Seigneur du crépuscule Kelris",
+   "ruRU": "Повелитель сумрака Келрис",
+   "zhCN": "梦游者克尔里斯"
+  }
+ },
+ "Twilight Reaver": {
+  "de": "Twilight-Häscher",
+  "display": 2898,
+  "id": 4810,
+  "info": "",
+  "name": "Twilight Reaver",
+  "names": {
+   "esES": "Atracador Crepuscular",
+   "frFR": "Ravageur du crépuscule",
+   "ruRU": "Разоритель из культа Сумеречного Молота",
+   "zhCN": "暮光劫掠者"
+  }
+ },
  "Tyrande Whisperwind": {
   "de": "Tyrande Whisperwind",
   "display": 7274,
@@ -4585,6 +5468,19 @@
    "zhCN": "邪枝暗影法师"
   }
  },
+ "Viscous Fallout": {
+  "de": "Verflüssigte Ablagerung",
+  "display": 5497,
+  "id": 7079,
+  "info": "",
+  "name": "Viscous Fallout",
+  "names": {
+   "esES": "Radiactivo viscoso",
+   "frFR": "Retombée visqueuse",
+   "ruRU": "Липкая муть",
+   "zhCN": "粘性辐射尘"
+  }
+ },
  "Vol'jin": {
   "de": "Vol'jin",
   "display": 10357,
@@ -4609,6 +5505,19 @@
    "frFR": "Troll vaudou",
    "ruRU": "Тролль-вудуист",
    "zhCN": "巫毒巨魔"
+  }
+ },
+ "Wailing Guardsman": {
+  "de": "Klagender Gardist",
+  "display": 3226,
+  "id": 3877,
+  "info": "",
+  "name": "Wailing Guardsman",
+  "names": {
+   "esES": "Custodio de los Lamentos",
+   "frFR": "Gardien gémissant",
+   "ruRU": "Стенающий охранник",
+   "zhCN": "哀嚎的卫兵"
   }
  },
  "Warchief Rend Blackhand": {
@@ -4791,6 +5700,19 @@
    "frFR": "Sorcier-docteur Witherbark",
    "ruRU": "Знахарь из племени Сухокожих",
    "zhCN": "枯木巫医"
+  }
+ },
+ "Wolf Master Nandos": {
+  "de": "Wolfmeister Nandos",
+  "display": 11179,
+  "id": 3927,
+  "info": "",
+  "name": "Wolf Master Nandos",
+  "names": {
+   "esES": "Maestro de lobos Nandos",
+   "frFR": "Maître-loup Nandos",
+   "ruRU": "Командир воргенов Нандос",
+   "zhCN": "狼王南杜斯"
   }
  },
  "Woodpaw Mystic": {

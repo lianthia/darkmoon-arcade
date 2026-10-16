@@ -1127,3 +1127,45 @@ MC_Q_drekthar_frostwolf_4_TEXT	Un médico brujo trol gobierna las Tierras del In
 MC_QUESTS_PARTY	En el grupo
 MC_QUESTS_BENCH	En reserva
 MC_QUESTS_DONE	Completadas
+MC_ZD_ragefire	Bajo Orgrimmar, troggs y el culto del Filo Ardiente excavan en busca de fuego. %s los dirige desde las profundidades.
+MC_ZD_shadowfang	El archimago Arugal llamó a los huargen al castillo del barón Filargenta. Fantasmas y lobos protegen a %s en lo alto.
+MC_ZD_blackfathom	En el templo hundido de Elune, el Martillo Crepuscular sirve a %s. Nagas y bestias antiguas guardan el descenso.
+MC_ZD_stockade	Los presos de la prisión de Ventormenta se han rebelado. %s dirige el motín desde las celdas.
+MC_ZD_gnomeregan	La capital de los gnomos yace envenenada e invadida por troggs. Su traidor, %s, la gobierna desde su corazón.
+MC_ZD_kraul	En lo profundo del laberinto de espinas al sur de Los Baldíos se reúnen los jabaespines. %s, la arpía, domina el corazón del Rajacieno.
+MC_QK_SEARINGBLADE	cultistas del Filo Ardiente
+MC_QK_TWILIGHT	cultistas del Martillo Crepuscular
+MC_QK_IRRADIATED	criaturas irradiadas
+MC_QK_RAZORFEN	jabaespines Rajacieno
+MC_QUEST_UNLOCK_blackfathom_aquanis	Hace surgir al barón Aquanis en las Cavernas de Brazanegra
+MC_Q_thrall_ragefire_1_TITLE	Fuego bajo Orgrimmar
+MC_Q_thrall_ragefire_1_TEXT	Bazzalan ha caído, pero el Filo Ardiente aún se oculta bajo la ciudad. Thrall baja en persona.
+MC_Q_thrall_ragefire_2_TITLE	Purgar la sima
+MC_Q_thrall_ragefire_2_TEXT	Cada cultista que cae es un traidor menos en la capital de la Horda.
+MC_Q_sylvanas_arugal_1_TITLE	El castillo del archimago
+MC_Q_sylvanas_arugal_1_TEXT	Arugal ha muerto, pero su castillo sigue criando huargen. La Dama Oscura quiere verlo con sus propios ojos.
+MC_Q_sylvanas_arugal_2_TITLE	No más huargen
+MC_Q_sylvanas_arugal_2_TEXT	Limpia el castillo de huargen para que ninguno alcance las tierras de los Renegados.
+MC_Q_shandris_blackfathom_1_TITLE	El barón de las profundidades
+MC_Q_shandris_blackfathom_1_TEXT	El Martillo Crepuscular custodia una piedra abisal en las profundidades. Rompe su dominio y el señor del agua que ata se alzará.
+MC_Q_windsor_stockade_1_TITLE	Motín en las Mazmorras
+MC_Q_windsor_stockade_1_TEXT	Bazil Thredd ha caído, pero las celdas aún hierven. El mariscal restablece el orden en persona.
+MC_Q_windsor_stockade_2_TITLE	Tras las rejas
+MC_Q_windsor_stockade_2_TEXT	Cada Defias de las celdas vuelve a donde pertenece.
+MC_Q_magni_gnomeregan_1_TITLE	La ciudad de nuestros aliados
+MC_Q_magni_gnomeregan_1_TEXT	Termochufe ha caído, pero Gnomeregan está lejos de salvarse. Magni baja junto a los gnomos.
+MC_Q_magni_gnomeregan_2_TITLE	Las salas envenenadas
+MC_Q_magni_gnomeregan_2_TEXT	La radiación retorció a troggs y babosas por igual. Limpia las salas para el regreso de los gnomos.
+MC_Q_cairne_kraul_1_TITLE	El laberinto de espinas
+MC_Q_cairne_kraul_1_TEXT	Charlga ha caído, pero los jabaespines aún se reúnen en el Rajacieno. Cairne entra para acabar con ello.
+MC_Q_cairne_kraul_2_TITLE	Diezmar la manada
+MC_Q_cairne_kraul_2_TEXT	Los jabaespines asaltan Mulgore desde aquí. Cairne verá caer su número.
+MC_A_taragaman_s	Nova de Fuego
+MC_A_silverlaine_s	Velo de Sombras
+MC_A_sarevess_s	Relámpago bifurcado
+MC_A_kelris_s	Explosión mental
+MC_A_bazil_s	Bomba de humo
+MC_A_electrocutioner_s	Megavoltio
+MC_A_pummeler_s	Paliza popular
+MC_A_agathelos_s	Arrasada
+MC_A_charlga_s	Descarga en cadena

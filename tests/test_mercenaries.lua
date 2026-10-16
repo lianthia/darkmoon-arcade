@@ -760,21 +760,24 @@ test("dungeons: always open, the path is fixed, a hidden boss on a side branch, 
     for _, id in ipairs(MC.DUNGEON_ORDER) do
         local zone = MC.Zones[id]
         assert(zone.dungeon and MC.Zones[zone.region], id .. ": entrance in a bounty zone")
+        local looted = 0
         for i, enc in ipairs(zone.encounters) do
             assert(MC.Enemies[enc.boss] and MC.Enemies[enc.boss].boss, id .. " " .. i .. ": boss")
             for _, a in ipairs(enc.adds) do assert(MC.Enemies[a], id .. " " .. i .. ": add " .. a) end
             for _, t in ipairs(enc.trash or {}) do assert(MC.Enemies[t], id .. " " .. i .. ": trash " .. t) end
-            assert(#Dungeons.LootOf(id, i) > 0, id .. " " .. i .. ": loot")
+            looted = looted + #Dungeons.LootOf(id, i)
         end
+        -- Some Classic bosses drop nothing of their own (Baron Aquanis), the dungeon as a whole does.
+        assert(looted > 0, id .. ": loot")
         for _, eid in ipairs(zone.pool) do
             for _, aid in ipairs(MC.Enemies[eid].abilities) do assert(MC.Abilities[aid], eid .. ": " .. aid) end
         end
     end
-    for _, enc in ipairs(MC.Zones.deadmines.encounters) do
+    for _, id in ipairs(MC.DUNGEON_ORDER) do for _, enc in ipairs(MC.Zones[id].encounters) do
         local def = MC.Enemies[enc.boss]
         for _, aid in ipairs(def.abilities) do assert(MC.Abilities[aid], enc.boss .. ": " .. aid) end
         assert(MC.Abilities[def.heroic], enc.boss .. ": heroic")
-    end
+    end end
 
     local store = NewStore()
     local run = Bounty.NewRun(store, "deadmines", false, 5)

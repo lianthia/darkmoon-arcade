@@ -19,7 +19,7 @@ local Random = MC.Combat.Random
 local Dungeons = {}
 MC.Dungeons = Dungeons
 
-MC.DUNGEON_ORDER = { "deadmines", "wailing" }
+MC.DUNGEON_ORDER = { "ragefire", "deadmines", "wailing", "shadowfang", "blackfathom", "stockade", "gnomeregan", "kraul" }
 
 MC.Zones.deadmines = {
     id = "deadmines", dungeon = true, continent = "ek", region = "westfall", spot = { 0.42, 0.74 },
@@ -59,6 +59,119 @@ MC.Zones.wailing = {
             trash = { "deviate_lasher", "deviate_guardian", "deviate_ravager", "evolving_ectoplasm" }, elite = true },
         { boss = "mutanus", adds = { "deviate_ravager", "deviate_ravager" }, npcs = { 3654 }, hidden = "wailing_mutanus" },
         { boss = "verdan", adds = { "deviate_lasher", "deviate_lasher", "deviate_lasher" }, npcs = { 5775 }, healer = true },
+    },
+}
+
+-- Ragefire Chasm beneath Orgrimmar: troggs and the Searing Blade cult.
+MC.Zones.ragefire = {
+    id = "ragefire", dungeon = true, continent = "kal", region = "durotar", spot = { 0.45, 0.12 },
+    min = 13, max = 18, boss = "bazzalan", tier = 1,
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "oggleflint", adds = { "ragefire_trogg", "ragefire_shaman" }, npcs = { 11517 },
+            trash = { "ragefire_trogg", "ragefire_shaman", "earthborer", "molten_elemental" } },
+        { boss = "taragaman", adds = { "molten_elemental", "searing_blade_cultist" }, npcs = { 11520 },
+            trash = { "searing_blade_cultist", "searing_blade_enforcer", "molten_elemental" }, elite = true },
+        { boss = "jergosh", adds = { "searing_blade_cultist", "searing_blade_enforcer" }, npcs = { 11518 } },
+        { boss = "bazzalan", adds = { "searing_blade_enforcer", "searing_blade_cultist", "searing_blade_enforcer" }, npcs = { 11519 },
+            trash = { "searing_blade_cultist", "searing_blade_enforcer", "earthborer" }, healer = true },
+    },
+}
+
+-- Shadowfang Keep: Arugal's worgen in the Silverpine keep of Baron Silverlaine.
+MC.Zones.shadowfang = {
+    id = "shadowfang", dungeon = true, continent = "ek", region = "silverpine", spot = { 0.45, 0.68 },
+    min = 22, max = 30, boss = "arugal", tier = 2,
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "rethilgore", adds = { "shadowfang_ragetooth", "bleak_worg" }, npcs = { 3914 },
+            trash = { "shadowfang_ragetooth", "bleak_worg", "shadowfang_darksoul", "haunted_servitor" } },
+        { boss = "razorclaw", adds = { "shadowfang_wolfguard", "haunted_servitor" }, npcs = { 3886 } },
+        { boss = "silverlaine", adds = { "wailing_guardsman", "haunted_servitor" }, npcs = { 3887 },
+            trash = { "wailing_guardsman", "haunted_servitor", "shadowfang_darksoul" } },
+        { boss = "springvale", adds = { "wailing_guardsman", "wailing_guardsman" }, npcs = { 4278 } },
+        { boss = "deathsworn", adds = { "wailing_guardsman", "haunted_servitor" }, npcs = { 3872 }, chance = 0.35 },
+        { boss = "odo", adds = { "bleak_worg", "bleak_worg" }, npcs = { 4279 },
+            trash = { "lupine_horror", "shadowfang_wolfguard", "shadowfang_ragetooth" }, elite = true },
+        { boss = "fenrus", adds = { "lupine_horror", "bleak_worg" }, npcs = { 4274 } },
+        { boss = "nandos", adds = { "lupine_horror", "lupine_horror" }, npcs = { 3927 } },
+        { boss = "arugal", adds = { "shadowfang_darksoul", "shadowfang_moonwalker", "shadowfang_darksoul" }, npcs = { 4275 },
+            healer = true },
+    },
+}
+
+-- Blackfathom Deeps: the naga and the Twilight's Hammer around Aku'mai's temple; Baron Aquanis rises
+-- from the water once Shandris's task is done.
+MC.Zones.blackfathom = {
+    id = "blackfathom", dungeon = true, continent = "kal", region = "ashenvale", spot = { 0.14, 0.14 },
+    min = 24, max = 32, boss = "akumai", tier = 2,
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "ghamoora", adds = { "akumai_snapjaw" }, npcs = { 4887 },
+            trash = { "blackfathom_myrmidon", "blackfathom_oracle", "akumai_snapjaw" } },
+        { boss = "sarevess", adds = { "blackfathom_myrmidon", "blackfathom_tide_priestess" }, npcs = { 4831 } },
+        { boss = "gelihast", adds = { "blackfathom_myrmidon", "akumai_snapjaw" }, npcs = { 6243 },
+            trash = { "blackfathom_tide_priestess", "blackfathom_oracle", "akumai_snapjaw" } },
+        { boss = "aquanis", adds = { "blackfathom_oracle", "blackfathom_tide_priestess" }, npcs = { 12876 }, hidden = "blackfathom_aquanis" },
+        { boss = "kelris", adds = { "twilight_acolyte", "twilight_reaver", "twilight_acolyte" }, npcs = { 4832 },
+            trash = { "twilight_acolyte", "twilight_reaver" }, elite = true },
+        { boss = "serrakis", adds = { "akumai_snapjaw", "akumai_snapjaw" }, npcs = { 4830 } },
+        { boss = "akumai", adds = { "akumai_snapjaw", "blackfathom_myrmidon", "akumai_snapjaw" }, npcs = { 4829 }, healer = true },
+    },
+}
+
+-- The Stockade: the prisoners of Stormwind's jail in open riot.
+MC.Zones.stockade = {
+    id = "stockade", dungeon = true, continent = "ek", region = "elwynn", spot = { 0.3, 0.12 },
+    min = 24, max = 32, boss = "bazil", tier = 2,
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "targorr", adds = { "defias_prisoner", "defias_convict" }, npcs = { 1696 },
+            trash = { "defias_prisoner", "defias_convict", "defias_captive" } },
+        { boss = "kam", adds = { "defias_inmate", "defias_prisoner" }, npcs = { 1666 } },
+        { boss = "hamhock", adds = { "defias_convict", "defias_inmate" }, npcs = { 1717 },
+            trash = { "defias_inmate", "defias_insurgent", "defias_captive" }, elite = true },
+        { boss = "bruegal", adds = { "defias_inmate", "defias_insurgent" }, npcs = { 1720 }, chance = 0.35 },
+        { boss = "dextren", adds = { "defias_captive", "defias_insurgent" }, npcs = { 1663 } },
+        { boss = "bazil", adds = { "defias_insurgent", "defias_convict", "defias_insurgent" }, npcs = { 1716 }, healer = true },
+    },
+}
+
+-- Gnomeregan: the irradiated city of the gnomes, held by troggs and Dark Irons.
+MC.Zones.gnomeregan = {
+    id = "gnomeregan", dungeon = true, continent = "ek", region = "dunmorogh", spot = { 0.24, 0.38 },
+    min = 29, max = 38, boss = "thermaplugg", tier = 2,
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "techbot", adds = { "mechanized_sentry" }, npcs = { 6231 } },
+        { boss = "grubbis", adds = { "caverndeep_ambusher", "irradiated_pillager" }, npcs = { 7361 },
+            trash = { "irradiated_pillager", "caverndeep_ambusher", "irradiated_slime" } },
+        { boss = "viscous", adds = { "irradiated_slime", "irradiated_slime" }, npcs = { 7079 } },
+        { boss = "electrocutioner", adds = { "mechanized_sentry", "mechano_tank" }, npcs = { 6235 },
+            trash = { "mechano_tank", "mechanized_sentry", "dark_iron_agent" }, elite = true },
+        { boss = "ambassador", adds = { "dark_iron_agent", "dark_iron_agent" }, npcs = { 6228 }, chance = 0.35 },
+        { boss = "pummeler", adds = { "mechano_tank" }, npcs = { 6229 } },
+        { boss = "thermaplugg", adds = { "mechanized_sentry", "mechano_tank", "mechanized_sentry" }, npcs = { 7800 }, healer = true },
+    },
+}
+
+-- Razorfen Kraul: the quilboar's thorn maze in the southern Barrens.
+MC.Zones.kraul = {
+    id = "kraul", dungeon = true, continent = "kal", region = "barrens", spot = { 0.42, 0.9 },
+    min = 29, max = 38, boss = "charlga", tier = 2,
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "aggem", adds = { "deaths_head_acolyte", "razorfen_defender" }, npcs = { 4424 },
+            trash = { "razorfen_defender", "razorfen_warrior", "kraul_bat", "deaths_head_acolyte" } },
+        { boss = "jargba", adds = { "deaths_head_acolyte", "razorfen_warrior" }, npcs = { 4428 } },
+        { boss = "halmgar", adds = { "razorfen_geomancer", "razorfen_totemic" }, npcs = { 4842 }, chance = 0.35 },
+        { boss = "ramtusk", adds = { "razorfen_defender", "razorfen_warrior" }, npcs = { 4420 },
+            trash = { "razorfen_geomancer", "razorfen_totemic", "razorfen_warrior" } },
+        { boss = "spearhide", adds = { "razorfen_warrior", "kraul_bat" }, npcs = { 4438 } },
+        { boss = "blindhunter", adds = { "kraul_bat", "kraul_bat" }, npcs = { 4425 }, chance = 0.35 },
+        { boss = "agathelos", adds = { "razorfen_defender", "kraul_bat" }, npcs = { 4422 },
+            trash = { "razorfen_defender", "razorfen_geomancer", "kraul_bat" }, elite = true },
+        { boss = "charlga", adds = { "razorfen_geomancer", "razorfen_totemic", "razorfen_defender" }, npcs = { 4421 }, healer = true },
     },
 }
 
