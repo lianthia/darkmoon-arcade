@@ -857,6 +857,21 @@ assert(mv.sheet._shown and not mv.itemSheet._shown, "back to the abilities")
 mc:ShowView("workshop")
 Tick(0.2)
 mc:ShowView("camp")
+-- The task board opens the tasks; Elwynn is cleared, so Bolvar's first task is ready to hand in.
+local campView = mc.views.camp
+assert(campView.achievements.marker._shown, "the board shows a task to hand in")
+campView.achievements._scripts.OnClick(campView.achievements)
+assert(mc.view == "quests", "the board opens the tasks")
+local qv = mc.views.quests
+for _, row in ipairs(qv.rows) do
+    if row._shown and row.merc == "bolvar" then row._scripts.OnClick(row) end
+end
+assert(mc.questShown == "bolvar" and MC.Quests.IsReady(store, "bolvar"), "Bolvar's task can be handed in")
+local before = store.mercs.bolvar.coins
+qv.turnIn._scripts.OnClick(qv.turnIn)
+assert(store.mercs.bolvar.coins == before + MC.Quests.COINS[1], "coins for handing in")
+mc:ShowView("camp")
+store.quests = nil
 store.mercs[first].items, store.mercs[first].worn, store.mercs[first].enchants = nil, nil, nil
 store.materials, store.recipes = nil, nil
 MC.DEV = false

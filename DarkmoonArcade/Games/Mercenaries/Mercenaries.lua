@@ -164,6 +164,7 @@ function Module:Build(container)
     self:BuildCollection()
     self:BuildRoadmap()
     self:BuildWorkshop()
+    self:BuildQuests()
     self:BuildMap()
     self:BuildBattle()
     if MC.DEV then self:BuildFxGallery() end
@@ -292,6 +293,7 @@ function Module:FinishBattle()
             end
         end
     end
+    MC.Quests.OnBattle(store, run, b)
     Bounty.AfterBattle(store, run)
     if won then
         store.stats.fights = store.stats.fights + 1
@@ -343,6 +345,7 @@ function Module:OnBountyComplete(run, survivors)
     end
     if cursed then Achievements.Unlock("mc_cursed") end
     if run.guestFinisher then Achievements.Unlock("mc_guest") end
+    MC.Quests.OnBounty(store, run)
     self:CheckProgress()
 end
 

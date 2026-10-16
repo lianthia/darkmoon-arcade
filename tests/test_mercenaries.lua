@@ -618,6 +618,95 @@ test("comfort bonuses: more experience and coins for the wearer, nothing in the 
     MC.Items.test_charm = nil
 end)
 
+-- Tasks --------------------------------------------------------------------------------------------
+
+test("task chains: every task is known, playable and has its texts' targets", function()
+    local Quests = MC.Quests
+    for merc, chain in pairs(MC.QUESTS) do
+        assert(MC.Mercs[merc], merc)
+        eq(#chain, Quests.STEPS, merc .. " has four tasks")
+        for i, task in ipairs(chain) do
+            local where = merc .. " " .. i
+            if task.zone then assert(MC.Zones[task.zone], where .. ": zone") end
+            if task.kind == "ability" then
+                assert(MC.Mercs[merc].abilities[task.slot], where .. ": ability")
+            elseif task.kind == "kill" then
+                assert(task.what and task.count > 0, where .. ": target")
+                -- Somewhere a foe of that kind turns up (in the zone, if one is named).
+                local found = false
+                for zid, zone in pairs(MC.Zones) do
+                    if not task.zone or task.zone == zid then
+                        for _, id in ipairs(zone.pool) do
+                            local race = MC.Enemies[id].race
+                            local prefixes = type(task.prefix) == "table" and task.prefix or { task.prefix }
+                            if task.race == race then found = true end
+                            for _, p in ipairs(prefixes) do
+                                if p and id:sub(1, #p) == p then found = true end
+                            end
+                        end
+                    end
+                end
+                assert(found, where .. ": no such foe")
+            end
+        end
+    end
+    eq(#MC.QUEST_ORDER, 6)
+end)
+
+test("tasks: earlier progress counts, kills and abilities count in battle, handing in pays and unlocks", function()
+    local Quests = MC.Quests
+    local store = NewStore()
+    -- Only recruited mercenaries' chains are open.
+    assert(Quests.Open(store, "bolvar") and not Quests.Open(store, "tirion"))
+    -- Bolvar 1: Elwynn cleared before the tasks existed.
+    assert(not Quests.IsReady(store, "bolvar"))
+    Bounty.ZoneState(store, "elwynn").normal = 1
+    assert(Quests.IsReady(store, "bolvar"), "an earlier clear counts")
+    local coins = store.mercs.bolvar.coins
+    eq(Quests.TurnIn(store, "bolvar"), Quests.COINS[1])
+    eq(store.mercs.bolvar.coins, coins + Quests.COINS[1])
+    eq(Quests.TurnIn(store, "bolvar"), nil, "the next one is not done yet")
+    -- Bolvar 2: Defias fall while he is in the party (benched or not), other foes do not count.
+    local run = { zone = "westfall", party = { { id = "bolvar" }, { id = "renzik", guest = {} } } }
+    local function Battle(foes, used)
+        local b = { phase = "won", units = {
+            a = { side = "ally", pidx = 1, used = used },
+            g = { side = "ally", pidx = 2, used = { 5 } },
+        } }
+        for i, id in ipairs(foes) do b.units["e" .. i] = { side = "enemy", id = id, dead = true } end
+        Quests.OnBattle(store, run, b)
+    end
+    Battle({ "defias_pillager", "defias_trapper", "harvest_golem" })
+    eq(Quests.Progress(store, "bolvar"), 2)
+    for _ = 1, 9 do Battle({ "defias_pillager", "defias_blackguard" }) end
+    assert(Quests.IsReady(store, "bolvar"), "20 Defias")
+    eq(run.questsReady[1], "bolvar", "the result page names him")
+    Quests.TurnIn(store, "bolvar")
+    -- Bolvar 4 (after 3): his level, then the Deadmines open.
+    Quests.State(store, "bolvar").step = 4
+    store.mercs.bolvar.level = 16
+    assert(not Quests.IsReady(store, "bolvar"))
+    store.mercs.bolvar.level = 17
+    local _, unlock = Quests.TurnIn(store, "bolvar")
+    eq(unlock, "deadmines")
+    assert(Quests.Unlocked(store, "deadmines"))
+    eq(Quests.Current(store, "bolvar"), nil, "the chain is done")
+    assert(not Quests.IsReady(store, "bolvar"))
+    -- Benedictus 2: shields cast in battle.
+    Bounty.ZoneState(store, "tirisfal").normal = 1
+    Quests.TurnIn(store, "benedictus")
+    run.party[1] = { id = "benedictus" }
+    Battle({}, { 3, 12 })
+    eq(Quests.Progress(store, "benedictus"), 12)
+    -- Shandris 2: Darkshore with her in the party, an earlier clear does not count.
+    Bounty.ZoneState(store, "teldrassil").normal = 1
+    Quests.TurnIn(store, "shandris")
+    Bounty.ZoneState(store, "darkshore").normal = 3
+    assert(not Quests.IsReady(store, "shandris"))
+    Quests.OnBounty(store, { zone = "darkshore", party = { { id = "shandris" } } })
+    assert(Quests.IsReady(store, "shandris"))
+end)
+
 test("resistances and spell damage change hits of their school", function()
     local function Hit(attackerMods, targetMods, school)
         local b = Combat.New({ Spec("a", "neutral", 20, nil, { mods = attackerMods }) },

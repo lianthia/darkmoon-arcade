@@ -246,7 +246,10 @@ function Module:BuildCamp()
     view.collection = Spot(view, labels, SPOTS.collection, function() self:ShowView("collection") end)
     view.roadmap = Spot(view, labels, SPOTS.roadmap, function() self:ShowView("roadmap") end)
     view.scores = Spot(view, labels, SPOTS.scores, function() self.overlay:Show("scores") end)
-    view.achievements = Spot(view, labels, SPOTS.achievements, function() self:ShowAchievements() end)
+    -- The task board: the tasks (dev copy for now, they lead to the dungeons), else the achievements.
+    view.achievements = Spot(view, labels, SPOTS.achievements, function()
+        if MC.DEV then self:ShowView("quests") else self:ShowAchievements() end
+    end)
     view.help = Spot(view, labels, SPOTS.help, function() self:ShowHelp() end)
     view.workshop = Spot(view, labels, SPOTS.workshop, function() self:ShowView("workshop") end)
     view.workshop:SetShown(MC.DEV)
@@ -324,9 +327,20 @@ function Module:RefreshCamp()
     view.scores.sub:SetText(best > 0 and L.BEST:format(ns.FormatNumber(best)) or "")
     view.roadmap.plaque.text:SetText(L.MC_ROADMAP)
     view.roadmap.sub:SetText("")
-    view.achievements.plaque.text:SetText(L.ACHIEVEMENTS)
-    local done, total = ns.Achievements.Count(self.id)
-    view.achievements.sub:SetText(("%d / %d"):format(done, total))
+    if MC.DEV then
+        local ready = 0
+        for _, merc in ipairs(MC.QUEST_ORDER) do
+            if MC.Quests.IsReady(store, merc) then ready = ready + 1 end
+        end
+        view.achievements.plaque.text:SetText(L.MC_QUESTS)
+        view.achievements.sub:SetText(ready > 0 and L.MC_QUEST_READY_SUB:format(ready) or "")
+        view.achievements.marker:SetShown(ready > 0)
+    else
+        view.achievements.plaque.text:SetText(L.ACHIEVEMENTS)
+        local done, total = ns.Achievements.Count(self.id)
+        view.achievements.sub:SetText(("%d / %d"):format(done, total))
+        view.achievements.marker:SetShown(false)
+    end
     view.help.plaque.text:SetText(L.HELP)
     view.help.sub:SetText("")
     view.workshop.plaque.text:SetText(L.MC_WORKSHOP)

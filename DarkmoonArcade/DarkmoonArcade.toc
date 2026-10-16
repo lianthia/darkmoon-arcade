@@ -91,5 +91,7 @@ Games\Mercenaries\Result.lua
 Games\Mercenaries\Roadmap.lua
 Games\Mercenaries\Workshop.lua
 Games\Mercenaries\ItemsView.lua
+Games\Mercenaries\Quests.lua
+Games\Mercenaries\QuestsView.lua
 
 Main.lua

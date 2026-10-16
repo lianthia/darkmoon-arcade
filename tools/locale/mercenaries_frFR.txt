@@ -843,3 +843,77 @@ MC_ITEM_DISENCHANTED	Désenchanté
 MC_ITEM_GOT_MATERIAL	%dx %s dans le sac de matériaux
 MC_ITEM_FOUND_LATER	Équipable au niveau %d
 MC_ITEM_NOT_ENCHANTABLE	Aucun enchantement n'existe pour cet objet.
+MC_QUESTS	Tâches
+MC_QUEST_STEP	Tâche %d sur %d
+MC_QUEST_CHAIN_DONE	Chaîne terminée
+MC_QUEST_CHAIN_DONE_TEXT	%s n'a pas d'autre tâche pour l'instant.
+MC_QUEST_OBJECTIVE	Objectif
+MC_QUEST_REWARD	Récompense
+MC_QUEST_COINS	%d pièces pour %s
+MC_QUEST_UNLOCK_deadmines	Ouvre les Mortemines
+MC_QUEST_UNLOCK_wailing	Ouvre les cavernes des Lamentations
+MC_QUEST_TURN_IN	Rendre
+MC_QUEST_READY	Accomplie ! Rendez-la.
+MC_QUEST_READY_SUB	%d à rendre
+MC_QUEST_DONE_RESULT	Tâche accomplie : %s
+MC_QUEST_UNLOCKED	Débloqué
+MC_QO_CLEAR	Terminez la prime de %s.
+MC_QO_CLEAR_WITH	Terminez la prime de %s avec %s dans le groupe.
+MC_QO_KILL	Vainquez %d %s avec %s dans le groupe.
+MC_QO_KILL_IN	Vainquez %d %s dans %s avec %s dans le groupe.
+MC_QO_ABILITY	%s : utilisez %s %d fois.
+MC_QO_BOSS	Vainquez %s dans %s sans que %s tombe.
+MC_QO_LEVEL	Amenez %s au niveau %d.
+MC_QK_CENTAUR	centaures
+MC_QK_DEFIAS	Défias
+MC_QK_QUILBOAR	huran
+MC_QK_UNDEAD	morts-vivants
+MC_QK_BEAST	bêtes
+MC_Q_cairne_1_TITLE	Les plaines de Mulgore
+MC_Q_cairne_1_TEXT	Hurans et foreurs de la KapitalRisk rôdent dans les plaines au pied des Pitons-du-Tonnerre. Avant que les tribus puissent se reposer, Mulgore doit être sûr.
+MC_Q_cairne_2_TITLE	Vieux ennemis
+MC_Q_cairne_2_TEXT	Les centaures kolkar chassent les taurens depuis des générations. Cairne compte leur montrer que cette époque est révolue.
+MC_Q_cairne_3_TITLE	La terre tremble
+MC_Q_cairne_3_TEXT	On entend de loin le choc martial d'un grand chef. Que les Tarides l'entendent souvent.
+MC_Q_cairne_4_TITLE	Le chasseur de kodos
+MC_Q_cairne_4_TEXT	Un chasseur des Tarides massacre les kodos sacrés des taurens. Cairne se dressera devant lui sans tomber.
+MC_Q_bolvar_1_TITLE	Ennuis dans la forêt d'Elwynn
+MC_Q_bolvar_1_TEXT	Gnolls et kobolds ravagent les fermes autour de Comté-de-l'Or. La garde de Hurlevent manque de bras : le généralissime s'en mêle lui-même.
+MC_Q_bolvar_2_TITLE	La Confrérie défias
+MC_Q_bolvar_2_TEXT	Des hommes masqués aux foulards rouges brûlent les champs de la Marche de l'Ouest. Bolvar veut les arrêter, un par un.
+MC_Q_bolvar_3_TITLE	Le chef dans l'ombre
+MC_Q_bolvar_3_TEXT	Chaque piste mène à l'homme derrière la confrérie. Affrontez-le dans la Marche de l'Ouest, et que le généralissime reste debout.
+MC_Q_bolvar_4_TITLE	Sous Ruisselune
+MC_Q_bolvar_4_TEXT	La confrérie n'est pas vaincue : son cœur bat dans les vieilles mines sous Ruisselune. Devenez assez fort pour l'y suivre.
+MC_Q_mankrik_1_TITLE	Sang et tonnerre
+MC_Q_mankrik_1_TEXT	Chaque grunt de la Horde fait d'abord ses preuves en Durotar. Mankrik ne fait pas exception.
+MC_Q_mankrik_2_TITLE	Les Tranchecrins
+MC_Q_mankrik_2_TEXT	Des pillards hurans ont attaqué les caravanes des Tarides et pris à Mankrik bien plus que de l'or.
+MC_Q_mankrik_3_TITLE	Vengeance
+MC_Q_mankrik_3_TEXT	Le chagrin a alourdi la hache de Mankrik. Que chaque coup se souvienne d'Olgra.
+MC_Q_mankrik_4_TITLE	Où est Olgra ?
+MC_Q_mankrik_4_TEXT	La piste des pillards s'achève au cœur des Tarides. Mankrik doit en atteindre le bout vivant.
+MC_Q_shandris_1_TITLE	Sentinelle de Teldrassil
+MC_Q_shandris_1_TEXT	La corruption s'insinue dans les forêts de l'arbre-monde. La générale des Sentinelles veille d'abord sur son foyer.
+MC_Q_shandris_2_TITLE	Veille sur Sombrivage
+MC_Q_shandris_2_TEXT	Murlocs et furbolgs assaillent Auberdine. Shandris y va en personne.
+MC_Q_shandris_3_TITLE	Flèches de la lune
+MC_Q_shandris_3_TEXT	La flèche d'une Sentinelle parle pour elle. Qu'elle parle souvent.
+MC_Q_shandris_4_TITLE	La défense d'Orneval
+MC_Q_shandris_4_TEXT	Quelque chose remue dans le temple englouti aux confins d'Orneval. Shandris l'affrontera sans tomber.
+MC_Q_benedictus_1_TITLE	Lumière sur Tirisfal
+MC_Q_benedictus_1_TEXT	La Croisade écarlate parle de la Lumière en brûlant les vivants et les morts. L'archevêque veut le voir de ses propres yeux.
+MC_Q_benedictus_2_TITLE	Le bouclier de la foi
+MC_Q_benedictus_2_TEXT	La Lumière protège ceux qui marchent en elle. Protégez vos compagnons, encore et encore.
+MC_Q_benedictus_3_TITLE	Ténèbres sur le bois de la Pénombre
+MC_Q_benedictus_3_TEXT	Les morts marchent dans le bois de la Pénombre. L'Église ne peut détourner le regard.
+MC_Q_benedictus_4_TITLE	L'abomination
+MC_Q_benedictus_4_TEXT	Une horreur rapiécée hante les routes de Sombre-Comté. Benedictus lui tiendra tête jusqu'au bout.
+MC_Q_hamuul_1_TITLE	L'appel de la Terre-mère
+MC_Q_hamuul_1_TEXT	Avant de soigner le monde, un druide soigne son foyer. Mulgore passe en premier.
+MC_Q_hamuul_2_TITLE	Croissance
+MC_Q_hamuul_2_TEXT	La vie répond à la vie. Que la récupération d'Hamuul garde ses amis debout.
+MC_Q_hamuul_3_TITLE	Les Tarides déformées
+MC_Q_hamuul_3_TEXT	Les bêtes des Tarides deviennent sauvages et étranges, comme si quelque chose les avait rêvées ainsi. Réduisez leur nombre.
+MC_Q_hamuul_4_TITLE	Le rêve de Naralex
+MC_Q_hamuul_4_TEXT	Le druide Naralex est entré dans les cavernes pour guérir la terre et ne s'est jamais réveillé. Son cauchemar se répand. Devenez assez fort pour le suivre.

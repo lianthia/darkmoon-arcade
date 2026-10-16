@@ -617,6 +617,9 @@ local function Perform(b, u, choice)
         return
     end
     Event(b, { t = "act", src = u.uid, ability = slot.id, dst = target and target.uid, slot = choice.slot })
+    -- How often each ability was used (tasks count them).
+    u.used = u.used or {}
+    u.used[choice.slot] = (u.used[choice.slot] or 0) + 1
     slot.cd = Combat.Cooldown(u, choice.slot) + 1
     local ctx = {
         b = b, unit = u, target = target, school = def.school or "physical",

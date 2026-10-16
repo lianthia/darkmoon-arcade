@@ -187,6 +187,12 @@ function Module:RefreshResult()
         for _, id in ipairs(found) do names[#names + 1] = MC.TreasureName(id) end
         out[#out + 1] = L.MC_TREASURES_FOUND:format(table.concat(names, ", "))
     end
+    -- Tasks this bounty finished: to be handed in at the task board.
+    if run.questsReady and #run.questsReady > 0 then
+        local names = {}
+        for _, merc in ipairs(run.questsReady) do names[#names + 1] = Describe.MercName(merc) end
+        out[#out + 1] = "|cffffd100" .. L.MC_QUEST_DONE_RESULT:format(table.concat(names, ", ")) .. "|r"
+    end
     if won then
         local r = run.rewards
         if r.first then out[#out + 1] = "|cffffd100" .. L.MC_FIRST_CLEAR .. "|r" end

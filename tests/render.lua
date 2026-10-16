@@ -214,6 +214,24 @@ if Want("items") or Want("itemfound") then
     store.materials, store.recipes = nil, nil
     MC.DEV = false
 end
+if Want("quests") then
+    -- Bolvar's second task under way, Cairne's first ready to hand in.
+    MC.DEV = true
+    MC.Bounty.ZoneState(store, "elwynn").normal = 1
+    MC.Bounty.ZoneState(store, "mulgore").normal = 1
+    MC.Quests.TurnIn(store, "bolvar")
+    MC.Quests.State(store, "bolvar").count = 7
+    mc.questShown = "bolvar"
+    mc:ShowView("quests")
+    Snap("quests")
+    mc.questShown = "cairne"
+    mc:RefreshQuests()
+    Snap("quests_ready")
+    mc:ShowView("camp")
+    Snap("quests_camp")
+    store.quests, mc.questShown = nil, nil
+    MC.DEV = false
+end
 mc:ShowView("collection")
 if Want("collection") then
     Snap("collection")
