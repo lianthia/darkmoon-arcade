@@ -9,7 +9,18 @@ function ns.AddStrings(language, values)
 end
 
 ns.AddStrings("enUS", {
-    NEWS_140_HEADLINE = "Alpha: the new arcade",
+    NEWS_140_9_TITLE = "Quests and stories",
+    NEWS_140_9_TEXT = "A quest chain for each mercenary, close to their lore, rewarded with coins, new mercenaries and unlocks.",
+    NEWS_140_10_TITLE = "Dungeons",
+    NEWS_140_10_TEXT = "The Deadmines and the Wailing Caverns: a fixed path where every boss must fall, hidden bosses unlocked by quests, normal and heroic.",
+    NEWS_140_11_TITLE = "Items and loot tables",
+    NEWS_140_11_TEXT = "Real Classic loot, bound to the mercenary who gets it, a second slot at the highest level. The adventure guide shows each boss's loot with its chance.",
+    NEWS_140_12_TITLE = "Enchanting",
+    NEWS_140_12_TEXT = "Disenchant items into Classic materials and enchant with recipes found as loot. The strongest need the hardest content.",
+    NEWS_140_13_TITLE = "Rank IV",
+    NEWS_140_13_TEXT = "A fourth rank for abilities: coins plus a dungeon cleared with that mercenary.",
+    NEWS_PLANNED = "NOT IN THIS BUILD YET",
+    NEWS_140_HEADLINE = "Quests & Dungeons",
     NEWS_140_1_TITLE = "A new launcher",
     NEWS_140_1_TEXT = "Your games on the left, Mercenaries in the spotlight and the latest updates on the start page.",
     NEWS_140_2_TITLE = "Favorites",
@@ -217,7 +228,18 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
-    NEWS_140_HEADLINE = "Alpha: die neue Spielhalle",
+    NEWS_140_9_TITLE = "Aufgaben und Geschichten",
+    NEWS_140_9_TEXT = "Eine Aufgabenkette je Söldner, nah an seiner Geschichte, belohnt mit Münzen, neuen Söldnern und Freischaltungen.",
+    NEWS_140_10_TITLE = "Dungeons",
+    NEWS_140_10_TEXT = "Die Todesminen und die Höhlen des Wehklagens: ein fester Weg, auf dem jeder Boss fallen muss, versteckte Bosse per Aufgabe, Normal und Heroisch.",
+    NEWS_140_11_TITLE = "Gegenstände und Beutetabellen",
+    NEWS_140_11_TEXT = "Echte Classic-Beute, gebunden an den Söldner, der sie bekommt, ein zweiter Platz auf der Höchststufe. Der Abenteuerführer zeigt jede Beute mit ihrer Chance.",
+    NEWS_140_12_TITLE = "Verzauberkunst",
+    NEWS_140_12_TEXT = "Gegenstände zu Classic-Materialien entzaubern und mit erbeuteten Rezepten verzaubern. Die stärksten brauchen die schwersten Inhalte.",
+    NEWS_140_13_TITLE = "Rang IV",
+    NEWS_140_13_TEXT = "Ein vierter Rang für Fähigkeiten: Münzen plus ein mit diesem Söldner abgeschlossener Dungeon.",
+    NEWS_PLANNED = "NOCH NICHT IN DIESEM BUILD",
+    NEWS_140_HEADLINE = "Quests & Dungeons",
     NEWS_140_1_TITLE = "Ein neuer Launcher",
     NEWS_140_1_TEXT = "Links deine Spiele, auf der Startseite Mercenaries im Rampenlicht und die zuletzt aktualisierten Spiele.",
     NEWS_140_2_TITLE = "Favoriten",
@@ -422,7 +444,18 @@ ns.AddStrings("deDE", {
 })
 
 ns.AddStrings("frFR", {
-    NEWS_140_HEADLINE = "Alpha : la nouvelle salle d'arcade",
+    NEWS_140_9_TITLE = "Quêtes et histoires",
+    NEWS_140_9_TEXT = "Une chaîne de quêtes par mercenaire, fidèle à son histoire, récompensée par des pièces, de nouveaux mercenaires et des déblocages.",
+    NEWS_140_10_TITLE = "Donjons",
+    NEWS_140_10_TEXT = "Les Mortemines et les cavernes des Lamentations : un chemin fixe où chaque boss doit tomber, des boss cachés débloqués par des quêtes, en normal et en héroïque.",
+    NEWS_140_11_TITLE = "Objets et tables de butin",
+    NEWS_140_11_TEXT = "Du vrai butin de Classic, lié au mercenaire qui le reçoit, un second emplacement au niveau maximum. Le guide d'aventure montre le butin de chaque boss avec sa chance.",
+    NEWS_140_12_TITLE = "Enchantement",
+    NEWS_140_12_TEXT = "Désenchantez vos objets en matériaux de Classic et enchantez-les avec des recettes trouvées en butin. Les plus puissants exigent le contenu le plus difficile.",
+    NEWS_140_13_TITLE = "Rang IV",
+    NEWS_140_13_TEXT = "Un quatrième rang pour les techniques : des pièces et un donjon terminé avec ce mercenaire.",
+    NEWS_PLANNED = "PAS ENCORE DANS CETTE VERSION",
+    NEWS_140_HEADLINE = "Quêtes et donjons",
     NEWS_140_1_TITLE = "Un nouveau lanceur",
     NEWS_140_1_TEXT = "Vos jeux à gauche, Mercenaries à l'affiche et les dernières mises à jour sur la page d'accueil.",
     NEWS_140_2_TITLE = "Favoris",
@@ -623,7 +656,18 @@ ns.AddStrings("frFR", {
 })
 
 ns.AddStrings("esES", {
-    NEWS_140_HEADLINE = "Alfa: la nueva sala recreativa",
+    NEWS_140_9_TITLE = "Misiones e historias",
+    NEWS_140_9_TEXT = "Una cadena de misiones por mercenario, fiel a su historia, con monedas, nuevos mercenarios y desbloqueos como recompensa.",
+    NEWS_140_10_TITLE = "Mazmorras",
+    NEWS_140_10_TEXT = "Las Minas de la Muerte y las Cuevas de los Lamentos: un camino fijo en el que todos los jefes deben caer, jefes ocultos desbloqueados por misiones, en normal y heroico.",
+    NEWS_140_11_TITLE = "Objetos y tablas de botín",
+    NEWS_140_11_TEXT = "Botín real de Classic, ligado al mercenario que lo recibe, una segunda ranura en el nivel máximo. La guía de aventuras muestra el botín de cada jefe con su probabilidad.",
+    NEWS_140_12_TITLE = "Encantamiento",
+    NEWS_140_12_TEXT = "Desencanta objetos en materiales de Classic y encanta con recetas obtenidas como botín. Los más fuertes requieren el contenido más difícil.",
+    NEWS_140_13_TITLE = "Rango IV",
+    NEWS_140_13_TEXT = "Un cuarto rango para las habilidades: monedas y una mazmorra completada con ese mercenario.",
+    NEWS_PLANNED = "AÚN NO EN ESTA VERSIÓN",
+    NEWS_140_HEADLINE = "Misiones y mazmorras",
     NEWS_140_1_TITLE = "Un nuevo lanzador",
     NEWS_140_1_TEXT = "Tus juegos a la izquierda, Mercenaries destacado y las últimas actualizaciones en la página de inicio.",
     NEWS_140_2_TITLE = "Favoritos",
@@ -824,7 +868,18 @@ ns.AddStrings("esES", {
 })
 
 ns.AddStrings("ruRU", {
-    NEWS_140_HEADLINE = "Альфа: новый игровой зал",
+    NEWS_140_9_TITLE = "Задания и истории",
+    NEWS_140_9_TEXT = "Цепочка заданий для каждого наёмника по мотивам его истории; награды – монеты, новые наёмники и открытия.",
+    NEWS_140_10_TITLE = "Подземелья",
+    NEWS_140_10_TEXT = "Мертвые копи и Пещеры Стенаний: заданный путь, где должен пасть каждый босс, скрытые боссы открываются заданиями, обычный и героический режимы.",
+    NEWS_140_11_TITLE = "Предметы и таблицы добычи",
+    NEWS_140_11_TEXT = "Настоящая добыча из Classic, привязанная к получившему её наёмнику, вторая ячейка на максимальном уровне. Путеводитель показывает добычу каждого босса с шансом.",
+    NEWS_140_12_TITLE = "Наложение чар",
+    NEWS_140_12_TEXT = "Распыляйте предметы на материалы из Classic и зачаровывайте их по рецептам из добычи. Самые сильные требуют самого сложного контента.",
+    NEWS_140_13_TITLE = "Ранг IV",
+    NEWS_140_13_TEXT = "Четвёртый ранг способностей: монеты и подземелье, пройденное с этим наёмником.",
+    NEWS_PLANNED = "ЕЩЁ НЕ В ЭТОЙ СБОРКЕ",
+    NEWS_140_HEADLINE = "Задания и подземелья",
     NEWS_140_1_TITLE = "Новый лаунчер",
     NEWS_140_1_TEXT = "Слева ваши игры, на главной странице Mercenaries в центре внимания и последние обновления.",
     NEWS_140_2_TITLE = "Избранное",
@@ -1026,7 +1081,18 @@ ns.AddStrings("ruRU", {
 })
 
 ns.AddStrings("zhCN", {
-    NEWS_140_HEADLINE = "测试版：全新的游乐场",
+    NEWS_140_9_TITLE = "任务与故事",
+    NEWS_140_9_TEXT = "每名佣兵都有贴近其背景的任务链，奖励为硬币、新佣兵和解锁内容。",
+    NEWS_140_10_TITLE = "地下城",
+    NEWS_140_10_TEXT = "死亡矿井和哀嚎洞穴：固定路线，必须击败所有首领；隐藏首领通过任务解锁；分为普通和英雄难度。",
+    NEWS_140_11_TITLE = "物品与掉落表",
+    NEWS_140_11_TEXT = "真正的经典旧世掉落，绑定给获得它的佣兵，满级时开启第二个栏位。冒险指南显示每个首领的掉落及几率。",
+    NEWS_140_12_TITLE = "附魔",
+    NEWS_140_12_TEXT = "将物品分解为经典旧世材料，并用掉落获得的配方附魔。最强的附魔需要最难的内容。",
+    NEWS_140_13_TITLE = "第四级",
+    NEWS_140_13_TEXT = "技能的第四级：硬币加上与该佣兵一起完成的地下城。",
+    NEWS_PLANNED = "尚未包含在此版本中",
+    NEWS_140_HEADLINE = "任务与地下城",
     NEWS_140_1_TITLE = "全新启动器",
     NEWS_140_1_TEXT = "左侧是你的游戏，首页聚焦佣兵并展示最近更新的游戏。",
     NEWS_140_2_TITLE = "收藏",

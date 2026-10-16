@@ -22,7 +22,8 @@ local CAMP_ART, CAMP_V0, CAMP_V1 = 2821800, 0.255, 0.815
 -- _TEXT (tag: the version without dots); thanks: icon of the band NEWS_<tag>_THANKS;
 -- headline: the version has its own NEWS_<tag>_HEADLINE instead of "Patch x.y.z"; alpha: marked as a
 -- preview in the list (drop it for the stable release); art: a banner picture of its own instead of the
--- camp painting.
+-- camp painting. An item with `planned` is announced for the release but not in this build yet: its row
+-- is dimmed and says so.
 News.VERSIONS = {
     {
         -- Released as an alpha first: the list says so next to the number.
@@ -40,6 +41,12 @@ News.VERSIONS = {
             { icon = "Spell_Holy_SurgeOfLight", key = 6 },
             { icon = "Achievement_General", key = 7 },
             { icon = "INV_Misc_Book_09", key = 8 },
+            -- What the release brings in later builds.
+            { icon = "INV_Misc_Note_01", key = 9, planned = true },
+            { icon = "INV_Misc_Bone_HumanSkull_01", key = 10, planned = true },
+            { icon = "INV_Sword_24", key = 11, planned = true },
+            { icon = "INV_Enchant_DustStrange", key = 12, planned = true },
+            { icon = "Spell_Holy_SealOfWisdom", key = 13, planned = true },
         },
     },
     {
@@ -220,8 +227,10 @@ function News:Create(parent)
         row.title = Style.Text(row, 12, C.text)
         row.title:SetPoint("TOPLEFT", row.icon, "TOPRIGHT", 12, -1)
         row.title:SetWordWrap(true)
+        -- "Not in this build yet" under the title of a planned item.
+        row.planned = Style.LocalizedText(row, 9, C.gold, "NEWS_PLANNED")
+        row.planned:SetPoint("TOPLEFT", row.title, "BOTTOMLEFT", 0, -4)
         row.text = Style.Text(row, 11, C.muted)
-        row.text:SetPoint("TOPLEFT", row.title, "BOTTOMLEFT", 0, -5)
         row.text:SetWordWrap(true)
         row.text:SetSpacing(3)
         self.rows[i] = row
@@ -292,7 +301,16 @@ function News:Fill(index)
                     row.icon:SetTexture("Interface\\Icons\\" .. item.icon)
                     row.title:SetText(L[News.Key(v, item.key .. "_TITLE")])
                     row.text:SetText(L[News.Key(v, item.key .. "_TEXT")])
-                    local h = math.max(ICON, 1 + (row.title:GetStringHeight() or 13) + 5 + (row.text:GetStringHeight() or 11))
+                    local planned = item.planned == true
+                    row.planned:SetShown(planned)
+                    row.icon:SetDesaturated(planned)
+                    row.icon:SetAlpha(planned and 0.6 or 1)
+                    row.title:SetTextColor(unpack(planned and C.muted or C.text))
+                    row.text:SetTextColor(unpack(planned and C.dim or C.muted))
+                    row.text:ClearAllPoints()
+                    row.text:SetPoint("TOPLEFT", planned and row.planned or row.title, "BOTTOMLEFT", 0, -5)
+                    local tag = planned and ((row.planned:GetStringHeight() or 9) + 4) or 0
+                    local h = math.max(ICON, 1 + (row.title:GetStringHeight() or 13) + tag + 5 + (row.text:GetStringHeight() or 11))
                     row:ClearAllPoints()
                     row:SetPoint("TOPLEFT", j * (colW + COLUMN_GAP), -y)
                     rowH = math.max(rowH, h + 2 * CARD_PAD)

@@ -213,7 +213,7 @@ function Window:CreateHeader()
     local logo = header:CreateTexture(nil, "ARTWORK")
     -- The logo fills 512x172 of its 512x256 texture (tools/import_art.py).
     logo:SetSize(131, 131 * 172 / 512)
-    logo:SetPoint("TOPLEFT", 8, -5)
+    logo:SetPoint("TOPLEFT", 8, -8)
     logo:SetTexture(Media.Tex("logo"))
     logo:SetTexCoord(0, 1, 0, 172 / 256)
 
