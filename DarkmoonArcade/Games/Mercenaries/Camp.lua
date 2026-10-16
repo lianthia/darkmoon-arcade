@@ -328,10 +328,7 @@ function Module:RefreshCamp()
     view.roadmap.plaque.text:SetText(L.MC_ROADMAP)
     view.roadmap.sub:SetText("")
     if MC.DEV then
-        local ready = 0
-        for _, merc in ipairs(MC.QUEST_ORDER) do
-            if MC.Quests.IsReady(store, merc) then ready = ready + 1 end
-        end
+        local ready = MC.Quests.ReadyCount(store)
         view.achievements.plaque.text:SetText(L.MC_QUESTS)
         view.achievements.sub:SetText(ready > 0 and L.MC_QUEST_READY_SUB:format(ready) or "")
         view.achievements.marker:SetShown(ready > 0)

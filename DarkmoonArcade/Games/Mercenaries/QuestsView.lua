@@ -1,5 +1,5 @@
--- The task board (by the campfire): the chains of the recruited mercenaries on the left, the chosen
--- task on a quest page on the right - its story, objective with progress, reward and "Hand in".
+-- The task board (by the campfire): the open chains on the left (several per mercenary; finished ones
+-- dimmed at the end, a page at a time), the chosen task on a quest page on the right - its story, objective with progress, reward and "Hand in".
 -- Until the dungeons come, only the dev copy opens it; the board shows the achievements otherwise.
 
 local _, ns = ...
@@ -21,10 +21,11 @@ local ICON_AVAILABLE = "Interface\\GossipFrame\\AvailableQuestIcon"
 local ICON_READY = "Interface\\GossipFrame\\ActiveQuestIcon"
 local ICON_DONE = "Interface\\RaidFrame\\ReadyCheck-Ready"
 
--- What the current task asks, in words.
-function Quests.Objective(store, merc)
-    local task = Quests.Current(store, merc)
+-- What the current task of a chain asks, in words.
+function Quests.Objective(store, chain)
+    local task = Quests.Current(store, chain)
     if not task then return "" end
+    local merc = MC.QUEST_CHAINS[chain].merc
     local name = Describe.MercName(merc)
     if task.kind == "clear" then
         local zone = Describe.ZoneName(task.zone)
@@ -40,6 +41,8 @@ function Quests.Objective(store, merc)
         return L.MC_QO_BOSS:format(L["MC_E_" .. zone.boss], Describe.ZoneName(task.zone), name)
     elseif task.kind == "level" then
         return L.MC_QO_LEVEL:format(name, task.level)
+    elseif task.kind == "dungeon" then
+        return L.MC_QO_DUNGEON:format(L["MC_DUNGEON_" .. task.dungeon], name)
     end
     return ""
 end
@@ -91,11 +94,22 @@ function Module:BuildQuests()
         b.sub:SetJustifyH("LEFT")
         b:SetScript("OnClick", function()
             MC.Sound("select")
-            self.questShown = b.merc
+            self.questShown = b.chain
             self:RefreshQuests()
         end)
         view.rows[i] = b
     end
+
+    view.prev = Kit.Arrow(list, -1, function()
+        self.questPage = math.max(1, (self.questPage or 1) - 1)
+        self:RefreshQuests()
+    end)
+    view.prev:SetPoint("BOTTOMLEFT", 6, 4)
+    view.next = Kit.Arrow(list, 1, function()
+        self.questPage = (self.questPage or 1) + 1
+        self:RefreshQuests()
+    end)
+    view.next:SetPoint("BOTTOMRIGHT", -6, 4)
 
     -- The quest page.
     local page = CreateFrame("Frame", nil, view)
@@ -153,41 +167,55 @@ end
 function Module:RefreshQuests()
     local view, store = self.views.quests, self:Store()
     self:SetScene(nil)
-    local open = {}
-    for _, merc in ipairs(MC.QUEST_ORDER) do
-        if Quests.Open(store, merc) then open[#open + 1] = merc end
+    -- Running chains first, a mercenary's together; finished ones at the end.
+    local open, done = {}, {}
+    for _, chain in ipairs(MC.QUEST_CHAIN_ORDER) do
+        if Quests.Open(store, chain) then
+            table.insert(Quests.Done(store, chain) and done or open, chain)
+        end
     end
+    for _, chain in ipairs(done) do open[#open + 1] = chain end
     -- The chosen chain: the one shown before, else the first with a task to hand in, else the first.
     local shown = self.questShown
     if not (shown and Quests.Open(store, shown)) then
         shown = open[1]
-        for _, merc in ipairs(open) do
-            if Quests.IsReady(store, merc) then
-                shown = merc
+        for _, chain in ipairs(open) do
+            if Quests.IsReady(store, chain) then
+                shown = chain
                 break
             end
         end
     end
     self.questShown = shown
+    local pages = math.max(1, math.ceil(#open / ROWS))
+    local page = math.min(self.questPage or 1, pages)
+    self.questPage = page
     for i, b in ipairs(view.rows) do
-        local merc = open[i]
-        b:SetShown(merc ~= nil)
-        b.merc = merc
-        if merc then
-            local task, step = Quests.Current(store, merc)
+        local chain = open[(page - 1) * ROWS + i]
+        b:SetShown(chain ~= nil)
+        b.chain = chain
+        if chain then
+            local merc = MC.QUEST_CHAINS[chain].merc
+            local task, step = Quests.Current(store, chain)
             b.name:SetText(Describe.MercName(merc))
-            b.mark:SetTexture(not task and ICON_DONE or Quests.IsReady(store, merc) and ICON_READY or ICON_AVAILABLE)
-            b.sub:SetText(task and L["MC_Q_" .. merc .. "_" .. step .. "_TITLE"] or L.MC_QUEST_CHAIN_DONE)
-            b.shade:SetColorTexture(1, 0.85, 0.5, merc == shown and 0.2 or 0.06)
+            b.mark:SetTexture(not task and ICON_DONE or Quests.IsReady(store, chain) and ICON_READY or ICON_AVAILABLE)
+            b.sub:SetText(L["MC_Q_" .. chain .. "_" .. math.min(step, #MC.QUEST_CHAINS[chain].steps) .. "_TITLE"])
+            b:SetAlpha(task and 1 or 0.55)
+            b.shade:SetColorTexture(1, 0.85, 0.5, chain == shown and 0.2 or 0.06)
         end
     end
+    view.prev:SetShown(pages > 1)
+    view.next:SetShown(pages > 1)
+    view.prev:SetEnabled(page > 1)
+    view.next:SetEnabled(page < pages)
     if not shown then return end
 
+    local def = MC.QUEST_CHAINS[shown]
     local task, step = Quests.Current(store, shown)
-    local name = Describe.MercName(shown)
+    local name = Describe.MercName(def.merc)
     if not task then
-        view.qStep:SetText(name)
-        view.qTitle:SetText(L.MC_QUEST_CHAIN_DONE)
+        view.qStep:SetText(name .. "  ·  " .. L.MC_QUEST_CHAIN_DONE)
+        view.qTitle:SetText(L["MC_Q_" .. shown .. "_" .. #def.steps .. "_TITLE"])
         view.qText:SetText(L.MC_QUEST_CHAIN_DONE_TEXT:format(name))
         for _, part in ipairs({ view.goalHead, view.qGoal, view.qProgress, view.rewardHead, view.qCoin,
             view.qReward, view.qUnlock, view.turnIn }) do part:Hide() end
@@ -196,13 +224,13 @@ function Module:RefreshQuests()
     for _, part in ipairs({ view.goalHead, view.qGoal, view.qProgress, view.rewardHead, view.qCoin,
         view.qReward, view.turnIn }) do part:Show() end
     local key = "MC_Q_" .. shown .. "_" .. step
-    view.qStep:SetText(name .. "  ·  " .. L.MC_QUEST_STEP:format(step, Quests.STEPS))
+    view.qStep:SetText(name .. "  ·  " .. L.MC_QUEST_STEP:format(step, #def.steps))
     view.qTitle:SetText(L[key .. "_TITLE"])
     view.qText:SetText(L[key .. "_TEXT"])
     view.qGoal:SetText(Quests.Objective(store, shown))
-    local done, need = Quests.Progress(store, shown)
+    local doneCount, need = Quests.Progress(store, shown)
     local ready = Quests.IsReady(store, shown)
-    view.qProgress:SetText(ready and L.MC_QUEST_READY or ("%d / %d"):format(done, need))
+    view.qProgress:SetText(ready and L.MC_QUEST_READY or ("%d / %d"):format(doneCount, need))
     view.qReward:SetText(L.MC_QUEST_COINS:format(Quests.COINS[step] or 0, name))
     view.qUnlock:SetShown(task.unlock ~= nil)
     if task.unlock then view.qUnlock:SetText(L["MC_QUEST_UNLOCK_" .. task.unlock]) end

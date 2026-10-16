@@ -622,26 +622,28 @@ end)
 
 test("task chains: every task is known, playable and has its texts' targets", function()
     local Quests = MC.Quests
-    for merc, chain in pairs(MC.QUESTS) do
-        assert(MC.Mercs[merc], merc)
-        eq(#chain, Quests.STEPS, merc .. " has four tasks")
-        for i, task in ipairs(chain) do
-            local where = merc .. " " .. i
+    local count = 0
+    for id, chain in pairs(MC.QUEST_CHAINS) do
+        count = count + 1
+        assert(MC.Mercs[chain.merc], id .. ": mercenary")
+        assert(#chain.steps > 0, id .. ": tasks")
+        if chain.requires and chain.requires.chain then assert(MC.QUEST_CHAINS[chain.requires.chain], id .. ": requires") end
+        for i, task in ipairs(chain.steps) do
+            local where = id .. " " .. i
             if task.zone then assert(MC.Zones[task.zone], where .. ": zone") end
             if task.kind == "ability" then
-                assert(MC.Mercs[merc].abilities[task.slot], where .. ": ability")
+                assert(MC.Mercs[chain.merc].abilities[task.slot], where .. ": ability")
             elseif task.kind == "kill" then
                 assert(task.what and task.count > 0, where .. ": target")
                 -- Somewhere a foe of that kind turns up (in the zone, if one is named).
                 local found = false
                 for zid, zone in pairs(MC.Zones) do
                     if not task.zone or task.zone == zid then
-                        for _, id in ipairs(zone.pool) do
-                            local race = MC.Enemies[id].race
+                        for _, eid in ipairs(zone.pool) do
                             local prefixes = type(task.prefix) == "table" and task.prefix or { task.prefix }
-                            if task.race == race then found = true end
+                            if task.race == MC.Enemies[eid].race then found = true end
                             for _, p in ipairs(prefixes) do
-                                if p and id:sub(1, #p) == p then found = true end
+                                if p and eid:sub(1, #p) == p then found = true end
                             end
                         end
                     end
@@ -650,23 +652,25 @@ test("task chains: every task is known, playable and has its texts' targets", fu
             end
         end
     end
-    eq(#MC.QUEST_ORDER, 6)
+    eq(#MC.QUEST_CHAIN_ORDER, count, "every chain in the order")
 end)
 
 test("tasks: earlier progress counts, kills and abilities count in battle, handing in pays and unlocks", function()
     local Quests = MC.Quests
     local store = NewStore()
     -- Only recruited mercenaries' chains are open.
-    assert(Quests.Open(store, "bolvar") and not Quests.Open(store, "tirion"))
-    -- Bolvar 1: Elwynn cleared before the tasks existed.
-    assert(not Quests.IsReady(store, "bolvar"))
+    assert(Quests.Open(store, "bolvar_defias"))
+    eq(#Quests.ChainsOf(store, "bolvar"), 1)
+    -- Bolvar's Defias 1: Elwynn cleared before the tasks existed.
+    assert(not Quests.IsReady(store, "bolvar_defias"))
     Bounty.ZoneState(store, "elwynn").normal = 1
-    assert(Quests.IsReady(store, "bolvar"), "an earlier clear counts")
+    assert(Quests.IsReady(store, "bolvar_defias"), "an earlier clear counts")
+    eq(Quests.ReadyCount(store), 1)
     local coins = store.mercs.bolvar.coins
-    eq(Quests.TurnIn(store, "bolvar"), Quests.COINS[1])
+    eq(Quests.TurnIn(store, "bolvar_defias"), Quests.COINS[1])
     eq(store.mercs.bolvar.coins, coins + Quests.COINS[1])
-    eq(Quests.TurnIn(store, "bolvar"), nil, "the next one is not done yet")
-    -- Bolvar 2: Defias fall while he is in the party (benched or not), other foes do not count.
+    eq(Quests.TurnIn(store, "bolvar_defias"), nil, "the next one is not done yet")
+    -- Defias 2: Defias fall while he is in the party, other foes do not count, guests count nothing.
     local run = { zone = "westfall", party = { { id = "bolvar" }, { id = "renzik", guest = {} } } }
     local function Battle(foes, used)
         local b = { phase = "won", units = {
@@ -677,34 +681,63 @@ test("tasks: earlier progress counts, kills and abilities count in battle, handi
         Quests.OnBattle(store, run, b)
     end
     Battle({ "defias_pillager", "defias_trapper", "harvest_golem" })
-    eq(Quests.Progress(store, "bolvar"), 2)
+    eq(Quests.Progress(store, "bolvar_defias"), 2)
     for _ = 1, 9 do Battle({ "defias_pillager", "defias_blackguard" }) end
-    assert(Quests.IsReady(store, "bolvar"), "20 Defias")
-    eq(run.questsReady[1], "bolvar", "the result page names him")
-    Quests.TurnIn(store, "bolvar")
-    -- Bolvar 4 (after 3): his level, then the Deadmines open.
-    Quests.State(store, "bolvar").step = 4
+    assert(Quests.IsReady(store, "bolvar_defias"), "20 Defias")
+    eq(run.questsReady[1], "bolvar_defias", "the result page learns of it")
+    eq(Quests.MercsOf(run.questsReady)[1], "bolvar")
+    Quests.TurnIn(store, "bolvar_defias")
+    -- Defias 4 (after 3): his level, then the Deadmines open.
+    Quests.State(store, "bolvar_defias").step = 4
     store.mercs.bolvar.level = 16
-    assert(not Quests.IsReady(store, "bolvar"))
+    assert(not Quests.IsReady(store, "bolvar_defias"))
     store.mercs.bolvar.level = 17
-    local _, unlock = Quests.TurnIn(store, "bolvar")
+    local _, unlock = Quests.TurnIn(store, "bolvar_defias")
     eq(unlock, "deadmines")
     assert(Quests.Unlocked(store, "deadmines"))
-    eq(Quests.Current(store, "bolvar"), nil, "the chain is done")
-    assert(not Quests.IsReady(store, "bolvar"))
+    assert(Quests.Done(store, "bolvar_defias") and not Quests.IsReady(store, "bolvar_defias"), "the chain is done")
     -- Benedictus 2: shields cast in battle.
     Bounty.ZoneState(store, "tirisfal").normal = 1
-    Quests.TurnIn(store, "benedictus")
+    Quests.TurnIn(store, "benedictus_light")
     run.party[1] = { id = "benedictus" }
     Battle({}, { 3, 12 })
-    eq(Quests.Progress(store, "benedictus"), 12)
-    -- Shandris 2: Darkshore with her in the party, an earlier clear does not count.
+    eq(Quests.Progress(store, "benedictus_light"), 12)
+    -- Shandris 2: Darkshore with her in the party; an earlier clear does not count.
     Bounty.ZoneState(store, "teldrassil").normal = 1
-    Quests.TurnIn(store, "shandris")
+    Quests.TurnIn(store, "shandris_sentinel")
     Bounty.ZoneState(store, "darkshore").normal = 3
-    assert(not Quests.IsReady(store, "shandris"))
+    assert(not Quests.IsReady(store, "shandris_sentinel"))
     Quests.OnBounty(store, { zone = "darkshore", party = { { id = "shandris" } } })
-    assert(Quests.IsReady(store, "shandris"))
+    assert(Quests.IsReady(store, "shandris_sentinel"))
+end)
+
+test("tasks: a mercenary has several chains, a sequel opens after its chain, old saves move over", function()
+    local Quests = MC.Quests
+    MC.QUEST_CHAINS.test_sequel = { id = "test_sequel", merc = "bolvar", requires = { chain = "bolvar_defias", level = 20 },
+        steps = { { kind = "dungeon", dungeon = "deadmines" } } }
+    table.insert(MC.QUEST_CHAIN_ORDER, "test_sequel")
+    local store = NewStore()
+    assert(not Quests.Open(store, "test_sequel"), "not before the first chain is done")
+    Quests.State(store, "bolvar_defias").step = 5
+    assert(not Quests.Open(store, "test_sequel"), "nor below its level")
+    store.mercs.bolvar.level = 20
+    assert(Quests.Open(store, "test_sequel"))
+    eq(#Quests.ChainsOf(store, "bolvar"), 2, "both chains")
+    -- A dungeon cleared with him counts; a bounty does not.
+    local run = { zone = "westfall", party = { { id = "bolvar" } } }
+    Quests.OnBounty(store, run)
+    assert(not Quests.IsReady(store, "test_sequel"))
+    run.dungeon = "deadmines"
+    Quests.OnBounty(store, run)
+    assert(Quests.IsReady(store, "test_sequel"))
+    MC.QUEST_CHAINS.test_sequel = nil
+    table.remove(MC.QUEST_CHAIN_ORDER)
+
+    -- A save from before chains had ids: the progress stays.
+    local old = NewStore()
+    old.quests = { bolvar = { step = 3, count = 4 } }
+    eq(Quests.State(old, "bolvar_defias").step, 3)
+    eq(old.quests.bolvar, nil)
 end)
 
 test("resistances and spell damage change hits of their school", function()

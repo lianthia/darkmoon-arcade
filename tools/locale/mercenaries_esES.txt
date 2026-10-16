@@ -869,51 +869,51 @@ MC_QK_DEFIAS	Defias
 MC_QK_QUILBOAR	jabaespines
 MC_QK_UNDEAD	no-muertos
 MC_QK_BEAST	bestias
-MC_Q_cairne_1_TITLE	Las llanuras de Mulgore
-MC_Q_cairne_1_TEXT	Jabaespines y excavadores de Ventura y Cía. recorren las llanuras bajo Cima del Trueno. Antes de que las tribus descansen, Mulgore debe estar a salvo.
-MC_Q_cairne_2_TITLE	Viejos enemigos
-MC_Q_cairne_2_TEXT	Los centauros kolkar han cazado a los tauren durante generaciones. Cairne quiere mostrarles que esos días han terminado.
-MC_Q_cairne_3_TITLE	La tierra tiembla
-MC_Q_cairne_3_TEXT	El pisotón de guerra de un jefe se oye desde lejos. Que Los Baldíos lo oigan a menudo.
-MC_Q_cairne_4_TITLE	El cazador de kodos
-MC_Q_cairne_4_TEXT	Un cazador de Los Baldíos masacra a los kodos que los tauren consideran sagrados. Cairne se alzará ante él y no caerá.
-MC_Q_bolvar_1_TITLE	Problemas en Elwynn
-MC_Q_bolvar_1_TEXT	Gnolls y kobolds acosan las granjas de Villadorada. La guardia de Ventormenta no da abasto, así que el alto señor echa una mano.
-MC_Q_bolvar_2_TITLE	La Hermandad Defias
-MC_Q_bolvar_2_TEXT	Hombres enmascarados con pañuelos rojos queman los campos de los Páramos de Poniente. Bolvar quiere detenerlos uno a uno.
-MC_Q_bolvar_3_TITLE	El líder en las sombras
-MC_Q_bolvar_3_TEXT	Todas las pistas llevan al hombre tras la hermandad. Enfréntate a él en los Páramos de Poniente y que el alto señor siga en pie.
-MC_Q_bolvar_4_TITLE	Bajo Arroyo de la Luna
-MC_Q_bolvar_4_TEXT	La hermandad no está vencida: su corazón late en las viejas minas bajo Arroyo de la Luna. Hazte lo bastante fuerte para seguirla allí.
-MC_Q_mankrik_1_TITLE	Sangre y trueno
-MC_Q_mankrik_1_TEXT	Todo bruto de la Horda se pone a prueba primero en Durotar. Mankrik no es una excepción.
-MC_Q_mankrik_2_TITLE	Los Crines de Acero
-MC_Q_mankrik_2_TEXT	Asaltantes jabaespines atacaron las caravanas de Los Baldíos y le quitaron a Mankrik más que oro.
-MC_Q_mankrik_3_TITLE	Venganza
-MC_Q_mankrik_3_TEXT	El dolor ha vuelto pesada el hacha de Mankrik. Que cada golpe recuerde a Olgra.
-MC_Q_mankrik_4_TITLE	¿Dónde está Olgra?
-MC_Q_mankrik_4_TEXT	El rastro de los asaltantes termina en lo más hondo de Los Baldíos. Mankrik debe llegar al final con vida.
-MC_Q_shandris_1_TITLE	Centinela de Teldrassil
-MC_Q_shandris_1_TEXT	La corrupción se arrastra por los bosques del árbol del mundo. La general de las Centinelas vela primero por su hogar.
-MC_Q_shandris_2_TITLE	Guardia en Costa Oscura
-MC_Q_shandris_2_TEXT	Múrlocs y fúrbolgs acosan Auberdine. Shandris va en persona.
-MC_Q_shandris_3_TITLE	Flechas de la luna
-MC_Q_shandris_3_TEXT	La flecha de una Centinela habla por ella. Que hable a menudo.
-MC_Q_shandris_4_TITLE	La defensa de Vallefresno
-MC_Q_shandris_4_TEXT	Algo se agita en el templo hundido al borde de Vallefresno. Shandris lo enfrentará sin caer.
-MC_Q_benedictus_1_TITLE	Luz en Tirisfal
-MC_Q_benedictus_1_TEXT	La Cruzada Escarlata habla de la Luz mientras quema a vivos y muertos. El arzobispo quiere verlo con sus propios ojos.
-MC_Q_benedictus_2_TITLE	El escudo de la fe
-MC_Q_benedictus_2_TEXT	La Luz protege a quienes caminan en ella. Escuda a tus compañeros una y otra vez.
-MC_Q_benedictus_3_TITLE	Oscuridad sobre el Bosque del Ocaso
-MC_Q_benedictus_3_TEXT	Los muertos caminan por el Bosque del Ocaso. La Iglesia no puede mirar hacia otro lado.
-MC_Q_benedictus_4_TITLE	La abominación
-MC_Q_benedictus_4_TEXT	Un horror cosido acecha los caminos a Villa Oscura. Benedictus le hará frente hasta el final.
-MC_Q_hamuul_1_TITLE	La llamada de la Madre Tierra
-MC_Q_hamuul_1_TEXT	Antes de sanar el mundo, un druida sana su hogar. Mulgore es lo primero.
-MC_Q_hamuul_2_TITLE	Crecimiento
-MC_Q_hamuul_2_TEXT	La vida responde a la vida. Que el rejuvenecimiento de Hamuul mantenga en pie a sus amigos.
-MC_Q_hamuul_3_TITLE	Los Baldíos retorcidos
-MC_Q_hamuul_3_TEXT	Las bestias de Los Baldíos se vuelven salvajes y extrañas, como si algo las hubiera soñado así. Reduce su número.
-MC_Q_hamuul_4_TITLE	El sueño de Naralex
-MC_Q_hamuul_4_TEXT	El druida Naralex entró en las cuevas para sanar la tierra y nunca despertó. Su pesadilla se extiende. Hazte lo bastante fuerte para seguirlo.
+MC_Q_cairne_mulgore_1_TITLE	Las llanuras de Mulgore
+MC_Q_cairne_mulgore_1_TEXT	Jabaespines y excavadores de Ventura y Cía. recorren las llanuras bajo Cima del Trueno. Antes de que las tribus descansen, Mulgore debe estar a salvo.
+MC_Q_cairne_mulgore_2_TITLE	Viejos enemigos
+MC_Q_cairne_mulgore_2_TEXT	Los centauros kolkar han cazado a los tauren durante generaciones. Cairne quiere mostrarles que esos días han terminado.
+MC_Q_cairne_mulgore_3_TITLE	La tierra tiembla
+MC_Q_cairne_mulgore_3_TEXT	El pisotón de guerra de un jefe se oye desde lejos. Que Los Baldíos lo oigan a menudo.
+MC_Q_cairne_mulgore_4_TITLE	El cazador de kodos
+MC_Q_cairne_mulgore_4_TEXT	Un cazador de Los Baldíos masacra a los kodos que los tauren consideran sagrados. Cairne se alzará ante él y no caerá.
+MC_Q_bolvar_defias_1_TITLE	Problemas en Elwynn
+MC_Q_bolvar_defias_1_TEXT	Gnolls y kobolds acosan las granjas de Villadorada. La guardia de Ventormenta no da abasto, así que el alto señor echa una mano.
+MC_Q_bolvar_defias_2_TITLE	La Hermandad Defias
+MC_Q_bolvar_defias_2_TEXT	Hombres enmascarados con pañuelos rojos queman los campos de los Páramos de Poniente. Bolvar quiere detenerlos uno a uno.
+MC_Q_bolvar_defias_3_TITLE	El líder en las sombras
+MC_Q_bolvar_defias_3_TEXT	Todas las pistas llevan al hombre tras la hermandad. Enfréntate a él en los Páramos de Poniente y que el alto señor siga en pie.
+MC_Q_bolvar_defias_4_TITLE	Bajo Arroyo de la Luna
+MC_Q_bolvar_defias_4_TEXT	La hermandad no está vencida: su corazón late en las viejas minas bajo Arroyo de la Luna. Hazte lo bastante fuerte para seguirla allí.
+MC_Q_mankrik_olgra_1_TITLE	Sangre y trueno
+MC_Q_mankrik_olgra_1_TEXT	Todo bruto de la Horda se pone a prueba primero en Durotar. Mankrik no es una excepción.
+MC_Q_mankrik_olgra_2_TITLE	Los Crines de Acero
+MC_Q_mankrik_olgra_2_TEXT	Asaltantes jabaespines atacaron las caravanas de Los Baldíos y le quitaron a Mankrik más que oro.
+MC_Q_mankrik_olgra_3_TITLE	Venganza
+MC_Q_mankrik_olgra_3_TEXT	El dolor ha vuelto pesada el hacha de Mankrik. Que cada golpe recuerde a Olgra.
+MC_Q_mankrik_olgra_4_TITLE	¿Dónde está Olgra?
+MC_Q_mankrik_olgra_4_TEXT	El rastro de los asaltantes termina en lo más hondo de Los Baldíos. Mankrik debe llegar al final con vida.
+MC_Q_shandris_sentinel_1_TITLE	Centinela de Teldrassil
+MC_Q_shandris_sentinel_1_TEXT	La corrupción se arrastra por los bosques del árbol del mundo. La general de las Centinelas vela primero por su hogar.
+MC_Q_shandris_sentinel_2_TITLE	Guardia en Costa Oscura
+MC_Q_shandris_sentinel_2_TEXT	Múrlocs y fúrbolgs acosan Auberdine. Shandris va en persona.
+MC_Q_shandris_sentinel_3_TITLE	Flechas de la luna
+MC_Q_shandris_sentinel_3_TEXT	La flecha de una Centinela habla por ella. Que hable a menudo.
+MC_Q_shandris_sentinel_4_TITLE	La defensa de Vallefresno
+MC_Q_shandris_sentinel_4_TEXT	Algo se agita en el templo hundido al borde de Vallefresno. Shandris lo enfrentará sin caer.
+MC_Q_benedictus_light_1_TITLE	Luz en Tirisfal
+MC_Q_benedictus_light_1_TEXT	La Cruzada Escarlata habla de la Luz mientras quema a vivos y muertos. El arzobispo quiere verlo con sus propios ojos.
+MC_Q_benedictus_light_2_TITLE	El escudo de la fe
+MC_Q_benedictus_light_2_TEXT	La Luz protege a quienes caminan en ella. Escuda a tus compañeros una y otra vez.
+MC_Q_benedictus_light_3_TITLE	Oscuridad sobre el Bosque del Ocaso
+MC_Q_benedictus_light_3_TEXT	Los muertos caminan por el Bosque del Ocaso. La Iglesia no puede mirar hacia otro lado.
+MC_Q_benedictus_light_4_TITLE	La abominación
+MC_Q_benedictus_light_4_TEXT	Un horror cosido acecha los caminos a Villa Oscura. Benedictus le hará frente hasta el final.
+MC_Q_hamuul_naralex_1_TITLE	La llamada de la Madre Tierra
+MC_Q_hamuul_naralex_1_TEXT	Antes de sanar el mundo, un druida sana su hogar. Mulgore es lo primero.
+MC_Q_hamuul_naralex_2_TITLE	Crecimiento
+MC_Q_hamuul_naralex_2_TEXT	La vida responde a la vida. Que el rejuvenecimiento de Hamuul mantenga en pie a sus amigos.
+MC_Q_hamuul_naralex_3_TITLE	Los Baldíos retorcidos
+MC_Q_hamuul_naralex_3_TEXT	Las bestias de Los Baldíos se vuelven salvajes y extrañas, como si algo las hubiera soñado así. Reduce su número.
+MC_Q_hamuul_naralex_4_TITLE	El sueño de Naralex
+MC_Q_hamuul_naralex_4_TEXT	El druida Naralex entró en las cuevas para sanar la tierra y nunca despertó. Su pesadilla se extiende. Hazte lo bastante fuerte para seguirlo.

@@ -864,9 +864,9 @@ campView.achievements._scripts.OnClick(campView.achievements)
 assert(mc.view == "quests", "the board opens the tasks")
 local qv = mc.views.quests
 for _, row in ipairs(qv.rows) do
-    if row._shown and row.merc == "bolvar" then row._scripts.OnClick(row) end
+    if row._shown and row.chain == "bolvar_defias" then row._scripts.OnClick(row) end
 end
-assert(mc.questShown == "bolvar" and MC.Quests.IsReady(store, "bolvar"), "Bolvar's task can be handed in")
+assert(mc.questShown == "bolvar_defias" and MC.Quests.IsReady(store, "bolvar_defias"), "Bolvar's task can be handed in")
 local before = store.mercs.bolvar.coins
 qv.turnIn._scripts.OnClick(qv.turnIn)
 assert(store.mercs.bolvar.coins == before + MC.Quests.COINS[1], "coins for handing in")

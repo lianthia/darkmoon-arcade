@@ -869,51 +869,51 @@ MC_QK_DEFIAS	Defias
 MC_QK_QUILBOAR	quilboar
 MC_QK_UNDEAD	undead
 MC_QK_BEAST	beasts
-MC_Q_cairne_1_TITLE	The Plains of Mulgore
-MC_Q_cairne_1_TEXT	Quilboar and Venture Co. diggers roam the plains below Thunder Bluff. Before the tribes can rest, Mulgore must be safe.
-MC_Q_cairne_2_TITLE	Old Enemies
-MC_Q_cairne_2_TEXT	The Kolkar centaurs have hunted the tauren for generations. Cairne means to show them those days are over.
-MC_Q_cairne_3_TITLE	The Earth Trembles
-MC_Q_cairne_3_TEXT	A chieftain's war stomp is heard from far away. Let the Barrens hear it often.
-MC_Q_cairne_4_TITLE	The Kodo Hunter
-MC_Q_cairne_4_TEXT	A hunter in the Barrens slaughters the kodos the tauren hold sacred. Cairne will stand before him and not fall.
-MC_Q_bolvar_1_TITLE	Trouble in Elwynn
-MC_Q_bolvar_1_TEXT	Gnolls and kobolds plague the farms around Goldshire. The Stormwind guard is stretched thin, so the highlord lends a hand himself.
-MC_Q_bolvar_2_TITLE	The Defias Brotherhood
-MC_Q_bolvar_2_TEXT	Masked men in red bandanas burn the fields of Westfall. Bolvar wants them stopped, one by one.
-MC_Q_bolvar_3_TITLE	The Leader in the Shadows
-MC_Q_bolvar_3_TEXT	Every trail leads to the man behind the brotherhood. Face him in Westfall, and let the highlord leave the fight standing.
-MC_Q_bolvar_4_TITLE	Beneath Moonbrook
-MC_Q_bolvar_4_TEXT	The brotherhood is not beaten: its heart beats in the old mines beneath Moonbrook. Grow strong enough to follow it there.
-MC_Q_mankrik_1_TITLE	Blood and Thunder
-MC_Q_mankrik_1_TEXT	Every grunt of the Horde proves himself in Durotar first. Mankrik is no exception.
-MC_Q_mankrik_2_TITLE	The Razormane
-MC_Q_mankrik_2_TEXT	Quilboar raiders struck the caravans of the Barrens and took more from Mankrik than gold.
-MC_Q_mankrik_3_TITLE	Vengeance
-MC_Q_mankrik_3_TEXT	Grief has made Mankrik's axe heavy. Let every strike remember Olgra.
-MC_Q_mankrik_4_TITLE	Where Is Olgra?
-MC_Q_mankrik_4_TEXT	The trail of the raiders ends deep in the Barrens. Mankrik must reach its end alive.
-MC_Q_shandris_1_TITLE	Sentinel of Teldrassil
-MC_Q_shandris_1_TEXT	Corruption creeps through the forests of the world tree. The general of the Sentinels watches over her own home first.
-MC_Q_shandris_2_TITLE	The Darkshore Watch
-MC_Q_shandris_2_TEXT	Murlocs and furbolgs press on Auberdine. Shandris goes herself.
-MC_Q_shandris_3_TITLE	Arrows of the Moon
-MC_Q_shandris_3_TEXT	A Sentinel's arrow speaks for her. Let it speak often.
-MC_Q_shandris_4_TITLE	The Defence of Ashenvale
-MC_Q_shandris_4_TEXT	Something stirs in the drowned temple at the edge of Ashenvale. Shandris will face it and keep her feet.
-MC_Q_benedictus_1_TITLE	Light in Tirisfal
-MC_Q_benedictus_1_TEXT	The Scarlet Crusade speaks of the Light while it burns the living and the dead. The archbishop wants to see it with his own eyes.
-MC_Q_benedictus_2_TITLE	The Shield of Faith
-MC_Q_benedictus_2_TEXT	The Light protects those who walk in it. Shield your companions, again and again.
-MC_Q_benedictus_3_TITLE	Darkness over Duskwood
-MC_Q_benedictus_3_TEXT	The dead walk in Duskwood. The Church cannot look away.
-MC_Q_benedictus_4_TITLE	The Abomination
-MC_Q_benedictus_4_TEXT	A stitched horror stalks the roads to Darkshire. Benedictus will stand against it to the end.
-MC_Q_hamuul_1_TITLE	Call of the Earth Mother
-MC_Q_hamuul_1_TEXT	Before a druid heals the world, he heals his home. Mulgore comes first.
-MC_Q_hamuul_2_TITLE	Growth
-MC_Q_hamuul_2_TEXT	Life answers life. Let Hamuul's rejuvenation keep his friends standing.
-MC_Q_hamuul_3_TITLE	The Twisted Barrens
-MC_Q_hamuul_3_TEXT	The beasts of the Barrens turn wild and strange, as if something dreamt them so. Thin their numbers.
-MC_Q_hamuul_4_TITLE	The Dream of Naralex
-MC_Q_hamuul_4_TEXT	The druid Naralex went into the caverns to heal the land and never woke. His nightmare spreads. Grow strong enough to follow him.
+MC_Q_cairne_mulgore_1_TITLE	The Plains of Mulgore
+MC_Q_cairne_mulgore_1_TEXT	Quilboar and Venture Co. diggers roam the plains below Thunder Bluff. Before the tribes can rest, Mulgore must be safe.
+MC_Q_cairne_mulgore_2_TITLE	Old Enemies
+MC_Q_cairne_mulgore_2_TEXT	The Kolkar centaurs have hunted the tauren for generations. Cairne means to show them those days are over.
+MC_Q_cairne_mulgore_3_TITLE	The Earth Trembles
+MC_Q_cairne_mulgore_3_TEXT	A chieftain's war stomp is heard from far away. Let the Barrens hear it often.
+MC_Q_cairne_mulgore_4_TITLE	The Kodo Hunter
+MC_Q_cairne_mulgore_4_TEXT	A hunter in the Barrens slaughters the kodos the tauren hold sacred. Cairne will stand before him and not fall.
+MC_Q_bolvar_defias_1_TITLE	Trouble in Elwynn
+MC_Q_bolvar_defias_1_TEXT	Gnolls and kobolds plague the farms around Goldshire. The Stormwind guard is stretched thin, so the highlord lends a hand himself.
+MC_Q_bolvar_defias_2_TITLE	The Defias Brotherhood
+MC_Q_bolvar_defias_2_TEXT	Masked men in red bandanas burn the fields of Westfall. Bolvar wants them stopped, one by one.
+MC_Q_bolvar_defias_3_TITLE	The Leader in the Shadows
+MC_Q_bolvar_defias_3_TEXT	Every trail leads to the man behind the brotherhood. Face him in Westfall, and let the highlord leave the fight standing.
+MC_Q_bolvar_defias_4_TITLE	Beneath Moonbrook
+MC_Q_bolvar_defias_4_TEXT	The brotherhood is not beaten: its heart beats in the old mines beneath Moonbrook. Grow strong enough to follow it there.
+MC_Q_mankrik_olgra_1_TITLE	Blood and Thunder
+MC_Q_mankrik_olgra_1_TEXT	Every grunt of the Horde proves himself in Durotar first. Mankrik is no exception.
+MC_Q_mankrik_olgra_2_TITLE	The Razormane
+MC_Q_mankrik_olgra_2_TEXT	Quilboar raiders struck the caravans of the Barrens and took more from Mankrik than gold.
+MC_Q_mankrik_olgra_3_TITLE	Vengeance
+MC_Q_mankrik_olgra_3_TEXT	Grief has made Mankrik's axe heavy. Let every strike remember Olgra.
+MC_Q_mankrik_olgra_4_TITLE	Where Is Olgra?
+MC_Q_mankrik_olgra_4_TEXT	The trail of the raiders ends deep in the Barrens. Mankrik must reach its end alive.
+MC_Q_shandris_sentinel_1_TITLE	Sentinel of Teldrassil
+MC_Q_shandris_sentinel_1_TEXT	Corruption creeps through the forests of the world tree. The general of the Sentinels watches over her own home first.
+MC_Q_shandris_sentinel_2_TITLE	The Darkshore Watch
+MC_Q_shandris_sentinel_2_TEXT	Murlocs and furbolgs press on Auberdine. Shandris goes herself.
+MC_Q_shandris_sentinel_3_TITLE	Arrows of the Moon
+MC_Q_shandris_sentinel_3_TEXT	A Sentinel's arrow speaks for her. Let it speak often.
+MC_Q_shandris_sentinel_4_TITLE	The Defence of Ashenvale
+MC_Q_shandris_sentinel_4_TEXT	Something stirs in the drowned temple at the edge of Ashenvale. Shandris will face it and keep her feet.
+MC_Q_benedictus_light_1_TITLE	Light in Tirisfal
+MC_Q_benedictus_light_1_TEXT	The Scarlet Crusade speaks of the Light while it burns the living and the dead. The archbishop wants to see it with his own eyes.
+MC_Q_benedictus_light_2_TITLE	The Shield of Faith
+MC_Q_benedictus_light_2_TEXT	The Light protects those who walk in it. Shield your companions, again and again.
+MC_Q_benedictus_light_3_TITLE	Darkness over Duskwood
+MC_Q_benedictus_light_3_TEXT	The dead walk in Duskwood. The Church cannot look away.
+MC_Q_benedictus_light_4_TITLE	The Abomination
+MC_Q_benedictus_light_4_TEXT	A stitched horror stalks the roads to Darkshire. Benedictus will stand against it to the end.
+MC_Q_hamuul_naralex_1_TITLE	Call of the Earth Mother
+MC_Q_hamuul_naralex_1_TEXT	Before a druid heals the world, he heals his home. Mulgore comes first.
+MC_Q_hamuul_naralex_2_TITLE	Growth
+MC_Q_hamuul_naralex_2_TEXT	Life answers life. Let Hamuul's rejuvenation keep his friends standing.
+MC_Q_hamuul_naralex_3_TITLE	The Twisted Barrens
+MC_Q_hamuul_naralex_3_TEXT	The beasts of the Barrens turn wild and strange, as if something dreamt them so. Thin their numbers.
+MC_Q_hamuul_naralex_4_TITLE	The Dream of Naralex
+MC_Q_hamuul_naralex_4_TEXT	The druid Naralex went into the caverns to heal the land and never woke. His nightmare spreads. Grow strong enough to follow him.

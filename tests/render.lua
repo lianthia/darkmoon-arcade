@@ -219,12 +219,12 @@ if Want("quests") then
     MC.DEV = true
     MC.Bounty.ZoneState(store, "elwynn").normal = 1
     MC.Bounty.ZoneState(store, "mulgore").normal = 1
-    MC.Quests.TurnIn(store, "bolvar")
-    MC.Quests.State(store, "bolvar").count = 7
-    mc.questShown = "bolvar"
+    MC.Quests.TurnIn(store, "bolvar_defias")
+    MC.Quests.State(store, "bolvar_defias").count = 7
+    mc.questShown = "bolvar_defias"
     mc:ShowView("quests")
     Snap("quests")
-    mc.questShown = "cairne"
+    mc.questShown = "cairne_mulgore"
     mc:RefreshQuests()
     Snap("quests_ready")
     mc:ShowView("camp")

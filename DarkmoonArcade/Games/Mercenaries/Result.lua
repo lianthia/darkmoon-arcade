@@ -190,7 +190,7 @@ function Module:RefreshResult()
     -- Tasks this bounty finished: to be handed in at the task board.
     if run.questsReady and #run.questsReady > 0 then
         local names = {}
-        for _, merc in ipairs(run.questsReady) do names[#names + 1] = Describe.MercName(merc) end
+        for _, merc in ipairs(MC.Quests.MercsOf(run.questsReady)) do names[#names + 1] = Describe.MercName(merc) end
         out[#out + 1] = "|cffffd100" .. L.MC_QUEST_DONE_RESULT:format(table.concat(names, ", ")) .. "|r"
     end
     if won then
