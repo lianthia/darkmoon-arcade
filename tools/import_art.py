@@ -174,6 +174,18 @@ def mercenaries_camp():
     print("mercenaries camp used width", scaled.width, "crop left", left)
 
 
+def mercenaries_new_marker():
+    """The "!" that marks something new (art/mercenaries_new.png, 93x134): its full height in the middle
+    of a 128x128 texture (media/mercs/new.tga), the sides transparent (Games/Mercenaries/Camp.lua)."""
+    src = Image.open(ROOT / "art" / "mercenaries_new.png").convert("RGBA")
+    src = src.crop(src.getbbox())
+    w = round(128 * src.width / src.height)
+    canvas = Image.new("RGBA", (128, 128), (0, 0, 0, 0))
+    canvas.paste(src.resize((w, 128), Image.LANCZOS), ((128 - w) // 2, 0))
+    canvas.save(MEDIA / "mercs" / "new.tga")
+    print("new marker", w, "x 128")
+
+
 def mercenaries_roles():
     """The roles' gems (art/mercenaries_roles/<role>[-colorblind][-disabled]-<state>.png, 492x492 from
     Figma): the collection's role tabs, 128x128 with their room for frame and glow
@@ -227,6 +239,7 @@ def zone_maps():
 
 
 if __name__ == "__main__":
+    mercenaries_new_marker()
     mercenaries_roles()
     mercenaries_camp()
     zone_maps()

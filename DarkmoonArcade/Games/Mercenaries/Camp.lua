@@ -135,10 +135,10 @@ local function CardExtra(store, id)
     return { xp = xp, coins = entry.coins, locked = not entry.owned }
 end
 
--- A "!" above something worth a look: big, lit by a pulsing golden glow and gently floating up and
+-- A "!" badge above something worth a look: big, lit by a pulsing golden glow and gently floating up and
 -- down, on its own frame well above its neighbours (cards and plates never cover it). It works like a
 -- texture for its users: SetPoint, SetSize, SetShown, SetAlpha.
-local MARKER_SIZE, MARKER_FLOAT, MARKER_SPEED = 34, 4, 3
+local MARKER_SIZE, MARKER_FLOAT, MARKER_SPEED = 42, 4, 3
 local function Marker(parent)
     local f = CreateFrame("Frame", nil, parent)
     f:SetSize(MARKER_SIZE, MARKER_SIZE)
@@ -148,7 +148,8 @@ local function Marker(parent)
     f.glow:SetBlendMode("ADD")
     f.glow:SetVertexColor(1, 0.8, 0.25)
     f.icon = f:CreateTexture(nil, "OVERLAY")
-    f.icon:SetTexture("Interface\\GossipFrame\\AvailableQuestIcon")
+    -- Ben's badge (art/mercenaries_new.png, tools/import_art.py).
+    f.icon:SetTexture(MC.Tex("new"))
     local size = MARKER_SIZE
     local function Layout(y)
         f.icon:ClearAllPoints()
@@ -156,7 +157,7 @@ local function Marker(parent)
         f.icon:SetSize(size, size)
         f.glow:ClearAllPoints()
         f.glow:SetPoint("CENTER", 0, y)
-        f.glow:SetSize(size * 2.6, size * 2.6)
+        f.glow:SetSize(size * 1.9, size * 1.9)
     end
     Layout(0)
     local setSize = f.SetSize
@@ -169,7 +170,7 @@ local function Marker(parent)
     f:SetScript("OnUpdate", function(_, elapsed)
         t = t + elapsed * MARKER_SPEED
         Layout(math.sin(t) * MARKER_FLOAT)
-        f.glow:SetAlpha(0.7 + 0.3 * math.sin(t * 1.3))
+        f.glow:SetAlpha(0.35 + 0.2 * math.sin(t * 1.3))
     end)
     return f
 end
@@ -831,7 +832,7 @@ function Module:BuildCollection()
         end)
         Kit.Place(tab, 40 + (i - 1) * 60, 30)
         tab.marker = Marker(tab)
-        tab.marker:SetSize(30, 30)
+        tab.marker:SetSize(34, 34)
         tab.marker:SetPoint("CENTER", tab, "BOTTOMRIGHT", -2, 6)
         view.tabs[role] = tab
     end
@@ -852,8 +853,8 @@ function Module:BuildCollection()
         Kit.Place(card, PAGE_W / 2 + (col - 1) * 156, 150 + row * 212)
         card:SetScript("OnClick", function() self:CollectionClicked(card.merc) end)
         card.marker = Marker(card)
-        card.marker:SetSize(44, 44)
-        card.marker:SetPoint("BOTTOM", card, "TOP", 0, -12)
+        card.marker:SetSize(54, 54)
+        card.marker:SetPoint("CENTER", card, "TOP", 0, -4)
         view.cards[i] = card
     end
     view.prev = Kit.Arrow(page, -1, function(dir) self:TurnCollectionPage(dir) end)
