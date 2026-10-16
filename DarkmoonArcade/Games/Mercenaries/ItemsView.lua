@@ -1,4 +1,5 @@
--- Items on screen: the mercenary page's second sheet (the two slots, the bag and the chosen item with
+-- Items on screen: the mercenary page's second sheet (weapon, armour and jewellery slot, the bag and the
+-- chosen item with
 -- wear, take off, enchant and disenchant), the item tooltip, and the find page that asks who gets a
 -- found item (it stays with that mercenary for good).
 -- Until the dungeons bring items, the sheet's tabs only show in the dev copy.
@@ -16,9 +17,10 @@ local SPLIT = 330
 local BAG_COLS, BAG_ROWS = 5, 2
 local PICK_ROWS = 6
 
+local SLOT_KEYS = { "MC_RECIPE_WEAPON", "MC_RECIPE_ARMOR", "MC_ITEM_JEWELRY" }
+
 local function KindName(item)
-    return item.kind == "weapon" and L.MC_RECIPE_WEAPON or item.kind == "armor" and L.MC_RECIPE_ARMOR
-        or L.MC_ITEM_JEWELRY
+    return MC.SlotName(item.slot)
 end
 
 -- "75% Strange Dust x1-2, 20% ..." from Classic's odds.
@@ -91,9 +93,9 @@ function Module:BuildMercItems(view)
     worn:SetTextColor(unpack(INK))
     worn:SetPoint("TOPLEFT", 24, -48)
     view.slots = {}
-    for i = 1, 2 do
-        local m = Kit.Medallion(sheet, 64, true)
-        Kit.Place(m, 60, 104 + (i - 1) * 92, sheet)
+    for i = 1, #MC.ITEM_SLOT_KINDS do
+        local m = Kit.Medallion(sheet, 60, true)
+        Kit.Place(m, 58, 98 + (i - 1) * 80, sheet)
         Kit.Hover(m, { grow = 1.08 })
         m:SetScript("OnClick", function() Select({ slot = i }) end)
         m:HookScript("OnEnter", function()
@@ -110,18 +112,18 @@ function Module:BuildMercItems(view)
         m.desc:SetWidth(SPLIT - 120)
         m.desc:SetJustifyH("LEFT")
         m.desc:SetJustifyV("TOP")
-        m.desc:SetHeight(64)
+        m.desc:SetHeight(48)
         m.desc:SetSpacing(2)
         view.slots[i] = m
     end
     local bagTitle = Widgets.LocalizedText(sheet, 12, "white", "MC_ITEMS_BAG")
     bagTitle:SetTextColor(unpack(INK))
-    bagTitle:SetPoint("TOPLEFT", 24, -292)
+    bagTitle:SetPoint("TOPLEFT", 24, -318)
     view.bag = {}
     for i = 1, BAG_COLS * BAG_ROWS do
         local m = Kit.Medallion(sheet, 50, true)
         local col, row = (i - 1) % BAG_COLS, math.floor((i - 1) / BAG_COLS)
-        Kit.Place(m, 50 + col * 58, 342 + row * 60, sheet)
+        Kit.Place(m, 50 + col * 58, 364 + row * 58, sheet)
         Kit.Hover(m, { grow = 1.1 })
         m:SetScript("OnClick", function() if m.itemId then Select({ id = m.itemId }) end end)
         m:HookScript("OnEnter", function()
@@ -173,15 +175,14 @@ function Module:BuildMercItems(view)
             end
         end
     end
-    -- Into a slot: the item worn there before goes back to the bag.
-    view.wear = {}
-    for slot = 1, 2 do
-        view.wear[slot] = Kit.Button(detail, 130, 28, nil, Act(function(store, merc)
-            local ok = Bounty.WearItem(store, merc, slot, self.itemSel and self.itemSel.id)
-            if ok then self.itemSel = { slot = slot } end
-            return ok
-        end), "green")
-    end
+    -- Into its slot: the item worn there before goes back to the bag.
+    view.wear = Kit.Button(detail, 130, 28, "MC_ITEM_WEAR", Act(function(store, merc)
+        local id = self.itemSel and self.itemSel.id
+        local slot = id and MC.ItemSlot(MC.Items[id])
+        local ok = slot and Bounty.WearItem(store, merc, slot, id)
+        if ok then self.itemSel = { slot = slot } end
+        return ok
+    end), "green")
     view.takeOff = Kit.Button(detail, 130, 28, "MC_ITEM_REMOVE", Act(function(store, merc)
         local slot = self.itemSel and self.itemSel.slot
         local id = slot and store.mercs[merc].worn[slot]
@@ -318,6 +319,7 @@ function Module:RefreshMercItems()
     for i, m in ipairs(view.slots) do
         local wornId = entry.worn[i]
         local open = i <= slots
+        local kind = L[SLOT_KEYS[i]]
         m:SetShown(any)
         m.name:SetShown(any)
         m.desc:SetShown(any)
@@ -334,7 +336,7 @@ function Module:RefreshMercItems()
             m.desc:SetText(Describe.Mods(MC.ItemMods(item))
                 .. (recipe and ("\n" .. L.MC_ITEM_ENCHANT:format(L["MC_F_" .. recipe])) or ""))
         else
-            m.name:SetText(open and L.MC_ITEM_EMPTY or L.MC_ITEM_SLOT_LOCKED:format(MC.MAX_LEVEL))
+            m.name:SetText(open and L.MC_ITEM_EMPTY:format(kind) or L.MC_ITEM_SLOT_LOCKED:format(kind, MC.MAX_LEVEL))
             m.name:SetTextColor(0.35, 0.28, 0.2)
             m.desc:SetText("")
         end
@@ -367,24 +369,23 @@ function Module:RefreshMercItems()
     view.dText:SetText(Describe.Mods(MC.ItemMods(item)))
     local recipe = Bounty.ItemEnchant(entry, chosen.id)
     view.dEnchant:SetText(recipe and L.MC_ITEM_ENCHANT:format(L["MC_F_" .. recipe])
-        or (item.kind == "jewelry" and L.MC_ITEM_NO_JEWELRY_ENCHANT or L.MC_ITEM_NO_ENCHANT))
+        or (MC.Enchantable(item) and L.MC_ITEM_NO_ENCHANT or L.MC_ITEM_NOT_ENCHANTABLE))
     view.dDisenchant:SetText(L.MC_ITEM_DISENCHANT_INTO:format(MC.DisenchantText(item)))
 
     -- The buttons for what can be done with it, stacked from the bottom.
     local shown = {}
     local inBag = chosen.slot == nil
-    for slot, b in ipairs(view.wear) do
-        local can = inBag and slot <= slots
-        b:SetShown(can)
-        if can then
-            b:SetText(slots > 1 and L.MC_ITEM_WEAR_SLOT:format(slot) or L.MC_ITEM_WEAR)
-            shown[#shown + 1] = b
-        end
-    end
+    -- Jewellery waits in the bag until its slot opens.
+    local open = MC.ItemSlot(item) <= slots
+    view.wear:SetShown(inBag)
+    view.wear:SetEnabled(open)
+    view.wear:SetText(open and L.MC_ITEM_WEAR or L.MC_ITEM_FOUND_LATER:format(MC.MAX_LEVEL))
+    if inBag then shown[#shown + 1] = view.wear end
     view.takeOff:SetShown(not inBag)
     if not inBag then shown[#shown + 1] = view.takeOff end
-    view.enchant:SetShown(item.kind ~= "jewelry")
-    if item.kind ~= "jewelry" then shown[#shown + 1] = view.enchant end
+    local enchantable = MC.Enchantable(item)
+    view.enchant:SetShown(enchantable)
+    if enchantable then shown[#shown + 1] = view.enchant end
     view.disenchant:SetShown(inBag)
     if inBag then
         view.disenchant:SetText(self.itemSure and L.MC_ITEM_DISENCHANT_SURE or L.MC_ITEM_DISENCHANT_BTN)
@@ -402,7 +403,7 @@ function Module:RefreshItemPicker(entry, itemId, item)
     local view, store = self.views.merc, self:Store()
     local list = {}
     for _, rid in ipairs(MC.RECIPE_ORDER) do
-        if Bounty.KnowsRecipe(store, rid) and MC.Recipes[rid].kind == item.kind then list[#list + 1] = rid end
+        if Bounty.KnowsRecipe(store, rid) and MC.RecipeFits(MC.Recipes[rid], item) then list[#list + 1] = rid end
     end
     table.sort(list, function(a, b)
         local ca, cb = Bounty.HasMaterials(store, MC.Recipes[a]), Bounty.HasMaterials(store, MC.Recipes[b])
@@ -410,7 +411,7 @@ function Module:RefreshItemPicker(entry, itemId, item)
         return MC.Recipes[a].tier > MC.Recipes[b].tier or (MC.Recipes[a].tier == MC.Recipes[b].tier and a < b)
     end)
     view.pickNone:SetShown(#list == 0)
-    view.pickNone:SetText(item.kind == "jewelry" and L.MC_ITEM_NO_JEWELRY_ENCHANT or L.MC_ITEM_NO_RECIPES)
+    view.pickNone:SetText(L.MC_ITEM_NO_RECIPES)
     local current = Bounty.ItemEnchant(entry, itemId)
     local bag = Bounty.Materials(store)
     for i, b in ipairs(view.pickRows) do
@@ -484,7 +485,9 @@ function Module:CreateItemFoundPage()
                     b.icon:SetTexture(MC.RoleTex("role_", MC.Mercs[merc].role))
                 end
                 b.name:SetText(Describe.MercName(merc))
-                b.desc:SetText(Bounty.OwnsItem(store.mercs[merc], id) and L.MC_ITEM_FOUND_OWNED or "")
+                local later = MC.ItemSlot(item) > MC.ItemSlots(store.mercs[merc])
+                b.desc:SetText(Bounty.OwnsItem(store.mercs[merc], id) and L.MC_ITEM_FOUND_OWNED
+                    or later and L.MC_ITEM_FOUND_LATER:format(MC.MAX_LEVEL) or "")
                 b:ClearAllPoints()
                 b:SetPoint("TOP", page, "TOP", (i - (#mercs + 1) / 2) * 130, -290)
             end

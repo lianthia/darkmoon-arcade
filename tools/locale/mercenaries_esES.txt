@@ -822,24 +822,24 @@ MC_ITEMS	Objetos
 MC_ITEMS_WORN	Equipados
 MC_ITEMS_BAG	Bolsa
 MC_ITEMS_NONE	Aún no hay objetos. Se encuentran como botín en las mazmorras.
-MC_ITEM_SLOT_LOCKED	Segunda ranura al nivel %d
-MC_ITEM_EMPTY	Ranura libre
+MC_ITEM_SLOT_LOCKED	%s: al nivel %d
+MC_ITEM_EMPTY	%s: libre
 MC_ITEM_JEWELRY	Joya
 MC_ITEM_LEVEL	Nivel de objeto %d
 MC_ITEM_ENCHANT	Encantado: %s
 MC_ITEM_NO_ENCHANT	Sin encantar
 MC_ITEM_DISENCHANT_INTO	Al desencantar: %s
 MC_ITEM_WEAR	Equipar
-MC_ITEM_WEAR_SLOT	En ranura %d
 MC_ITEM_REMOVE	Quitar
 MC_ITEM_ENCHANT_BTN	Encantar
 MC_ITEM_DISENCHANT_BTN	Desencantar
 MC_ITEM_DISENCHANT_SURE	¿Desencantar de verdad?
 MC_ITEM_PICK_RECIPE	Elegir fórmula
 MC_ITEM_NO_RECIPES	Ninguna fórmula conocida para este objeto. Se encuentran como botín en las mazmorras.
-MC_ITEM_NO_JEWELRY_ENCHANT	Las joyas no se pueden encantar.
 MC_ITEM_FOUND_TITLE	¡Botín!
 MC_ITEM_FOUND_SUB	¿Quién se lo queda? El objeto se queda para siempre con ese mercenario.
 MC_ITEM_FOUND_OWNED	Ya lo tiene: se desencanta
 MC_ITEM_DISENCHANTED	Desencantado
 MC_ITEM_GOT_MATERIAL	%dx %s en la bolsa de materiales
+MC_ITEM_FOUND_LATER	Equipable al nivel %d
+MC_ITEM_NOT_ENCHANTABLE	No existe encantamiento para este objeto.

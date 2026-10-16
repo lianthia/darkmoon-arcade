@@ -102,9 +102,7 @@ end
 function Bounty.DisenchantOwned(store, mercId, itemId, rng)
     local entry = store.mercs[mercId]
     if not entry or not Bounty.OwnsItem(entry, itemId) then return nil end
-    for slot = 1, 2 do
-        if entry.worn[slot] == itemId then return nil end
-    end
+    if Bounty.IsWorn(entry, itemId) then return nil end
     for i, owned in ipairs(entry.items) do
         if owned == itemId then
             table.remove(entry.items, i)
@@ -166,12 +164,47 @@ function Bounty.HasMaterials(store, recipe)
     return true
 end
 
--- Whether a mercenary's item can take a formula: a known formula for its kind (weapon or armour;
--- jewellery takes none, as in Classic) and the materials in the bag.
+-- Whether a formula fits an item, as in Classic: "weapon" formulas any melee weapon, the others their
+-- one slot (a cloak formula only a cloak). Ranged weapons and jewellery take none.
+local MELEE = { ["one-hand"] = true, ["two-hand"] = true, ["main-hand"] = true, ["off-hand"] = true }
+function MC.RecipeFits(recipe, item)
+    if recipe.target == "weapon" then return MELEE[item.slot] == true end
+    return recipe.target == item.slot
+end
+
+-- A Classic slot's name in the player's language (the client's INVTYPE_* strings); "weapon" (any
+-- melee weapon) and a missing string fall back to our kind names.
+local INVTYPE = {
+    ["one-hand"] = "INVTYPE_WEAPON", ["two-hand"] = "INVTYPE_2HWEAPON", ["main-hand"] = "INVTYPE_WEAPONMAINHAND",
+    ["off-hand"] = "INVTYPE_WEAPONOFFHAND", ranged = "INVTYPE_RANGED", held = "INVTYPE_HOLDABLE",
+    shield = "INVTYPE_SHIELD", head = "INVTYPE_HEAD", shoulder = "INVTYPE_SHOULDER", chest = "INVTYPE_CHEST",
+    back = "INVTYPE_CLOAK", wrist = "INVTYPE_WRIST", hands = "INVTYPE_HAND", waist = "INVTYPE_WAIST",
+    legs = "INVTYPE_LEGS", feet = "INVTYPE_FEET", finger = "INVTYPE_FINGER", neck = "INVTYPE_NECK",
+    trinket = "INVTYPE_TRINKET",
+}
+local JEWELRY = { finger = true, neck = true, trinket = true }
+local WEAPONS = { ["one-hand"] = true, ["two-hand"] = true, ["main-hand"] = true, ["off-hand"] = true,
+    ranged = true, held = true, weapon = true }
+function MC.SlotName(slot)
+    local name = INVTYPE[slot] and _G[INVTYPE[slot]]
+    if type(name) == "string" and name ~= "" then return name end
+    local L = ns.L
+    return WEAPONS[slot] and L.MC_RECIPE_WEAPON or JEWELRY[slot] and L.MC_ITEM_JEWELRY or L.MC_RECIPE_ARMOR
+end
+
+-- Whether any formula could ever fit the item.
+function MC.Enchantable(item)
+    for _, recipe in pairs(MC.Recipes) do
+        if MC.RecipeFits(recipe, item) then return true end
+    end
+    return false
+end
+
+-- Whether a mercenary's item can take a formula: a known formula that fits it and the materials in the bag.
 function Bounty.CanEnchant(store, mercId, itemId, recipeId)
     local entry, item, recipe = store.mercs[mercId], MC.Items[itemId], MC.Recipes[recipeId]
     if not entry or not item or not recipe then return false end
-    return Bounty.OwnsItem(entry, itemId) and Bounty.KnowsRecipe(store, recipeId) and item.kind == recipe.kind
+    return Bounty.OwnsItem(entry, itemId) and Bounty.KnowsRecipe(store, recipeId) and MC.RecipeFits(recipe, item)
         and Bounty.HasMaterials(store, recipe)
 end
 

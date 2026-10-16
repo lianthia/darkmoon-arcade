@@ -249,7 +249,7 @@ function Module:RefreshWorkshop()
         if id then
             local recipe = MC.Recipes[id]
             row.name:SetText(L["MC_F_" .. id])
-            row.info:SetText((recipe.kind == "weapon" and L.MC_RECIPE_WEAPON or L.MC_RECIPE_ARMOR) .. "  ·  "
+            row.info:SetText(MC.SlotName(recipe.target) .. "  ·  "
                 .. RecipeBonus(recipe))
             for c, b in ipairs(row.costs) do
                 local cost = recipe.cost[c]

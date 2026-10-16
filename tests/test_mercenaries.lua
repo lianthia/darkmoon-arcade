@@ -450,8 +450,10 @@ end)
 -- Items ---------------------------------------------------------------------------------------------
 
 local TEST_ITEMS = {
-    test_blade = { rarity = "rare", kind = "weapon", points = { atkPct = 4, critChance = 2 } },
-    test_cloak = { rarity = "uncommon", kind = "armor", points = { resist_fire = 2, xpPct = 2 } },
+    test_blade = { rarity = "rare", kind = "weapon", slot = "one-hand", points = { atkPct = 4, critChance = 2 } },
+    test_cloak = { rarity = "uncommon", kind = "armor", slot = "back", points = { resist_fire = 2, xpPct = 2 } },
+    test_vest = { rarity = "common", kind = "armor", slot = "chest", points = { hpPct = 2 } },
+    test_ring = { rarity = "rare", kind = "jewelry", slot = "finger", points = { coinPct = 6 } },
 }
 
 test("items stay within their rarity's budget", function()
@@ -462,22 +464,34 @@ test("items stay within their rarity's budget", function()
     end
 end)
 
-test("items belong to one mercenary, a second slot opens at the highest level", function()
+test("items belong to one mercenary: weapon and armour slot, jewellery from the highest level", function()
     for id, item in pairs(TEST_ITEMS) do MC.Items[id] = item end
     local store = NewStore()
     local id = store.party[1]
+    local entry = store.mercs[id]
     eq(Bounty.GiveItem(store, id, "test_blade"), "new")
-    eq(store.mercs[id].worn[1], "test_blade", "worn at once")
+    eq(entry.worn[1], "test_blade", "worn at once in the weapon slot")
     eq(Bounty.GiveItem(store, id, "test_blade"), "duplicate")
     eq(Bounty.GiveItem(store, id, "test_cloak"), "new")
-    eq(store.mercs[id].worn[2], nil, "one slot below the highest level")
-    assert(not Bounty.WearItem(store, id, 2, "test_cloak"), "no second slot yet")
-    store.mercs[id].level = MC.MAX_LEVEL
-    assert(Bounty.WearItem(store, id, 2, "test_cloak"), "second slot")
+    eq(entry.worn[2], "test_cloak", "armour slot")
+    eq(Bounty.GiveItem(store, id, "test_vest"), "new")
+    eq(entry.worn[2], "test_cloak", "a taken slot stays as it is")
+    eq(Bounty.BagItems(entry)[1], "test_vest")
+    assert(not Bounty.WearItem(store, id, 1, "test_vest"), "armour never in the weapon slot")
+    assert(Bounty.WearItem(store, id, 2, "test_vest"))
+    eq(Bounty.BagItems(entry)[1], "test_cloak", "the cloak back in the bag")
+    eq(Bounty.GiveItem(store, id, "test_ring"), "new")
+    eq(entry.worn[3], nil, "jewellery waits below the highest level")
+    assert(not Bounty.WearItem(store, id, 3, "test_ring"), "no jewellery slot yet")
+    entry.level = MC.MAX_LEVEL
+    assert(Bounty.WearItem(store, id, 3, "test_ring"), "jewellery slot")
     assert(not Bounty.WearItem(store, store.party[2], 1, "test_blade"), "not someone else's item")
-    -- Wearing it in the other slot swaps them.
-    assert(Bounty.WearItem(store, id, 1, "test_cloak"))
-    eq(store.mercs[id].worn[2], "test_blade")
+    assert(Bounty.WearItem(store, id, 2, "test_cloak"))
+    -- A save from before the slots had kinds: a misplaced item goes back to the bag.
+    entry.worn[1] = "test_cloak"
+    assert(Bounty.OwnsItem(entry, "test_cloak"))
+    eq(entry.worn[1], nil)
+    entry.worn[1] = "test_blade"
     local spec = Bounty.MercSpec(store, id)
     assert(math.abs((spec.mods.critChance or 0) - 0.02) < 1e-9, "item bonus in the fight")
     assert(math.abs((spec.mods.resist_fire or 0) - 0.08) < 1e-9, "resistance")
@@ -496,7 +510,9 @@ test("every item can be disenchanted, every formula has known materials", functi
         assert(math.abs(sum - 1) < 1e-9, id .. ": chances add up")
     end
     for id, recipe in pairs(MC.Recipes) do
-        assert(recipe.kind == "weapon" or recipe.kind == "armor", id .. ": kind")
+        local fits = false
+        for _, item in pairs(MC.Items) do fits = fits or MC.RecipeFits(recipe, item) end
+        assert(fits, id .. ": some item takes it")
         assert(#recipe.cost > 0, id .. ": materials")
         for _, cost in ipairs(recipe.cost) do assert(MC.Materials[cost[1]], id .. ": material") end
         for key in pairs(MC.RecipeMods(recipe)) do assert(MC.ITEM_POINT[key], id .. ": bonus " .. key) end
@@ -535,7 +551,7 @@ test("disenchanting fills the bag, formulas turn it into an enchant", function()
     eq(Bounty.DisenchantOwned(store, id, "test_blade"), nil, "worn")
     eq(Bounty.DisenchantOwned(store, store.party[2], "test_cloak"), nil, "someone else's")
 
-    -- Formulas are learnt once; the enchant needs a known formula, the item's kind and the materials.
+    -- Formulas are learnt once; the enchant needs a known formula for the item's slot and the materials.
     local strike = 7788 -- Enchant Weapon - Minor Striking: Strange Dust 2, Greater Magic Essence 1, Small Glimmering Shard 1
     assert(not Bounty.CanEnchant(store, id, "test_blade", strike), "unknown formula")
     assert(Bounty.LearnRecipe(store, strike))
@@ -544,6 +560,13 @@ test("disenchanting fills the bag, formulas turn it into an enchant", function()
     Bounty.AddMaterial(store, 10940, 2)
     Bounty.AddMaterial(store, 10939, 1)
     assert(not Bounty.CanEnchant(store, id, "test_cloak", strike), "a weapon formula on armour")
+    -- A cloak formula fits a cloak only, never a chest piece; jewellery takes none.
+    local cloak = 7771
+    assert(MC.RecipeFits(MC.Recipes[cloak], TEST_ITEMS.test_cloak))
+    assert(not MC.RecipeFits(MC.Recipes[cloak], TEST_ITEMS.test_vest))
+    assert(not MC.Enchantable(TEST_ITEMS.test_ring))
+    assert(MC.RecipeFits(MC.Recipes[7745], { slot = "two-hand" }), "2H formula on a two-hander")
+    assert(not MC.RecipeFits(MC.Recipes[7745], TEST_ITEMS.test_blade), "but not on a one-hander")
     local before = Bounty.MercSpec(store, id).mods.atkPct or 0
     assert(Bounty.Enchant(store, id, "test_blade", strike))
     eq(store.materials[10940], nil, "used up")
@@ -587,6 +610,7 @@ test("comfort bonuses: more experience and coins for the wearer, nothing in the 
     local id = store.party[1]
     local mods = Bounty.WornMods(store.mercs[id])
     eq(mods.xpPct, nil)
+    store.mercs[id].level = MC.MAX_LEVEL
     Bounty.GiveItem(store, id, "test_charm")
     mods = Bounty.WornMods(store.mercs[id])
     assert(math.abs(mods.xpPct - 0.2) < 1e-9 and math.abs(mods.coinPct - 0.1) < 1e-9, "the charm's bonuses")

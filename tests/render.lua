@@ -188,14 +188,15 @@ if Want("items") or Want("itemfound") then
     for id, n in pairs({ [10940] = 14, [10938] = 3, [10978] = 2, [11083] = 5, [11082] = 1, [11084] = 1 }) do
         B.Materials(store)[id] = n
     end
-    B.Enchant(store, merc, 5443, 7418)
+    B.Enchant(store, merc, 5443, 13464)
+    B.LearnRecipe(store, 13464)
+    B.Enchant(store, merc, 5443, 13464)
     if Want("items") then
         mc.mercShown, mc.itemSelMerc = merc, merc
         mc.mercItemsTab = true
-        mc.itemSel = { id = 6463 }
+        mc.itemSel = { id = 5444 }
         mc:ShowView("merc")
         Snap("items")
-        mc.itemSel = { slot = 2 }
         mc.itemPicking = true
         mc:RefreshMercItems()
         Snap("items_pick")

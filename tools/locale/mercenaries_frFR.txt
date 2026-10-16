@@ -822,24 +822,24 @@ MC_ITEMS	Objets
 MC_ITEMS_WORN	Équipés
 MC_ITEMS_BAG	Sac
 MC_ITEMS_NONE	Aucun objet pour l'instant. On les trouve en butin dans les donjons.
-MC_ITEM_SLOT_LOCKED	Second emplacement au niveau %d
-MC_ITEM_EMPTY	Emplacement libre
+MC_ITEM_SLOT_LOCKED	%s : au niveau %d
+MC_ITEM_EMPTY	%s : libre
 MC_ITEM_JEWELRY	Bijou
 MC_ITEM_LEVEL	Niveau d'objet %d
 MC_ITEM_ENCHANT	Enchanté : %s
 MC_ITEM_NO_ENCHANT	Non enchanté
 MC_ITEM_DISENCHANT_INTO	Désenchantement : %s
 MC_ITEM_WEAR	Équiper
-MC_ITEM_WEAR_SLOT	Emplacement %d
 MC_ITEM_REMOVE	Retirer
 MC_ITEM_ENCHANT_BTN	Enchanter
 MC_ITEM_DISENCHANT_BTN	Désenchanter
 MC_ITEM_DISENCHANT_SURE	Vraiment désenchanter ?
 MC_ITEM_PICK_RECIPE	Choisir une formule
 MC_ITEM_NO_RECIPES	Aucune formule connue pour cet objet. On les trouve en butin dans les donjons.
-MC_ITEM_NO_JEWELRY_ENCHANT	Les bijoux ne peuvent pas être enchantés.
 MC_ITEM_FOUND_TITLE	Butin !
 MC_ITEM_FOUND_SUB	Qui le reçoit ? L'objet reste pour toujours avec ce mercenaire.
 MC_ITEM_FOUND_OWNED	L'a déjà : désenchanté
 MC_ITEM_DISENCHANTED	Désenchanté
 MC_ITEM_GOT_MATERIAL	%dx %s dans le sac de matériaux
+MC_ITEM_FOUND_LATER	Équipable au niveau %d
+MC_ITEM_NOT_ENCHANTABLE	Aucun enchantement n'existe pour cet objet.

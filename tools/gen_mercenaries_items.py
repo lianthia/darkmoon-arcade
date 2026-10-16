@@ -44,11 +44,26 @@ STAT_BONUS = {"Strength": "atkPct", "Agility": "critChance", "Stamina": "hpPct",
               "Spirit": "xpPct"}
 RESISTANCES = {"Fire": "fire", "Frost": "frost", "Nature": "nature", "Shadow": "shadow", "Holy": "holy",
                "Arcane": "arcane"}
-WEAPON_SLOTS = {"One-Hand", "Two-Hand", "Main Hand", "Off Hand", "Ranged", "Thrown", "Ranged Right",
-                "Held In Off-hand"}
-ARMOR_SLOTS = {"Head", "Shoulder", "Chest", "Robe", "Waist", "Legs", "Feet", "Wrist", "Hands", "Back",
-               "Shirt", "Tabard"}
-JEWELRY_SLOTS = {"Finger", "Neck", "Trinket"}
+# Classic's equipment slots (as tooltips name them) -> ours. A mercenary has a weapon slot, an armour
+# slot and (from the highest level) a jewellery slot; shirts and tabards fit none and are left out.
+SLOTS = {
+    "One-Hand": "one-hand", "Two-Hand": "two-hand", "Main Hand": "main-hand", "Off Hand": "off-hand",
+    "Ranged": "ranged", "Thrown": "ranged", "Ranged Right": "ranged", "Held In Off-hand": "held",
+    "Head": "head", "Shoulder": "shoulder", "Chest": "chest", "Robe": "chest", "Waist": "waist", "Legs": "legs",
+    "Feet": "feet", "Wrist": "wrist", "Hands": "hands", "Back": "back",
+    "Finger": "finger", "Neck": "neck", "Trinket": "trinket",
+}
+WEAPON_SLOTS = {"one-hand", "two-hand", "main-hand", "off-hand", "ranged", "held"}
+JEWELRY_SLOTS = {"finger", "neck", "trinket"}
+# What a formula enchants, from its name ("Enchant Cloak - ..."): one slot, or "weapon" for any melee
+# weapon (as in Classic: no ranged weapons, no off-hand frills).
+RECIPE_TARGETS = [("2H Weapon", "two-hand"), ("Weapon", "weapon"), ("Bracer", "wrist"), ("Chest", "chest"),
+                  ("Cloak", "back"), ("Boots", "feet"), ("Gloves", "hands"), ("Shield", "shield")]
+MELEE = {"one-hand", "two-hand", "main-hand", "off-hand"}
+
+
+def fits(target, slot):
+    return slot in MELEE if target == "weapon" else slot == target
 
 # Classic's enchanting materials and their tier (1: the first dungeons ... 4: the end of Classic).
 MATERIAL_TIER = {
@@ -141,12 +156,12 @@ def stats_of(html):
         if m:
             key = "school_" + RESISTANCES[m.group(1)]
             stats[key] = max(stats.get(key, 0), 6)
-    slot = next((line for line in lines if line in WEAPON_SLOTS | ARMOR_SLOTS | JEWELRY_SLOTS), None)
-    if slot is None and "Shield" in lines:
-        slot = "Off Hand"
-    kind = "weapon" if slot in WEAPON_SLOTS else "armor" if slot in ARMOR_SLOTS else "jewelry" if slot else None
+    slot = next((SLOTS[line] for line in lines if line in SLOTS), None)
     if "Shield" in lines:
-        kind = "armor"
+        slot = "shield"
+    kind = None
+    if slot:
+        kind = "weapon" if slot in WEAPON_SLOTS else "jewelry" if slot in JEWELRY_SLOTS else "armor"
     return stats, slot, kind
 
 
@@ -184,7 +199,7 @@ def recipe_of(sid, material_names):
     """A formula's kind, bonus and enchanting reagents from its tooltip."""
     en = tooltip("spell", sid, "enUS")
     text = re.sub(r"<[^>]+>", "|", en["tooltip"]).replace("&nbsp;", " ")
-    kind = "weapon" if "Weapon" in en["name"] else "armor"
+    target = next((t for key, t in RECIPE_TARGETS if key in en["name"]), None)
     reagents = text.split("Reagents:", 1)[1] if "Reagents:" in text else ""
     effect = reagents[reagents.find("Permanently"):] if "Permanently" in reagents else text
     cost = []
@@ -198,7 +213,7 @@ def recipe_of(sid, material_names):
         if m:
             bonus = "resist_" + (m.group(1) or m.group(2)).lower() if key == "resist" else key
             break
-    return {"name": en["name"], "kind": kind, "bonus": bonus, "cost": cost, "effect": effect.strip("| "),
+    return {"name": en["name"], "target": target, "bonus": bonus, "cost": cost, "effect": effect.strip("| "),
             "tier": max((MATERIAL_TIER[mid] for mid, _ in cost), default=0)}
 
 
@@ -243,8 +258,12 @@ def main():
     recipes, recipe_names, recipe_skipped = {}, {loc: {} for loc in LOCALES}, []
     for sid in RECIPES:
         r = recipe_of(sid, material_names)
-        if not r["bonus"] or not r["cost"]:
+        if not r["bonus"] or not r["cost"] or not r["target"]:
             recipe_skipped.append(f"{sid} {r['name']}: {r['effect']}")
+            continue
+        # Only formulas for slots our loot has (others come with later dungeons).
+        if not any(fits(r["target"], it["slot"]) for it in items.values()):
+            recipe_skipped.append(f"{sid} {r['name']}: no {r['target']} item yet")
             continue
         recipes[sid] = r
         for loc in LOCALES:
@@ -258,13 +277,14 @@ def main():
         "ns.Mercenaries = ns.Mercenaries or {}",
         "local MC = ns.Mercenaries",
         "",
-        "-- kind: weapon, armor or jewelry; points: what the item's budget buys (MC.ITEM_POINT).",
+        "-- kind: the mercenary's slot it fits (weapon, armor or jewelry); slot: its Classic slot (what",
+        "-- formulas enchant); points: what the item's budget buys (MC.ITEM_POINT).",
         "MC.Items = {",
     ]
     for wid in sorted(items):
         it = items[wid]
         points = ", ".join(f"{k} = {v}" for k, v in sorted(it["points"].items()))
-        lines.append(f'    [{wid}] = {{ rarity = "{it["rarity"]}", kind = "{it["kind"]}", level = {it["level"]}, '
+        lines.append(f'    [{wid}] = {{ rarity = "{it["rarity"]}", kind = "{it["kind"]}", slot = "{it["slot"]}", level = {it["level"]}, '
                      f'icon = "Interface\\\\Icons\\\\{it["icon"]}", points = {{ {points} }} }},')
     lines += ["}", "", "-- Per dungeon, its bosses in order with their loot: item and chance in % (Classic's).",
               "MC.DungeonLoot = {"]
@@ -279,11 +299,11 @@ def main():
               "MC.Materials = {"]
     for mid in MATERIAL_TIER:
         lines.append(f'    [{mid}] = {{ tier = {MATERIAL_TIER[mid]}, icon = "Interface\\\\Icons\\\\{materials[mid]}" }},')
-    lines += ["}", "", "-- Enchanting formulas (Classic spell ids): what they enchant, the bonus, their tier and the materials",
-              "-- they use.", "MC.Recipes = {"]
+    lines += ["}", "", "-- Enchanting formulas (Classic spell ids): the slot they enchant (\"weapon\": any melee weapon), the",
+              "-- bonus, their tier and the materials they use.", "MC.Recipes = {"]
     for sid, r in recipes.items():
         cost = ", ".join(f"{{ {mid}, {n} }}" for mid, n in r["cost"])
-        lines.append(f'    [{sid}] = {{ kind = "{r["kind"]}", bonus = "{r["bonus"]}", tier = {r["tier"]}, cost = {{ {cost} }} }},')
+        lines.append(f'    [{sid}] = {{ target = "{r["target"]}", bonus = "{r["bonus"]}", tier = {r["tier"]}, cost = {{ {cost} }} }},')
     lines += ["}", ""]
     for loc in LOCALES:
         lines.append(f'ns.AddStrings("{loc}", {{')
@@ -306,7 +326,7 @@ def main():
     for s in skipped:
         print("  skipped", s)
     for sid, r in recipes.items():
-        print(f"  recipe {sid:6} t{r['tier']} {r['kind']:6} {r['bonus']:14} {r['name']:44} {r['effect'][:70]}")
+        print(f"  recipe {sid:6} t{r['tier']} {r['target']:9} {r['bonus']:14} {r['name']:44} {r['effect'][:70]}")
     for s in recipe_skipped:
         print("  skipped recipe", s)
 

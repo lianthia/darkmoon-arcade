@@ -1,6 +1,7 @@
 -- Items: loot from dungeons (later raids) and rewards of tasks. An item belongs to the mercenary who
--- received it (chosen when it drops) and never moves. A mercenary has one item slot, a second one at
--- the highest level; the items it owns but does not wear wait in its bag.
+-- received it (chosen when it drops) and never moves. A mercenary has a weapon slot and an armour slot,
+-- and from the highest level a jewellery slot; an item fits the slot of its kind. The items it owns but
+-- does not wear wait in its bag (jewellery found earlier waits there for the jewellery slot).
 --
 -- Every item has a small base value (weapons attack, armour health) and bonuses bought from a point
 -- budget per rarity: what one point buys is MC.ITEM_POINT. Items are named and pictured after real
@@ -31,8 +32,18 @@ MC.COMFORT = { xpPct = true, coinPct = true }
 
 MC.Items = MC.Items or {}
 
+-- The slots in order; the last one opens at the highest level.
+MC.ITEM_SLOT_KINDS = { "weapon", "armor", "jewelry" }
+local SLOT_OF = { weapon = 1, armor = 2, jewelry = 3 }
+
+-- How many slots a mercenary has open.
 function MC.ItemSlots(entry)
-    return (entry.level or 1) >= MC.MAX_LEVEL and 2 or 1
+    return (entry.level or 1) >= MC.MAX_LEVEL and 3 or 2
+end
+
+-- The slot an item fits.
+function MC.ItemSlot(item)
+    return SLOT_OF[item.kind]
 end
 
 -- An item's bonuses: its base value plus what its points buy.
@@ -53,6 +64,11 @@ end
 local function Holdings(entry)
     entry.items = entry.items or {}
     entry.worn = entry.worn or {}
+    -- An item in a slot it does not fit (saved before the slots had kinds) goes back to the bag.
+    for slot, id in pairs(entry.worn) do
+        local item = MC.Items[id]
+        if not item or MC.ItemSlot(item) ~= slot then entry.worn[slot] = nil end
+    end
     return entry
 end
 
@@ -63,34 +79,34 @@ function Bounty.OwnsItem(entry, id)
     return false
 end
 
--- Gives a mercenary an item: worn at once in a free slot. An item it already owns comes back as
--- "duplicate" (to be disenchanted); otherwise "new".
+-- Gives a mercenary an item: worn at once when its slot is open and free. An item it already owns
+-- comes back as "duplicate" (to be disenchanted); otherwise "new".
 function Bounty.GiveItem(store, mercId, id)
     local entry = Holdings(Bounty.Entry(store, mercId))
     if Bounty.OwnsItem(entry, id) then return "duplicate" end
     entry.items[#entry.items + 1] = id
-    for slot = 1, MC.ItemSlots(entry) do
-        if not entry.worn[slot] then
-            entry.worn[slot] = id
-            break
-        end
-    end
+    local slot = MC.ItemSlot(MC.Items[id])
+    if slot <= MC.ItemSlots(entry) and not entry.worn[slot] then entry.worn[slot] = id end
     return "new"
 end
 
--- Wears an owned item in `slot` (nil empties it). An item worn in the other slot changes places.
+-- Wears an owned item in its slot (the one worn there goes back to the bag); `id` nil empties `slot`.
 function Bounty.WearItem(store, mercId, slot, id)
     local entry = Holdings(Bounty.Entry(store, mercId))
     if slot < 1 or slot > MC.ItemSlots(entry) then return false end
-    if id and not Bounty.OwnsItem(entry, id) then return false end
-    for other = 1, 2 do
-        if id and entry.worn[other] == id then entry.worn[other] = entry.worn[slot] end
-    end
+    if id and not (Bounty.OwnsItem(entry, id) and MC.ItemSlot(MC.Items[id]) == slot) then return false end
     entry.worn[slot] = id
     return true
 end
 
--- The bonuses of the items a mercenary wears and their enchants (a second slot counts from the
+function Bounty.IsWorn(entry, id)
+    for slot = 1, #MC.ITEM_SLOT_KINDS do
+        if entry.worn and entry.worn[slot] == id then return true end
+    end
+    return false
+end
+
+-- The bonuses of the items a mercenary wears and their enchants (the jewellery slot counts from the
 -- highest level on).
 function Bounty.WornMods(entry)
     local mods = {}
@@ -135,7 +151,7 @@ end
 function Bounty.BagItems(entry)
     local out = {}
     for _, id in ipairs(entry.items or {}) do
-        if not (entry.worn and (entry.worn[1] == id or entry.worn[2] == id)) then out[#out + 1] = id end
+        if not Bounty.IsWorn(entry, id) then out[#out + 1] = id end
     end
     return out
 end
