@@ -211,7 +211,7 @@ function Nav:Paint(b)
     else
         active = window.page == b.opts.page
     end
-    local plate = active and C.itemActive or C.item
+    local plate = active and C.itemActive or (b.hover and C.itemHover or C.item)
     b.bg:SetColor(plate)
     b.label:SetTextColor(unpack(active and C.gold or (b.hover and C.text or C.muted)))
     if b.opts.game then

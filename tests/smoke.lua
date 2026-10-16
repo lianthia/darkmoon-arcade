@@ -431,7 +431,8 @@ DarkmoonArcadeDB.fadeMoving = false
 DarkmoonArcadeDB.newsSeen = "v1.3.1"
 Window.tabButtons.news._scripts.OnClick(Window.tabButtons.news)
 assert(News.frame._shown and News.selected == 1, "newest version first")
-assert(News.tabs[2].mark._shown and not News.tabs[3].mark._shown, "missed versions are marked")
+-- Back from 1.3.1: 1.3.3 and 1.3.2 were missed (the newest is the one being shown), 1.3.1 itself not.
+assert(News.tabs[2].mark._shown and News.tabs[3].mark._shown and not News.tabs[4].mark._shown, "missed versions are marked")
 News.tabs[#ns.News.VERSIONS]._scripts.OnClick(News.tabs[#ns.News.VERSIONS])
 assert(News.selected == #ns.News.VERSIONS, "a version on the left opens it")
 -- The option keeps the tab from opening by itself; the check box on the tab is the same switch.

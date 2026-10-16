@@ -20,6 +20,7 @@ Style.C = {
     edge = Hex("040205"),
     item = Hex("1d1626"),
     itemActive = Hex("241b25"),
+    itemHover = Hex("271e32"),
     text = Hex("f2f1ed"),
     muted = Hex("a3a4ad"),
     dim = Hex("747680"),
@@ -206,7 +207,7 @@ end
 local ListItem = {}
 
 function ListItem.Paint(b)
-    b.bg:SetColor(b.active and C.itemActive or C.item)
+    b.bg:SetColor(b.active and C.itemActive or (b.hover and C.itemHover or C.item))
     b.label:SetTextColor(unpack(b.active and C.gold or (b.hover and C.text or C.muted)))
 end
 

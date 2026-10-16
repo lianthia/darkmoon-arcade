@@ -20,8 +20,25 @@ local CAMP_ART, CAMP_V0, CAMP_V1 = 2821800, 0.255, 0.815
 
 -- Every release, newest first. items: icon and the number of their NEWS_<tag>_<key>_TITLE /
 -- _TEXT (tag: the version without dots); thanks: icon of the band NEWS_<tag>_THANKS;
--- headline: the version has its own NEWS_<tag>_HEADLINE instead of "Patch x.y.z".
+-- headline: the version has its own NEWS_<tag>_HEADLINE instead of "Patch x.y.z"; alpha: marked as a
+-- preview in the list (drop it for the stable release).
 News.VERSIONS = {
+    {
+        -- Released as an alpha first: the list says so next to the number.
+        version = "1.4.0",
+        alpha = true,
+        headline = true,
+        items = {
+            { icon = "INV_Misc_Spyglass_02", key = 1 },
+            { icon = "INV_Jewelry_Talisman_04", key = 2 },
+            { icon = "Spell_Fire_SealOfFire", key = 3 },
+            { icon = "Spell_Fire_FlameBolt", key = 4 },
+            { icon = "Ability_Warrior_BattleShout", key = 5 },
+            { icon = "Spell_Holy_SurgeOfLight", key = 6 },
+            { icon = "Achievement_General", key = 7 },
+            { icon = "INV_Misc_Book_09", key = 8 },
+        },
+    },
     {
         version = "1.3.3",
         thanks = "INV_ValentinesCard02",
@@ -315,7 +332,7 @@ function News:Select(index, quiet)
     for i, b in ipairs(self.tabs) do
         local vi = News.VERSIONS[i]
         local chosen = i == index
-        b.label:SetText(vi.version)
+        b.label:SetText(vi.version .. (vi.alpha and " Alpha" or ""))
         b.sub:SetText(self:Headline(vi))
         b:SetActive(chosen)
         b.mark:SetShown(self.missed[vi.version] == true)
