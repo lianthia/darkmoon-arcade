@@ -940,3 +940,5 @@ MC_Q_bolvar_deadmines_1_TITLE	В Мертвые копи
 MC_Q_bolvar_deadmines_1_TEXT	Сердце братства бьется под Луноручьем. Болвар сам спускается вниз, чтобы остановить его.
 MC_Q_bolvar_deadmines_2_TITLE	Тайна шахтера
 MC_Q_bolvar_deadmines_2_TEXT	Шахтеры шепчутся о некоем Джонсоне, знающем тайные штольни. Проредите ряды братства внизу, и он покажется.
+MC_RESULT_TREASURES	Сокровища
+MC_RESULT_LOOT	Добыча (ждет в лагере)

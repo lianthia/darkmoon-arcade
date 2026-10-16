@@ -940,3 +940,5 @@ MC_Q_bolvar_deadmines_1_TITLE	A las Minas de la Muerte
 MC_Q_bolvar_deadmines_1_TEXT	El corazón de la hermandad late bajo Arroyo de la Luna. Bolvar baja en persona para detenerlo.
 MC_Q_bolvar_deadmines_2_TITLE	El secreto de un minero
 MC_Q_bolvar_deadmines_2_TEXT	Los mineros susurran sobre un tal Johnson que conoce túneles ocultos. Reduce las filas de la hermandad allí abajo y se dejará ver.
+MC_RESULT_TREASURES	Tesoros
+MC_RESULT_LOOT	Botín (espera en el campamento)

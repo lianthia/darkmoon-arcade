@@ -425,6 +425,20 @@ if run then
     if Want("result") then Snap("result_anim") end
     Tick(4)
     if Want("result") then Snap("result") end
+    if Want("result_dungeon") then
+        -- A dungeon's result, as full as it gets: many treasures, a dungeon's loot and formulas.
+        local tr = {}
+        for id in pairs(MC.Treasures) do tr[#tr + 1] = id end
+        table.sort(tr)
+        for i, member in ipairs(run.party) do member.treasures = { tr[i], tr[i + 6] } end
+        run.itemsFound = { 5187, 5444, 5195, 1937, 5200, 5197, 5193, 5191, 6463 }
+        run.recipesFound = { 7786, 7426, 7745 }
+        run.questsReady = { "bolvar_deadmines" }
+        run.zone, run.dungeon = "deadmines", "deadmines"
+        mc:RefreshResult()
+        Snap("result_dungeon")
+        run.itemsFound, run.recipesFound, run.questsReady = nil, nil, nil
+    end
 end
 
 -- An event window, as a mystery shows it.

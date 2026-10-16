@@ -2,6 +2,8 @@ local _, ns = ...
 
 -- English and German so far; the other languages fall back to English until the full release.
 ns.AddStrings("enUS", {
+    MC_RESULT_TREASURES = "Treasures",
+    MC_RESULT_LOOT = "Loot (waits in the camp)",
     MC_DEV_UNLOCK = "Test: unlock",
     MC_ZD_deadmines = "Beneath Moonbrook the Defias Brotherhood builds a warship in an old mine. Fight through miners, goblins and pirates to Edwin VanCleef.",
     MC_DUNGEON = "Dungeon",
@@ -1032,6 +1034,8 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    MC_RESULT_TREASURES = "Schätze",
+    MC_RESULT_LOOT = "Beute (wartet im Lager)",
     MC_DEV_UNLOCK = "Test: freischalten",
     MC_ZD_deadmines = "Unter Mondbruch baut die Defiasbruderschaft in einer alten Mine ein Kriegsschiff. Kämpft euch durch Minenarbeiter, Goblins und Piraten bis zu Edwin van Cleef.",
     MC_DUNGEON = "Dungeon",

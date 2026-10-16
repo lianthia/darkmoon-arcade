@@ -11,6 +11,42 @@ local W, H = MC.W, MC.H
 local PARTY_Y, GAP, SCALE = 300, 124, 0.82
 local STEP = 0.45   -- seconds between two mercenaries' level-up animations
 
+-- The finds of a run as rows of small pictures: treasures, loot and formulas, each under its heading,
+-- side by side; the rarity shows in the frame, the rest in the tooltip.
+local STRIP_Y, STRIP_W, ICON, ICON_GAP, GROUP_GAP = 432, W - 80, 30, 4, 26
+local MAX_ICONS = 40
+
+local function FindIcon(parent, owner)
+    local b = CreateFrame("Button", nil, parent)
+    b:SetSize(ICON, ICON)
+    b.frame = b:CreateTexture(nil, "BORDER")
+    b.frame:SetAllPoints()
+    b.icon = b:CreateTexture(nil, "ARTWORK")
+    b.icon:SetPoint("TOPLEFT", 2, -2)
+    b.icon:SetPoint("BOTTOMRIGHT", -2, 2)
+    b.icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+    b:SetScript("OnEnter", function()
+        if b.kind == "item" then
+            owner:ItemTooltip(b, b.id)
+            GameTooltip:AddLine(L.MC_RESULT_LOOT, 1, 0.82, 0, true)
+            GameTooltip:Show()
+            return
+        end
+        GameTooltip:SetOwner(b, "ANCHOR_TOP")
+        if b.kind == "treasure" then
+            local c = MC.RARITY_COLORS[MC.Treasures[b.id].rarity]
+            GameTooltip:SetText(MC.TreasureName(b.id), c[1], c[2], c[3])
+            GameTooltip:AddLine(Describe.Mods(MC.Treasures[b.id].mods), 1, 1, 1, true)
+        else
+            GameTooltip:SetText(L["MC_F_" .. b.id], 0.4, 0.7, 1)
+            GameTooltip:AddLine(Describe.Mods(MC.RecipeMods(MC.Recipes[b.id])), 1, 1, 1, true)
+        end
+        GameTooltip:Show()
+    end)
+    b:SetScript("OnLeave", GameTooltip_Hide)
+    return b
+end
+
 local function StatTile(parent, icon)
     local f = CreateFrame("Frame", nil, parent)
     f:SetSize(170, 64)
@@ -80,16 +116,24 @@ function Module:CreateResultPage()
         page.members[i] = m
     end
 
+    page.icons, page.heads = {}, {}
+    for i = 1, MAX_ICONS do page.icons[i] = FindIcon(top, self) end
+    for i = 1, 3 do
+        local head = Kit.Ink(top, 11, { 1, 0.82, 0.4 }, "OUTLINE")
+        head:SetJustifyH("LEFT")
+        page.heads[i] = head
+    end
+    -- What else the run brought, in one short line.
     page.lines = Kit.Ink(top, 12, { 1, 0.95, 0.85 }, "OUTLINE")
-    page.lines:SetPoint("TOP", page, "TOP", 0, -408)
+    page.lines:SetPoint("TOP", page, "TOP", 0, -(STRIP_Y + 46))
     page.lines:SetWidth(W - 120)
-    page.lines:SetSpacing(4)
+    page.lines:SetSpacing(3)
 
     local share = Widgets.ShareRow(page, function() return self.lastEntry and self:ShareText(self.lastEntry) end)
-    share:SetPoint("BOTTOM", 0, 50)
+    share:SetPoint("BOTTOMLEFT", 24, 10)
     page.share = share
     local close = Kit.Button(page, 220, 30, "MC_TO_CAMP", function() self:CloseRun() end, "blue")
-    Kit.Place(close, W / 2, H - 22, page)
+    Kit.Place(close, W - 130, H - 22, page)
     self.resultClose = close
 
     page:SetScript("OnUpdate", function(_, dt) self:AnimateResult(dt) end)
@@ -169,7 +213,7 @@ function Module:RefreshResult()
     end
 
     local out = {}
-    -- The treasures of this bounty, rarest first, in their rarity's colour.
+    -- The treasures of this bounty, rarest first; the loot and the formulas of a dungeon.
     local found, rank = {}, {}
     for i, rarity in ipairs(MC.RARITIES) do rank[rarity] = i end
     for _, member in ipairs(run.party) do
@@ -182,23 +226,16 @@ function Module:RefreshResult()
         if ra ~= rb then return ra > rb end
         return a < b
     end)
-    if #found > 0 then
-        local names = {}
-        for _, id in ipairs(found) do names[#names + 1] = MC.TreasureName(id) end
-        out[#out + 1] = L.MC_TREASURES_FOUND:format(table.concat(names, ", "))
+    local loot = {}
+    for _, id in ipairs(run.itemsFound or {}) do
+        if MC.Items[id] then loot[#loot + 1] = id end
     end
-    -- A dungeon's loot (to be handed to a mercenary back in the camp) and formulas learnt.
-    if run.itemsFound and #run.itemsFound > 0 then
-        local names = {}
-        for _, id in ipairs(run.itemsFound) do
-            local c = MC.RARITY_COLORS[MC.Items[id].rarity]
-            names[#names + 1] = ("|cff%02x%02x%02x%s|r"):format(c[1] * 255, c[2] * 255, c[3] * 255, MC.ItemName(id))
-        end
-        out[#out + 1] = L.MC_LOOT_FOUND:format(table.concat(names, ", "))
-    end
-    for _, id in ipairs(run.recipesFound or {}) do
-        out[#out + 1] = "|cff66b3ff" .. L.MC_FORMULA_LEARNT:format(L["MC_F_" .. id]) .. "|r"
-    end
+    table.sort(loot, function(a, b) return (rank[MC.Items[a].rarity] or 0) > (rank[MC.Items[b].rarity] or 0) end)
+    self:LayoutFinds(page, {
+        { kind = "treasure", head = L.MC_RESULT_TREASURES, ids = found },
+        { kind = "item", head = L.MC_RESULT_LOOT, ids = loot },
+        { kind = "formula", head = L.MC_RECIPES, ids = run.recipesFound or {} },
+    })
     -- Tasks this bounty finished: to be handed in at the task board.
     if run.questsReady and #run.questsReady > 0 then
         local names = {}
@@ -221,11 +258,65 @@ function Module:RefreshResult()
         end
         if not run.heroic and r.first then out[#out + 1] = "|cffa335ee" .. L.MC_HEROIC_UNLOCKED .. "|r" end
     end
-    page.lines:SetText(table.concat(out, "\n"))
+    page.lines:SetText(table.concat(out, "   ·   "))
     if run.score > 0 then
         self.lastEntry = { score = run.score, zone = run.zone, heroic = run.heroic or nil }
     end
     page.share:SetShown(run.score > 0)
+end
+
+-- Lays the groups of finds side by side, centred; pictures shrink when there are many.
+function Module:LayoutFinds(page, groups)
+    local shown, total = {}, 0
+    for _, g in ipairs(groups) do
+        if #g.ids > 0 then
+            shown[#shown + 1] = g
+            total = total + #g.ids
+        end
+    end
+    local size = ICON
+    local width = function(s)
+        local w = (#shown - 1) * GROUP_GAP
+        for _, g in ipairs(shown) do w = w + #g.ids * (s + ICON_GAP) - ICON_GAP end
+        return w
+    end
+    while size > 16 and width(size) > STRIP_W do size = size - 2 end
+    total = math.min(total, MAX_ICONS)
+    local x, used = (W - width(size)) / 2, 0
+    for gi, head in ipairs(page.heads) do
+        local g = shown[gi]
+        head:SetShown(g ~= nil)
+        if g then
+            head:ClearAllPoints()
+            head:SetPoint("BOTTOMLEFT", page, "TOPLEFT", x, -(STRIP_Y - 4))
+            head:SetText(g.head)
+            for _, id in ipairs(g.ids) do
+                used = used + 1
+                local b = page.icons[used]
+                if b then
+                    b.kind, b.id = g.kind, id
+                    b:SetSize(size, size)
+                    b:ClearAllPoints()
+                    b:SetPoint("TOPLEFT", page, "TOPLEFT", x, -STRIP_Y)
+                    local rarity = g.kind == "treasure" and MC.Treasures[id].rarity or g.kind == "item" and MC.Items[id].rarity
+                    local c = rarity and MC.RARITY_COLORS[rarity] or { 0.4, 0.7, 1 }
+                    b.frame:SetColorTexture(c[1], c[2], c[3], 0.9)
+                    if g.kind == "treasure" then
+                        b.icon:SetTexture(MC.Treasures[id].icon)
+                    elseif g.kind == "item" then
+                        b.icon:SetTexture(MC.Items[id].icon)
+                    else
+                        local mat = MC.Recipes[id].cost[1][1]
+                        b.icon:SetTexture(MC.Materials[mat].icon)
+                    end
+                    b:Show()
+                end
+                x = x + size + ICON_GAP
+            end
+            x = x - ICON_GAP + GROUP_GAP
+        end
+    end
+    for i = used + 1, MAX_ICONS do page.icons[i]:Hide() end
 end
 
 -- Each level-up: a jump with a golden glow, the level counting up, sparks rising, then the ribbon.

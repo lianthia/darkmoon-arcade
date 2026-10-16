@@ -940,3 +940,5 @@ MC_Q_bolvar_deadmines_1_TITLE	Dans les Mortemines
 MC_Q_bolvar_deadmines_1_TEXT	Le cœur de la confrérie bat sous Ruisselune. Bolvar descend lui-même pour l'arrêter.
 MC_Q_bolvar_deadmines_2_TITLE	Le secret d'un mineur
 MC_Q_bolvar_deadmines_2_TEXT	Les mineurs parlent à voix basse d'un certain Johnson qui connaît des galeries cachées. Réduisez les rangs de la confrérie en bas, et il se montrera.
+MC_RESULT_TREASURES	Trésors
+MC_RESULT_LOOT	Butin (attend au camp)
