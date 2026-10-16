@@ -1,6 +1,7 @@
 -- Tasks and stories: chains of tasks close to the mercenaries' lore. A mercenary can have several
 -- chains; a chain opens once its mercenary is recruited and its `requires` are met (another chain done,
--- a level, an unlock such as a cleared dungeon), so stories can continue. A task is done by playing as
+-- a level, an unlock, a dungeon cleared - `cleared`), so stories can continue and some appear only
+-- after a dungeon's last boss fell. Tasks never lock a dungeon; they may reveal a hidden boss in one. A task is done by playing as
 -- usual; it is then handed in at the task board by the fire (as in WoW), which pays its coins and opens
 -- the next one. The last task of some chains opens a dungeon.
 --
@@ -34,11 +35,10 @@ MC.QUEST_CHAINS = {
         { kind = "clear", zone = "elwynn" },
         { kind = "kill", prefix = "defias_", count = 20, what = "DEFIAS" },
         { kind = "boss", zone = "westfall" },
-        { kind = "level", level = 17, unlock = "deadmines" },
-    } },
-    -- Into the Deadmines after the brotherhood: reveals Miner Johnson there.
-    bolvar_deadmines = { merc = "bolvar", requires = { chain = "bolvar_defias" }, steps = {
         { kind = "dungeon", dungeon = "deadmines" },
+    } },
+    -- After the brotherhood's fall: reveals Miner Johnson in the Deadmines.
+    bolvar_deadmines = { merc = "bolvar", requires = { chain = "bolvar_defias" }, steps = {
         { kind = "kill", prefix = "defias_", zone = "deadmines", count = 30, what = "DEFIAS", unlock = "deadmines_johnson" },
     } },
     mankrik_olgra = { merc = "mankrik", steps = {
@@ -59,16 +59,15 @@ MC.QUEST_CHAINS = {
         { kind = "kill", race = "undead", count = 20, what = "UNDEAD" },
         { kind = "boss", zone = "duskwood" },
     } },
-    -- Into the Wailing Caverns after Naralex's dream: wakes Mutanus at their end.
+    -- After Naralex's dream: wakes Mutanus in the Wailing Caverns.
     hamuul_dream = { merc = "hamuul", requires = { chain = "hamuul_naralex" }, steps = {
-        { kind = "dungeon", dungeon = "wailing" },
         { kind = "kill", prefix = "deviate_", zone = "wailing", count = 30, what = "DEVIATE", unlock = "wailing_mutanus" },
     } },
     hamuul_naralex = { merc = "hamuul", steps = {
         { kind = "clear", zone = "mulgore" },
         { kind = "ability", slot = 2, count = 30 },
         { kind = "kill", race = "beast", zone = "barrens", count = 15, what = "BEAST" },
-        { kind = "level", level = 17, unlock = "wailing" },
+        { kind = "dungeon", dungeon = "wailing" },
     } },
 }
 -- The chains in the order of the collection, a mercenary's chains in the order they follow.
@@ -136,6 +135,7 @@ function Quests.Open(store, chain)
         if req.chain and not Quests.Done(store, req.chain) then return false end
         if req.level and entry.level < req.level then return false end
         if req.unlock and not Quests.Unlocked(store, req.unlock) then return false end
+        if req.cleared and (Bounty.ZoneState(store, req.cleared).normal or 0) == 0 then return false end
     end
     return true
 end

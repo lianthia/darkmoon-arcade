@@ -850,8 +850,6 @@ MC_QUEST_CHAIN_DONE_TEXT	У %s пока нет новых заданий.
 MC_QUEST_OBJECTIVE	Цель
 MC_QUEST_REWARD	Награда
 MC_QUEST_COINS	%d монет для %s
-MC_QUEST_UNLOCK_deadmines	Открывает Мертвые копи
-MC_QUEST_UNLOCK_wailing	Открывает Пещеры Стенаний
 MC_QUEST_TURN_IN	Сдать
 MC_QUEST_READY	Выполнено! Сдайте задание.
 MC_QUEST_READY_SUB	Сдать: %d
@@ -926,7 +924,6 @@ MC_A_greenskin_s	Ядовитый гарпун
 MC_A_cookie_s	Пышка
 MC_ZD_deadmines	Под Луноручьем Братство Справедливости строит в старой шахте боевой корабль. Пробейтесь сквозь шахтеров, гоблинов и пиратов к %s.
 MC_DUNGEON	Подземелье
-MC_DUNGEON_LOCKED	Открывается заданием: %s.
 MC_JOURNAL	Путеводитель
 MC_JOURNAL_HIDDEN	Скрытый босс
 MC_JOURNAL_HIDDEN_HINT	Появится после задания: %s.
@@ -936,10 +933,8 @@ MC_LOOT_FOUND	Добыча: %s
 MC_FORMULA_LEARNT	Изучена формула: %s
 MC_QO_DUNGEON	Пройдите подземелье «%s», когда %s в отряде.
 MC_QUEST_UNLOCK_deadmines_johnson	Открывает шахтера Джонсона в Мертвых копях
-MC_Q_bolvar_deadmines_1_TITLE	В Мертвые копи
-MC_Q_bolvar_deadmines_1_TEXT	Сердце братства бьется под Луноручьем. Болвар сам спускается вниз, чтобы остановить его.
-MC_Q_bolvar_deadmines_2_TITLE	Тайна шахтера
-MC_Q_bolvar_deadmines_2_TEXT	Шахтеры шепчутся о некоем Джонсоне, знающем тайные штольни. Проредите ряды братства внизу, и он покажется.
+MC_Q_bolvar_deadmines_1_TITLE	Тайна шахтера
+MC_Q_bolvar_deadmines_1_TEXT	Шахтеры шепчутся о некоем Джонсоне, знающем тайные штольни. Проредите ряды братства внизу, и он покажется.
 MC_RESULT_TREASURES	Сокровища
 MC_RESULT_LOOT	Добыча (ждет в лагере)
 MC_ITEM_FOUND_FREE	Ячейка свободна
@@ -959,7 +954,7 @@ MC_ZD_wailing	Друид Наралекс мечтал исцелить Степ
 MC_JOURNAL_RARE	Редкий: появляется в %d%% прохождений
 MC_QK_DEVIATE	загадочных существ
 MC_QUEST_UNLOCK_wailing_mutanus	Пробуждает Мутануса Пожирателя в Пещерах Стенаний
-MC_Q_hamuul_dream_1_TITLE	В кошмар
-MC_Q_hamuul_dream_1_TEXT	Хамуул спускается в пещеры, где спит Наралекс. Клыкастые лорды должны пасть, прежде чем удастся достичь сна.
-MC_Q_hamuul_dream_2_TITLE	Пожиратель пробуждается
-MC_Q_hamuul_dream_2_TEXT	Каждое павшее загадочное существо ослабляет хватку кошмара. Когда Наралекс начнет просыпаться, восстанет то, что питается его сном.
+MC_Q_hamuul_dream_1_TITLE	Пожиратель пробуждается
+MC_Q_hamuul_dream_1_TEXT	Каждое павшее загадочное существо ослабляет хватку кошмара. Когда Наралекс начнет просыпаться, восстанет то, что питается его сном.
+MC_NODE_PASS	Проход
+MC_PASS_INFO	Пройти мимо скрытого босса.

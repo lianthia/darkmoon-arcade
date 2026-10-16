@@ -1,12 +1,11 @@
 -- Dungeons: a fixed path where every boss must fall, trash fights between them and a spirit healer only
--- before the last boss, so they are harder than bounties. A task opens each dungeon (store.unlocks);
--- hidden bosses join the path once their own task is done. Every boss drops Classic's loot with
+-- before the last boss, so they are harder than bounties. Dungeons are always open; a hidden boss waits
+-- on a side branch that its task opens (store.unlocks) - before, the party walks past it. Every boss drops Classic's loot with
 -- Classic's chances (ItemData.lua: MC.DungeonLoot) and now and then an enchanting formula.
 --
 -- A dungeon is kept with the zones (MC.Zones[id], dungeon = true) so runs, battles and the result page
 -- work as for bounties; it is not in MC.ZONE_ORDER, so bounty lists and achievements leave it out.
 --   region      the bounty zone whose map shows its entrance; spot: the entrance in that map (0..1)
---   unlock      the store.unlocks key that opens it
 --   encounters  in order: boss, adds, npcs (whose loot it drops), trash before it (elite = an elite
 --               fight), healer before it, hidden = the unlock that reveals it, chance = a rare one that
 --               shows up in that share of the runs (as Classic's rare spawns)
@@ -24,7 +23,7 @@ MC.DUNGEON_ORDER = { "deadmines", "wailing" }
 
 MC.Zones.deadmines = {
     id = "deadmines", dungeon = true, continent = "ek", region = "westfall", spot = { 0.42, 0.74 },
-    min = 17, max = 26, boss = "vancleef", unlock = "deadmines", tier = 1,
+    min = 17, max = 26, boss = "vancleef", tier = 1,
     power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "rhahkzor", adds = { "defias_miner", "defias_overseer" }, npcs = { 644 },
@@ -41,11 +40,11 @@ MC.Zones.deadmines = {
             trash = { "defias_pirate", "defias_squallshaper", "defias_blackguard" }, healer = true },
     },
 }
--- The four Fanglords, Kresh and Skum, Verdan where Naralex sleeps; Mutanus wakes once Naralex's
--- dream is followed (Hamuul's tasks). The Deviate Faerie Dragon roams now and then.
+-- The four Fanglords, Kresh and Skum, Verdan where Naralex sleeps; Mutanus wakes on a side branch once
+-- Naralex's dream is followed (Hamuul's tasks). The Deviate Faerie Dragon roams now and then.
 MC.Zones.wailing = {
     id = "wailing", dungeon = true, continent = "kal", region = "barrens", spot = { 0.46, 0.36 },
-    min = 17, max = 24, boss = "verdan", unlock = "wailing", tier = 1,
+    min = 17, max = 24, boss = "verdan", tier = 1,
     power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "anacondra", adds = { "druid_of_the_fang", "deviate_adder" }, npcs = { 3671 },
@@ -58,8 +57,8 @@ MC.Zones.wailing = {
         { boss = "faeriedragon", adds = { "deviate_venomwing" }, npcs = { 5912 }, chance = 0.35 },
         { boss = "serpentis", adds = { "druid_of_the_fang", "druid_of_the_fang", "deviate_guardian" }, npcs = { 3673 },
             trash = { "deviate_lasher", "deviate_guardian", "deviate_ravager", "evolving_ectoplasm" }, elite = true },
-        { boss = "verdan", adds = { "deviate_lasher", "deviate_lasher", "deviate_lasher" }, npcs = { 5775 }, healer = true },
         { boss = "mutanus", adds = { "deviate_ravager", "deviate_ravager" }, npcs = { 3654 }, hidden = "wailing_mutanus" },
+        { boss = "verdan", adds = { "deviate_lasher", "deviate_lasher", "deviate_lasher" }, npcs = { 5775 }, healer = true },
     },
 }
 
@@ -80,9 +79,10 @@ end
 -- How often a boss teaches an unknown formula.
 Dungeons.FORMULA_CHANCE = { normal = 0.12, heroic = 0.25 }
 
+-- Dungeons are always open (tasks only reveal hidden bosses).
 function Dungeons.IsOpen(store, id)
     local zone = MC.Zones[id]
-    return zone ~= nil and zone.dungeon == true and Quests.Unlocked(store, zone.unlock)
+    return zone ~= nil and zone.dungeon == true
 end
 
 -- The encounters on the path: hidden ones only once revealed.
@@ -117,41 +117,57 @@ local function Roll(rng, pool, count)
 end
 
 -- The path: one stop per layer, linked straight on.
+-- The path: one stop per layer, linked straight on. A hidden boss is a side branch beside a passage:
+-- open once its task is done (optional then), locked before - the party walks past it.
 function Dungeons.GenerateMap(rng, store, zone, heroic)
-    local steps = {}
-    local shown = Dungeons.Encounters(store, zone.id)
     -- A rare encounter shows up in its share of the runs only.
     local present = {}
-    for _, i in ipairs(shown) do
-        local chance = zone.encounters[i].chance
-        if not chance or Random(rng) < chance then present[#present + 1] = i end
+    for i, enc in ipairs(zone.encounters) do
+        if not enc.chance or Random(rng) < enc.chance then present[#present + 1] = i end
     end
-    shown = present
-    for n, i in ipairs(shown) do
+    local last
+    for _, i in ipairs(present) do
+        if not zone.encounters[i].hidden then last = i end
+    end
+    local steps = {}
+    for _, i in ipairs(present) do
         local enc = zone.encounters[i]
-        if enc.trash then steps[#steps + 1] = { kind = enc.elite and "elite" or "fight", pool = enc.trash } end
-        if enc.healer then steps[#steps + 1] = { kind = "healer" } end
-        steps[#steps + 1] = { kind = "boss", encounter = i, final = n == #shown }
+        if enc.trash then steps[#steps + 1] = { { kind = enc.elite and "elite" or "fight", pool = enc.trash } } end
+        if enc.healer then steps[#steps + 1] = { { kind = "healer" } } end
+        if enc.hidden then
+            steps[#steps + 1] = { { kind = "pass" }, { kind = "boss", encounter = i, hidden = enc.hidden } }
+        else
+            steps[#steps + 1] = { { kind = "boss", encounter = i, final = i == last } }
+        end
     end
     local layers = {}
-    for l, step in ipairs(steps) do
+    for l, row in ipairs(steps) do
         local level = Bounty.LayerLevel(zone, heroic, l, #steps)
-        local node = { type = step.kind, level = level, links = l < #steps and { 1 } or {} }
-        if step.kind == "fight" then
-            node.enemies = Roll(rng, step.pool, heroic and 4 or 3)
-        elseif step.kind == "elite" then
-            node.level = math.min(level + 1, Bounty.BossLevel(zone, heroic))
-            node.enemies = Roll(rng, step.pool, 4)
-        elseif step.kind == "boss" then
-            local enc = zone.encounters[step.encounter]
-            node.boss, node.encounter, node.final = enc.boss, step.encounter, step.final
-            node.enemies = {}
-            if enc.adds[1] then node.enemies[#node.enemies + 1] = enc.adds[1] end
-            node.enemies[#node.enemies + 1] = enc.boss
-            if enc.adds[2] then node.enemies[#node.enemies + 1] = enc.adds[2] end
-            if heroic and enc.adds[3] then node.enemies[#node.enemies + 1] = enc.adds[3] end
+        layers[l] = {}
+        for k, step in ipairs(row) do
+            local links = {}
+            if steps[l + 1] then
+                for j = 1, #steps[l + 1] do links[j] = j end
+            end
+            local node = { type = step.kind, level = level, links = links }
+            if step.kind == "fight" then
+                node.enemies = Roll(rng, step.pool, heroic and 4 or 3)
+            elseif step.kind == "elite" then
+                node.level = math.min(level + 1, Bounty.BossLevel(zone, heroic))
+                node.enemies = Roll(rng, step.pool, 4)
+            elseif step.kind == "boss" then
+                local enc = zone.encounters[step.encounter]
+                node.boss, node.encounter, node.final = enc.boss, step.encounter, step.final == true
+                node.hidden = step.hidden
+                node.locked = step.hidden ~= nil and not Quests.Unlocked(store, step.hidden) or nil
+                node.enemies = {}
+                if enc.adds[1] then node.enemies[#node.enemies + 1] = enc.adds[1] end
+                node.enemies[#node.enemies + 1] = enc.boss
+                if enc.adds[2] then node.enemies[#node.enemies + 1] = enc.adds[2] end
+                if heroic and enc.adds[3] then node.enemies[#node.enemies + 1] = enc.adds[3] end
+            end
+            layers[l][k] = node
         end
-        layers[l] = { node }
     end
     return { layers = layers }
 end

@@ -850,8 +850,6 @@ MC_QUEST_CHAIN_DONE_TEXT	%s has no further task for now.
 MC_QUEST_OBJECTIVE	Objective
 MC_QUEST_REWARD	Reward
 MC_QUEST_COINS	%d coins for %s
-MC_QUEST_UNLOCK_deadmines	Opens the Deadmines
-MC_QUEST_UNLOCK_wailing	Opens the Wailing Caverns
 MC_QUEST_TURN_IN	Hand in
 MC_QUEST_READY	Done! Hand it in.
 MC_QUEST_READY_SUB	%d to hand in
@@ -926,7 +924,6 @@ MC_A_greenskin_s	Poisoned Harpoon
 MC_A_cookie_s	Cookie's Cooking
 MC_ZD_deadmines	Beneath Moonbrook the Defias Brotherhood builds a warship in an old mine. Fight through miners, goblins and pirates to Edwin VanCleef.
 MC_DUNGEON	Dungeon
-MC_DUNGEON_LOCKED	Opened by a task of %s.
 MC_JOURNAL	Adventure Guide
 MC_JOURNAL_HIDDEN	Hidden boss
 MC_JOURNAL_HIDDEN_HINT	Revealed by a task of %s.
@@ -936,10 +933,8 @@ MC_LOOT_FOUND	Loot: %s
 MC_FORMULA_LEARNT	Formula learnt: %s
 MC_QO_DUNGEON	Clear %s with %s in the party.
 MC_QUEST_UNLOCK_deadmines_johnson	Reveals Miner Johnson in the Deadmines
-MC_Q_bolvar_deadmines_1_TITLE	Into the Deadmines
-MC_Q_bolvar_deadmines_1_TEXT	The brotherhood's heart beats beneath Moonbrook. Bolvar goes down himself to stop it.
-MC_Q_bolvar_deadmines_2_TITLE	A Miner's Secret
-MC_Q_bolvar_deadmines_2_TEXT	The miners whisper of one Johnson who knows hidden shafts. Thin the brotherhood's ranks below, and he will show himself.
+MC_Q_bolvar_deadmines_1_TITLE	A Miner's Secret
+MC_Q_bolvar_deadmines_1_TEXT	The miners whisper of one Johnson who knows hidden shafts. Thin the brotherhood's ranks below, and he will show himself.
 MC_RESULT_TREASURES	Treasures
 MC_RESULT_LOOT	Loot (waits in the camp)
 MC_ITEM_FOUND_FREE	Slot free
@@ -959,7 +954,7 @@ MC_ZD_wailing	The druid Naralex dreamt of healing the Barrens and fell into a ni
 MC_JOURNAL_RARE	Rare: appears in %d%% of runs
 MC_QK_DEVIATE	deviate creatures
 MC_QUEST_UNLOCK_wailing_mutanus	Wakes Mutanus the Devourer in the Wailing Caverns
-MC_Q_hamuul_dream_1_TITLE	Into the Nightmare
-MC_Q_hamuul_dream_1_TEXT	Hamuul goes down into the caverns where Naralex sleeps. The Fanglords must fall before the dream can be reached.
-MC_Q_hamuul_dream_2_TITLE	The Devourer Stirs
-MC_Q_hamuul_dream_2_TEXT	Every deviate creature that falls loosens the nightmare's grip. When Naralex begins to wake, the thing that feeds on his dream will rise.
+MC_Q_hamuul_dream_1_TITLE	The Devourer Stirs
+MC_Q_hamuul_dream_1_TEXT	Every deviate creature that falls loosens the nightmare's grip. When Naralex begins to wake, the thing that feeds on his dream will rise.
+MC_NODE_PASS	Passage
+MC_PASS_INFO	Walk on past the hidden boss.

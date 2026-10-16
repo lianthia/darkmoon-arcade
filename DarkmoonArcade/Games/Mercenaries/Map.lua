@@ -31,6 +31,7 @@ local NODE_ICON = {
     elite = "Interface\\Icons\\INV_Misc_Head_Dragon_01",
     healer = "Interface\\Icons\\Spell_Holy_Resurrection",
     mystery = "Interface\\Icons\\INV_Misc_QuestionMark",
+    pass = "Interface\\Icons\\Ability_Tracking",
 }
 local MYSTERY_ICON = {
     stranger = "Interface\\Icons\\INV_Misc_Head_Human_01", sabotage = "Interface\\Icons\\INV_Misc_Bomb_04",
@@ -38,7 +39,8 @@ local MYSTERY_ICON = {
     bonus = "Interface\\Icons\\INV_Misc_Coin_02", recruit = "Interface\\Icons\\Achievement_Character_Human_Male",
 }
 MC.MYSTERY_ICON = MYSTERY_ICON
-local NODE_METAL = { boss = "gold", elite = "gold", fight = "bronze", healer = "silver", boon = "silver", mystery = "silver" }
+local NODE_METAL = { boss = "gold", elite = "gold", fight = "bronze", healer = "silver", boon = "silver", mystery = "silver",
+    pass = "bronze" }
 
 local function DarkPanel(parent, x, y, w, h)
     local p = CreateFrame("Frame", nil, parent)
@@ -218,7 +220,10 @@ function Module:NodePoint(run, layer, index)
     local y = height - PATH_BOTTOM - (layer - 1) * spacing
     local count = #layers[layer]
     local x = ART_W / 2 + (index - (count + 1) / 2) * NODE_GAP
-    if run.dungeon then x = ART_W / 2 + math.sin((layer - 1) * WIND_STEP) * WIND end
+    if run.dungeon then
+        x = ART_W / 2 + math.sin((layer - 1) * WIND_STEP) * WIND * (count > 1 and 0.6 or 1)
+            + (index - (count + 1) / 2) * NODE_GAP
+    end
     return x, y
 end
 
@@ -298,6 +303,7 @@ local function NodeSize(node)
 end
 
 function Module:NodeIcon(run, node, visited)
+    if node.type == "boss" and node.locked then return NODE_ICON.mystery end
     if node.type == "boss" then
         local boss = node.boss or MC.Zones[run.zone].boss
         return "Interface\\Icons\\" .. (MC.BOSS_ICON[boss] or "INV_Misc_Bone_HumanSkull_01"), MC.Enemies[boss].display
@@ -499,6 +505,8 @@ function Module:ShowNodeInfo(layer, index)
             lines[#lines + 1] = L.MC_MYSTERY_INFO
         elseif kind == "healer" then
             lines[#lines + 1] = L.MC_HEALER_INFO
+        elseif kind == "pass" then
+            lines[#lines + 1] = L.MC_PASS_INFO
         end
     end
     view.infoText:SetText(table.concat(lines, "\n"))

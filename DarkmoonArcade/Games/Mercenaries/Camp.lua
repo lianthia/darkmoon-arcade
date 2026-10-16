@@ -436,10 +436,6 @@ function Module:BuildTravel()
             GameTooltip:AddLine(L["MC_E_" .. zone.boss], 0.8, 0.8, 0.8)
             if zone.dungeon then
                 GameTooltip:AddLine(L.MC_DUNGEON, 0.4, 0.7, 1)
-                if not MC.Dungeons.IsOpen(self:Store(), pin.zone) then
-                    local merc = MC.Dungeons.UnlockedBy(zone.unlock)
-                    GameTooltip:AddLine(L.MC_DUNGEON_LOCKED:format(merc and Describe.MercName(merc) or "?"), 1, 0.4, 0.3, true)
-                end
             end
             GameTooltip:Show()
         end)
@@ -539,7 +535,6 @@ function Module:BuildBossPanel(view)
         if not (zone and zone.dungeon) then return end
         local store = self:Store()
         store.unlocks = store.unlocks or {}
-        store.unlocks[zone.unlock] = true
         for _, enc in ipairs(zone.encounters) do
             if enc.hidden then store.unlocks[enc.hidden] = true end
         end
@@ -689,10 +684,9 @@ function Module:RefreshTravel(resetView)
             used = used + 1
             local pin = view.pins[used]
             pin.zone, pin.region = did, self.travelRegion
-            local open = MC.Dungeons.IsOpen(store, did)
             local state = Bounty.ZoneState(store, did)
             pin:SetIcon("Interface\\Icons\\" .. DUNGEON_ICON)
-            pin.icon:SetDesaturated(not open)
+            pin.icon:SetDesaturated(false)
             pin:SetMetal(state.heroic > 0 and "gold" or (state.normal > 0 and "silver" or "bronze"))
             pin.check:SetShown(state.normal > 0)
             pin.label:SetText(Describe.ZoneName(did))
@@ -759,11 +753,6 @@ function Module:RefreshBossPanel()
     if zone.dungeon then
         panel.name.text:SetText(Describe.ZoneName(zid))
         panel.levels:SetText(L.MC_DUNGEON .. "  ·  " .. L.MC_LEVEL_RANGE:format(zone.min, zone.max))
-        if not MC.Dungeons.IsOpen(store, zid) then
-            local merc = MC.Dungeons.UnlockedBy(zone.unlock)
-            panel.choose:SetEnabled(false)
-            panel.warning:SetText(L.MC_DUNGEON_LOCKED:format(merc and Describe.MercName(merc) or "?"))
-        end
     end
 end
 

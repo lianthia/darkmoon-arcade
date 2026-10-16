@@ -850,8 +850,6 @@ MC_QUEST_CHAIN_DONE_TEXT	%s n'a pas d'autre tâche pour l'instant.
 MC_QUEST_OBJECTIVE	Objectif
 MC_QUEST_REWARD	Récompense
 MC_QUEST_COINS	%d pièces pour %s
-MC_QUEST_UNLOCK_deadmines	Ouvre les Mortemines
-MC_QUEST_UNLOCK_wailing	Ouvre les cavernes des Lamentations
 MC_QUEST_TURN_IN	Rendre
 MC_QUEST_READY	Accomplie ! Rendez-la.
 MC_QUEST_READY_SUB	%d à rendre
@@ -926,7 +924,6 @@ MC_A_greenskin_s	Harpon empoisonné
 MC_A_cookie_s	Cuisine de Macaron
 MC_ZD_deadmines	Sous Ruisselune, la Confrérie défias construit un navire de guerre dans une vieille mine. Frayez-vous un chemin parmi mineurs, gobelins et pirates jusqu'à %s.
 MC_DUNGEON	Donjon
-MC_DUNGEON_LOCKED	S'ouvre avec une tâche de %s.
 MC_JOURNAL	Guide de l'aventurier
 MC_JOURNAL_HIDDEN	Boss caché
 MC_JOURNAL_HIDDEN_HINT	Apparaît après une tâche de %s.
@@ -936,10 +933,8 @@ MC_LOOT_FOUND	Butin : %s
 MC_FORMULA_LEARNT	Formule apprise : %s
 MC_QO_DUNGEON	Terminez %s avec %s dans le groupe.
 MC_QUEST_UNLOCK_deadmines_johnson	Révèle le mineur Johnson dans les Mortemines
-MC_Q_bolvar_deadmines_1_TITLE	Dans les Mortemines
-MC_Q_bolvar_deadmines_1_TEXT	Le cœur de la confrérie bat sous Ruisselune. Bolvar descend lui-même pour l'arrêter.
-MC_Q_bolvar_deadmines_2_TITLE	Le secret d'un mineur
-MC_Q_bolvar_deadmines_2_TEXT	Les mineurs parlent à voix basse d'un certain Johnson qui connaît des galeries cachées. Réduisez les rangs de la confrérie en bas, et il se montrera.
+MC_Q_bolvar_deadmines_1_TITLE	Le secret d'un mineur
+MC_Q_bolvar_deadmines_1_TEXT	Les mineurs parlent à voix basse d'un certain Johnson qui connaît des galeries cachées. Réduisez les rangs de la confrérie en bas, et il se montrera.
 MC_RESULT_TREASURES	Trésors
 MC_RESULT_LOOT	Butin (attend au camp)
 MC_ITEM_FOUND_FREE	Emplacement libre
@@ -959,7 +954,7 @@ MC_ZD_wailing	Le druide Naralex rêvait de guérir les Tarides et sombra dans un
 MC_JOURNAL_RARE	Rare : apparaît dans %d%% des parcours
 MC_QK_DEVIATE	créatures déviantes
 MC_QUEST_UNLOCK_wailing_mutanus	Réveille Mutanus le Dévoreur dans les cavernes des Lamentations
-MC_Q_hamuul_dream_1_TITLE	Dans le cauchemar
-MC_Q_hamuul_dream_1_TEXT	Hamuul descend dans les cavernes où dort Naralex. Les seigneurs-crocs doivent tomber avant d'atteindre le rêve.
-MC_Q_hamuul_dream_2_TITLE	Le Dévoreur s'éveille
-MC_Q_hamuul_dream_2_TEXT	Chaque créature déviante qui tombe desserre l'emprise du cauchemar. Quand Naralex commencera à s'éveiller, ce qui se nourrit de son rêve se lèvera.
+MC_Q_hamuul_dream_1_TITLE	Le Dévoreur s'éveille
+MC_Q_hamuul_dream_1_TEXT	Chaque créature déviante qui tombe desserre l'emprise du cauchemar. Quand Naralex commencera à s'éveiller, ce qui se nourrit de son rêve se lèvera.
+MC_NODE_PASS	Passage
+MC_PASS_INFO	Passer devant le boss caché.

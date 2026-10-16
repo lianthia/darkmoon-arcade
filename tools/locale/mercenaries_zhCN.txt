@@ -850,8 +850,6 @@ MC_QUEST_CHAIN_DONE_TEXT	%s暂时没有新的任务。
 MC_QUEST_OBJECTIVE	目标
 MC_QUEST_REWARD	奖励
 MC_QUEST_COINS	%d枚硬币，归%s
-MC_QUEST_UNLOCK_deadmines	开启死亡矿井
-MC_QUEST_UNLOCK_wailing	开启哀嚎洞穴
 MC_QUEST_TURN_IN	交付
 MC_QUEST_READY	已完成！请交付。
 MC_QUEST_READY_SUB	%d个可交付
@@ -926,7 +924,6 @@ MC_A_greenskin_s	毒性鱼叉
 MC_A_cookie_s	烹制甜点
 MC_ZD_deadmines	迪菲亚兄弟会在月溪镇下的旧矿井里建造战舰。杀穿矿工、地精和海盗，直抵%s。
 MC_DUNGEON	地下城
-MC_DUNGEON_LOCKED	完成%s的任务后开启。
 MC_JOURNAL	冒险指南
 MC_JOURNAL_HIDDEN	隐藏首领
 MC_JOURNAL_HIDDEN_HINT	完成%s的任务后出现。
@@ -936,10 +933,8 @@ MC_LOOT_FOUND	战利品：%s
 MC_FORMULA_LEARNT	学会配方：%s
 MC_QO_DUNGEON	通关%s，队伍中需有%s。
 MC_QUEST_UNLOCK_deadmines_johnson	在死亡矿井中揭示矿工约翰森
-MC_Q_bolvar_deadmines_1_TITLE	深入死亡矿井
-MC_Q_bolvar_deadmines_1_TEXT	兄弟会的心脏在月溪镇下跳动。伯瓦尔亲自深入，要将其阻止。
-MC_Q_bolvar_deadmines_2_TITLE	矿工的秘密
-MC_Q_bolvar_deadmines_2_TEXT	矿工们低声谈论一个知道隐秘矿道的约翰森。削减下面兄弟会的人数，他就会现身。
+MC_Q_bolvar_deadmines_1_TITLE	矿工的秘密
+MC_Q_bolvar_deadmines_1_TEXT	矿工们低声谈论一个知道隐秘矿道的约翰森。削减下面兄弟会的人数，他就会现身。
 MC_RESULT_TREASURES	宝藏
 MC_RESULT_LOOT	战利品（在营地等待）
 MC_ITEM_FOUND_FREE	栏位空闲
@@ -959,7 +954,7 @@ MC_ZD_wailing	德鲁伊纳拉雷克斯梦想治愈贫瘠之地，却陷入梦魇
 MC_JOURNAL_RARE	稀有：在%d%%的探索中出现
 MC_QK_DEVIATE	变异生物
 MC_QUEST_UNLOCK_wailing_mutanus	在哀嚎洞穴中唤醒吞噬者穆坦努斯
-MC_Q_hamuul_dream_1_TITLE	深入梦魇
-MC_Q_hamuul_dream_1_TEXT	哈缪尔深入纳拉雷克斯沉睡的洞穴。在抵达梦境之前，必须击败尖牙领主。
-MC_Q_hamuul_dream_2_TITLE	吞噬者苏醒
-MC_Q_hamuul_dream_2_TEXT	每一个倒下的变异生物都会削弱梦魇的控制。当纳拉雷克斯开始苏醒，以他的梦为食的东西将会出现。
+MC_Q_hamuul_dream_1_TITLE	吞噬者苏醒
+MC_Q_hamuul_dream_1_TEXT	每一个倒下的变异生物都会削弱梦魇的控制。当纳拉雷克斯开始苏醒，以他的梦为食的东西将会出现。
+MC_NODE_PASS	通道
+MC_PASS_INFO	绕过隐藏首领继续前进。

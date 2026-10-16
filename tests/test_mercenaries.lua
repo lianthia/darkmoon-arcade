@@ -696,14 +696,13 @@ test("tasks: earlier progress counts, kills and abilities count in battle, handi
     eq(run.questsReady[1], "bolvar_defias", "the result page learns of it")
     eq(Quests.MercsOf(run.questsReady)[1], "bolvar")
     Quests.TurnIn(store, "bolvar_defias")
-    -- Defias 4 (after 3): his level, then the Deadmines open.
+    -- Defias 4 (after 3): into the Deadmines with him; a bounty does not count.
     Quests.State(store, "bolvar_defias").step = 4
-    store.mercs.bolvar.level = 16
+    Quests.OnBounty(store, { zone = "westfall", party = { { id = "bolvar" } } })
     assert(not Quests.IsReady(store, "bolvar_defias"))
-    store.mercs.bolvar.level = 17
+    Quests.OnBounty(store, { zone = "deadmines", dungeon = "deadmines", party = { { id = "bolvar" } } })
     local _, unlock = Quests.TurnIn(store, "bolvar_defias")
-    eq(unlock, "deadmines")
-    assert(Quests.Unlocked(store, "deadmines"))
+    eq(unlock, nil, "tasks never lock a dungeon")
     assert(Quests.Done(store, "bolvar_defias") and not Quests.IsReady(store, "bolvar_defias"), "the chain is done")
     -- Benedictus 2: shields cast in battle.
     Bounty.ZoneState(store, "tirisfal").normal = 1
@@ -731,7 +730,12 @@ test("tasks: a mercenary has several chains, a sequel opens after its chain, old
     assert(not Quests.Open(store, "test_sequel"), "nor below its level")
     store.mercs.bolvar.level = 20
     assert(Quests.Open(store, "test_sequel"))
-    eq(#Quests.ChainsOf(store, "bolvar"), 3, "his Defias chain, its sequel into the Deadmines and the test chain")
+    eq(#Quests.ChainsOf(store, "bolvar"), 3, "his Defias chain, its sequel for Miner Johnson and the test chain")
+    -- A chain can wait for a dungeon's last boss.
+    MC.QUEST_CHAINS.test_sequel.requires = { cleared = "deadmines" }
+    assert(not Quests.Open(store, "test_sequel"), "only after the Deadmines")
+    Bounty.ZoneState(store, "deadmines").normal = 1
+    assert(Quests.Open(store, "test_sequel"))
     -- A dungeon cleared with him counts; a bounty does not.
     local run = { zone = "westfall", party = { { id = "bolvar" } } }
     Quests.OnBounty(store, run)
@@ -751,7 +755,7 @@ end)
 
 -- Dungeons -----------------------------------------------------------------------------------------
 
-test("dungeons: a task opens them, the path is fixed, every boss drops Classic loot, the last ends it", function()
+test("dungeons: always open, the path is fixed, a hidden boss on a side branch, Classic loot, the last ends it", function()
     local Dungeons, Quests = MC.Dungeons, MC.Quests
     for _, id in ipairs(MC.DUNGEON_ORDER) do
         local zone = MC.Zones[id]
@@ -773,27 +777,40 @@ test("dungeons: a task opens them, the path is fixed, every boss drops Classic l
     end
 
     local store = NewStore()
-    eq(Bounty.NewRun(store, "deadmines", false, 5), nil, "closed until the task")
-    store.unlocks = { deadmines = true }
     local run = Bounty.NewRun(store, "deadmines", false, 5)
-    assert(run and run.dungeon == "deadmines")
-    -- One stop per layer; the hidden Miner Johnson is not there yet; the last stop is VanCleef.
-    local bosses = {}
+    assert(run and run.dungeon == "deadmines", "open without any task")
+    -- One stop per layer but for Miner Johnson's branch: a passage beside him, he is locked; the last
+    -- stop is VanCleef.
+    local bosses, branch = {}, nil
     for l, row in ipairs(run.map.layers) do
-        eq(#row, 1, "one stop per layer")
-        if row[1].type == "boss" then bosses[#bosses + 1] = row[1].boss end
-        if l < #run.map.layers then eq(row[1].links[1], 1) end
+        if #row == 2 then
+            branch = l
+            eq(row[1].type, "pass")
+            eq(row[2].boss, "minerjohnson")
+            assert(row[2].locked, "Johnson locked")
+        else
+            eq(#row, 1, "one stop per layer")
+            if row[1].type == "boss" then bosses[#bosses + 1] = row[1].boss end
+        end
     end
+    assert(branch, "Johnson's branch")
     eq(#bosses, 7)
     eq(bosses[#bosses], "vancleef")
-    for _, b in ipairs(bosses) do assert(b ~= "minerjohnson", "Johnson hidden") end
     eq(run.map.layers[#run.map.layers][1].final, true)
+    -- Before the branch both ways are linked, but only the passage can be taken.
+    run.layer, run.index = branch - 1, 1
+    local choices = Bounty.Choices(run)
+    eq(#choices, 1)
+    eq(choices[1].index, 1, "past him")
     store.run = nil
-    store.unlocks.deadmines_johnson = true
+    store.unlocks = { deadmines_johnson = true }
     run = Bounty.NewRun(store, "deadmines", false, 5)
-    local johnson = false
-    for _, row in ipairs(run.map.layers) do johnson = johnson or row[1].boss == "minerjohnson" end
-    assert(johnson, "Johnson once revealed")
+    run.layer, run.index = branch - 1, 1
+    eq(#Bounty.Choices(run), 2, "Johnson or past him once revealed")
+    assert(not run.map.layers[branch][2].locked and run.map.layers[branch][2].final == false)
+    -- The passage just walks on.
+    assert(Bounty.Travel(store, run, branch, 1))
+    eq(run.phase, "map")
 
     -- Loot after a boss: Classic's chances; over many kills of Rhahk'Zor both his items drop, the
     -- common hammer far more often.
@@ -816,7 +833,9 @@ test("Wailing Caverns: Verdan ends it until Hamuul's dream wakes Mutanus; the fa
         local run = Bounty.NewRun(store, "wailing", false, seed)
         local out = {}
         for _, row in ipairs(run.map.layers) do
-            if row[1].type == "boss" then out[#out + 1] = row[1].boss end
+            for _, node in ipairs(row) do
+                if node.type == "boss" and not node.locked then out[#out + 1] = node.boss end
+            end
         end
         return out, run
     end
@@ -830,11 +849,9 @@ test("Wailing Caverns: Verdan ends it until Hamuul's dream wakes Mutanus; the fa
         end
     end
     assert(dragons > 3 and dragons < runs - 5, "the faerie dragon now and then: " .. dragons)
-    -- Hamuul's second chain: the caverns with him, then 30 deviate creatures there.
+    -- Hamuul's second chain: 30 deviate creatures in the caverns.
     Quests.State(store, "hamuul_naralex").step = 5
     assert(Quests.Open(store, "hamuul_dream"))
-    Quests.OnBounty(store, { zone = "wailing", dungeon = "wailing", party = { { id = "hamuul" } } })
-    Quests.TurnIn(store, "hamuul_dream")
     local run = { zone = "wailing", party = { { id = "hamuul" } } }
     for _ = 1, 10 do
         Quests.OnBattle(store, run, { phase = "won", units = {
@@ -855,7 +872,10 @@ test("Wailing Caverns: Verdan ends it until Hamuul's dream wakes Mutanus; the fa
     local _, unlock = Quests.TurnIn(store, "hamuul_dream")
     eq(unlock, "wailing_mutanus")
     local bosses = Bosses(3)
-    eq(bosses[#bosses], "mutanus", "Mutanus at the end once awake")
+    eq(bosses[#bosses], "verdan", "Verdan still ends it")
+    local awake = false
+    for _, b in ipairs(bosses) do awake = awake or b == "mutanus" end
+    assert(awake, "Mutanus on his branch once awake")
 end)
 
 test("dungeons: a boss in the middle offers a treasure, the last completes the run and counts for tasks", function()
@@ -864,7 +884,7 @@ test("dungeons: a boss in the middle offers a treasure, the last completes the r
     local run = Bounty.NewRun(store, "deadmines", false, 9)
     -- Stand at the first boss and win.
     for l, row in ipairs(run.map.layers) do
-        if row[1].type == "boss" then
+        if row[1].type == "boss" and not row[1].locked then
             run.layer, run.index = l, 1
             break
         end
@@ -880,10 +900,10 @@ test("dungeons: a boss in the middle offers a treasure, the last completes the r
     eq(run.phase, "complete")
     eq(Bounty.ZoneState(store, "deadmines").normal, 1, "heroic opens after a clear")
     -- A dungeon task counts the clear.
-    MC.Quests.State(store, "bolvar_defias").step = 5
+    MC.Quests.State(store, "bolvar_defias").step = 4
     run.party = { { id = "bolvar", treasures = {} } }
     MC.Quests.OnBounty(store, run)
-    assert(MC.Quests.IsReady(store, "bolvar_deadmines"), "Into the Deadmines")
+    assert(MC.Quests.IsReady(store, "bolvar_defias"), "Beneath Moonbrook")
 end)
 
 test("resistances and spell damage change hits of their school", function()

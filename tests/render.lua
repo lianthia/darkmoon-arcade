@@ -250,6 +250,16 @@ if Want("dungeon") then
     -- The opening journey ends at the start.
     mc:UpdateMapScroll(10)
     Snap("dungeon_map_start")
+    -- Further on: Miner Johnson's locked branch beside the passage.
+    for l, row in ipairs(store.run.map.layers) do
+        if #row == 2 then
+            store.run.layer, store.run.index = l - 1, 1
+            break
+        end
+    end
+    mc:RefreshMap()
+    mc:UpdateMapScroll(10)
+    Snap("dungeon_map_branch")
     MC.Bounty.Abandon(store, store.run)
     store.run = nil
     -- The Wailing Caverns in the Barrens, Mutanus still asleep.

@@ -399,7 +399,10 @@ function Bounty.Choices(run)
         for i = 1, #layers[target] do out[#out + 1] = { layer = target, index = i } end
         return out
     end
-    for _, j in ipairs(Bounty.Node(run).links) do out[#out + 1] = { layer = run.layer + 1, index = j } end
+    for _, j in ipairs(Bounty.Node(run).links) do
+        local node = Bounty.Node(run, run.layer + 1, j)
+        if not (node and node.locked) then out[#out + 1] = { layer = run.layer + 1, index = j } end
+    end
     return out
 end
 
@@ -541,6 +544,8 @@ local function Visit(store, run, node)
     local kind = node.type
     if kind == "fight" or kind == "elite" or kind == "boss" then
         StartBattle(store, run, node)
+    elseif kind == "pass" then
+        run.phase = "map"
     elseif kind == "healer" then
         run.phase = #Bounty.DeadMembers(run) > 0 and "healer" or "map"
     elseif kind == "boon" then
