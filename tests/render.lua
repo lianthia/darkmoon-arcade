@@ -246,6 +246,9 @@ if Want("dungeon") then
     Snap("dungeon_journal_vancleef")
     mc:StartBounty("deadmines", false)
     Snap("dungeon_map")
+    -- The opening journey ends at the start.
+    mc:UpdateMapScroll(10)
+    Snap("dungeon_map_start")
     MC.Bounty.Abandon(store, store.run)
     store.run, store.unlocks = nil, nil
     mc.travelZone, mc.travelRegion = nil, nil

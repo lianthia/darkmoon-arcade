@@ -1,5 +1,8 @@
 -- The bounty map: coins on a parchment from the start at the bottom to the boss at the top, joined
 -- by dashed paths. The party waits on the left, the chosen encounter on the right.
+-- Every layer of stops keeps at least MIN_SPACING; a longer path (a dungeon) scrolls: the first time a
+-- run's map opens, the view travels from the boss down to the start, as in Hearthstone, and later it
+-- follows the party (the mouse wheel scrolls, too). A dungeon's single path winds left and right.
 
 local _, ns = ...
 local MC = ns.Mercenaries
@@ -11,7 +14,12 @@ local W, H = MC.W, MC.H
 -- Party left, encounter right (both about 190 wide), the path in between.
 local MAP_LEFT, MAP_RIGHT = 206, W - 206
 local MAP_CX = (MAP_LEFT + MAP_RIGHT) / 2
-local MAP_TOP, MAP_BOTTOM = 124, H - 48
+local ART_W, ART_H = MAP_RIGHT - MAP_LEFT, H - 20
+-- Room above the top stop (under the title) and below the start; the least room between layers.
+local PATH_TOP, PATH_BOTTOM, MIN_SPACING = 114, 38, 84
+-- How far a winding path swings from the middle, and how quickly.
+local WIND, WIND_STEP = 130, 0.8
+local SCROLL_EASE, WHEEL_STEP = 6, 70
 local NODE, ELITE_NODE, BOSS_NODE, NODE_GAP = 48, 56, 76, 108
 local MAX_NODES = 32
 local DASH_GAP = 13
@@ -61,12 +69,29 @@ function Module:BuildMap()
     Widgets.Rim(view, art)
     view.art = art
 
-    local dashes = CreateFrame("Frame", nil, view)
+    -- The path lives on a sheet as tall as it needs, seen through the parchment's window.
+    local clip = CreateFrame("Frame", nil, view)
+    clip:SetAllPoints(art)
+    clip:SetClipsChildren(true)
+    clip:SetFrameLevel(art:GetFrameLevel() + 3)
+    clip:EnableMouseWheel(true)
+    clip:SetScript("OnMouseWheel", function(_, delta)
+        self.mapIntro = nil
+        self.mapScrollTarget = self:ClampMapScroll((self.mapScrollTarget or 0) - delta * WHEEL_STEP)
+    end)
+    clip:SetScript("OnUpdate", function(_, elapsed) self:UpdateMapScroll(elapsed) end)
+    local content = CreateFrame("Frame", nil, clip)
+    content:SetSize(ART_W, ART_H)
+    content:SetPoint("TOPLEFT")
+    self.mapClip, self.mapContent = clip, content
+    self.mapScroll, self.mapScrollTarget, self.mapHeight = 0, 0, ART_H
+
+    local dashes = CreateFrame("Frame", nil, content)
     dashes:SetAllPoints()
-    dashes:SetFrameLevel(art:GetFrameLevel() + 4)
+    dashes:SetFrameLevel(clip:GetFrameLevel() + 1)
     self.dashLayer, self.dashes = dashes, {}
 
-    local nodes = CreateFrame("Frame", nil, view)
+    local nodes = CreateFrame("Frame", nil, content)
     nodes:SetAllPoints()
     nodes:SetFrameLevel(dashes:GetFrameLevel() + 2)
     self.nodeLayer = nodes
@@ -166,13 +191,62 @@ function Module:BuildMap()
     view.refresh = function() self:RefreshMap() end
 end
 
+-- The distance between layers and the sheet's height: short paths spread over the window, long ones
+-- keep MIN_SPACING and scroll.
+function Module:MapLayout(run)
+    local n = #run.map.layers
+    local spacing = math.max(MIN_SPACING, (ART_H - PATH_TOP - PATH_BOTTOM) / math.max(1, n - 1))
+    return spacing, math.max(ART_H, PATH_TOP + (n - 1) * spacing + PATH_BOTTOM)
+end
+
+-- A stop's place on the sheet (from its top left). A path of single stops winds.
 function Module:NodePoint(run, layer, index)
     local layers = run.map.layers
-    local n = #layers
-    local y = MAP_BOTTOM - (layer - 1) * (MAP_BOTTOM - MAP_TOP) / math.max(1, n - 1)
+    local spacing, height = self:MapLayout(run)
+    local y = height - PATH_BOTTOM - (layer - 1) * spacing
     local count = #layers[layer]
-    local x = MAP_CX + (index - (count + 1) / 2) * NODE_GAP
+    local x = ART_W / 2 + (index - (count + 1) / 2) * NODE_GAP
+    if run.dungeon then x = ART_W / 2 + math.sin((layer - 1) * WIND_STEP) * WIND end
     return x, y
+end
+
+function Module:ClampMapScroll(v)
+    return math.max(0, math.min(self.mapHeight - ART_H, v))
+end
+
+function Module:SetMapScroll(v)
+    self.mapScroll = v
+    self.mapContent:ClearAllPoints()
+    self.mapContent:SetPoint("TOPLEFT", self.mapClip, "TOPLEFT", 0, v)
+end
+
+-- Eases towards the target; the opening journey runs from the top down at its own pace.
+function Module:UpdateMapScroll(elapsed)
+    local intro = self.mapIntro
+    if intro then
+        intro.t = intro.t + elapsed
+        local p = math.max(0, math.min(1, (intro.t - intro.wait) / intro.duration))
+        p = p * p * (3 - 2 * p)
+        self:SetMapScroll(intro.to * p)
+        if p >= 1 then
+            self.mapIntro = nil
+            self.mapScrollTarget = intro.to
+        end
+        return
+    end
+    local target = self.mapScrollTarget or 0
+    if math.abs(target - self.mapScroll) < 0.5 then
+        if self.mapScroll ~= target then self:SetMapScroll(target) end
+        return
+    end
+    self:SetMapScroll(self.mapScroll + (target - self.mapScroll) * math.min(1, elapsed * SCROLL_EASE))
+end
+
+-- Where the view should rest: the party's stop a little below the middle, so the way ahead shows.
+function Module:MapFocus(run)
+    if run.layer == 0 then return self:ClampMapScroll(self.mapHeight) end
+    local _, y = self:NodePoint(run, run.layer, run.index or 1)
+    return self:ClampMapScroll(y - ART_H * 0.62)
 end
 
 function Module:IsReachable(run, layer, index)
@@ -237,9 +311,29 @@ function Module:RefreshMap()
     local visited = {}
     for _, key in ipairs(run.visited) do visited[key] = true end
     local layers = run.map.layers
-    -- Long paths put the stops closer together; the coins shrink so they never touch.
-    local spacing = (MAP_BOTTOM - MAP_TOP) / math.max(1, #layers - 1)
+    -- The sheet grows with the path; the view opens with the journey from the boss down to the start,
+    -- and moves on with the party.
+    local spacing, height = self:MapLayout(run)
     local fit = math.min(1, (spacing - 8) / NODE)
+    self.mapHeight = height
+    self.mapContent:SetHeight(height)
+    if self.mapRun ~= run then
+        self.mapRun, self.mapFocusLayer = run, run.layer
+        local bottom = self:ClampMapScroll(height)
+        if run.layer == 0 and not run.mapSeen and bottom > 0 then
+            run.mapSeen = true
+            self.mapIntro = { t = 0, wait = 0.5, duration = math.min(3.5, 0.8 + bottom / 220), to = bottom }
+            self:SetMapScroll(0)
+        else
+            self.mapIntro = nil
+            self.mapScrollTarget = self:MapFocus(run)
+            self:SetMapScroll(self.mapScrollTarget)
+        end
+    elseif self.mapFocusLayer ~= run.layer then
+        self.mapFocusLayer = run.layer
+        self.mapIntro = nil
+        self.mapScrollTarget = self:MapFocus(run)
+    end
     -- Stops that can still be reached: the next choices and everything their paths lead to.
     local ahead = {}
     for _, c in ipairs(Bounty.Choices(run)) do ahead[c.layer .. ":" .. c.index] = true end
