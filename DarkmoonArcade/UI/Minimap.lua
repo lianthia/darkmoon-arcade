@@ -71,6 +71,11 @@ local function ShowTooltip(owner, canDrag)
 end
 
 function DarkmoonArcade_OnAddonCompartmentClick(_, mouseButton, menuButton)
+    -- A copy that stepped aside for the dev copy has no window.
+    if ns.standingDown or not ns.Window.frame then
+        if ns.standingDown then ns.Print(ns.L.DEV_COPY_ACTIVE) end
+        return
+    end
     OnClick(mouseButton, menuButton)
 end
 

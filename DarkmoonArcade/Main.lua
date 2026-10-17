@@ -151,6 +151,11 @@ SLASH_DARKMOONARCADE1 = "/arcade"
 SLASH_DARKMOONARCADE2 = "/darkmoon"
 SLASH_DARKMOONARCADE3 = "/mb"
 SlashCmdList.DARKMOONARCADE = function(input)
+    -- A copy that stepped aside (or has not started yet) has no window to open.
+    if ns.standingDown or not Window.frame then
+        if ns.standingDown then ns.Print(L.DEV_COPY_ACTIVE) end
+        return
+    end
     local cmd = strtrim(input or ""):lower()
     if cmd == "" then
         if InCombatLockdown() then
