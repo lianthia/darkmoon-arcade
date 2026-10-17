@@ -41,12 +41,12 @@ News.VERSIONS = {
             { icon = "Spell_Holy_SurgeOfLight", key = 6 },
             { icon = "Achievement_General", key = 7 },
             { icon = "INV_Misc_Book_09", key = 8 },
-            -- What the release brings in later builds.
-            { icon = "INV_Misc_Note_01", key = 9, planned = true },
-            { icon = "INV_Misc_Bone_HumanSkull_01", key = 10, planned = true },
-            { icon = "INV_Sword_24", key = 11, planned = true },
-            { icon = "INV_Enchant_DustStrange", key = 12, planned = true },
-            { icon = "Spell_Holy_SealOfWisdom", key = 13, planned = true },
+            { icon = "INV_Misc_Note_01", key = 9 },
+            { icon = "INV_Misc_Bone_HumanSkull_01", key = 10 },
+            { icon = "INV_Sword_24", key = 11 },
+            { icon = "INV_Enchant_DustStrange", key = 12 },
+            { icon = "Spell_Holy_SealOfWisdom", key = 13 },
+            { icon = "INV_Misc_Head_Dragon_01", key = 14 },
         },
     },
     {
