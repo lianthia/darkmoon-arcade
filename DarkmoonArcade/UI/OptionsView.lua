@@ -196,7 +196,7 @@ function OptionsView:Create(parent)
     -- The installed version at the foot of the list.
     local version = Style.Text(nav, 10, C.dim)
     version:SetPoint("BOTTOMLEFT", 16, 14)
-    Widgets.OnRefresh(function() version:SetText(L.VERSION:format(ns.Version())) end)
+    Widgets.OnRefresh(function() version:SetText(L.VERSION:format(ns.VersionNumber())) end)
     self.version = version
     self:SelectTab(1)
     return view

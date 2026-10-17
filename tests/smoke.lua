@@ -1153,7 +1153,12 @@ for i = 1, #ns.StatsView.entries do
     ns.StatsView.entries[i]._scripts.OnClick(ns.StatsView.entries[i])
     assert(ns.StatsView.selected == i and ns.StatsView.title._text, "statistics page " .. i)
 end
-assert(ns.OptionsView.version._text:find(ns.Version(), 1, true), "the version under the options")
+assert(ns.OptionsView.version._text:find(ns.VersionNumber(), 1, true), "the version under the options")
+-- A packaged copy carries the tag ("v1.4.0"): shown with exactly one "v".
+local savedMeta, savedC = GetAddOnMetadata, C_AddOns
+C_AddOns, GetAddOnMetadata = nil, function() return "v1.4.0" end
+assert(ns.VersionLabel() == "v1.4.0" and ns.VersionNumber() == "1.4.0", "one v in the version")
+C_AddOns, GetAddOnMetadata = savedC, savedMeta
 assert(ns.Stats.TotalTime() > 0 and ns.Stats.TotalRuns() > 0, "play time and runs counted")
 assert(DarkmoonArcadeDB.stats.flights >= 1, "flight with the arcade counted")
 for _, id in ipairs(Arcade.order) do

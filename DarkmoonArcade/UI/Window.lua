@@ -50,6 +50,17 @@ function ns.Version()
     return version
 end
 
+-- The version as people read it: the packager writes the tag ("v1.4.0"), this gives "1.4.0" (or "dev").
+function ns.VersionNumber()
+    return (ns.Version():gsub("^v", ""))
+end
+
+-- The version with exactly one "v" in front ("v1.4.0"), or "dev" for an unpackaged copy.
+function ns.VersionLabel()
+    local number = ns.VersionNumber()
+    return number == "dev" and number or "v" .. number
+end
+
 -- Games are listed by `rank`, the most popular first.
 function Arcade.RegisterGame(game)
     Arcade.games[game.id] = game

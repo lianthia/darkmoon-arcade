@@ -119,7 +119,7 @@ function Nav:Create(window)
     self.footRule:SetHeight(1)
     self.version = Style.Text(frame, 10, C.dim)
     self.version:SetJustifyH("CENTER")
-    self.version:SetText("v" .. ns.Version())
+    self.version:SetText(ns.VersionLabel())
 
     self.width, self.wide = WIDE, true
     self.hoverTime = 0
