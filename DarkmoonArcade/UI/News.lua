@@ -26,6 +26,12 @@ local CAMP_ART, CAMP_V0, CAMP_V1 = 2821800, 0.255, 0.815
 -- is dimmed and says so.
 News.VERSIONS = {
     {
+        version = "1.4.1",
+        items = {
+            { icon = "INV_Misc_Wrench_01", key = 1 },
+        },
+    },
+    {
         version = "1.4.0",
         headline = true,
         -- The Mercenaries key art (910x512 of a 1024x512 texture), round the heroes' faces.
