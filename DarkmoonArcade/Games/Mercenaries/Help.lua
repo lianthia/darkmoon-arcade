@@ -16,6 +16,8 @@ local CHAPTERS = {
     { key = "ROLES", icon = "Interface\\Icons\\INV_Shield_06" },
     { key = "EFFECTS", icon = "Interface\\Icons\\Spell_Holy_DivineIntervention" },
     { key = "MERCS", icon = "Interface\\Icons\\INV_Misc_Coin_02" },
+    { key = "TASKS", icon = "Interface\\Icons\\INV_Misc_Bone_HumanSkull_01" },
+    { key = "ITEMS", icon = "Interface\\Icons\\INV_Enchant_DustStrange" },
     { key = "TREASURES", icon = "Interface\\Icons\\INV_Misc_Bag_10" },
     { key = "CONTROLS", icon = "Interface\\Icons\\INV_Misc_Note_01" },
 }
@@ -53,7 +55,7 @@ function Module:BuildHelp(onBack)
             self:ShowHelpChapter(i)
         end)
         Kit.Hover(b, { grow = 1.03, sound = false })
-        Kit.Place(b, 118, 78 + (i - 1) * 46, page)
+        Kit.Place(b, 118, 76 + (i - 1) * 43, page)
         page.buttons[i] = b
     end
 

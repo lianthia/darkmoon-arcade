@@ -2,7 +2,7 @@
 -- chosen item with
 -- wear, take off, enchant and disenchant), the item tooltip, and the find page that asks who gets a
 -- found item (it stays with that mercenary for good).
--- Until the dungeons bring items, the sheet's tabs only show in the dev copy.
+-- The sheet's tabs show for recruited mercenaries.
 
 local _, ns = ...
 local MC = ns.Mercenaries
@@ -302,7 +302,7 @@ function Module:RefreshMercItems()
     local view, store = self.views.merc, self:Store()
     local id = self.mercShown
     local entry = store.mercs[id] or Bounty.NewEntry(false)
-    local tabs = MC.DEV and entry.owned
+    local tabs = entry.owned
     view.tabAbilities:SetShown(tabs)
     view.tabItems:SetShown(tabs)
     local showItems = tabs and self.mercItemsTab == true

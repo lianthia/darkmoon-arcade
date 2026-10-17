@@ -1,6 +1,5 @@
 -- The task board (by the campfire): the open chains on the left (several per mercenary; finished ones
 -- dimmed at the end, scrolling), the chosen task on a quest page on the right - its story, objective with progress, reward and "Hand in".
--- Until the dungeons come, only the dev copy opens it; the board shows the achievements otherwise.
 
 local _, ns = ...
 local MC = ns.Mercenaries

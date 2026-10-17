@@ -181,9 +181,9 @@ end
 -- the view. Its things are the camp's places; each lights up under the mouse with its name.
 -- The places follow Hearthstone's camp: the tavern wagon holds the mercenaries, the training ground is
 -- the travel point, the fighting pit the highscores, the mailbox the announcements (roadmap), the
--- task board by the campfire the achievements (later the tasks), the book the handbook (help).
--- The workshop table holds the material bag and the formulas (Workshop.lua; for now only in the dev
--- copy, until items come with the dungeons); the merchant cart waits for the dungeons.
+-- task board by the campfire the tasks, the book the handbook (help).
+-- The workshop table holds the material bag and the formulas (Workshop.lua); the merchant cart waits
+-- for later.
 -- x, y: centre, w, h: size, all in camp units (920x560); label (and lx): where its name sits, from
 -- the centre (names near the edges move inwards).
 local SPOTS = {
@@ -280,13 +280,10 @@ function Module:BuildCamp()
     view.collection = Spot(view, labels, SPOTS.collection, function() self:ShowView("collection") end)
     view.roadmap = Spot(view, labels, SPOTS.roadmap, function() self:ShowView("roadmap") end)
     view.scores = Spot(view, labels, SPOTS.scores, function() self.overlay:Show("scores") end)
-    -- The task board: the tasks (dev copy for now, they lead to the dungeons), else the achievements.
-    view.achievements = Spot(view, labels, SPOTS.achievements, function()
-        if MC.DEV then self:ShowView("quests") else self:ShowAchievements() end
-    end)
+    -- The task board: the tasks (the achievements are in the game's sidebar).
+    view.achievements = Spot(view, labels, SPOTS.achievements, function() self:ShowView("quests") end)
     view.help = Spot(view, labels, SPOTS.help, function() self:ShowHelp() end)
     view.workshop = Spot(view, labels, SPOTS.workshop, function() self:ShowView("workshop") end)
-    view.workshop:SetShown(MC.DEV)
 
     self.campSlots = {}
     for i = 1, Bounty.PARTY_SIZE do
@@ -361,17 +358,10 @@ function Module:RefreshCamp()
     view.scores.sub:SetText(best > 0 and L.BEST:format(ns.FormatNumber(best)) or "")
     view.roadmap.plaque.text:SetText(L.MC_ROADMAP)
     view.roadmap.sub:SetText("")
-    if MC.DEV then
-        local ready = MC.Quests.ReadyCount(store)
-        view.achievements.plaque.text:SetText(L.MC_QUESTS)
-        view.achievements.sub:SetText(ready > 0 and L.MC_QUEST_READY_SUB:format(ready) or "")
-        view.achievements.marker:SetShown(ready > 0)
-    else
-        view.achievements.plaque.text:SetText(L.ACHIEVEMENTS)
-        local done, total = ns.Achievements.Count(self.id)
-        view.achievements.sub:SetText(("%d / %d"):format(done, total))
-        view.achievements.marker:SetShown(false)
-    end
+    local ready = MC.Quests.ReadyCount(store)
+    view.achievements.plaque.text:SetText(L.MC_QUESTS)
+    view.achievements.sub:SetText(ready > 0 and L.MC_QUEST_READY_SUB:format(ready) or "")
+    view.achievements.marker:SetShown(ready > 0)
     view.help.plaque.text:SetText(L.HELP)
     view.help.sub:SetText("")
     view.workshop.plaque.text:SetText(L.MC_WORKSHOP)
@@ -737,7 +727,7 @@ function Module:RefreshTravel(resetView)
             groups[dungeon.group] = true
             if picked and picked.group == dungeon.group then did, dungeon = self.travelZone, picked end
         end
-        if MC.DEV and zoomed and here and used < #view.pins then
+        if zoomed and here and used < #view.pins then
             used = used + 1
             local pin = view.pins[used]
             pin.zone, pin.region = did, self.travelRegion
@@ -1163,8 +1153,7 @@ function Module:RefreshMercView()
         card:SetAbility(def.abilities[i], unit, i, nil, def.role)
         card:SetLocked(not unlocked and MC.ABILITY_LEVELS[i] or nil)
         local cost = Bounty.RankCost(entry, i)
-        -- Rank IV comes with the dungeons (only in the development copy until they are released).
-        view.ups[i]:SetShown(entry.owned and cost ~= nil and (entry.ranks[i] < 3 or MC.DEV == true))
+        view.ups[i]:SetShown(entry.owned and cost ~= nil)
         if cost then view.ups[i]:SetText(L.MC_RANK_UP:format(ROMAN[entry.ranks[i] + 1], cost)) end
         view.ups[i]:SetEnabled(Bounty.CanRankUp(store, id, i))
     end

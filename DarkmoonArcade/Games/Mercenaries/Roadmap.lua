@@ -20,8 +20,8 @@ local DASH_GAP = 13
 local MILESTONES = {
     { key = 1, status = "done", icon = "INV_Sword_04", offset = 0 },
     { key = 2, status = "done", icon = "Trade_Engineering", offset = -130 },
-    { key = 4, status = "next", icon = "INV_Scroll_03", offset = 120 },
-    { key = 5, status = "planned", icon = "INV_Misc_Head_Dragon_01", offset = -120 },
+    { key = 4, status = "done", icon = "INV_Scroll_03", offset = 120 },
+    { key = 5, status = "next", icon = "INV_Misc_Head_Dragon_01", offset = -120 },
     { key = 6, status = "planned", icon = "INV_Misc_GroupNeedMore", offset = 120 },
     { key = 3, status = "ongoing", icon = "INV_Misc_Gear_01", offset = -120 },
     { key = 7, status = "idea", icon = "INV_Misc_QuestionMark", offset = 0 },

@@ -26,9 +26,7 @@ local CAMP_ART, CAMP_V0, CAMP_V1 = 2821800, 0.255, 0.815
 -- is dimmed and says so.
 News.VERSIONS = {
     {
-        -- Released as an alpha first: the list says so next to the number.
         version = "1.4.0",
-        alpha = true,
         headline = true,
         -- The Mercenaries key art (910x512 of a 1024x512 texture), round the heroes' faces.
         art = { tex = "launcher/mercenaries", width = 910, height = 512, texWidth = 1024, texHeight = 512, v = 0.4 },
