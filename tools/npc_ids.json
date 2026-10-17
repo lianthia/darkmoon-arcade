@@ -4477,9 +4477,9 @@
  },
  "Instructor Malicia": {
   "de": "Instrukteurin Malicia",
-  "display": 11163,
+  "display": 11069,
   "id": 10505,
-  "info": "display borrowed from Scholomance Necromancer (the Wotlk model is not in the Classic client)",
+  "info": "display from Wowhead Forever",
   "name": "Instructor Malicia",
   "names": {
    "esES": "Instructor Malicia",
@@ -5011,9 +5011,9 @@
  },
  "Lethtendris": {
   "de": "Lethtendris",
-  "display": 11207,
+  "display": 14378,
   "id": 14327,
-  "info": "display borrowed from Highborne Summoner (the Wotlk model is not in the Classic client)",
+  "info": "display from Wowhead Forever",
   "name": "Lethtendris",
   "names": {
    "esES": "Lethtendris",
@@ -8264,9 +8264,9 @@
  },
  "Smolderthorn Axe Thrower": {
   "de": "Axtwerfer der Gluthauer",
-  "display": 6411,
+  "display": 9674,
   "id": 9267,
-  "info": "display borrowed from Sandfury Axe Thrower (the Wotlk model is not in the Classic client)",
+  "info": "display from Wowhead Forever",
   "name": "Smolderthorn Axe Thrower",
   "names": {
    "esES": "Lanzahachas Espina Ahumada",
@@ -8290,9 +8290,9 @@
  },
  "Smolderthorn Mystic": {
   "de": "Mystiker der Gluthauer",
-  "display": 6421,
+  "display": 9709,
   "id": 9239,
-  "info": "display borrowed from Sandfury Witch Doctor (the Wotlk model is not in the Classic client)",
+  "info": "display from Wowhead Forever",
   "name": "Smolderthorn Mystic",
   "names": {
    "esES": "Místico Espina Ahumada",
@@ -8303,9 +8303,9 @@
  },
  "Smolderthorn Seer": {
   "de": "Seher der Gluthauer",
-  "display": 6419,
+  "display": 9715,
   "id": 9269,
-  "info": "display borrowed from Sandfury Shadowcaster (the Wotlk model is not in the Classic client)",
+  "info": "display from Wowhead Forever",
   "name": "Smolderthorn Seer",
   "names": {
    "esES": "Profeta Espina Ahumada",
@@ -9748,9 +9748,9 @@
  },
  "War Master Voone": {
   "de": "Kriegsmeister Voone",
-  "display": 6423,
+  "display": 9733,
   "id": 9237,
-  "info": "display borrowed from Sandfury Blood Drinker (the Wotlk model is not in the Classic client)",
+  "info": "display from Wowhead Forever",
   "name": "War Master Voone",
   "names": {
    "esES": "Maestro de guerra Voone",
