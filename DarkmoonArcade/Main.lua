@@ -72,6 +72,17 @@ end
 
 local events = CreateFrame("Frame")
 local onTaxi = false
+local waitForDev = false
+
+local function Init()
+    InitDB()
+    ns.SetLanguage(ns.db.language)
+    Media.ApplyLanguageFonts()
+    ns.SafeCall("Window", Window.Create, Window)
+    ns.SafeCall("Settings", ns.Settings.Register, ns.Settings)
+    ns.SafeCall("Flight", Flight.Init, Flight)
+    ns.SafeCall("Toast", ns.Toast.Create, ns.Toast)
+end
 
 local function CheckTaxi()
     local nowOnTaxi = UnitOnTaxi("player")
@@ -88,21 +99,26 @@ end
 
 events:SetScript("OnEvent", function(_, event, arg1)
     if event == "ADDON_LOADED" and arg1 == ADDON then
+        events:UnregisterEvent("ADDON_LOADED")
+        -- The dev copy loads after this one, so whether it really runs is only known at login; its
+        -- enable state is just a hint (it can say "on" for a copy switched off in the AddOn list).
         if ns.DevCopyActive() then
-            ns.standingDown = true
-            events:UnregisterAllEvents()
-            C_Timer.After(5, function() ns.Print(L.DEV_COPY_ACTIVE) end)
+            waitForDev = true
             return
         end
-        InitDB()
-        ns.SetLanguage(ns.db.language)
-        Media.ApplyLanguageFonts()
-        ns.SafeCall("Window", Window.Create, Window)
-        ns.SafeCall("Settings", ns.Settings.Register, ns.Settings)
-        ns.SafeCall("Flight", Flight.Init, Flight)
-        ns.SafeCall("Toast", ns.Toast.Create, ns.Toast)
-        events:UnregisterEvent("ADDON_LOADED")
+        Init()
     elseif event == "PLAYER_LOGIN" then
+        if waitForDev then
+            waitForDev = false
+            local isLoaded = C_AddOns and C_AddOns.IsAddOnLoaded or IsAddOnLoaded
+            if isLoaded(DEV_COPY) then
+                ns.standingDown = true
+                events:UnregisterAllEvents()
+                C_Timer.After(5, function() ns.Print(L.DEV_COPY_ACTIVE) end)
+                return
+            end
+            Init()
+        end
         -- The minimap has its final size only once the UI layout is applied.
         ns.SafeCall("Minimap", ns.Minimap.Create, ns.Minimap)
         ns.SafeCall("Guild", ns.Guild.Init)
