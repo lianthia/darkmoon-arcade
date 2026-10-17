@@ -12,6 +12,7 @@
 --   tier        the highest formula tier its bosses drop (heroic one more)
 --   group       wings of one place (the Scarlet Monastery): one portal on the map, the wings picked in
 --               its panel
+--   lootFrom    the loot table it shares (both halves of Stratholme)
 
 local _, ns = ...
 local MC = ns.Mercenaries
@@ -22,7 +23,9 @@ local Dungeons = {}
 MC.Dungeons = Dungeons
 
 MC.DUNGEON_ORDER = { "ragefire", "deadmines", "wailing", "shadowfang", "blackfathom", "stockade", "gnomeregan", "kraul",
-    "sm_graveyard", "sm_library", "sm_armory", "sm_cathedral", "downs", "uldaman" }
+    "sm_graveyard", "sm_library", "sm_armory", "sm_cathedral", "downs", "uldaman",
+    "zulfarrak", "maraudon", "sunken", "brd", "lbrs", "dm_east", "dm_west", "dm_north", "scholomance", "strat_live",
+    "strat_undead" }
 
 MC.Zones.deadmines = {
     id = "deadmines", dungeon = true, continent = "ek", region = "westfall", spot = { 0.42, 0.74 },
@@ -272,6 +275,267 @@ MC.Zones.uldaman = {
     },
 }
 
+-- Zul'Farrak: the Sandfury trolls' city in Tanaris, where Gahz'rilla sleeps in the sacred pool.
+MC.Zones.zulfarrak = {
+    id = "zulfarrak", dungeon = true, continent = "kal", region = "tanaris", spot = { 0.39, 0.21 },
+    min = 44, max = 54, boss = "ukorz", tier = 3,
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "antusul", adds = { "sandfury_shadowcaster", "sandfury_witch_doctor" }, npcs = { 8127 },
+            trash = { "sandfury_axe_thrower", "sandfury_cretin", "sandfury_shadowcaster", "scarab" } },
+        { boss = "zerillis", adds = { "scarab" }, npcs = { 10082 }, chance = 0.35 },
+        { boss = "theka", adds = { "scarab", "scarab" }, npcs = { 7272 } },
+        { boss = "sandarr", adds = { "sandfury_axe_thrower" }, npcs = { 10080 }, chance = 0.35 },
+        { boss = "zumrah", adds = { "zulfarrak_zombie", "zulfarrak_dead_hero", "zulfarrak_zombie" }, npcs = { 7271 },
+            trash = { "zulfarrak_zombie", "zulfarrak_dead_hero", "sandfury_witch_doctor" } },
+        { boss = "dustwraith", adds = { "scarab" }, npcs = { 10081 }, chance = 0.35 },
+        { boss = "sezzziz", adds = { "sandfury_shadowcaster", "sandfury_soul_eater" }, npcs = { 7275 },
+            trash = { "sandfury_blood_drinker", "sandfury_soul_eater", "sandfury_shadowhunter" }, waves = 2, elite = true },
+        { boss = "bly", adds = { "sandfury_shadowhunter", "sandfury_axe_thrower" }, npcs = { 7604 } },
+        { boss = "velratha", adds = { "sandfury_witch_doctor", "sandfury_soul_eater" }, npcs = { 7795 } },
+        { boss = "gahzrilla", adds = { "scarab" }, npcs = { 7273 } },
+        { boss = "ukorz", adds = { "sandfury_blood_drinker", "sandfury_shadowhunter", "sandfury_blood_drinker" }, npcs = { 7267 },
+            trash = { "sandfury_blood_drinker", "sandfury_axe_thrower", "sandfury_shadowhunter" }, healer = true },
+    },
+}
+
+-- Maraudon: the satyr-poisoned caves of Desolace down to Princess Theradras.
+MC.Zones.maraudon = {
+    id = "maraudon", dungeon = true, continent = "kal", region = "desolace", spot = { 0.29, 0.62 },
+    min = 46, max = 55, boss = "theradras", tier = 3,
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "noxxion", adds = { "creeping_sludge", "creeping_sludge" }, npcs = { 13282 },
+            trash = { "putridus_satyr", "putridus_trickster", "creeping_sludge", "barbed_lasher" } },
+        { boss = "razorlash", adds = { "barbed_lasher", "deeprot_tangler" }, npcs = { 12258 },
+            trash = { "deeprot_stomper", "deeprot_tangler", "barbed_lasher" } },
+        { boss = "vyletongue", adds = { "putridus_trickster", "putridus_shadowstalker" }, npcs = { 12236 },
+            trash = { "putridus_satyr", "putridus_shadowstalker", "putridus_trickster" }, waves = 2 },
+        { boss = "meshlok", adds = { "deeprot_stomper" }, npcs = { 12237 }, chance = 0.35 },
+        { boss = "celebras", adds = { "celebrian_dryad", "deeprot_tangler" }, npcs = { 12225 },
+            trash = { "celebrian_dryad", "deeprot_stomper", "subterranean_diemetradon" }, elite = true },
+        { boss = "landslide", adds = { "theradrim_shardling", "theradrim_shardling" }, npcs = { 12203 },
+            trash = { "theradrim_guardian", "theradrim_shardling", "primordial_behemoth" } },
+        { boss = "gizlock", adds = { "theradrim_shardling" }, npcs = { 13601 } },
+        { boss = "rotgrip", adds = { "subterranean_diemetradon" }, npcs = { 13596 },
+            trash = { "subterranean_diemetradon", "primordial_behemoth" } },
+        { boss = "theradras", adds = { "theradrim_guardian", "primordial_behemoth", "theradrim_guardian" }, npcs = { 12201 },
+            trash = { "theradrim_guardian", "primordial_behemoth", "theradrim_shardling" }, healer = true },
+    },
+}
+
+-- The Sunken Temple: the Atal'ai serve Hakkar, the green dragons guard Eranikus's nightmare; the
+-- Avatar of Hakkar waits on a side branch until Vol'jin's task is done.
+MC.Zones.sunken = {
+    id = "sunken", dungeon = true, continent = "ek", region = "swampofsorrows", spot = { 0.7, 0.54 },
+    min = 50, max = 60, boss = "eranikus", tier = 4,
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "atalalarion", adds = { "atalai_warrior", "atalai_warrior" }, npcs = { 8580 },
+            trash = { "atalai_warrior", "atalai_witch_doctor", "mummified_atalai", "murk_worm" } },
+        { boss = "jammalan", adds = { "atalai_priest", "atalai_witch_doctor" }, npcs = { 5710, 5711 },
+            trash = { "atalai_priest", "atalai_corpse_eater", "atalai_deathwalker", "saturated_ooze" }, waves = 2 },
+        { boss = "avatar", adds = { "atalai_priest", "hakkari_frostwing" }, npcs = { 8443 }, hidden = "sunken_avatar" },
+        { boss = "dreamscythe", adds = { "nightmare_whelp", "nightmare_scalebane" }, npcs = { 5721 },
+            trash = { "nightmare_scalebane", "nightmare_wyrmkin", "nightmare_whelp" }, elite = true },
+        { boss = "weaver", adds = { "nightmare_wyrmkin", "nightmare_whelp" }, npcs = { 5720 } },
+        { boss = "morphaz", adds = { "nightmare_scalebane", "nightmare_wyrmkin" }, npcs = { 5719 },
+            trash = { "nightmare_scalebane", "nightmare_wyrmkin", "deep_lurker" } },
+        { boss = "hazzas", adds = { "nightmare_whelp", "nightmare_scalebane" }, npcs = { 5722 } },
+        { boss = "eranikus", adds = { "nightmare_wyrmkin", "nightmare_scalebane", "nightmare_wyrmkin" }, npcs = { 5709 },
+            trash = { "nightmare_wyrmkin", "nightmare_scalebane", "hakkari_frostwing" }, healer = true },
+    },
+}
+
+-- Blackrock Mountain: the Dark Iron city in its depths and the orcs' spire above share one portal.
+MC.Zones.brd = {
+    id = "brd", dungeon = true, group = "blackrock", continent = "ek", region = "searinggorge", spot = { 0.35, 0.85 },
+    min = 52, max = 60, boss = "thaurissan", tier = 4,
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "roccor", adds = { "fireguard" }, npcs = { 9025 },
+            trash = { "anvilrage_guardsman", "anvilrage_warden", "bloodhound" } },
+        { boss = "gerstahn", adds = { "anvilrage_warden", "anvilrage_guardsman" }, npcs = { 9018 },
+            trash = { "anvilrage_warden", "anvilrage_guardsman", "anvilrage_soldier" } },
+        { boss = "grebmar", adds = { "bloodhound", "bloodhound", "bloodhound" }, npcs = { 9319 } },
+        { boss = "grizzle", adds = { "anvilrage_soldier" }, npcs = { 9028 }, chance = 0.35 },
+        { boss = "okthor", adds = { "anvilrage_soldier" }, npcs = { 9030 }, chance = 0.35 },
+        { boss = "loregrain", adds = { "blazing_fireguard", "fireguard" }, npcs = { 9024 }, chance = 0.35 },
+        { boss = "fineous", adds = { "anvilrage_officer", "doomforge_craftsman" }, npcs = { 9056 },
+            trash = { "anvilrage_officer", "anvilrage_medic", "doomforge_craftsman" }, waves = 2 },
+        { boss = "incendius", adds = { "fireguard", "fireguard_destroyer" }, npcs = { 9017 },
+            trash = { "fireguard", "fireguard_destroyer", "blazing_fireguard" }, elite = true },
+        { boss = "angerforge", adds = { "anvilrage_officer", "anvilrage_medic" }, npcs = { 9033 },
+            trash = { "anvilrage_soldier", "anvilrage_medic", "anvilrage_officer" } },
+        { boss = "argelmach", adds = { "ragereaver_golem", "warbringer_construct" }, npcs = { 8983 },
+            trash = { "ragereaver_golem", "warbringer_construct", "molten_war_golem" } },
+        { boss = "panzor", adds = { "molten_war_golem" }, npcs = { 8923 }, chance = 0.35 },
+        { boss = "flamelash", adds = { "blazing_fireguard", "fireguard_destroyer" }, npcs = { 9156 },
+            trash = { "fireguard", "blazing_fireguard", "molten_war_golem" } },
+        { boss = "magmus", adds = { "fireguard_destroyer" }, npcs = { 9938 },
+            trash = { "shadowforge_senator", "anvilrage_guardsman", "fireguard_destroyer" }, waves = 2, elite = true },
+        { boss = "thaurissan", adds = { "shadowforge_senator", "anvilrage_guardsman", "shadowforge_senator" }, npcs = { 9019, 8929 }, healer = true },
+    },
+}
+
+-- Lower Blackrock Spire: ogres, trolls and the Blackrock orcs under Overlord Wyrmthalak.
+MC.Zones.lbrs = {
+    id = "lbrs", dungeon = true, group = "blackrock", continent = "ek", region = "searinggorge", spot = { 0.35, 0.85 },
+    min = 55, max = 60, boss = "wyrmthalak", tier = 4,
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "omokk", adds = { "spirestone_enforcer", "spirestone_mystic" }, npcs = { 9196 },
+            trash = { "spirestone_enforcer", "spirestone_mystic", "spirestone_reaver" } },
+        { boss = "ghok", adds = { "spirestone_reaver" }, npcs = { 9718 }, chance = 0.35 },
+        { boss = "voshgajin", adds = { "smolderthorn_mystic", "smolderthorn_seer" }, npcs = { 9236 },
+            trash = { "smolderthorn_axe_thrower", "smolderthorn_mystic", "smolderthorn_berserker" } },
+        { boss = "voone", adds = { "smolderthorn_berserker", "smolderthorn_axe_thrower" }, npcs = { 9237 },
+            trash = { "smolderthorn_seer", "smolderthorn_berserker", "smolderthorn_axe_thrower" } },
+        { boss = "smolderweb", adds = { "spire_spider", "spire_spider" }, npcs = { 10596 },
+            trash = { "spire_spider", "spirestone_reaver" } },
+        { boss = "crystalfang", adds = { "spire_spider" }, npcs = { 10376 }, chance = 0.35 },
+        { boss = "bannok", adds = { "firebrand_grunt" }, npcs = { 9596 }, chance = 0.35 },
+        { boss = "urok", adds = { "spirestone_warlord", "spirestone_reaver" }, npcs = { 10584 } },
+        { boss = "zigris", adds = { "firebrand_grunt", "firebrand_legionnaire" }, npcs = { 9736 },
+            trash = { "firebrand_grunt", "firebrand_legionnaire", "firebrand_invoker", "scarshield_raider" }, waves = 2 },
+        { boss = "halycon", adds = { "bloodaxe_worg", "bloodaxe_worg" }, npcs = { 10220 },
+            trash = { "bloodaxe_raider", "bloodaxe_worg" } },
+        { boss = "gizrul", adds = { "bloodaxe_worg" }, npcs = { 10268 } },
+        { boss = "wyrmthalak", adds = { "rage_talon_dragonspawn", "firebrand_pyromancer", "rage_talon_dragonspawn" }, npcs = { 9568 },
+            trash = { "rage_talon_dragonspawn", "firebrand_pyromancer", "scarshield_spellbinder" }, elite = true, healer = true },
+    },
+}
+
+-- Dire Maul, the ruined city of Eldre'Thalas in Feralas: three wings, one portal. East: the satyrs
+-- of the Warpwood.
+MC.Zones.dm_east = {
+    id = "dm_east", dungeon = true, group = "diremaul", continent = "kal", region = "feralas", spot = { 0.59, 0.43 },
+    min = 54, max = 60, boss = "alzzin", tier = 4,
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "pusillin", adds = { "wildspawn_trickster" }, npcs = { 14354 },
+            trash = { "warpwood_treant", "warpwood_tangler", "phase_lasher" } },
+        { boss = "zevrim", adds = { "wildspawn_felsworn", "wildspawn_hellcaller" }, npcs = { 11490 },
+            trash = { "wildspawn_rogue", "wildspawn_shadowstalker", "wildspawn_felsworn", "wildspawn_hellcaller" }, waves = 2 },
+        { boss = "hydrospawn", adds = { "phase_lasher" }, npcs = { 13280 } },
+        { boss = "lethtendris", adds = { "wildspawn_hellcaller", "wildspawn_trickster" }, npcs = { 14327 } },
+        { boss = "alzzin", adds = { "warpwood_crusher", "warpwood_stomper", "warpwood_crusher" }, npcs = { 11492 },
+            trash = { "warpwood_crusher", "warpwood_stomper", "wildspawn_trickster" }, elite = true, healer = true },
+    },
+}
+
+-- Dire Maul West: the last Highborne and the demon they bound.
+MC.Zones.dm_west = {
+    id = "dm_west", dungeon = true, group = "diremaul", continent = "kal", region = "feralas", spot = { 0.59, 0.43 },
+    min = 56, max = 60, boss = "tortheldrin", tier = 4,
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "tendris", adds = { "petrified_treant", "petrified_guardian" }, npcs = { 11489 },
+            trash = { "petrified_treant", "petrified_guardian", "warpwood_treant" } },
+        { boss = "illyanna", adds = { "skeletal_highborne" }, npcs = { 11488 },
+            trash = { "skeletal_highborne", "rotting_highborne", "eldreth_spectre" } },
+        { boss = "tsuzee", adds = { "eldreth_spectre" }, npcs = { 11467 }, chance = 0.35 },
+        { boss = "kalendris", adds = { "eldreth_sorcerer" }, npcs = { 11487 },
+            trash = { "eldreth_sorcerer", "eldreth_apparition" } },
+        { boss = "immolthar", adds = { "arcane_aberration", "mana_remnant" }, npcs = { 11496 },
+            trash = { "arcane_aberration", "mana_remnant", "residual_monstrosity" }, waves = 2, elite = true },
+        { boss = "tortheldrin", adds = { "highborne_summoner", "eldreth_sorcerer", "highborne_summoner" }, npcs = { 11486 },
+            trash = { "highborne_summoner", "residual_monstrosity" }, healer = true },
+    },
+}
+
+-- Dire Maul North: the Gordok ogres and their king.
+MC.Zones.dm_north = {
+    id = "dm_north", dungeon = true, group = "diremaul", continent = "kal", region = "feralas", spot = { 0.59, 0.43 },
+    min = 56, max = 60, boss = "gordok", tier = 4,
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "moldar", adds = { "gordok_mastiff", "gordok_brute" }, npcs = { 14326, 14322 },
+            trash = { "gordok_brute", "gordok_mastiff", "gordok_reaver" } },
+        { boss = "fengus", adds = { "gordok_brute", "gordok_reaver" }, npcs = { 14321 },
+            trash = { "gordok_reaver", "gordok_warlock", "gordok_mage_lord" } },
+        { boss = "slipkik", adds = { "gordok_warlock", "gordok_mage_lord" }, npcs = { 14323 } },
+        { boss = "kromcrush", adds = { "gordok_captain", "gordok_reaver" }, npcs = { 14325 },
+            trash = { "gordok_captain", "gordok_brute", "gordok_mage_lord" }, elite = true },
+        { boss = "gordok", adds = { "gordok_captain", "gordok_mage_lord", "gordok_captain" }, npcs = { 11501, 14324 }, healer = true },
+    },
+}
+
+-- Scholomance: the Cult of the Damned's school on Caer Darrow; Death Knight Darkreaver rises on a
+-- side branch once Tirion's task is done.
+MC.Zones.scholomance = {
+    id = "scholomance", dungeon = true, continent = "ek", region = "westernplaguelands", spot = { 0.69, 0.73 },
+    min = 58, max = 60, boss = "gandling", tier = 4,
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "kirtonos", adds = { "scholomance_acolyte", "scholomance_neophyte" }, npcs = { 10506 },
+            trash = { "scholomance_acolyte", "scholomance_neophyte", "scholomance_necrolyte", "risen_guard" } },
+        { boss = "jandice", adds = { "spectral_tutor", "spectral_tutor" }, npcs = { 10503 },
+            trash = { "spectral_tutor", "spectral_researcher", "scholomance_adept" } },
+        { boss = "rattlegore", adds = { "splintered_skeleton", "risen_construct" }, npcs = { 11622, 10433, 10432 },
+            trash = { "risen_construct", "splintered_skeleton", "reanimated_corpse" }, waves = 2, elite = true },
+        { boss = "darkreaver", adds = { "risen_guard", "bone_minion" }, npcs = { 14516 }, hidden = "scholo_darkreaver" },
+        { boss = "ras", adds = { "scholomance_necromancer", "bone_minion" }, npcs = { 10508 },
+            trash = { "scholomance_necromancer", "diseased_ghoul", "unstable_corpse" } },
+        { boss = "malicia", adds = { "scholomance_dark_summoner", "scholomance_necrolyte" }, npcs = { 10505 } },
+        { boss = "theolen", adds = { "plagued_hatchling", "scholomance_adept" }, npcs = { 11261 },
+            trash = { "plagued_hatchling", "necrofiend", "scholomance_occultist" } },
+        { boss = "polkelt", adds = { "diseased_ghoul", "unstable_corpse" }, npcs = { 10901 } },
+        { boss = "ravenian", adds = { "risen_guard", "reanimated_corpse" }, npcs = { 10507 } },
+        { boss = "alexei", adds = { "scholomance_occultist", "risen_guard" }, npcs = { 10504 },
+            trash = { "aspect_of_banality", "aspect_of_corruption", "aspect_of_shadow" } },
+        { boss = "illucia", adds = { "aspect_of_shadow" }, npcs = { 10502 } },
+        { boss = "gandling", adds = { "risen_guard", "scholomance_dark_summoner", "risen_guard" }, npcs = { 1853 },
+            trash = { "scholomance_necromancer", "scholomance_occultist", "risen_construct" }, elite = true, healer = true },
+    },
+}
+
+-- Stratholme, the burnt city: two halves, one portal. The main gate: the Scarlet Crusade's
+-- bastion under Balnazzar in Dathrohan's guise.
+MC.Zones.strat_live = {
+    id = "strat_live", dungeon = true, group = "strat", continent = "ek", region = "easternplaguelands", spot = { 0.27, 0.12 },
+    min = 58, max = 60, boss = "balnazzar", tier = 4, lootFrom = "stratholme",
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "skul", adds = { "skeletal_guardian" }, npcs = { 10393 }, chance = 0.35 },
+        { boss = "unforgiven", adds = { "spectral_citizen", "ghostly_citizen" }, npcs = { 10516 },
+            trash = { "ghostly_citizen", "spectral_citizen", "wailing_banshee", "plague_ghoul" } },
+        { boss = "forresten", adds = { "ghostly_citizen" }, npcs = { 10558 }, chance = 0.35 },
+        { boss = "timmy", adds = { "plague_ghoul", "ghoul_ravener" }, npcs = { 10808 },
+            trash = { "plague_ghoul", "ghoul_ravener", "skeletal_guardian" } },
+        { boss = "malor", adds = { "crimson_monk", "crimson_initiate" }, npcs = { 11032 },
+            trash = { "crimson_conjuror", "crimson_defender", "crimson_gallant", "crimson_guardsman", "crimson_initiate" } },
+        { boss = "willey", adds = { "crimson_rifleman", "crimson_rifleman" }, npcs = { 10997 },
+            trash = { "crimson_rifleman", "crimson_guardsman", "crimson_battle_mage" }, waves = 2 },
+        { boss = "galford", adds = { "crimson_sorcerer", "crimson_priest" }, npcs = { 10811 },
+            trash = { "crimson_sorcerer", "crimson_inquisitor", "crimson_priest" }, elite = true },
+        { boss = "balnazzar", adds = { "crimson_inquisitor", "crimson_battle_mage", "crimson_monk" }, npcs = { 10812, 10813 },
+            trash = { "crimson_monk", "crimson_inquisitor", "crimson_battle_mage" }, healer = true },
+    },
+}
+
+-- Stratholme's service entrance: the Scourge's ziggurats and Baron Rivendare.
+MC.Zones.strat_undead = {
+    id = "strat_undead", dungeon = true, group = "strat", continent = "ek", region = "easternplaguelands", spot = { 0.27, 0.12 },
+    min = 58, max = 60, boss = "rivendare", tier = 4, lootFrom = "stratholme",
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "barthilas", adds = { "crypt_crawler", "undead_scarab" }, npcs = { 10435 },
+            trash = { "crypt_crawler", "crypt_beast", "undead_scarab", "eye_of_naxxramas" } },
+        { boss = "stonespine", adds = { "crypt_beast" }, npcs = { 10809 }, chance = 0.35 },
+        { boss = "anastari", adds = { "wailing_banshee", "spiteful_phantom" }, npcs = { 10436 },
+            trash = { "vengeful_phantom", "spiteful_phantom", "wrath_phantom" } },
+        { boss = "nerubenkan", adds = { "crypt_crawler", "crypt_beast" }, npcs = { 10437 },
+            trash = { "crypt_crawler", "crypt_beast", "undead_scarab" } },
+        { boss = "maleki", adds = { "thuzadin_shadowcaster", "thuzadin_acolyte" }, npcs = { 10438 },
+            trash = { "thuzadin_shadowcaster", "thuzadin_necromancer", "thuzadin_acolyte" }, elite = true },
+        { boss = "ramstein", adds = { "mangled_cadaver", "broken_cadaver" }, npcs = { 10439 },
+            trash = { "bile_spewer", "venom_belcher", "mangled_cadaver", "ravaged_cadaver" }, waves = 2 },
+        { boss = "rivendare", adds = { "black_guard_sentry", "thuzadin_necromancer", "black_guard_sentry" }, npcs = { 10440 },
+            trash = { "black_guard_sentry", "thuzadin_necromancer" }, elite = true, healer = true },
+    },
+}
+
 for _, id in ipairs(MC.DUNGEON_ORDER) do
     local zone = MC.Zones[id]
     -- Every creature of the dungeon, for lists that want the zone's foes.
@@ -309,7 +573,7 @@ function Dungeons.LootOf(id, encounter)
     local enc = MC.Zones[id].encounters[encounter]
     local out = {}
     for _, npc in ipairs(enc.npcs) do
-        for _, boss in ipairs(MC.DungeonLoot[id] or {}) do
+        for _, boss in ipairs(MC.DungeonLoot[MC.Zones[id].lootFrom or id] or {}) do
             if boss.npc == npc then
                 for _, drop in ipairs(boss.drops) do
                     if MC.Items[drop[1]] then out[#out + 1] = { drop[1], drop[2] or 0 } end

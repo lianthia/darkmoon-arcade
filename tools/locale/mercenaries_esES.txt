@@ -1215,3 +1215,92 @@ MC_ZW_sm_graveyard	Cementerio
 MC_ZW_sm_library	Biblioteca
 MC_ZW_sm_armory	Armería
 MC_ZW_sm_cathedral	Catedral
+MC_Z_lbrs	Cumbre de Roca Negra inferior
+MC_Z_dm_east	La Masacre: Este
+MC_ZW_dm_east	Este
+MC_Z_dm_west	La Masacre: Oeste
+MC_ZW_dm_west	Oeste
+MC_Z_dm_north	La Masacre: Norte
+MC_ZW_dm_north	Norte
+MC_Z_strat_live	Stratholme: Puerta principal
+MC_ZW_strat_live	Puerta principal
+MC_Z_strat_undead	Stratholme: Entrada de servicio
+MC_ZW_strat_undead	Entrada de servicio
+MC_ZW_brd	Profundidades de Roca Negra
+MC_ZW_lbrs	Cumbre de Roca Negra inferior
+MC_ZG_blackrock	Montaña Roca Negra
+MC_ZG_diremaul	La Masacre
+MC_ZG_strat	Stratholme
+MC_ZD_zulfarrak	En las arenas de Tanaris los trols Furiarena guardan su ciudad y el estanque sagrado. %s gobierna desde las escaleras del templo.
+MC_ZD_maraudon	Bajo Desolace los sátiros envenenan las cuevas donde mora el espíritu de Zaetar. En lo más hondo aguarda %s.
+MC_ZD_sunken	En el templo hundido los Atal'ai invocan a Hakkar, su dios de la sangre, mientras dragones verdes guardan a %s en su pesadilla.
+MC_ZD_brd	En lo profundo de la Montaña Roca Negra yace la ciudad de los Hierro Negro. %s celebra su corte allí, con la princesa Moira a su lado.
+MC_ZD_lbrs	Sobre la ciudad de los Hierro Negro, los orcos Roca Negra dominan la cumbre con sus ogros y trols. %s los comanda.
+MC_ZD_dm_east	En las ruinas de Eldre'Thalas los sátiros del Bosque Retorcido corrompen la floresta. %s aguarda entre los árboles torcidos.
+MC_ZD_dm_west	Los últimos Altonato se alimentan del poder del demonio que ataron. %s no piensa liberarlo.
+MC_ZD_dm_north	Los ogros Gordok han hecho del ala norte su hogar y coronado a un rey. %s gobierna con el puño más fuerte.
+MC_ZD_scholomance	En Castel Darrow el Culto de los Malditos enseña nigromancia en las viejas criptas de los Barov. %s dirige la escuela.
+MC_ZD_strat_live	Tras la puerta principal de Stratholme la Cruzada Escarlata resiste a la Plaga, dirigida por %s bajo la apariencia del gran cruzado Dathrohan.
+MC_ZD_strat_undead	En la mitad oriental de la ciudad quemada se alzan los zigurats de la Plaga. %s manda desde su matadero.
+MC_QK_SANDFURY	trols Furiarena
+MC_QK_ATALAI	Atal'ai
+MC_QK_HIGHBORNE	Altonato
+MC_QUEST_UNLOCK_sunken_avatar	Invoca al Avatar de Hakkar en el Templo Sumergido
+MC_QUEST_UNLOCK_scholo_darkreaver	Alza a un caballero de la Muerte en Scholomance
+MC_Q_rexxar_zulfarrak_1_TITLE	La ciudad Furiarena
+MC_Q_rexxar_zulfarrak_1_TEXT	Ukorz ha caído, pero los Furiarena aún asaltan las caravanas del desierto. Rexxar entra para acabar con sus cacerías.
+MC_Q_rexxar_zulfarrak_2_TITLE	Polvo y huesos
+MC_Q_rexxar_zulfarrak_2_TEXT	Expulsa a los Furiarena de las calles de su ciudad.
+MC_Q_fandral_maraudon_1_TITLE	La tumba de Zaetar
+MC_Q_fandral_maraudon_1_TEXT	Theradras ha caído, pero los sátiros aún mancillan Maraudon. Fandral baja a purificar las cuevas.
+MC_Q_fandral_maraudon_2_TITLE	La plaga sátira
+MC_Q_fandral_maraudon_2_TEXT	Los sátiros envenenan cada manantial de las cuevas. Dales caza.
+MC_Q_voljin_hakkar_1_TITLE	El dios de la sangre
+MC_Q_voljin_hakkar_1_TEXT	Los Atal'ai intentan traer a Hakkar al mundo. Rompe el culto y su avatar se mostrará en el templo.
+MC_Q_magni_moira_1_TITLE	El captor de mi hija
+MC_Q_magni_moira_1_TEXT	Thaurissan ha muerto y el destino de Moira pesa sobre su padre. Magni entra en persona en la ciudad de los Hierro Negro.
+MC_Q_magni_moira_2_TITLE	La guardia Yunque Iracundo
+MC_Q_magni_moira_2_TEXT	Quebranta a la guardia que mantuvo a Moira lejos de su hogar.
+MC_Q_eitrigg_spire_1_TITLE	Viejo clan, nuevos amos
+MC_Q_eitrigg_spire_1_TEXT	Vermiothalak ha caído, pero los Roca Negra aún sirven a dragones. Eitrigg quiere ver a su antiguo clan con sus propios ojos.
+MC_Q_eitrigg_spire_2_TITLE	Los Marcafuego
+MC_Q_eitrigg_spire_2_TEXT	La legión Marcafuego guarda la cumbre. Rompe sus filas.
+MC_Q_hamuul_alzzin_1_TITLE	El Bosque Retorcido
+MC_Q_hamuul_alzzin_1_TEXT	Alzzin ha caído, pero el Bosque Retorcido aún se retuerce. Hamuul entra para sanar el bosque.
+MC_Q_hamuul_alzzin_2_TITLE	Engendros salvajes
+MC_Q_hamuul_alzzin_2_TEXT	Los sátiros propagan la corrupción. Expúlsalos.
+MC_Q_tyrande_highborne_1_TITLE	Los últimos Altonato
+MC_Q_tyrande_highborne_1_TEXT	Tortheldrin ha caído. Tyrande va a las salas donde el viejo orgullo de su pueblo lo arruinó.
+MC_Q_tyrande_highborne_2_TITLE	Descanso para Eldre'Thalas
+MC_Q_tyrande_highborne_2_TEXT	Libera a los Altonato que aún rondan el ala oeste.
+MC_Q_rexxar_gordok_1_TITLE	Sangre de ogro
+MC_Q_rexxar_gordok_1_TEXT	El rey Gordok ha caído. Rexxar, medio ogro él mismo, quiere ver quién lidera ahora a los Gordok.
+MC_Q_rexxar_gordok_2_TITLE	El puño más fuerte
+MC_Q_rexxar_gordok_2_TEXT	Entre ogros gobierna el más fuerte. Muéstrales quién es.
+MC_Q_tirion_darkreaver_1_TITLE	El caballero de la Muerte
+MC_Q_tirion_darkreaver_1_TEXT	Scholomance alza a sus muertos para el regreso de un caballero de la Muerte. Da descanso a suficientes y el caballero de la Muerte vendrá a por ti.
+MC_Q_taelan_balnazzar_1_TITLE	El rostro de mi padre
+MC_Q_taelan_balnazzar_1_TEXT	Balnazzar llevaba el rostro del padre de Taelan para dirigir la Cruzada. Ya no está, y Taelan regresa a Stratholme.
+MC_Q_taelan_balnazzar_2_TITLE	Cruzados engañados
+MC_Q_taelan_balnazzar_2_TEXT	Los cruzados aún luchan por una mentira. Acaba con ello.
+MC_Q_sylvanas_rivendare_1_TITLE	El matadero del barón
+MC_Q_sylvanas_rivendare_1_TEXT	Osahendido sirvió al Rey Exánime hasta su último aliento. Sylvanas entra en su ciudad para que nadie ocupe su lugar.
+MC_Q_sylvanas_rivendare_2_TITLE	No más Plaga
+MC_Q_sylvanas_rivendare_2_TEXT	Cada siervo de la Plaga que cae debilita el dominio del Rey Exánime sobre el este.
+MC_A_zumrah_s	Guardia de Zum'rah
+MC_A_sezzziz_s	Alarido psíquico
+MC_A_noxxion_s	Lluvia tóxica
+MC_A_landslide_s	Mamporro
+MC_A_jammalan_s	Maleficio de Jammal'an
+MC_A_avatar_s	Provocar locura
+MC_A_incendius_s	Tormenta de Fuego
+MC_A_magmus_s	Ráfaga abrasadora
+MC_A_smolderweb_s	Cristalizar
+MC_A_immolthar_s	Ojo de Immol'thar
+MC_A_tortheldrin_s	Huracán
+MC_A_jandice_s	Maldición de sangre
+MC_A_ras_s	Nova de escalofrío
+MC_A_timmy_s	Garra famélica
+MC_A_balnazzar_s	Dominación
+MC_A_anastari_s	Posesión
+MC_A_ramstein_s	Atropello

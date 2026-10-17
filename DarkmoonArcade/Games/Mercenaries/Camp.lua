@@ -532,10 +532,10 @@ function Module:BuildBossPanel(view)
     end
     panel.wingPrev = Kit.Arrow(panel, -1, function() Wing(-1) end)
     panel.wingPrev:SetSize(26, 26)
-    panel.wingPrev:SetPoint("RIGHT", panel.levels, "LEFT", -4, 0)
+    panel.wingPrev:SetPoint("CENTER", panel.levels, "CENTER", -106, 0)
     panel.wingNext = Kit.Arrow(panel, 1, function() Wing(1) end)
     panel.wingNext:SetSize(26, 26)
-    panel.wingNext:SetPoint("LEFT", panel.levels, "RIGHT", 4, 0)
+    panel.wingNext:SetPoint("CENTER", panel.levels, "CENTER", 106, 0)
 
     local note = CreateFrame("Frame", nil, panel)
     note:SetSize(214, 92)
@@ -796,7 +796,7 @@ function Module:RefreshBossPanel()
     panel.level.text:SetText(MC.LevelText(bossLevel, reference))
     panel.level.text:SetTextColor(MC.ConColor(bossLevel, reference))
     panel.name.text:SetText(L["MC_E_" .. zone.boss])
-    panel.levels:SetText(Describe.ZoneName(zid) .. "  ·  " .. L.MC_LEVEL_RANGE:format(zone.min, zone.max))
+    Kit.FitText(panel.levels, Describe.ZoneName(zid) .. "  ·  " .. L.MC_LEVEL_RANGE:format(zone.min, zone.max), 220, 11, 8)
     local story = L["MC_ZD_" .. zid]
     if story:find("%s", 1, true) then story = story:format(L["MC_E_" .. zone.boss]) end
     panel.story:SetText(story)
@@ -811,8 +811,9 @@ function Module:RefreshBossPanel()
     panel.warning:SetText(partyLevel < needed and L.MC_WARN_LEVEL:format(partyLevel, needed) or "")
     if zone.dungeon then
         panel.name.text:SetText(zone.group and L["MC_ZG_" .. zone.group] or Describe.ZoneName(zid))
-        panel.levels:SetText((zone.group and L["MC_ZW_" .. zid] or L.MC_DUNGEON) .. "  ·  "
-            .. L.MC_LEVEL_RANGE:format(zone.min, zone.max))
+        -- Between the wing arrows the line has to fit 180 pixels.
+        Kit.FitText(panel.levels, (zone.group and L["MC_ZW_" .. zid] or L.MC_DUNGEON) .. "  ·  "
+            .. L.MC_LEVEL_RANGE:format(zone.min, zone.max), zone.group and 180 or 220, 11, 8)
     end
 end
 

@@ -289,7 +289,9 @@ if Want("dungeon") then
     for _, d in ipairs({ { "ragefire", "kal", 2 }, { "shadowfang", "ek", 1 }, { "blackfathom", "kal", 1 },
         { "stockade", "ek", 3 }, { "gnomeregan", "ek", 2 }, { "kraul", "kal", 2 }, { "sm_graveyard", "ek", 1 },
         { "sm_library", "ek", 1 }, { "sm_armory", "ek", 1 }, { "sm_cathedral", "ek", 1 }, { "downs", "kal", 2 },
-        { "uldaman", "ek", 2 } }) do
+        { "uldaman", "ek", 2 }, { "zulfarrak", "kal", 3 }, { "maraudon", "kal", 2 }, { "sunken", "ek", 4 },
+        { "brd", "ek", 2 }, { "lbrs", "ek", 2 }, { "dm_east", "kal", 3 }, { "dm_west", "kal", 3 }, { "dm_north", "kal", 3 },
+        { "scholomance", "ek", 1 }, { "strat_live", "ek", 1 }, { "strat_undead", "ek", 1 } }) do
         local id = d[1]
         mc.travelContinent, mc.travelRegion, mc.travelZone = d[2], d[3], id
         mc:ShowView("travel")

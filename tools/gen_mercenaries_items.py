@@ -48,6 +48,17 @@ DUNGEONS = {
     "sm_cathedral": "ScarletMonasteryCathedral",
     "downs": "RazorfenDowns",
     "uldaman": "Uldaman",
+    "zulfarrak": "Zul'Farrak",
+    "maraudon": "Maraudon",
+    "sunken": "TheTempleOfAtal'Hakkar",
+    "brd": "BlackrockDepths",
+    "lbrs": "LowerBlackrockSpire",
+    "dm_east": "DireMaulEast",
+    "dm_west": "DireMaulWest",
+    "dm_north": "DireMaulNorth",
+    "scholomance": "Scholomance",
+    # Both halves of Stratholme draw from it (their zones' lootFrom).
+    "stratholme": "Stratholme",
 }
 # Wowhead's locale numbers.
 LOCALES = {"enUS": 0, "deDE": 3, "frFR": 2, "esES": 6, "ruRU": 7, "zhCN": 4}

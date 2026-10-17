@@ -1180,7 +1180,7 @@ MC_ZD_sm_cathedral	Le commandant Mograine mène l'élite de la Croisade dans la 
 MC_ZD_downs	Dans les tertres des hurans, le Fléau a trouvé des alliés. La liche %s règne depuis les profondeurs.
 MC_ZD_uldaman	Troggs et nains Ombreforge fouillent la chambre forte des titans dans les Terres ingrates. Au plus profond, %s s'éveille.
 MC_Q_tirion_monastery_1_TITLE	Le cœur écarlate
-MC_Q_tirion_monastery_1_TEXT	Blanchetête est tombée, mais la Croisade tient encore sa cathédrale. Tirion y entre pour leur rappeler ce qu'est la Lumière.
+MC_Q_tirion_monastery_1_TEXT	Whitemane est tombée, mais la Croisade tient encore sa cathédrale. Tirion y entre pour leur rappeler ce qu'est la Lumière.
 MC_Q_tirion_monastery_2_TITLE	Fin des fanatiques
 MC_Q_tirion_monastery_2_TEXT	Chaque croisé qui tombe est un fanatique de moins qui traque les innocents.
 MC_Q_jaina_doan_1_TITLE	Savoir interdit
@@ -1188,7 +1188,7 @@ MC_Q_jaina_doan_1_TEXT	Doan n'est plus, mais la bibliothèque renferme encore un
 MC_Q_jaina_doan_2_TITLE	Brûler les pages
 MC_Q_jaina_doan_2_TEXT	Débarrassez la bibliothèque de ses gardiens avant qu'ils ne retournent ses secrets contre le monde.
 MC_Q_saurfang_herod_1_TITLE	Le champion écarlate
-MC_Q_saurfang_herod_1_TEXT	Hérode se vantait qu'aucun orc ne pourrait lui tenir tête. Saurfang veut voir son armurerie de ses yeux.
+MC_Q_saurfang_herod_1_TEXT	Herod se vantait qu'aucun orc ne pourrait lui tenir tête. Saurfang veut voir son armurerie de ses yeux.
 MC_Q_saurfang_herod_2_TITLE	Rangs brisés
 MC_Q_saurfang_herod_2_TEXT	Brisez les soldats de la Croisade dans leurs propres salles.
 MC_Q_benedictus_downs_1_TITLE	Apporter la Lumière
@@ -1215,3 +1215,92 @@ MC_ZW_sm_graveyard	Cimetière
 MC_ZW_sm_library	Bibliothèque
 MC_ZW_sm_armory	Armurerie
 MC_ZW_sm_cathedral	Cathédrale
+MC_Z_lbrs	Pic Blackrock inférieur
+MC_Z_dm_east	Hache-tripes : Est
+MC_ZW_dm_east	Est
+MC_Z_dm_west	Hache-tripes : Ouest
+MC_ZW_dm_west	Ouest
+MC_Z_dm_north	Hache-tripes : Nord
+MC_ZW_dm_north	Nord
+MC_Z_strat_live	Stratholme : Porte principale
+MC_ZW_strat_live	Porte principale
+MC_Z_strat_undead	Stratholme : Entrée de service
+MC_ZW_strat_undead	Entrée de service
+MC_ZW_brd	Profondeurs de Blackrock
+MC_ZW_lbrs	Pic Blackrock inférieur
+MC_ZG_blackrock	Mont Blackrock
+MC_ZG_diremaul	Hache-tripes
+MC_ZG_strat	Stratholme
+MC_ZD_zulfarrak	Dans les sables de Tanaris, les trolls Furie-des-sables gardent leur cité et le bassin sacré. %s règne depuis les marches du temple.
+MC_ZD_maraudon	Sous Désolace, les satyres empoisonnent les grottes où erre l'esprit de Zaetar. Tout au fond attend %s.
+MC_ZD_sunken	Dans le temple englouti, les Atal'ai invoquent Hakkar, leur dieu du sang, tandis que des dragons verts gardent %s dans son cauchemar.
+MC_ZD_brd	Au cœur du mont Blackrock s'étend la cité des Sombrefer. %s y tient sa cour, la princesse Moira à ses côtés.
+MC_ZD_lbrs	Au-dessus de la cité des Sombrefer, les orcs Rochenoire tiennent le pic avec leurs ogres et leurs trolls. %s les commande.
+MC_ZD_dm_east	Dans les ruines d'Eldre'Thalas, les satyres du Bois-tordu corrompent la forêt. %s attend parmi les arbres difformes.
+MC_ZD_dm_west	Les derniers Bien-nés se nourrissent du pouvoir du démon qu'ils ont lié. %s refuse de le libérer.
+MC_ZD_dm_north	Les ogres Gordok ont fait de l'aile nord leur demeure et couronné un roi. %s règne par le poing le plus fort.
+MC_ZD_scholomance	À Caer Darrow, le culte des Damnés enseigne la nécromancie dans les vieilles cryptes des Barov. %s dirige l'école.
+MC_ZD_strat_live	Derrière la porte principale de Stratholme, la Croisade écarlate résiste au Fléau, menée par %s sous les traits du grand croisé Dathrohan.
+MC_ZD_strat_undead	Dans la moitié est de la ville brûlée s'élèvent les ziggourats du Fléau. %s commande depuis son abattoir.
+MC_QK_SANDFURY	trolls Furie-des-sables
+MC_QK_ATALAI	Atal'ai
+MC_QK_HIGHBORNE	Bien-nés
+MC_QUEST_UNLOCK_sunken_avatar	Fait venir l'avatar d'Hakkar dans le temple englouti
+MC_QUEST_UNLOCK_scholo_darkreaver	Fait surgir un chevalier de la mort à Scholomance
+MC_Q_rexxar_zulfarrak_1_TITLE	La cité Furie-des-sables
+MC_Q_rexxar_zulfarrak_1_TEXT	Ukorz est tombé, mais les Furie-des-sables pillent encore les caravanes du désert. Rexxar entre pour mettre fin à leurs chasses.
+MC_Q_rexxar_zulfarrak_2_TITLE	Poussière et os
+MC_Q_rexxar_zulfarrak_2_TEXT	Chassez les Furie-des-sables des rues de leur cité.
+MC_Q_fandral_maraudon_1_TITLE	La tombe de Zaetar
+MC_Q_fandral_maraudon_1_TEXT	Theradras est tombée, mais les satyres souillent encore Maraudon. Fandral descend purifier les grottes.
+MC_Q_fandral_maraudon_2_TITLE	Le fléau des satyres
+MC_Q_fandral_maraudon_2_TEXT	Les satyres empoisonnent chaque source des grottes. Traquez-les.
+MC_Q_voljin_hakkar_1_TITLE	Le dieu du sang
+MC_Q_voljin_hakkar_1_TEXT	Les Atal'ai tentent de faire venir Hakkar en ce monde. Brisez le culte, et son avatar se montrera dans le temple.
+MC_Q_magni_moira_1_TITLE	Le ravisseur de ma fille
+MC_Q_magni_moira_1_TEXT	Thaurissan est mort, et le sort de Moira pèse sur son père. Magni entre lui-même dans la cité des Sombrefer.
+MC_Q_magni_moira_2_TITLE	La garde Rage-enclume
+MC_Q_magni_moira_2_TEXT	Brisez la garde qui a tenu Moira loin de chez elle.
+MC_Q_eitrigg_spire_1_TITLE	Vieux clan, nouveaux maîtres
+MC_Q_eitrigg_spire_1_TEXT	Wyrmthalak est tombé, mais les Rochenoire servent encore des dragons. Eitrigg veut voir son ancien clan de ses propres yeux.
+MC_Q_eitrigg_spire_2_TITLE	Les Brandefeu
+MC_Q_eitrigg_spire_2_TEXT	La légion Brandefeu garde le pic. Brisez ses rangs.
+MC_Q_hamuul_alzzin_1_TITLE	Le Bois-tordu
+MC_Q_hamuul_alzzin_1_TEXT	Alzzin n'est plus, mais le Bois-tordu se tord encore. Hamuul y entre pour guérir la forêt.
+MC_Q_hamuul_alzzin_2_TITLE	Rejetons sauvages
+MC_Q_hamuul_alzzin_2_TEXT	Les satyres répandent la corruption. Chassez-les.
+MC_Q_tyrande_highborne_1_TITLE	Les derniers Bien-nés
+MC_Q_tyrande_highborne_1_TEXT	Tortheldrin est tombé. Tyrande se rend dans les salles où l'antique orgueil de son peuple l'a perdu.
+MC_Q_tyrande_highborne_2_TITLE	Repos pour Eldre'Thalas
+MC_Q_tyrande_highborne_2_TEXT	Libérez les Bien-nés qui hantent encore l'aile ouest.
+MC_Q_rexxar_gordok_1_TITLE	Sang d'ogre
+MC_Q_rexxar_gordok_1_TEXT	Le roi Gordok est tombé. Rexxar, lui-même à moitié ogre, veut voir qui mène désormais les Gordok.
+MC_Q_rexxar_gordok_2_TITLE	Le poing le plus fort
+MC_Q_rexxar_gordok_2_TEXT	Chez les ogres, le plus fort règne. Montrez-leur qui c'est.
+MC_Q_tirion_darkreaver_1_TITLE	Le chevalier de la mort
+MC_Q_tirion_darkreaver_1_TEXT	Scholomance relève ses morts pour le retour d'un chevalier de la mort. Rendez-en assez au repos, et le chevalier de la mort viendra à vous.
+MC_Q_taelan_balnazzar_1_TITLE	Le visage de mon père
+MC_Q_taelan_balnazzar_1_TEXT	Balnazzar portait le visage du père de Taelan pour mener la Croisade. Il n'est plus, et Taelan retourne à Stratholme.
+MC_Q_taelan_balnazzar_2_TITLE	Croisés trompés
+MC_Q_taelan_balnazzar_2_TEXT	Les croisés se battent encore pour un mensonge. Mettez-y fin.
+MC_Q_sylvanas_rivendare_1_TITLE	L'abattoir du baron
+MC_Q_sylvanas_rivendare_1_TEXT	Rivendare a servi le roi-liche jusqu'à son dernier souffle. Sylvanas entre dans sa ville pour que personne ne prenne sa place.
+MC_Q_sylvanas_rivendare_2_TITLE	Plus de Fléau
+MC_Q_sylvanas_rivendare_2_TEXT	Chaque serviteur du Fléau qui tombe affaiblit l'emprise du roi-liche sur l'est.
+MC_A_zumrah_s	Garde de Zum'rah
+MC_A_sezzziz_s	Cri psychique
+MC_A_noxxion_s	Salve toxique
+MC_A_landslide_s	Repousser au loin
+MC_A_jammalan_s	Maléfice de Jammal'an
+MC_A_avatar_s	Rendre fou
+MC_A_incendius_s	Tempête de feu
+MC_A_magmus_s	Explosion féerique
+MC_A_smolderweb_s	Cristalliser
+MC_A_immolthar_s	Œil d'Immol'thar
+MC_A_tortheldrin_s	Tourbillon
+MC_A_jandice_s	Malédiction du Sang
+MC_A_ras_s	Nova de gel
+MC_A_timmy_s	Griffe vorace
+MC_A_balnazzar_s	Domination
+MC_A_anastari_s	Possession
+MC_A_ramstein_s	Piétiner

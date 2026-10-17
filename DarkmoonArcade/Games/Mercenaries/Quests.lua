@@ -228,6 +228,48 @@ MC.QUEST_CHAINS = {
         { kind = "dungeon", dungeon = "uldaman" },
         { kind = "kill", prefix = "stonevault_", zone = "uldaman", count = 25, what = "TROGG" },
     } },
+    rexxar_zulfarrak = { merc = "rexxar", requires = { chain = "rexxar_wild", cleared = "zulfarrak" }, steps = {
+        { kind = "dungeon", dungeon = "zulfarrak" },
+        { kind = "kill", prefix = "sandfury_", zone = "zulfarrak", count = 25, what = "SANDFURY" },
+    } },
+    fandral_maraudon = { merc = "fandral", requires = { chain = "fandral_staghelm", cleared = "maraudon" }, steps = {
+        { kind = "dungeon", dungeon = "maraudon" },
+        { kind = "kill", race = "satyr", zone = "maraudon", count = 20, what = "SATYR" },
+    } },
+    voljin_hakkar = { merc = "voljin", requires = { chain = "voljin_darkspear" }, steps = {
+        { kind = "kill", prefix = "atalai_", zone = "sunken", count = 20, what = "ATALAI", unlock = "sunken_avatar" },
+    } },
+    magni_moira = { merc = "magni", requires = { chain = "magni_uldaman", cleared = "brd" }, steps = {
+        { kind = "dungeon", dungeon = "brd" },
+        { kind = "kill", prefix = "anvilrage_", zone = "brd", count = 25, what = "DARKIRON" },
+    } },
+    eitrigg_spire = { merc = "eitrigg", requires = { chain = "eitrigg_oldclan", cleared = "lbrs" }, steps = {
+        { kind = "dungeon", dungeon = "lbrs" },
+        { kind = "kill", prefix = "firebrand_", zone = "lbrs", count = 20, what = "BLACKROCK" },
+    } },
+    hamuul_alzzin = { merc = "hamuul", requires = { chain = "hamuul_dream", cleared = "dm_east" }, steps = {
+        { kind = "dungeon", dungeon = "dm_east" },
+        { kind = "kill", race = "satyr", zone = "dm_east", count = 20, what = "SATYR" },
+    } },
+    tyrande_highborne = { merc = "tyrande", requires = { chain = "tyrande_elune", cleared = "dm_west" }, steps = {
+        { kind = "dungeon", dungeon = "dm_west" },
+        { kind = "kill", prefix = { "eldreth_", "skeletal_highborne", "rotting_highborne", "highborne_" }, zone = "dm_west", count = 20, what = "HIGHBORNE" },
+    } },
+    rexxar_gordok = { merc = "rexxar", requires = { chain = "rexxar_zulfarrak", cleared = "dm_north" }, steps = {
+        { kind = "dungeon", dungeon = "dm_north" },
+        { kind = "kill", race = "ogre", zone = "dm_north", count = 25, what = "OGRE" },
+    } },
+    tirion_darkreaver = { merc = "tirion", requires = { chain = "tirion_monastery" }, steps = {
+        { kind = "kill", race = "undead", zone = "scholomance", count = 30, what = "UNDEAD", unlock = "scholo_darkreaver" },
+    } },
+    taelan_balnazzar = { merc = "taelan", requires = { chain = "taelan_crusade", cleared = "strat_live" }, steps = {
+        { kind = "dungeon", dungeon = "strat_live" },
+        { kind = "kill", prefix = "crimson_", zone = "strat_live", count = 25, what = "SCARLET" },
+    } },
+    sylvanas_rivendare = { merc = "sylvanas", requires = { chain = "sylvanas_arugal", cleared = "strat_undead" }, steps = {
+        { kind = "dungeon", dungeon = "strat_undead" },
+        { kind = "kill", race = "undead", zone = "strat_undead", count = 30, what = "UNDEAD" },
+    } },
 }
 -- The chains in the order of the collection, a mercenary's chains in the order they follow.
 MC.QUEST_CHAIN_ORDER = {}

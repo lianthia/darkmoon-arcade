@@ -208,5 +208,8 @@ function Module:RefreshJournal()
             row.chance:SetText(("%g%%"):format(math.floor(drop[2] * 10 + 0.5) / 10))
         end
     end
-    view.formulas:SetText(L.MC_JOURNAL_FORMULAS:format(zone.tier or 1, (zone.tier or 1) + 1))
+    -- Heroic teaches one tier more, as far as there are formulas.
+    local top = 1
+    for _, recipe in pairs(MC.Recipes) do top = math.max(top, recipe.tier) end
+    view.formulas:SetText(L.MC_JOURNAL_FORMULAS:format(zone.tier or 1, math.min((zone.tier or 1) + 1, top)))
 end
