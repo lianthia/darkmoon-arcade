@@ -1232,7 +1232,7 @@ MC_ZG_blackrock	Mont Blackrock
 MC_ZG_diremaul	Hache-tripes
 MC_ZG_strat	Stratholme
 MC_ZD_zulfarrak	Dans les sables de Tanaris, les trolls Furie-des-sables gardent leur cité et le bassin sacré. %s règne depuis les marches du temple.
-MC_ZD_maraudon	Sous Désolace, les satyres empoisonnent les grottes où erre l'esprit de Zaetar. Tout au fond attend %s.
+MC_ZD_mara_earthsong	Sous Désolace, les satyres empoisonnent les grottes où erre l'esprit de Zaetar. Tout au fond attend %s.
 MC_ZD_sunken	Dans le temple englouti, les Atal'ai invoquent Hakkar, leur dieu du sang, tandis que des dragons verts gardent %s dans son cauchemar.
 MC_ZD_brd	Au cœur du mont Blackrock s'étend la cité des Sombrefer. %s y tient sa cour, la princesse Moira à ses côtés.
 MC_ZD_lbrs	Au-dessus de la cité des Sombrefer, les orcs Rochenoire tiennent le pic avec leurs ogres et leurs trolls. %s les commande.
@@ -1343,3 +1343,12 @@ MC_A_sentinel_s	Disfonctionnement
 MC_A_devourer_s	Débiliter
 MC_A_felancient_s	Gangrebraises
 MC_A_archmageshade_s	Mana bondissant
+MC_Z_mara_foulspore	Maraudon : Caverne Vilespore
+MC_ZW_mara_foulspore	Caverne Vilespore
+MC_Z_mara_grotto	Maraudon : La grotte Maudite
+MC_ZW_mara_grotto	La grotte Maudite
+MC_Z_mara_earthsong	Maraudon : Chutes de Chanteterre
+MC_ZW_mara_earthsong	Chutes de Chanteterre
+MC_ZG_maraudon	Maraudon
+MC_ZD_mara_foulspore	Le poison des satyres suinte dans les grottes orange de Maraudon, nourrissant la vase Noxxion et %s.
+MC_ZD_mara_grotto	Dans les grottes violettes, les satyres se rassemblent autour de leur maître. %s règne sur la grotte Maudite.

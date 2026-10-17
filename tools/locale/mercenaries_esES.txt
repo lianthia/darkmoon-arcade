@@ -1232,7 +1232,7 @@ MC_ZG_blackrock	Montaña Roca Negra
 MC_ZG_diremaul	La Masacre
 MC_ZG_strat	Stratholme
 MC_ZD_zulfarrak	En las arenas de Tanaris los trols Furiarena guardan su ciudad y el estanque sagrado. %s gobierna desde las escaleras del templo.
-MC_ZD_maraudon	Bajo Desolace los sátiros envenenan las cuevas donde mora el espíritu de Zaetar. En lo más hondo aguarda %s.
+MC_ZD_mara_earthsong	Bajo Desolace los sátiros envenenan las cuevas donde mora el espíritu de Zaetar. En lo más hondo aguarda %s.
 MC_ZD_sunken	En el templo hundido los Atal'ai invocan a Hakkar, su dios de la sangre, mientras dragones verdes guardan a %s en su pesadilla.
 MC_ZD_brd	En lo profundo de la Montaña Roca Negra yace la ciudad de los Hierro Negro. %s celebra su corte allí, con la princesa Moira a su lado.
 MC_ZD_lbrs	Sobre la ciudad de los Hierro Negro, los orcos Roca Negra dominan la cumbre con sus ogros y trols. %s los comanda.
@@ -1343,3 +1343,12 @@ MC_A_sentinel_s	Avería
 MC_A_devourer_s	Debilitar
 MC_A_felancient_s	Maderas viles
 MC_A_archmageshade_s	Maná rebotador
+MC_Z_mara_foulspore	Maraudon: Gruta de la Espora Fétida
+MC_ZW_mara_foulspore	Gruta de la Espora Fétida
+MC_Z_mara_grotto	Maraudon: La Gruta Maldita
+MC_ZW_mara_grotto	La Gruta Maldita
+MC_Z_mara_earthsong	Maraudon: Cascadas del Canto de la Tierra
+MC_ZW_mara_earthsong	Cascadas del Canto de la Tierra
+MC_ZG_maraudon	Maraudon
+MC_ZD_mara_foulspore	El veneno de los sátiros se filtra por las cuevas naranjas de Maraudon y alimenta al limo Noxxion y a %s.
+MC_ZD_mara_grotto	En las cuevas moradas los sátiros se reúnen en torno a su amo. %s gobierna la Gruta Maldita.

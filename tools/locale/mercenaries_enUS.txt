@@ -1232,7 +1232,7 @@ MC_ZG_blackrock	Blackrock Mountain
 MC_ZG_diremaul	Dire Maul
 MC_ZG_strat	Stratholme
 MC_ZD_zulfarrak	In the sands of Tanaris the Sandfury trolls guard their city and the sacred pool. Chief Ukorz Sandscalp rules from the temple steps.
-MC_ZD_maraudon	Beneath Desolace the satyrs poison the caves where Zaetar's spirit lingers. Deepest down waits Princess Theradras.
+MC_ZD_mara_earthsong	Beneath Desolace the satyrs poison the caves where Zaetar's spirit lingers. Deepest down waits Princess Theradras.
 MC_ZD_sunken	The Atal'ai call their blood god Hakkar in the drowned temple, while green dragons guard the Shade of Eranikus in his nightmare.
 MC_ZD_brd	Deep in Blackrock Mountain lies the Dark Iron city. Emperor Dagran Thaurissan holds court there with Princess Moira at his side.
 MC_ZD_lbrs	Above the Dark Iron city the Blackrock orcs hold the spire with their ogres and trolls. Overlord Wyrmthalak commands them.
@@ -1343,3 +1343,12 @@ MC_A_sentinel_s	Malfunction
 MC_A_devourer_s	Debilitate
 MC_A_felancient_s	Fel Timbers
 MC_A_archmageshade_s	Bounding Mana
+MC_Z_mara_foulspore	Maraudon: Foulspore Cavern
+MC_ZW_mara_foulspore	Foulspore Cavern
+MC_Z_mara_grotto	Maraudon: The Wicked Grotto
+MC_ZW_mara_grotto	The Wicked Grotto
+MC_Z_mara_earthsong	Maraudon: Earth Song Falls
+MC_ZW_mara_earthsong	Earth Song Falls
+MC_ZG_maraudon	Maraudon
+MC_ZD_mara_foulspore	Satyr poison seeps through the orange caves of Maraudon, feeding the ooze Noxxion and the thorny Razorlash.
+MC_ZD_mara_grotto	In the purple caves the satyrs gather around their master. Lord Vyletongue rules the Wicked Grotto.

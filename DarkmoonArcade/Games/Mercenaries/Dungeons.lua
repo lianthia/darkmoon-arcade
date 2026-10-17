@@ -25,12 +25,12 @@ MC.Dungeons = Dungeons
 MC.DUNGEON_ORDER = { "ragefire", "thanes", "ruins_lordaeron", "deadmines", "wailing", "shadowfang", "blackfathom",
     "stockade", "excavation", "gnomeregan", "kraul", "dalaran",
     "sm_graveyard", "sm_library", "sm_armory", "sm_cathedral", "downs", "uldaman",
-    "zulfarrak", "maraudon", "sunken", "brd", "lbrs", "dm_east", "dm_west", "dm_north", "scholomance", "strat_live",
+    "zulfarrak", "mara_foulspore", "mara_grotto", "mara_earthsong", "sunken", "brd", "lbrs", "dm_east", "dm_west", "dm_north", "scholomance", "strat_live",
     "strat_undead" }
 
 MC.Zones.deadmines = {
     id = "deadmines", dungeon = true, continent = "ek", region = "westfall", spot = { 0.42, 0.74 },
-    min = 17, max = 26, boss = "vancleef", tier = 1,
+    min = 18, max = 23, boss = "vancleef", tier = 1,
     power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "rhahkzor", adds = { "defias_miner", "defias_overseer" }, npcs = { 644 },
@@ -51,7 +51,7 @@ MC.Zones.deadmines = {
 -- Naralex's dream is followed (Hamuul's tasks). The Deviate Faerie Dragon roams now and then.
 MC.Zones.wailing = {
     id = "wailing", dungeon = true, continent = "kal", region = "barrens", spot = { 0.46, 0.36 },
-    min = 17, max = 24, boss = "verdan", tier = 1,
+    min = 15, max = 25, boss = "verdan", tier = 1,
     power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "anacondra", adds = { "druid_of_the_fang", "deviate_adder" }, npcs = { 3671 },
@@ -130,7 +130,7 @@ MC.Zones.blackfathom = {
 -- The Stockade: the prisoners of Stormwind's jail in open riot.
 MC.Zones.stockade = {
     id = "stockade", dungeon = true, continent = "ek", region = "elwynn", spot = { 0.3, 0.12 },
-    min = 24, max = 32, boss = "bazil", tier = 2,
+    min = 22, max = 30, boss = "bazil", tier = 2,
     power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "targorr", adds = { "defias_prisoner", "defias_convict" }, npcs = { 1696 },
@@ -165,7 +165,7 @@ MC.Zones.gnomeregan = {
 -- Razorfen Kraul: the quilboar's thorn maze in the southern Barrens.
 MC.Zones.kraul = {
     id = "kraul", dungeon = true, continent = "kal", region = "barrens", spot = { 0.42, 0.9 },
-    min = 29, max = 38, boss = "charlga", tier = 2,
+    min = 30, max = 40, boss = "charlga", tier = 2,
     power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "aggem", adds = { "deaths_head_acolyte", "razorfen_defender" }, npcs = { 4424 },
@@ -185,7 +185,7 @@ MC.Zones.kraul = {
 -- The Scarlet Monastery in Tirisfal: four wings, each its own run, as in Classic.
 MC.Zones.sm_graveyard = {
     id = "sm_graveyard", dungeon = true, group = "sm", continent = "ek", region = "tirisfal", spot = { 0.84, 0.3 },
-    min = 26, max = 36, boss = "thalnos", tier = 2,
+    min = 28, max = 38, boss = "thalnos", tier = 2,
     power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "vishas", adds = { "scarlet_torturer", "scarlet_sentry" }, npcs = { 3983 },
@@ -238,7 +238,7 @@ MC.Zones.sm_cathedral = {
 -- Razorfen Downs: the quilboar's barrows, where the lich Amnennar raises the Scourge.
 MC.Zones.downs = {
     id = "downs", dungeon = true, continent = "kal", region = "barrens", spot = { 0.56, 0.88 },
-    min = 35, max = 45, boss = "amnennar", tier = 3,
+    min = 40, max = 50, boss = "amnennar", tier = 3,
     power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "tutenkash", adds = { "tomb_fiend", "tomb_fiend" }, npcs = { 7355 },
@@ -256,7 +256,7 @@ MC.Zones.downs = {
 -- Uldaman: the titans' vault in the Badlands, dug open by troggs and the Shadowforge dwarves.
 MC.Zones.uldaman = {
     id = "uldaman", dungeon = true, continent = "ek", region = "badlands", spot = { 0.44, 0.12 },
-    min = 41, max = 51, boss = "archaedas", tier = 3,
+    min = 42, max = 52, boss = "archaedas", tier = 3,
     power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "baelog", adds = { "eric_swift", "olaf" }, npcs = { 6906, 6907, 6908 },
@@ -300,19 +300,40 @@ MC.Zones.zulfarrak = {
     },
 }
 
--- Maraudon: the satyr-poisoned caves of Desolace down to Princess Theradras.
-MC.Zones.maraudon = {
-    id = "maraudon", dungeon = true, continent = "kal", region = "desolace", spot = { 0.29, 0.62 },
-    min = 46, max = 55, boss = "theradras", tier = 3,
+-- Maraudon: the satyr-poisoned caves of Desolace, three wings as in Forever (one loot table).
+-- Foulspore Cavern, the orange caves: Noxxion and the lasher Razorlash.
+MC.Zones.mara_foulspore = {
+    id = "mara_foulspore", dungeon = true, group = "maraudon", continent = "kal", region = "desolace", spot = { 0.29, 0.62 },
+    min = 45, max = 53, boss = "razorlash", tier = 3, lootFrom = "maraudon",
     power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "noxxion", adds = { "creeping_sludge", "creeping_sludge" }, npcs = { 13282 },
-            trash = { "putridus_satyr", "putridus_trickster", "creeping_sludge", "barbed_lasher" } },
-        { boss = "razorlash", adds = { "barbed_lasher", "deeprot_tangler" }, npcs = { 12258 },
-            trash = { "deeprot_stomper", "deeprot_tangler", "barbed_lasher" } },
-        { boss = "vyletongue", adds = { "putridus_trickster", "putridus_shadowstalker" }, npcs = { 12236 },
-            trash = { "putridus_satyr", "putridus_shadowstalker", "putridus_trickster" }, waves = 2 },
-        { boss = "meshlok", adds = { "deeprot_stomper" }, npcs = { 12237 }, chance = 0.35 },
+            trash = { "putridus_satyr", "putridus_trickster", "creeping_sludge", "barbed_lasher" }, waves = 2 },
+        { boss = "razorlash", adds = { "barbed_lasher", "deeprot_tangler", "barbed_lasher" }, npcs = { 12258 },
+            trash = { "deeprot_stomper", "deeprot_tangler", "barbed_lasher" }, waves = 2, elite = true, healer = true },
+    },
+}
+
+-- The Wicked Grotto, the purple caves: the satyrs around Lord Vyletongue.
+MC.Zones.mara_grotto = {
+    id = "mara_grotto", dungeon = true, group = "maraudon", continent = "kal", region = "desolace", spot = { 0.29, 0.62 },
+    min = 45, max = 53, boss = "vyletongue", tier = 3, lootFrom = "maraudon",
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "meshlok", adds = { "deeprot_stomper" }, npcs = { 12237 },
+            trash = { "deeprot_stomper", "deeprot_tangler", "putridus_satyr" }, chance = 0.35 },
+        { boss = "vyletongue", adds = { "putridus_trickster", "putridus_shadowstalker", "putridus_satyr" }, npcs = { 12236 },
+            trash = { "putridus_satyr", "putridus_shadowstalker", "putridus_trickster" }, waves = 3, elite = true,
+            healer = true },
+    },
+}
+
+-- Earth Song Falls, the heart of Maraudon, down to Princess Theradras.
+MC.Zones.mara_earthsong = {
+    id = "mara_earthsong", dungeon = true, group = "maraudon", continent = "kal", region = "desolace", spot = { 0.29, 0.62 },
+    min = 48, max = 57, boss = "theradras", tier = 3, lootFrom = "maraudon",
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
         { boss = "celebras", adds = { "celebrian_dryad", "deeprot_tangler" }, npcs = { 12225 },
             trash = { "celebrian_dryad", "deeprot_stomper", "subterranean_diemetradon" }, elite = true },
         { boss = "landslide", adds = { "theradrim_shardling", "theradrim_shardling" }, npcs = { 12203 },
@@ -411,7 +432,7 @@ MC.Zones.lbrs = {
 -- of the Warpwood.
 MC.Zones.dm_east = {
     id = "dm_east", dungeon = true, group = "diremaul", continent = "kal", region = "feralas", spot = { 0.59, 0.43 },
-    min = 54, max = 60, boss = "alzzin", tier = 4,
+    min = 58, max = 60, boss = "alzzin", tier = 4,
     power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "pusillin", adds = { "wildspawn_trickster" }, npcs = { 14354 },
@@ -428,7 +449,7 @@ MC.Zones.dm_east = {
 -- Dire Maul West: the last Highborne and the demon they bound.
 MC.Zones.dm_west = {
     id = "dm_west", dungeon = true, group = "diremaul", continent = "kal", region = "feralas", spot = { 0.59, 0.43 },
-    min = 56, max = 60, boss = "tortheldrin", tier = 4,
+    min = 58, max = 60, boss = "tortheldrin", tier = 4,
     power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "tendris", adds = { "petrified_treant", "petrified_guardian" }, npcs = { 11489 },
@@ -448,7 +469,7 @@ MC.Zones.dm_west = {
 -- Dire Maul North: the Gordok ogres and their king.
 MC.Zones.dm_north = {
     id = "dm_north", dungeon = true, group = "diremaul", continent = "kal", region = "feralas", spot = { 0.59, 0.43 },
-    min = 56, max = 60, boss = "gordok", tier = 4,
+    min = 58, max = 60, boss = "gordok", tier = 4,
     power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "moldar", adds = { "gordok_mastiff", "gordok_brute" }, npcs = { 14326, 14322 },

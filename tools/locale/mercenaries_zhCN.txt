@@ -1232,7 +1232,7 @@ MC_ZG_blackrock	黑石山
 MC_ZG_diremaul	厄运之槌
 MC_ZG_strat	斯坦索姆
 MC_ZD_zulfarrak	在塔纳利斯的沙漠中，沙怒巨魔守护着他们的城市和圣池。%s在神庙台阶上统治着一切。
-MC_ZD_maraudon	凄凉之地地下，萨特污染着扎尔塔之魂徘徊的洞穴。%s在最深处等待。
+MC_ZD_mara_earthsong	凄凉之地地下，萨特污染着扎尔塔之魂徘徊的洞穴。%s在最深处等待。
 MC_ZD_sunken	阿塔莱在沉没的神庙中召唤血神哈卡，绿龙则在梦魇中守护着%s。
 MC_ZD_brd	黑石山深处是黑铁矮人的城市。%s在那里临朝，茉艾拉公主陪伴在侧。
 MC_ZD_lbrs	在黑铁矮人的城市之上，黑石兽人带着食人魔和巨魔占据着高塔。%s统领着他们。
@@ -1343,3 +1343,12 @@ MC_A_sentinel_s	故障
 MC_A_devourer_s	衰弱
 MC_A_felancient_s	邪能原木
 MC_A_archmageshade_s	弹跳法力
+MC_Z_mara_foulspore	玛拉顿：毒菇洞穴
+MC_ZW_mara_foulspore	毒菇洞穴
+MC_Z_mara_grotto	玛拉顿：邪恶洞穴
+MC_ZW_mara_grotto	邪恶洞穴
+MC_Z_mara_earthsong	玛拉顿：地歌瀑布
+MC_ZW_mara_earthsong	地歌瀑布
+MC_ZG_maraudon	玛拉顿
+MC_ZD_mara_foulspore	萨特的毒液渗入玛拉顿的橙色洞穴，滋养着软泥诺克赛恩和%s。
+MC_ZD_mara_grotto	在紫色洞穴中，萨特聚集在他们的主人身边。%s统治着邪恶洞穴。

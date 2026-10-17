@@ -232,9 +232,9 @@ MC.QUEST_CHAINS = {
         { kind = "dungeon", dungeon = "zulfarrak" },
         { kind = "kill", prefix = "sandfury_", zone = "zulfarrak", count = 25, what = "SANDFURY" },
     } },
-    fandral_maraudon = { merc = "fandral", requires = { chain = "fandral_staghelm", cleared = "maraudon" }, steps = {
-        { kind = "dungeon", dungeon = "maraudon" },
-        { kind = "kill", race = "satyr", zone = "maraudon", count = 20, what = "SATYR" },
+    fandral_maraudon = { merc = "fandral", requires = { chain = "fandral_staghelm", cleared = "mara_earthsong" }, steps = {
+        { kind = "dungeon", dungeon = "mara_earthsong" },
+        { kind = "kill", race = "satyr", zone = "mara_grotto", count = 20, what = "SATYR" },
     } },
     voljin_hakkar = { merc = "voljin", requires = { chain = "voljin_darkspear" }, steps = {
         { kind = "kill", prefix = "atalai_", zone = "sunken", count = 20, what = "ATALAI", unlock = "sunken_avatar" },
