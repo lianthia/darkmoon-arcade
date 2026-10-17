@@ -152,6 +152,17 @@ MC.Mercs = {
 }
 
 -- Collection order: by role, then as listed here.
+-- Rank IV of an ability needs coins and this dungeon cleared with the mercenary in the party: a place
+-- of its own story, from the mid-forties on, so the fourth rank belongs to the end of the levelling.
+MC.RANK4_DUNGEON = {
+    cairne = "mara_earthsong", bolvar = "lbrs", magni = "brd", tirion = "scholomance", eitrigg = "lbrs",
+    taelan = "strat_live", saurfang = "dm_north", windsor = "brd", rexxar = "dm_north",
+    sylvanas = "strat_undead", voljin = "sunken", shandris = "dm_east", mankrik = "zulfarrak",
+    renzik = "dm_north", jorach = "scholomance", natpagle = "sunken", jaina = "strat_live",
+    thrall = "lbrs", tyrande = "dm_west", magatha = "mara_grotto", benedictus = "scholomance",
+    hamuul = "mara_foulspore", fandral = "mara_earthsong", drekthar = "brd",
+}
+
 MC.MERC_ORDER = {
     "cairne", "bolvar", "magni", "tirion", "eitrigg", "taelan", "saurfang", "windsor",
     "rexxar", "sylvanas", "voljin", "shandris", "mankrik", "renzik", "jorach", "natpagle",

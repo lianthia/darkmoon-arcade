@@ -13,6 +13,9 @@
 --   group       wings of one place (the Scarlet Monastery): one portal on the map, the wings picked in
 --               its panel
 --   lootFrom    the loot table it shares (both halves of Stratholme)
+--   power       extra strength of its foes: a fresh party one level below the last boss wins about 47 %
+--               (heroicPower: a geared party at level 60 about 40 %); tools/balance_mercenaries.py
+--               --tune --dungeons (--heroic)
 
 local _, ns = ...
 local MC = ns.Mercenaries
@@ -31,7 +34,7 @@ MC.DUNGEON_ORDER = { "ragefire", "thanes", "ruins_lordaeron", "deadmines", "wail
 MC.Zones.deadmines = {
     id = "deadmines", dungeon = true, continent = "ek", region = "westfall", spot = { 0.42, 0.74 },
     min = 18, max = 23, boss = "vancleef", tier = 1,
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = -0.5, heroicPower = -0.09, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "rhahkzor", adds = { "defias_miner", "defias_overseer" }, npcs = { 644 },
             trash = { "defias_miner", "defias_overseer", "defias_taskmaster" } },
@@ -52,7 +55,7 @@ MC.Zones.deadmines = {
 MC.Zones.wailing = {
     id = "wailing", dungeon = true, continent = "kal", region = "barrens", spot = { 0.46, 0.36 },
     min = 15, max = 25, boss = "verdan", tier = 1,
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = -0.12, heroicPower = -0.15, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "anacondra", adds = { "druid_of_the_fang", "deviate_adder" }, npcs = { 3671 },
             trash = { "druid_of_the_fang", "deviate_ravager", "deviate_stinglash", "deviate_adder" } },
@@ -73,7 +76,7 @@ MC.Zones.wailing = {
 MC.Zones.ragefire = {
     id = "ragefire", dungeon = true, continent = "kal", region = "durotar", spot = { 0.45, 0.12 },
     min = 13, max = 18, boss = "bazzalan", tier = 1,
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = -0.41, heroicPower = -0.1, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "oggleflint", adds = { "ragefire_trogg", "ragefire_shaman" }, npcs = { 11517 },
             trash = { "ragefire_trogg", "ragefire_shaman", "earthborer", "molten_elemental" } },
@@ -89,7 +92,7 @@ MC.Zones.ragefire = {
 MC.Zones.shadowfang = {
     id = "shadowfang", dungeon = true, continent = "ek", region = "silverpine", spot = { 0.45, 0.68 },
     min = 22, max = 30, boss = "arugal", tier = 2,
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = -0.39, heroicPower = -0.19, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "rethilgore", adds = { "shadowfang_ragetooth", "bleak_worg" }, npcs = { 3914 },
             trash = { "shadowfang_ragetooth", "bleak_worg", "shadowfang_darksoul", "haunted_servitor" } },
@@ -112,7 +115,7 @@ MC.Zones.shadowfang = {
 MC.Zones.blackfathom = {
     id = "blackfathom", dungeon = true, continent = "kal", region = "ashenvale", spot = { 0.14, 0.14 },
     min = 24, max = 32, boss = "akumai", tier = 2,
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = -0.33, heroicPower = -0.18, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "ghamoora", adds = { "akumai_snapjaw" }, npcs = { 4887 },
             trash = { "blackfathom_myrmidon", "blackfathom_oracle", "akumai_snapjaw" } },
@@ -131,7 +134,7 @@ MC.Zones.blackfathom = {
 MC.Zones.stockade = {
     id = "stockade", dungeon = true, continent = "ek", region = "elwynn", spot = { 0.3, 0.12 },
     min = 22, max = 30, boss = "bazil", tier = 2,
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = -0.28, heroicPower = -0.06, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "targorr", adds = { "defias_prisoner", "defias_convict" }, npcs = { 1696 },
             trash = { "defias_prisoner", "defias_convict", "defias_captive" } },
@@ -148,7 +151,7 @@ MC.Zones.stockade = {
 MC.Zones.gnomeregan = {
     id = "gnomeregan", dungeon = true, continent = "ek", region = "dunmorogh", spot = { 0.24, 0.38 },
     min = 29, max = 38, boss = "thermaplugg", tier = 2,
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = -0.04, heroicPower = -0.04, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "techbot", adds = { "mechanized_sentry" }, npcs = { 6231 } },
         { boss = "grubbis", adds = { "caverndeep_ambusher", "irradiated_pillager" }, npcs = { 7361 },
@@ -166,7 +169,7 @@ MC.Zones.gnomeregan = {
 MC.Zones.kraul = {
     id = "kraul", dungeon = true, continent = "kal", region = "barrens", spot = { 0.42, 0.9 },
     min = 30, max = 40, boss = "charlga", tier = 2,
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = -0.07, heroicPower = -0.25, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "aggem", adds = { "deaths_head_acolyte", "razorfen_defender" }, npcs = { 4424 },
             trash = { "razorfen_defender", "razorfen_warrior", "kraul_bat", "deaths_head_acolyte" } },
@@ -186,7 +189,7 @@ MC.Zones.kraul = {
 MC.Zones.sm_graveyard = {
     id = "sm_graveyard", dungeon = true, group = "sm", continent = "ek", region = "tirisfal", spot = { 0.84, 0.3 },
     min = 28, max = 38, boss = "thalnos", tier = 2,
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = 0.64, heroicPower = 0.09, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "vishas", adds = { "scarlet_torturer", "scarlet_sentry" }, npcs = { 3983 },
             trash = { "scarlet_torturer", "scarlet_sentry", "scarlet_scryer" }, waves = 2 },
@@ -201,7 +204,7 @@ MC.Zones.sm_graveyard = {
 MC.Zones.sm_library = {
     id = "sm_library", dungeon = true, group = "sm", continent = "ek", region = "tirisfal", spot = { 0.84, 0.3 },
     min = 29, max = 39, boss = "doan", tier = 3,
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = 0.85, heroicPower = 0.16, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "loksey", adds = { "scarlet_tracking_hound", "scarlet_tracking_hound", "scarlet_beastmaster" }, npcs = { 3974 },
             trash = { "scarlet_adept", "scarlet_gallant", "scarlet_monk", "scarlet_beastmaster" }, waves = 2 },
@@ -214,7 +217,7 @@ MC.Zones.sm_library = {
 MC.Zones.sm_armory = {
     id = "sm_armory", dungeon = true, group = "sm", continent = "ek", region = "tirisfal", spot = { 0.84, 0.3 },
     min = 32, max = 42, boss = "herod", tier = 3,
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = -0.04, heroicPower = 0.32, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "herod", adds = { "scarlet_trainee", "scarlet_trainee", "scarlet_trainee" }, npcs = { 3975 },
             trash = { "scarlet_defender", "scarlet_myrmidon", "scarlet_guardsman", "scarlet_protector", "scarlet_evoker" },
@@ -225,7 +228,7 @@ MC.Zones.sm_armory = {
 MC.Zones.sm_cathedral = {
     id = "sm_cathedral", dungeon = true, group = "sm", continent = "ek", region = "tirisfal", spot = { 0.84, 0.3 },
     min = 35, max = 45, boss = "whitemane", tier = 3,
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = 0.48, heroicPower = 0.21, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "fairbanks", adds = { "scarlet_chaplain", "scarlet_abbot" }, npcs = { 4542 },
             trash = { "scarlet_monk", "scarlet_chaplain", "scarlet_abbot", "scarlet_wizard" } },
@@ -239,7 +242,7 @@ MC.Zones.sm_cathedral = {
 MC.Zones.downs = {
     id = "downs", dungeon = true, continent = "kal", region = "barrens", spot = { 0.56, 0.88 },
     min = 40, max = 50, boss = "amnennar", tier = 3,
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = 0.12, heroicPower = -0.02, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "tutenkash", adds = { "tomb_fiend", "tomb_fiend" }, npcs = { 7355 },
             trash = { "razorfen_battleguard", "deaths_head_cultist", "splinterbone_skeleton", "tomb_fiend" } },
@@ -257,7 +260,7 @@ MC.Zones.downs = {
 MC.Zones.uldaman = {
     id = "uldaman", dungeon = true, continent = "ek", region = "badlands", spot = { 0.44, 0.12 },
     min = 42, max = 52, boss = "archaedas", tier = 3,
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = -0.12, heroicPower = -0.215, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "baelog", adds = { "eric_swift", "olaf" }, npcs = { 6906, 6907, 6908 },
             trash = { "stonevault_ambusher", "stonevault_oracle", "shadowforge_ruffian", "shadowforge_darkweaver" } },
@@ -280,7 +283,7 @@ MC.Zones.uldaman = {
 MC.Zones.zulfarrak = {
     id = "zulfarrak", dungeon = true, continent = "kal", region = "tanaris", spot = { 0.39, 0.21 },
     min = 44, max = 54, boss = "ukorz", tier = 3,
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = 0.16, heroicPower = -0.252, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "antusul", adds = { "sandfury_shadowcaster", "sandfury_witch_doctor" }, npcs = { 8127 },
             trash = { "sandfury_axe_thrower", "sandfury_cretin", "sandfury_shadowcaster", "scarab" } },
@@ -305,7 +308,7 @@ MC.Zones.zulfarrak = {
 MC.Zones.mara_foulspore = {
     id = "mara_foulspore", dungeon = true, group = "maraudon", continent = "kal", region = "desolace", spot = { 0.29, 0.62 },
     min = 45, max = 53, boss = "razorlash", tier = 3, lootFrom = "maraudon",
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = 0.08, heroicPower = 0.2, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "noxxion", adds = { "creeping_sludge", "creeping_sludge" }, npcs = { 13282 },
             trash = { "putridus_satyr", "putridus_trickster", "creeping_sludge", "barbed_lasher" }, waves = 2 },
@@ -318,7 +321,7 @@ MC.Zones.mara_foulspore = {
 MC.Zones.mara_grotto = {
     id = "mara_grotto", dungeon = true, group = "maraudon", continent = "kal", region = "desolace", spot = { 0.29, 0.62 },
     min = 45, max = 53, boss = "vyletongue", tier = 3, lootFrom = "maraudon",
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = 0.28, heroicPower = 0.21, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "meshlok", adds = { "deeprot_stomper" }, npcs = { 12237 },
             trash = { "deeprot_stomper", "deeprot_tangler", "putridus_satyr" }, chance = 0.35 },
@@ -332,7 +335,7 @@ MC.Zones.mara_grotto = {
 MC.Zones.mara_earthsong = {
     id = "mara_earthsong", dungeon = true, group = "maraudon", continent = "kal", region = "desolace", spot = { 0.29, 0.62 },
     min = 48, max = 57, boss = "theradras", tier = 3, lootFrom = "maraudon",
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = 0.38, heroicPower = -0.12, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "celebras", adds = { "celebrian_dryad", "deeprot_tangler" }, npcs = { 12225 },
             trash = { "celebrian_dryad", "deeprot_stomper", "subterranean_diemetradon" }, elite = true },
@@ -351,7 +354,7 @@ MC.Zones.mara_earthsong = {
 MC.Zones.sunken = {
     id = "sunken", dungeon = true, continent = "ek", region = "swampofsorrows", spot = { 0.7, 0.54 },
     min = 50, max = 60, boss = "eranikus", tier = 4,
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = 0.07, heroicPower = -0.17, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "atalalarion", adds = { "atalai_warrior", "atalai_warrior" }, npcs = { 8580 },
             trash = { "atalai_warrior", "atalai_witch_doctor", "mummified_atalai", "murk_worm" } },
@@ -373,7 +376,7 @@ MC.Zones.sunken = {
 MC.Zones.brd = {
     id = "brd", dungeon = true, group = "blackrock", continent = "ek", region = "searinggorge", spot = { 0.35, 0.85 },
     min = 52, max = 60, boss = "thaurissan", tier = 4,
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = -0.04, heroicPower = -0.252, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "roccor", adds = { "fireguard" }, npcs = { 9025 },
             trash = { "anvilrage_guardsman", "anvilrage_warden", "bloodhound" } },
@@ -404,7 +407,7 @@ MC.Zones.brd = {
 MC.Zones.lbrs = {
     id = "lbrs", dungeon = true, group = "blackrock", continent = "ek", region = "searinggorge", spot = { 0.35, 0.85 },
     min = 55, max = 60, boss = "wyrmthalak", tier = 4,
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = -0.21, heroicPower = -0.2, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "omokk", adds = { "spirestone_enforcer", "spirestone_mystic" }, npcs = { 9196 },
             trash = { "spirestone_enforcer", "spirestone_mystic", "spirestone_reaver" } },
@@ -433,7 +436,7 @@ MC.Zones.lbrs = {
 MC.Zones.dm_east = {
     id = "dm_east", dungeon = true, group = "diremaul", continent = "kal", region = "feralas", spot = { 0.59, 0.43 },
     min = 58, max = 60, boss = "alzzin", tier = 4,
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = -0.43, heroicPower = -0.05, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "pusillin", adds = { "wildspawn_trickster" }, npcs = { 14354 },
             trash = { "warpwood_treant", "warpwood_tangler", "phase_lasher" } },
@@ -450,7 +453,7 @@ MC.Zones.dm_east = {
 MC.Zones.dm_west = {
     id = "dm_west", dungeon = true, group = "diremaul", continent = "kal", region = "feralas", spot = { 0.59, 0.43 },
     min = 58, max = 60, boss = "tortheldrin", tier = 4,
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = -0.42, heroicPower = -0.04, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "tendris", adds = { "petrified_treant", "petrified_guardian" }, npcs = { 11489 },
             trash = { "petrified_treant", "petrified_guardian", "warpwood_treant" } },
@@ -470,7 +473,7 @@ MC.Zones.dm_west = {
 MC.Zones.dm_north = {
     id = "dm_north", dungeon = true, group = "diremaul", continent = "kal", region = "feralas", spot = { 0.59, 0.43 },
     min = 58, max = 60, boss = "gordok", tier = 4,
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = -0.48, heroicPower = -0.12, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "moldar", adds = { "gordok_mastiff", "gordok_brute" }, npcs = { 14326, 14322 },
             trash = { "gordok_brute", "gordok_mastiff", "gordok_reaver" } },
@@ -488,7 +491,7 @@ MC.Zones.dm_north = {
 MC.Zones.scholomance = {
     id = "scholomance", dungeon = true, continent = "ek", region = "westernplaguelands", spot = { 0.69, 0.73 },
     min = 58, max = 60, boss = "gandling", tier = 4,
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = -0.52, heroicPower = -0.18, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "kirtonos", adds = { "scholomance_acolyte", "scholomance_neophyte" }, npcs = { 10506 },
             trash = { "scholomance_acolyte", "scholomance_neophyte", "scholomance_necrolyte", "risen_guard" } },
@@ -517,7 +520,7 @@ MC.Zones.scholomance = {
 MC.Zones.strat_live = {
     id = "strat_live", dungeon = true, group = "strat", continent = "ek", region = "easternplaguelands", spot = { 0.27, 0.12 },
     min = 58, max = 60, boss = "balnazzar", tier = 4, lootFrom = "stratholme",
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = -0.49, heroicPower = -0.19, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "skul", adds = { "skeletal_guardian" }, npcs = { 10393 }, chance = 0.35 },
         { boss = "unforgiven", adds = { "spectral_citizen", "ghostly_citizen" }, npcs = { 10516 },
@@ -540,7 +543,7 @@ MC.Zones.strat_live = {
 MC.Zones.strat_undead = {
     id = "strat_undead", dungeon = true, group = "strat", continent = "ek", region = "easternplaguelands", spot = { 0.27, 0.12 },
     min = 58, max = 60, boss = "rivendare", tier = 4, lootFrom = "stratholme",
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = -0.64, heroicPower = -0.27, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "barthilas", adds = { "crypt_crawler", "undead_scarab" }, npcs = { 10435 },
             trash = { "crypt_crawler", "crypt_beast", "undead_scarab", "eye_of_naxxramas" } },
@@ -563,7 +566,7 @@ MC.Zones.strat_undead = {
 MC.Zones.thanes = {
     id = "thanes", dungeon = true, continent = "ek", region = "dunmorogh", spot = { 0.52, 0.34 },
     min = 13, max = 18, boss = "durgen", tier = 1,
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = -0.39, heroicPower = 0.11, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "faldrim", adds = { "ghostly_attendant", "tormented_soul" }, npcs = { 261306 },
             trash = { "enraged_apparition", "tormented_soul", "ghostly_attendant" } },
@@ -579,7 +582,7 @@ MC.Zones.thanes = {
 MC.Zones.ruins_lordaeron = {
     id = "ruins_lordaeron", dungeon = true, continent = "ek", region = "tirisfal", spot = { 0.62, 0.72 },
     min = 15, max = 20, boss = "rathmael", tier = 1,
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = -0.39, heroicPower = -0.08, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "witherfang", adds = { "spider", "venom_lurker" }, npcs = { 250483 },
             trash = { "venom_lurker", "spider", "tarantula" } },
@@ -600,7 +603,7 @@ MC.Zones.ruins_lordaeron = {
 MC.Zones.excavation = {
     id = "excavation", dungeon = true, continent = "ek", region = "wetlands", spot = { 0.38, 0.5 },
     min = 24, max = 29, boss = "relicguardian", tier = 2,
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = -0.17, heroicPower = -0.02, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "saltspine", adds = { "thicket_lurker" }, npcs = { 260322 },
             trash = { "thicket_lurker", "thicket_matriarch" } },
@@ -617,7 +620,7 @@ MC.Zones.excavation = {
 MC.Zones.dalaran = {
     id = "dalaran", dungeon = true, continent = "ek", region = "alterac", spot = { 0.18, 0.75 },
     min = 28, max = 33, boss = "archmageshade", tier = 2,
-    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    power = -0.18, heroicPower = 0.06, pool = {}, adds = {}, loot = {}, gear = {},
     encounters = {
         { boss = "atrexis", adds = { "skeletal_warrior", "skeletal_warrior" }, npcs = { 247126 },
             trash = { "saturated_remnant", "mana_phantom", "arcane_manaling" } },

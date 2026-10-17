@@ -17,7 +17,7 @@ Combat.FATIGUE_TURN = 30
 
 -- A target above the attacker's level makes hits miss more often and land softer, like in WoW.
 Combat.GAP = { miss = 0.05, missSq = 0.012, missCap = 0.85, dmg = 0.10, dmgFloor = 0.15, bonus = 0.06, bonusCap = 1.6 }
-Combat.RANK_BONUS = { 1, 1.12, 1.25 }
+Combat.RANK_BONUS = { 1, 1.12, 1.25, 1.4 }
 
 local GAP, BEATS = Combat.GAP, Combat.BEATS
 local MOD = 2147483647

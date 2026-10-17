@@ -306,6 +306,34 @@ test("coins recruit and rank up", function()
     assert(not Bounty.CanImprove(store, "jaina"), "no coins left")
 end)
 
+test("rank IV needs coins and the mercenary's dungeon cleared with it", function()
+    for _, id in ipairs(MC.MERC_ORDER) do
+        local dungeon = MC.Zones[MC.RANK4_DUNGEON[id]]
+        assert(dungeon and dungeon.dungeon and dungeon.min >= 44, id .. ": rank IV dungeon from the mid-forties")
+    end
+    local store = NewStore()
+    local entry = Bounty.Entry(store, "cairne")
+    entry.ranks[1], entry.coins = 3, 1000
+    assert(not Bounty.CanRankUp(store, "cairne", 1), "dungeon not cleared yet")
+    eq(Bounty.RankDungeon(entry, "cairne", 1), MC.RANK4_DUNGEON.cairne)
+    -- Clearing the dungeon with Cairne in the party (the run's end records who was there).
+    local run = Bounty.NewRun(store, MC.RANK4_DUNGEON.cairne, false, 1)
+    local layers = run.map.layers
+    local last = layers[#layers][1]
+    run.layer, run.index = #layers, 1
+    run.battle = { phase = "won", units = {} }
+    Bounty.AfterBattle(store, run)
+    eq(run.phase, "complete")
+    assert(entry.dungeons[MC.RANK4_DUNGEON.cairne], "recorded")
+    assert(Bounty.RankUp(store, "cairne", 1), "rank IV")
+    eq(entry.ranks[1], 4)
+    -- A won fight gives a coin, the end its reward.
+    eq(entry.coins, 1000 - Bounty.RANK_COST[4] + 1 + (run.rewards.coins.cairne or 0))
+    eq(Bounty.RankCost(entry, 1), nil)
+    assert(Combat.RANK_BONUS[4] > Combat.RANK_BONUS[3], "rank IV is stronger")
+    assert(last.final, "the last stop ends the dungeon")
+end)
+
 test("a full bounty run reaches an end", function()
     local store = NewStore()
     for _, id in ipairs(store.party) do store.mercs[id].level = 12 end
@@ -493,8 +521,8 @@ test("items belong to one mercenary: weapon and armour slot, jewellery from the 
     eq(entry.worn[1], nil)
     entry.worn[1] = "test_blade"
     local spec = Bounty.MercSpec(store, id)
-    assert(math.abs((spec.mods.critChance or 0) - 0.02) < 1e-9, "item bonus in the fight")
-    assert(math.abs((spec.mods.resist_fire or 0) - 0.08) < 1e-9, "resistance")
+    assert(math.abs((spec.mods.critChance or 0) - 2 * MC.ITEM_POINT.critChance) < 1e-9, "item bonus in the fight")
+    assert(math.abs((spec.mods.resist_fire or 0) - 2 * MC.ITEM_POINT.resist_fire) < 1e-9, "resistance")
     for id2 in pairs(TEST_ITEMS) do MC.Items[id2] = nil end
 end)
 

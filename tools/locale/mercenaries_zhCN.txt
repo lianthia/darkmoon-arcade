@@ -310,6 +310,7 @@ MC_XP	经验 %s / %s
 MC_COINS	%d 枚硬币
 MC_UNLOCKS_AT	%d 级解锁
 MC_RANK_UP	等阶 %s（%d）
+MC_RANK4_NEEDS	需要通关%s，且队伍中有%s。
 MC_EQUIPMENT	装备
 MC_GEAR_FROM	由%s掉落，%s（%s）
 MC_STAT_ZONES	完成的悬赏

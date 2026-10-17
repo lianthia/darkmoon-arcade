@@ -11,7 +11,7 @@ local W, H = MC.W, MC.H
 
 local INK = { 0.24, 0.14, 0.06 }
 local ROLES = { "protector", "fighter", "caster" }
-local ROMAN = { "I", "II", "III" }
+local ROMAN = { "I", "II", "III", "IV" }
 
 -- What the travel point shows of each zone: a starting-zone picture, a dungeon loading screen
 -- (cropped to its painting) or, failing both, the zone's own map.
@@ -1094,6 +1094,19 @@ function Module:BuildMercView()
             end
         end, "green")
         Kit.Place(up, x, 292, sheet)
+        -- Rank IV also needs a dungeon cleared with this mercenary: the tooltip names it.
+        up:HookScript("OnEnter", function(b)
+            local entry = self:Store().mercs[self.mercShown]
+            local dungeon = entry and MC.RANK4_DUNGEON[self.mercShown]
+            if not entry or (entry.ranks[i] or 1) ~= 3 or not dungeon then return end
+            local done = entry.dungeons and entry.dungeons[dungeon]
+            GameTooltip:SetOwner(b, "ANCHOR_RIGHT")
+            GameTooltip:SetText(L.MC_RANK_UP:format(ROMAN[4], Bounty.RANK_COST[4]), 1, 0.82, 0)
+            GameTooltip:AddLine(L.MC_RANK4_NEEDS:format(Describe.ZoneName(dungeon), Describe.MercName(self.mercShown)),
+                done and 0.3 or 1, done and 1 or 0.3, done and 0.3 or 0.3, true)
+            GameTooltip:Show()
+        end)
+        up:HookScript("OnLeave", GameTooltip_Hide)
         view.ups[i] = up
     end
 
@@ -1150,7 +1163,8 @@ function Module:RefreshMercView()
         card:SetAbility(def.abilities[i], unit, i, nil, def.role)
         card:SetLocked(not unlocked and MC.ABILITY_LEVELS[i] or nil)
         local cost = Bounty.RankCost(entry, i)
-        view.ups[i]:SetShown(entry.owned and cost ~= nil)
+        -- Rank IV comes with the dungeons (only in the development copy until they are released).
+        view.ups[i]:SetShown(entry.owned and cost ~= nil and (entry.ranks[i] < 3 or MC.DEV == true))
         if cost then view.ups[i]:SetText(L.MC_RANK_UP:format(ROMAN[entry.ranks[i] + 1], cost)) end
         view.ups[i]:SetEnabled(Bounty.CanRankUp(store, id, i))
     end

@@ -920,6 +920,7 @@ ns.AddStrings("enUS", {
     MC_COINS = "%d coins",
     MC_UNLOCKS_AT = "Unlocks at level %d",
     MC_RANK_UP = "Rank %s (%d)",
+    MC_RANK4_NEEDS = "Needs %s cleared with %s in the party.",
     MC_EQUIPMENT = "Equipment",
     MC_GEAR_FROM = "Dropped by %s in %s (%s)",
 
@@ -2379,6 +2380,7 @@ ns.AddStrings("deDE", {
     MC_COINS = "%d Münzen",
     MC_UNLOCKS_AT = "Ab Stufe %d",
     MC_RANK_UP = "Rang %s (%d)",
+    MC_RANK4_NEEDS = "Erfordert %s, abgeschlossen mit %s in der Gruppe.",
     MC_EQUIPMENT = "Ausrüstung",
     MC_GEAR_FROM = "Beute von %s in %s (%s)",
 

@@ -15,17 +15,19 @@ local Bounty = MC.Bounty
 MC.ITEM_BUDGET = { common = 2, uncommon = 4, rare = 6, epic = 8, legendary = 10 }
 -- The base value by rarity: weapons attack, armour health (in share of the mercenary's own).
 local BASE_TIER = { common = 0, uncommon = 1, rare = 2, epic = 3, legendary = 4 }
-local BASE = { weapon = { atkPct = 0.01 }, armor = { hpPct = 0.015 } }
+local BASE = { weapon = { atkPct = 0.003 }, armor = { hpPct = 0.0045 } }
 
 MC.SCHOOLS = { "physical", "fire", "frost", "nature", "shadow", "holy", "arcane" }
--- What one budget point buys of each bonus.
+-- What one budget point buys of each bonus. Tuned with tools/balance_mercenaries.py --items: a full set
+-- of average rare items adds about 5 points of win rate to a bounty, no more (concept: balance must
+-- not tip). Comfort bonuses never change a fight and keep their worth.
 MC.ITEM_POINT = {
-    atkPct = 0.01, critChance = 0.01, hpPct = 0.015, spellPct = 0.015, takenPct = -0.01, regenPct = 0.005,
+    atkPct = 0.003, critChance = 0.003, hpPct = 0.0045, spellPct = 0.0045, takenPct = -0.003, regenPct = 0.0015,
     xpPct = 0.05, coinPct = 0.05,
 }
 for _, school in ipairs(MC.SCHOOLS) do
-    MC.ITEM_POINT["resist_" .. school] = 0.04
-    if school ~= "physical" then MC.ITEM_POINT["school_" .. school] = 0.03 end
+    MC.ITEM_POINT["resist_" .. school] = 0.012
+    if school ~= "physical" then MC.ITEM_POINT["school_" .. school] = 0.009 end
 end
 -- Bonuses that never change a fight.
 MC.COMFORT = { xpPct = true, coinPct = true }

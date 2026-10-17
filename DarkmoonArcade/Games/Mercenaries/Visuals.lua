@@ -458,7 +458,7 @@ function MC.CreateAbilityCard(parent)
     c.cdLabel:SetTextColor(0.75, 0.75, 0.75)
     c.cdLabel:SetPoint("BOTTOM", 0, 6)
 
-    local ROMAN = { "I", "II", "III" }
+    local ROMAN = { "I", "II", "III", "IV" }
     -- unit: the owner (combat unit or a spec-like table); `ready` false greys the card out.
     function c:SetAbility(id, unit, slot, cdLeft)
         local def = MC.Abilities[id]

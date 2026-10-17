@@ -310,6 +310,7 @@ MC_XP	XP %s / %s
 MC_COINS	%d monedas
 MC_UNLOCKS_AT	Se desbloquea al nivel %d
 MC_RANK_UP	Rango %s (%d)
+MC_RANK4_NEEDS	Requiere completar %s con %s en el grupo.
 MC_EQUIPMENT	Equipo
 MC_GEAR_FROM	Lo suelta %s en %s (%s)
 MC_STAT_ZONES	Recompensas completadas

@@ -310,6 +310,7 @@ MC_XP	Опыт %s / %s
 MC_COINS	Монет: %d
 MC_UNLOCKS_AT	Открывается на %d уровне
 MC_RANK_UP	Ранг %s (%d)
+MC_RANK4_NEEDS	Требуется пройти %s, имея в группе: %s.
 MC_EQUIPMENT	Снаряжение
 MC_GEAR_FROM	Добыча: %s, %s (%s)
 MC_STAT_ZONES	Получено наград

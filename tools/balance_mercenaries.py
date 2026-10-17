@@ -7,6 +7,18 @@ acceptance criteria from the concept:
   - a fitting party (boss level - 1): 50-70 %
 Use `--progress` to simulate a new player levelling through all zones instead, and `--gap` for a
 single regular fight against foes above the party's level (how much a level gap matters).
+
+Progress profiles (`--profile fresh|items|geared|full`, concept docs/konzept-dungeons.md, section 7):
+  fresh   no ranks, no items (a new player; the bounty criteria above use it)
+  items   no ranks, rare dungeon items of an average kind and about the party's level in every open
+          slot, no enchants
+  geared  ranks III with the first ability at rank IV, the items of "items", enchants of tier 2-3
+  full    every ability at rank IV, the best epic items, enchants of the highest tier
+Further reports:
+  --items     a full set of rare items alone: at most about +5 points of win rate on bounties
+  --dungeons  every dungeon at boss level - 1: normal 40-55 % in the profile "fresh"
+  --heroic    bounties and dungeons at level 60: about 40 % "geared", clearly less "fresh"
+`--tune --dungeons` and `--tune --heroic` find each zone's `power` / `heroicPower` for these targets.
 """
 import pathlib
 import sys
@@ -15,24 +27,32 @@ from lupa import luajit21 as lupa
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 ADDON = ROOT / "DarkmoonArcade"
-FILES = ["Combat", "Abilities", "Mercs", "Treasures", "Enemies", "Zones", "Bounty"]
+FILES = ["Combat", "Abilities", "Mercs", "Treasures", "Enemies", "Zones", "Bounty", "ItemData", "Items",
+         "Enchanting", "Quests", "Dungeons"]
 
 args = [a for a in sys.argv[1:] if a.isdigit()]
 RUNS = int(args[0]) if args else 200
 PROGRESS = "--progress" in sys.argv
 SWEEP = "--sweep" in sys.argv
 TUNE = "--tune" in sys.argv
+DUNGEONS = "--dungeons" in sys.argv
+HEROIC = "--heroic" in sys.argv
+PROFILE = sys.argv[sys.argv.index("--profile") + 1] if "--profile" in sys.argv else "fresh"
 TARGET = 0.6
+# Dungeons: normal at boss level - 1 in the profile "fresh"; heroic at level 60 in the profile "geared".
+DUNGEON_TARGET, DUNGEON_RANGE = 0.47, (0.4, 0.55)
+HEROIC_TARGET, HEROIC_RANGE = 0.4, (0.35, 0.45)
 # --planner: the bot plays like the debug mode's "Play all turns" (best orders found by simulation).
 USE_PLANNER = "--planner" in sys.argv
 
 lua = lupa.LuaRuntime(unpack_returned_tuples=True)
-lua.execute("ns = {}")
+lua.execute("ns = { AddStrings = function() end }")
 loader = lua.eval("function(code, name) local f = assert(loadstring(code, name)); f('DarkmoonArcade', ns) end")
 for name in FILES:
     loader((ADDON / "Games" / "Mercenaries" / f"{name}.lua").read_text(encoding="utf-8"), name)
 
 lua.globals().PLANNER = USE_PLANNER
+lua.globals().PROFILE = PROFILE
 lua.execute("""
 local MC = ns.Mercenaries
 local Combat, Bounty = MC.Combat, MC.Bounty
@@ -78,13 +98,81 @@ function PlayRun(store, zone, heroic, seed)
         end
     end
     store.run = nil
+    store.pendingItems = nil
     return run.phase == "complete", run.fights
 end
 
-function FixedStore(level)
+-- What each role looks for in an item: the bonuses that help it in a fight, by weight.
+local WANTS = {
+    protector = { hpPct = 1, takenPct = 1, regenPct = 0.5, atkPct = 0.3 },
+    fighter = { atkPct = 1, critChance = 1, hpPct = 0.3 },
+    caster = { spellPct = 1, critChance = 0.7, hpPct = 0.3 },
+}
+local function Fit(role, mods)
+    local sum = 0
+    for k, v in pairs(mods) do sum = sum + (WANTS[role][k] or 0) * v end
+    return sum
+end
+
+-- The item a profile wears in a slot: "best" the strongest for the role, "average" the median of
+-- those that suit it at all, of the levels least..most.
+local function PickItem(role, kind, rarity, least, most, how)
+    local list = {}
+    for id, item in pairs(MC.Items) do
+        if item.kind == kind and item.rarity == rarity and item.level >= least and item.level <= most then
+            local fit = Fit(role, item.points)
+            if fit > 0 then list[#list + 1] = { id = id, fit = fit } end
+        end
+    end
+    table.sort(list, function(a, b) if a.fit ~= b.fit then return a.fit < b.fit end return a.id < b.id end)
+    if #list == 0 then return nil end
+    if how == "best" then return list[#list].id end
+    return list[math.floor((#list + 1) / 2)].id
+end
+
+-- The strongest formula of the tiers that fits the item and suits the role.
+local function PickRecipe(role, item, lo, hi)
+    local best, bestFit
+    for id, recipe in pairs(MC.Recipes) do
+        if recipe.tier >= lo and recipe.tier <= hi and MC.RecipeFits(recipe, item) then
+            local fit = Fit(role, MC.RecipeMods(recipe))
+            if fit > 0 and (not bestFit or fit > bestFit or (fit == bestFit and id < best)) then best, bestFit = id, fit end
+        end
+    end
+    return best
+end
+
+-- Ranks, items and enchants of a progress profile (see the file's head).
+function ApplyProfile(store, profile)
+    if profile == "fresh" then return end
+    for id, entry in pairs(store.mercs) do
+        if entry.owned then
+            local role = MC.Mercs[id].role
+            if profile == "geared" then entry.ranks = { 4, 3, 3 }
+            elseif profile == "full" then entry.ranks = { 4, 4, 4 } end
+            local full = profile == "full"
+            entry.items, entry.worn, entry.enchants = {}, {}, {}
+            for slot = 1, MC.ItemSlots(entry) do
+                -- Items of about the mercenary's level (they drop in the dungeons of its levels).
+                local itemId = PickItem(role, MC.ITEM_SLOT_KINDS[slot], full and "epic" or "rare",
+                    entry.level - (full and 5 or 12), full and 99 or entry.level + 2, full and "best" or "average")
+                if itemId then
+                    entry.items[#entry.items + 1] = itemId
+                    entry.worn[slot] = itemId
+                    if profile ~= "items" then
+                        entry.enchants[itemId] = PickRecipe(role, MC.Items[itemId], full and 4 or 2, full and 4 or 3)
+                    end
+                end
+            end
+        end
+    end
+end
+
+function FixedStore(level, profile)
     local store = {}
     Bounty.Init(store)
     for _, id in ipairs(store.party) do store.mercs[id].level = level end
+    ApplyProfile(store, profile or "fresh")
     return store
 end
 
@@ -93,11 +181,11 @@ function FreezeLevels(frozen)
     Bounty.AddXP = frozen and function() return 0 end or addXP
 end
 
-function WinRate(zone, level, heroic, runs)
+function WinRate(zone, level, heroic, runs, profile)
     FreezeLevels(true)
     local wins, fights = 0, 0
     for seed = 1, runs do
-        local store = FixedStore(level)
+        local store = FixedStore(level, profile or PROFILE)
         if heroic then Bounty.ZoneState(store, zone).normal = 1 end
         local won, f = PlayRun(store, zone, heroic, seed * 7919)
         if won then wins = wins + 1 end
@@ -159,6 +247,12 @@ if "--gapparams" in sys.argv:
     for key, value in zip(["miss", "missSq", "dmg", "bonus", "bonusCap"], values):
         MC.Combat.GAP[key] = value
 order = [MC.ZONE_ORDER[i] for i in range(1, len(MC.ZONE_ORDER) + 1)]
+dungeons = [MC.DUNGEON_ORDER[i] for i in range(1, len(MC.DUNGEON_ORDER) + 1)]
+# --zone a,b,c: only these zones and dungeons (several processes can tune in parallel).
+only = sys.argv[sys.argv.index("--zone") + 1].split(",") if "--zone" in sys.argv else None
+if only:
+    order = [z for z in order if z in only]
+    dungeons = [z for z in dungeons if z in only]
 
 if SWEEP:
     # Tries enemy and boss strengths on a few zones at boss level - 1.
@@ -176,32 +270,31 @@ if SWEEP:
     sys.exit(0)
 
 if TUNE:
-    # Finds each zone's `power` so the bot beats the boss in about 60 % of runs at boss level - 1
-    # (heroic: 40 % at level 59).
+    # Finds each zone's `power`: bounties 60 % at boss level - 1 ("fresh"), dungeons 47 % there,
+    # heroic 40 % at level 60 for a geared party (bounties and dungeons, or only dungeons with --dungeons).
     bounty = MC.Bounty
-    heroic = "--heroic" in sys.argv
-    # Heroic is the endgame: the bot plays without ranks or gear, so it should lose more often.
-    if heroic:
-        TARGET = 0.4
-    only = sys.argv[sys.argv.index("--zone") + 1] if "--zone" in sys.argv else None
-    for zid in order:
-        if only and zid != only:
-            continue
+    profile = "geared" if HEROIC else PROFILE
+    target = HEROIC_TARGET if HEROIC else DUNGEON_TARGET if DUNGEONS else TARGET
+    zones = dungeons if DUNGEONS else order + (dungeons if HEROIC else [])
+    key = "heroicPower" if HEROIC else "power"
+    found = {}
+    for zid in zones:
         zone = MC.Zones[zid]
-        level = 59 if heroic else bounty.BossLevel(zone, False) - 1
-        key = "heroicPower" if heroic else "power"
-        lo, hi = -0.8, 2.5
+        level = 60 if HEROIC else bounty.BossLevel(zone, False) - 1
+        lo, hi = -0.8, 3.5
         for _ in range(9):
             mid = (lo + hi) / 2
             zone[key] = mid
-            rate = g.WinRate(zid, level, heroic, RUNS)[0]
-            if rate > TARGET:
+            rate = g.WinRate(zid, level, HEROIC, RUNS, profile)[0]
+            if rate > target:
                 lo = mid
             else:
                 hi = mid
         zone[key] = round((lo + hi) / 2, 2)
-        rate = g.WinRate(zid, level, heroic, RUNS)[0]
-        print(f"{zid:12} {key} = {zone[key]:5.2f}  -> {rate * 100:.0f}%")
+        rate = g.WinRate(zid, level, HEROIC, RUNS, profile)[0]
+        found[zid] = zone[key]
+        print(f"{zid:15} {key} = {zone[key]:5.2f}  -> {rate * 100:.0f}%", flush=True)
+    print("TUNED", key, found)
     sys.exit(0)
 
 if "--gap" in sys.argv:
@@ -223,20 +316,52 @@ if PROGRESS:
     print("total runs:", runs)
     sys.exit(0)
 
-if "--heroic" in sys.argv:
-    # Heroic report: the bot at level 59 and 60 without ranks or gear. Since levels weigh more (1.4.0)
-    # the target is 50-65 % at level 60; players with ranks and gear do better. Heroic is to be
-    # sharpened with the dungeons.
-    print(f"{'zone':12} {'59':>7} {'60':>7}")
+if HEROIC:
+    # Heroic at level 60: about 40 % for a geared party, clearly less for a fresh one.
+    print(f"{'zone':15} {'fresh':>7} {'geared':>7} {'full':>7}")
     failures = []
-    for zid in order:
-        r59 = g.WinRate(zid, 59, True, RUNS)[0]
-        r60 = g.WinRate(zid, 60, True, RUNS)[0]
-        print(f"{zid:12} {r59 * 100:6.1f}% {r60 * 100:6.1f}%")
-        if not 0.5 <= r60 <= 0.65:
-            failures.append(f"{zid}: {r60:.0%} heroic at 60 (want 50-65 %)")
+    for zid in (dungeons if DUNGEONS else order + dungeons):
+        rates = [g.WinRate(zid, 60, True, RUNS, p)[0] for p in ("fresh", "geared", "full")]
+        print(f"{zid:15} " + " ".join(f"{r * 100:6.1f}%" for r in rates), flush=True)
+        if not HEROIC_RANGE[0] <= rates[1] <= HEROIC_RANGE[1]:
+            failures.append(f"{zid}: {rates[1]:.0%} heroic geared (want 35-45 %)")
+        if rates[0] > rates[1] - 0.15:
+            failures.append(f"{zid}: fresh {rates[0]:.0%} not clearly below geared")
     print("\n".join(failures) if failures else "all heroic criteria met")
     sys.exit(1 if failures else 0)
+
+if DUNGEONS:
+    # Normal dungeons at boss level - 1: 40-55 % fresh; and what items and ranks add.
+    print(f"{'dungeon':15} {'boss':>4} {'-5':>7} {'fresh':>7} {'items':>7} {'geared':>7}")
+    failures = []
+    for zid in dungeons:
+        zone = MC.Zones[zid]
+        boss = MC.Bounty.BossLevel(zone, False)
+        low = g.WinRate(zid, max(1, zone.min - 5), False, RUNS, "fresh")[0]
+        rates = [g.WinRate(zid, boss - 1, False, RUNS, p)[0] for p in ("fresh", "items", "geared")]
+        print(f"{zid:15} {boss:4} {low * 100:6.1f}% " + " ".join(f"{r * 100:6.1f}%" for r in rates), flush=True)
+        if not DUNGEON_RANGE[0] <= rates[0] <= DUNGEON_RANGE[1]:
+            failures.append(f"{zid}: {rates[0]:.0%} at boss-1 (want 40-55 %)")
+        if low > 0.01:
+            failures.append(f"{zid}: {low:.1%} at -5")
+    print("\n".join(failures) if failures else "all dungeon criteria met")
+    sys.exit(1 if failures else 0)
+
+if "--items" in sys.argv:
+    # A full set of average rare items without ranks against bounties at boss level - 1.
+    print(f"{'zone':12} {'fresh':>7} {'items':>7} {'diff':>6}")
+    gains = []
+    for zid in order:
+        boss = MC.Bounty.BossLevel(MC.Zones[zid], False)
+        a = g.WinRate(zid, boss - 1, False, RUNS, "fresh")[0]
+        b = g.WinRate(zid, boss - 1, False, RUNS, "items")[0]
+        # Below level 20 the first rare items are rare indeed; zones without any are left out.
+        if b != a:
+            gains.append(b - a)
+        print(f"{zid:12} {a * 100:6.1f}% {b * 100:6.1f}% {(b - a) * 100:+5.1f}", flush=True)
+    mean = sum(gains) / max(1, len(gains))
+    print(f"mean gain {mean * 100:+.1f} points (want about +5), largest {max(gains, default=0) * 100:+.1f}")
+    sys.exit(0)
 
 print(f"{'zone':12} {'boss':>4} {'-10':>7} {'-5':>7} {'boss-3':>7} {'boss-1':>7} {'boss+2':>7}  fights@boss-1")
 failures = []

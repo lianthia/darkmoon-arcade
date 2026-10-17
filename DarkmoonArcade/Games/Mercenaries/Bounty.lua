@@ -15,7 +15,7 @@ MC.Bounty = Bounty
 Bounty.PARTY_SIZE = 6
 Bounty.HEROIC_LEVEL = 60
 Bounty.RECRUIT_COST = 50
-Bounty.RANK_COST = { [2] = 30, [3] = 80 }
+Bounty.RANK_COST = { [2] = 30, [3] = 80, [4] = 150 }
 Bounty.NODE_WEIGHTS = { { "fight", 50 }, { "elite", 14 }, { "healer", 9 }, { "boon", 12 }, { "mystery", 15 } }
 Bounty.MYSTERIES = { "stranger", "sabotage", "portal", "cursed", "bonus", "recruit" }
 Bounty.ROLES = { "protector", "fighter", "caster" }
@@ -120,11 +120,19 @@ function Bounty.RankCost(entry, slot)
     return Bounty.RANK_COST[(entry.ranks[slot] or 1) + 1]
 end
 
+-- The dungeon still to clear with this mercenary before the next rank (rank IV), or nil.
+function Bounty.RankDungeon(entry, id, slot)
+    if (entry.ranks[slot] or 1) + 1 < 4 then return nil end
+    local dungeon = MC.RANK4_DUNGEON[id]
+    if dungeon and not (entry.dungeons and entry.dungeons[dungeon]) then return dungeon end
+    return nil
+end
+
 function Bounty.CanRankUp(store, id, slot)
     local entry = store.mercs[id]
     if not entry or not entry.owned or Bounty.UnlockedAbilities(entry.level) < slot then return false end
     local cost = Bounty.RankCost(entry, slot)
-    return cost ~= nil and entry.coins >= cost
+    return cost ~= nil and entry.coins >= cost and Bounty.RankDungeon(entry, id, slot) == nil
 end
 
 -- Something to do for this mercenary: recruit it or raise one of its abilities.
@@ -642,6 +650,16 @@ local function Complete(store, run)
     local first = state[key] == 0
     state[key] = state[key] + 1
     local rewards = { coins = {}, first = first }
+    -- Who cleared a dungeon (rank IV asks for one with the mercenary itself).
+    if run.dungeon then
+        for _, member in ipairs(run.party) do
+            if not member.guest then
+                local entry = Bounty.Entry(store, member.id)
+                entry.dungeons = entry.dungeons or {}
+                entry.dungeons[run.dungeon] = true
+            end
+        end
+    end
     local function Give(id, amount)
         amount = math.floor(amount * (run.bonusLoot and 1.5 or 1) + 0.5)
         Bounty.Entry(store, id).coins = Bounty.Entry(store, id).coins + amount

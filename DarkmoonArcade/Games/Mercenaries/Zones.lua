@@ -153,7 +153,8 @@ MC.ZONE_ORDER = {
 }
 
 -- Extra strength of each bounty's foes, so a party one level below the boss wins about 60 % of
--- the time against the bot's play (heroic: 40 % at level 59 without ranks or gear).
+-- the time against the bot's play (heroic: 40 % at level 60 for a geared party - ranks III and IV,
+-- rare dungeon items, enchants; the profile "geared" of the balance tool).
 -- Tuned with tools/balance_mercenaries.py --tune (--heroic).
 local POWER = {
     elwynn = -0.27, dunmorogh = 0.02, tirisfal = 0.11, teldrassil = 0.01, durotar = 0.24, mulgore = -0.03,
@@ -166,14 +167,14 @@ local POWER = {
     easternplaguelands = -0.13, winterspring = -0.23, silithus = 0.20, hyjal = -0.13,
 }
 local HEROIC_POWER = {
-    elwynn = -0.02, dunmorogh = 0.30, tirisfal = 0.11, teldrassil = 0.30, durotar = 0.12, mulgore = 0.14,
-    zephras = 0.09, westfall = 0.08, lochmodan = 0.20, silverpine = -0.09, darkshore = 0.16, barrens = 0.06,
-    redridge = 0.09, stonetalon = 0.40, ashenvale = 0.09, duskwood = 0.03, wetlands = -0.08, hillsbrad = 0.20,
-    thousandneedles = 0.09, alterac = 0.19, arathi = 0.16, desolace = 0.07, stranglethorn = 0.10,
-    riverglades = 0.03, badlands = 0.19, swampofsorrows = 0.09, dustwallow = 0.09, shendralas = 0.09,
-    feralas = -0.11, tanaris = 0.19, hinterlands = 0.14, searinggorge = 0.31, azshara = 0.38,
-    blastedlands = -0.13, felwood = 0.05, ungoro = -0.03, burningsteppes = -0.23, westernplaguelands = 0.01,
-    easternplaguelands = -0.04, winterspring = -0.15, silithus = -0.10, hyjal = 0.07,
+    elwynn = 0.30, dunmorogh = 0.64, tirisfal = 0.50, teldrassil = 0.82, durotar = 0.52, mulgore = 0.38,
+    zephras = 0.61, westfall = 0.47, lochmodan = 0.61, silverpine = 0.27, darkshore = 0.56, barrens = 0.40,
+    redridge = 0.51, stonetalon = 0.81, ashenvale = 0.60, duskwood = 0.41, wetlands = 0.29, hillsbrad = 0.64,
+    thousandneedles = 0.57, alterac = 0.65, arathi = 0.61, desolace = 0.48, stranglethorn = 0.40,
+    riverglades = 0.46, badlands = 0.62, swampofsorrows = 0.52, dustwallow = 0.49, shendralas = 0.50,
+    feralas = 0.30, tanaris = 0.61, hinterlands = 0.46, searinggorge = 0.79, azshara = 0.71,
+    blastedlands = 0.28, felwood = 0.54, ungoro = 0.30, burningsteppes = 0.09, westernplaguelands = 0.35,
+    easternplaguelands = 0.37, winterspring = 0.30, silithus = 0.61, hyjal = 0.51,
 }
 for id, zone in pairs(MC.Zones) do
     zone.power, zone.heroicPower = POWER[id] or 0, HEROIC_POWER[id] or 0

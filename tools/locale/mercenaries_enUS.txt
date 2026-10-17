@@ -310,6 +310,7 @@ MC_XP	XP %s / %s
 MC_COINS	%d coins
 MC_UNLOCKS_AT	Unlocks at level %d
 MC_RANK_UP	Rank %s (%d)
+MC_RANK4_NEEDS	Needs %s cleared with %s in the party.
 MC_EQUIPMENT	Equipment
 MC_GEAR_FROM	Dropped by %s in %s (%s)
 MC_STAT_ZONES	Bounties cleared

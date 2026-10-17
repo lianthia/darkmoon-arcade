@@ -310,6 +310,7 @@ MC_XP	XP %s / %s
 MC_COINS	%d pièces
 MC_UNLOCKS_AT	Disponible au niveau %d
 MC_RANK_UP	Rang %s (%d)
+MC_RANK4_NEEDS	Nécessite d'avoir terminé %s avec %s dans le groupe.
 MC_EQUIPMENT	Équipement
 MC_GEAR_FROM	Laissé par %s à %s (%s)
 MC_STAT_ZONES	Primes accomplies
