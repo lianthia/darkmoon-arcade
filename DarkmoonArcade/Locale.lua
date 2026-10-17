@@ -9,8 +9,6 @@ function ns.AddStrings(language, values)
 end
 
 ns.AddStrings("enUS", {
-    NEWS_141_1_TITLE = "Two copies installed",
-    NEWS_141_1_TEXT = "With a dev copy installed but switched off, the arcade could stay off and /arcade showed an error. Fixed.",
     NEWS_140_9_TITLE = "Quests and stories",
     NEWS_140_9_TEXT = "A quest chain for every mercenary, close to their lore, rewarded with coins and the hidden bosses of the dungeons.",
     NEWS_140_10_TITLE = "Dungeons",
@@ -232,8 +230,6 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
-    NEWS_141_1_TITLE = "Zwei Kopien installiert",
-    NEWS_141_1_TEXT = "War eine Dev-Kopie installiert, aber abgeschaltet, blieb die Spielhalle aus und /arcade zeigte einen Fehler. Behoben.",
     NEWS_140_9_TITLE = "Aufgaben und Geschichten",
     NEWS_140_9_TEXT = "Eine Aufgabenkette je Söldner, nah an seiner Geschichte, belohnt mit Münzen und den versteckten Bossen der Dungeons.",
     NEWS_140_10_TITLE = "Dungeons",
@@ -452,8 +448,6 @@ ns.AddStrings("deDE", {
 })
 
 ns.AddStrings("frFR", {
-    NEWS_141_1_TITLE = "Deux copies installées",
-    NEWS_141_1_TEXT = "Avec une copie de développement installée mais désactivée, l'arcade pouvait rester éteinte et /arcade affichait une erreur. Corrigé.",
     NEWS_140_9_TITLE = "Quêtes et histoires",
     NEWS_140_9_TEXT = "Une chaîne de quêtes par mercenaire, fidèle à son histoire, récompensée par des pièces et les boss cachés des donjons.",
     NEWS_140_10_TITLE = "Donjons",
@@ -668,8 +662,6 @@ ns.AddStrings("frFR", {
 })
 
 ns.AddStrings("esES", {
-    NEWS_141_1_TITLE = "Dos copias instaladas",
-    NEWS_141_1_TEXT = "Con una copia de desarrollo instalada pero desactivada, el salón podía quedarse apagado y /arcade mostraba un error. Corregido.",
     NEWS_140_9_TITLE = "Misiones e historias",
     NEWS_140_9_TEXT = "Una cadena de misiones por mercenario, fiel a su historia, con monedas y los jefes ocultos de las mazmorras como recompensa.",
     NEWS_140_10_TITLE = "Mazmorras",
@@ -884,8 +876,6 @@ ns.AddStrings("esES", {
 })
 
 ns.AddStrings("ruRU", {
-    NEWS_141_1_TITLE = "Две копии аддона",
-    NEWS_141_1_TEXT = "Если была установлена, но отключена копия для разработки, аркада могла не запуститься, а /arcade выдавала ошибку. Исправлено.",
     NEWS_140_9_TITLE = "Задания и истории",
     NEWS_140_9_TEXT = "Цепочка заданий для каждого наёмника по мотивам его истории; награды – монеты и скрытые боссы подземелий.",
     NEWS_140_10_TITLE = "Подземелья",
@@ -1101,8 +1091,6 @@ ns.AddStrings("ruRU", {
 })
 
 ns.AddStrings("zhCN", {
-    NEWS_141_1_TITLE = "安装了两个副本",
-    NEWS_141_1_TEXT = "安装了开发副本但已停用时，游戏厅可能无法启动，且 /arcade 会报错。已修复。",
     NEWS_140_9_TITLE = "任务与故事",
     NEWS_140_9_TEXT = "每名佣兵都有贴近其背景的任务链，奖励为硬币和地下城中的隐藏首领。",
     NEWS_140_10_TITLE = "地下城",
