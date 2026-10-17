@@ -25,6 +25,7 @@ AREAS = {
     "deadmines": 1581, "wailing": 718, "ragefire": 2437, "shadowfang": 209, "blackfathom": 719,
     "stockade": 717, "gnomeregan": 721, "kraul": 491, "downs": 722, "uldaman": 1337,
     "zulfarrak": 1176, "maraudon": 2100, "sunken": 1477, "brd": 1584, "scholomance": 2057,
+    "thanes": 16919, "ruins_lordaeron": 16611, "excavation": 16732, "dalaran": 16560,
     "zephras": 16593, "westfall": 40, "lochmodan": 38, "silverpine": 130, "darkshore": 148, "barrens": 17,
     "redridge": 44, "stonetalon": 406, "ashenvale": 331, "duskwood": 10, "wetlands": 11, "hillsbrad": 267,
     "thousandneedles": 400, "alterac": 36, "arathi": 45, "desolace": 405, "shendralas": 16651,

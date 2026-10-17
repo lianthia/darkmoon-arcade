@@ -104,6 +104,19 @@
   }
  },
  "Anetheron": null,
+ "Angry Tome": {
+  "de": "Angry Tome",
+  "display": 138487,
+  "id": 254856,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Angry Tome",
+  "names": {
+   "esES": "Angry Tome",
+   "frFR": "Angry Tome",
+   "ruRU": "Angry Tome",
+   "zhCN": "Angry Tome"
+  }
+ },
  "Anguished Dead": {
   "de": "Gequälter Toter",
   "display": 10255,
@@ -219,6 +232,45 @@
    "frFR": "Aberration des arcanes",
    "ruRU": "Волшебная аберрация",
    "zhCN": "奥术畸兽"
+  }
+ },
+ "Arcane Anomaly": {
+  "de": "Arkananomalie",
+  "display": 129891,
+  "id": 245999,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Arcane Anomaly",
+  "names": {
+   "esES": "Anomalía Arcana",
+   "frFR": "Anomalie arcanique",
+   "ruRU": "Волшебная аномалия",
+   "zhCN": "Arcane Anomaly"
+  }
+ },
+ "Arcane Manaling": {
+  "de": "Arcane Manaling",
+  "display": 130209,
+  "id": 246893,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Arcane Manaling",
+  "names": {
+   "esES": "Arcane Manaling",
+   "frFR": "Arcane Manaling",
+   "ruRU": "Arcane Manaling",
+   "zhCN": "Arcane Manaling"
+  }
+ },
+ "Arcanic Enigma": {
+  "de": "Arkanes Mysterium",
+  "display": 129900,
+  "id": 246016,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Arcanic Enigma",
+  "names": {
+   "esES": "Enigma Arcano",
+   "frFR": "Arcanic Enigma",
+   "ruRU": "Arcanic Enigma",
+   "zhCN": "Arcanic Enigma"
   }
  },
  "Arcanist Doan": {
@@ -468,6 +520,19 @@
    "zhCN": "阿塔拉利恩"
   }
  },
+ "Atrexis the Grave Knight": {
+  "de": "Atrexis der Grabritter",
+  "display": 145787,
+  "id": 247126,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Atrexis the Grave Knight",
+  "names": {
+   "esES": "Atrexis el Caballero de la Tumba",
+   "frFR": "Atrexis le Chevalier de la tombe",
+   "ruRU": "Атрексий Могильный Рыцарь",
+   "zhCN": "Atrexis the Grave Knight"
+  }
+ },
  "Avatar of Hakkar": {
   "de": "Avatar von Hakkar",
   "display": 8053,
@@ -662,6 +727,19 @@
    "frFR": "Cracheur de bile",
    "ruRU": "Желчеплюй",
    "zhCN": "喷胆者"
+  }
+ },
+ "Bjork": {
+  "de": "Bjork",
+  "display": 144170,
+  "id": 256097,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Bjork",
+  "names": {
+   "esES": "Bjork",
+   "frFR": "Bjork",
+   "ruRU": "Бьорк",
+   "zhCN": "比约克"
   }
  },
  "Black Broodling": {
@@ -1756,6 +1834,19 @@
    "zhCN": "黑铁矮人"
   }
  },
+ "Dark Iron Engineer": {
+  "de": "Ingenieur der Dunkeleisenzwerge",
+  "display": 3954,
+  "id": 263397,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Dark Iron Engineer",
+  "names": {
+   "esES": "Ingeniero Hierro Negro",
+   "frFR": "Ingénieur sombrefer",
+   "ruRU": "Инженер из клана Черного Железа",
+   "zhCN": "黑铁工程师"
+  }
+ },
  "Dark Iron Geologist": {
   "de": "Geologe der Dunkeleisenzwerge",
   "display": 7793,
@@ -1767,6 +1858,32 @@
    "frFR": "Géologue Sombrefer",
    "ruRU": "Геолог из клана Черного Железа",
    "zhCN": "黑铁地质学家"
+  }
+ },
+ "Dark Iron Looter": {
+  "de": "Plünderer der Dunkeleisenzwerge",
+  "display": 3452,
+  "id": 263396,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Dark Iron Looter",
+  "names": {
+   "esES": "Saqueador Hierro Negro",
+   "frFR": "Pillard sombrefer",
+   "ruRU": "Грабитель из клана Черного Железа",
+   "zhCN": "黑铁强夺者"
+  }
+ },
+ "Dark Iron Summoner": {
+  "de": "Beschwörer der Dunkeleisenzwerge",
+  "display": 143713,
+  "id": 263438,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Dark Iron Summoner",
+  "names": {
+   "esES": "Invocador Hierro Negro",
+   "frFR": "Invocateur sombrefer",
+   "ruRU": "Призыватель из клана Черного Железа",
+   "zhCN": "黑铁召唤师"
   }
  },
  "Dark Iron Taskmaster": {
@@ -2484,6 +2601,19 @@
    "zhCN": "沙丘重击者"
   }
  },
+ "Durgen Dirgehammer": {
+  "de": "Durgen Dirgehammer",
+  "display": 142837,
+  "id": 261319,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Durgen Dirgehammer",
+  "names": {
+   "esES": "Durgen Martillo Funesto",
+   "frFR": "Durgen Mornemartel",
+   "ruRU": "Дурген Горемолот",
+   "zhCN": "杜根·挽锤"
+  }
+ },
  "Durotar Tiger": {
   "de": "Durotar-Tiger",
   "display": 598,
@@ -2744,6 +2874,19 @@
    "zhCN": "达格兰·索瑞森大帝"
   }
  },
+ "Enraged Apparition": {
+  "de": "Wütende Erscheinung",
+  "display": 143689,
+  "id": 263389,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Enraged Apparition",
+  "names": {
+   "esES": "Aparición enfurecida",
+   "frFR": "Apparition enragée",
+   "ruRU": "Разъяренная тень",
+   "zhCN": "被激怒的幽灵"
+  }
+ },
  "Eric \"The Swift\"": {
   "de": "Eric \"Der Flinke\"",
   "display": 5708,
@@ -2783,6 +2926,19 @@
    "zhCN": "纳克萨玛斯之眼"
   }
  },
+ "Faldrim Anvilmar": {
+  "de": "Faldrim Anvilmar",
+  "display": 142826,
+  "id": 261306,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Faldrim Anvilmar",
+  "names": {
+   "esES": "Faldrim Yunquemar",
+   "frFR": "Faldrim Courbenclume",
+   "ruRU": "Фалдрим Старая Наковальня",
+   "zhCN": "法德林·安威玛尔"
+  }
+ },
  "Fallen Champion": {
   "de": "Gestürzter Held",
   "display": 5230,
@@ -2807,6 +2963,19 @@
    "frFR": "Fandral Staghelm",
    "ruRU": "Фэндрал Олений Шлем",
    "zhCN": "范达尔·鹿盔"
+  }
+ },
+ "Fel Ancient": {
+  "de": "Teufelsurtum",
+  "display": 129894,
+  "id": 246003,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Fel Ancient",
+  "names": {
+   "esES": "Anciano vil",
+   "frFR": "Ancien gangrené",
+   "ruRU": "Древень Скверны",
+   "zhCN": "Fel Ancient"
   }
  },
  "Fel Rock Grell": null,
@@ -3016,6 +3185,19 @@
    "frFR": "Plaiedécaille Crins-de-feu",
    "ruRU": "Огнегривый чешуйчатый губитель",
    "zhCN": "火鬃守卫"
+  }
+ },
+ "Flesh Golem": {
+  "de": "Fleischgolem",
+  "display": 1693,
+  "id": 255109,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Flesh Golem",
+  "names": {
+   "esES": "Gólem de carne",
+   "frFR": "Golem de chair",
+   "ruRU": "Мясной голем",
+   "zhCN": "血肉傀儡"
   }
  },
  "Fleshripper": {
@@ -3265,6 +3447,19 @@
    "zhCN": "霍克·巴什古德"
   }
  },
+ "Ghostly Attendant": {
+  "de": "Geisterhafte Bedienstete",
+  "display": 144348,
+  "id": 265002,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Ghostly Attendant",
+  "names": {
+   "esES": "Auxiliar fantasmal",
+   "frFR": "Domestique fantomatique",
+   "ruRU": "Призрачная слуга",
+   "zhCN": "鬼魅随从"
+  }
+ },
  "Ghostly Citizen": {
   "de": "Geisterhafter Bürger",
   "display": 10478,
@@ -3289,6 +3484,19 @@
    "frFR": "Gueule-Fantôme",
    "ruRU": "Ghostmaw",
    "zhCN": "幽魂之颚"
+  }
+ },
+ "Ghoul": {
+  "de": "Ghul",
+  "display": 1065,
+  "id": 250627,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Ghoul",
+  "names": {
+   "esES": "Necrófago",
+   "frFR": "Goule",
+   "ruRU": "Вурдалак",
+   "zhCN": "食尸鬼"
   }
  },
  "Ghoul Ravener": {
@@ -3991,6 +4199,19 @@
    "frFR": "Invocateur bien-né",
    "ruRU": "Призыватель-высокорожденный",
    "zhCN": "上层精灵召唤者"
+  }
+ },
+ "Highland Horror": {
+  "de": "Hochlandschrecken",
+  "display": 9010,
+  "id": 260808,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Highland Horror",
+  "names": {
+   "esES": "Horror de las Tierras Altas",
+   "frFR": "Horreur des hautes-terres",
+   "ruRU": "Ужас нагорья",
+   "zhCN": "Highland Horror"
   }
  },
  "Highland Strider": {
@@ -4775,6 +4996,19 @@
    "zhCN": "次级地狱火"
   }
  },
+ "Lesser Stone Golem": {
+  "de": "Niederer Steingolem",
+  "display": 2693,
+  "id": 263466,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Lesser Stone Golem",
+  "names": {
+   "esES": "Gólem de piedra inferior",
+   "frFR": "Golem de pierre inférieur",
+   "ruRU": "Малый каменный голем",
+   "zhCN": "次级石头傀儡"
+  }
+ },
  "Lethtendris": {
   "de": "Lethtendris",
   "display": 11207,
@@ -4944,6 +5178,19 @@
    "zhCN": "维利塔恩"
   }
  },
+ "Lordaeron Captain": {
+  "de": "Hauptmann von Lordaeron",
+  "display": 139050,
+  "id": 255699,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Lordaeron Captain",
+  "names": {
+   "esES": "Capitán de Lordaeron",
+   "frFR": "Capitaine de Lordaeron",
+   "ruRU": "Лордеронский капитан",
+   "zhCN": "Lordaeron Captain"
+  }
+ },
  "Lorekeeper Polkelt": {
   "de": "Hüter des Wissens Polkelt",
   "display": 11492,
@@ -4968,6 +5215,19 @@
    "frFR": "Horreur Lupine",
    "ruRU": "Волчий ужас",
    "zhCN": "暗牙恐狼"
+  }
+ },
+ "Lyn the Ignored": {
+  "de": "Lyn der Ignorierte",
+  "display": 130235,
+  "id": 247032,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Lyn the Ignored",
+  "names": {
+   "esES": "Lyn el Ignorado",
+   "frFR": "Lyn l'Ignoré",
+   "ruRU": "Лин Забытый",
+   "zhCN": "Lyn the Ignored"
   }
  },
  "Magatha Grimtotem": {
@@ -5033,6 +5293,19 @@
    "frFR": "Elémentaire de magma",
    "ruRU": "Элементаль магмы",
    "zhCN": "熔岩元素"
+  }
+ },
+ "Magmatus": {
+  "de": "Magmatus",
+  "display": 1070,
+  "id": 261316,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Magmatus",
+  "names": {
+   "esES": "Magmatus",
+   "frFR": "Magmatus",
+   "ruRU": "Магматий",
+   "zhCN": "玛格马图斯"
   }
  },
  "Magmus": {
@@ -5126,6 +5399,32 @@
    "zhCN": "狂热的玛洛尔"
   }
  },
+ "Mana Devourer": {
+  "de": "Manaschlinger",
+  "display": 129895,
+  "id": 246008,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Mana Devourer",
+  "names": {
+   "esES": "Devorador de maná",
+   "frFR": "Dévoreur de mana",
+   "ruRU": "Пожиратель маны",
+   "zhCN": "Mana Devourer"
+  }
+ },
+ "Mana Phantom": {
+  "de": "Mana Phantom",
+  "display": 130112,
+  "id": 269475,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Mana Phantom",
+  "names": {
+   "esES": "Mana Phantom",
+   "frFR": "Mana Phantom",
+   "ruRU": "Mana Phantom",
+   "zhCN": "Mana Phantom"
+  }
+ },
  "Mana Remnant": {
   "de": "Manarest",
   "display": 14272,
@@ -5137,6 +5436,19 @@
    "frFR": "Restes de mana",
    "ruRU": "Клочок маны",
    "zhCN": "法力残渣"
+  }
+ },
+ "Mana Wraith": {
+  "de": "Managespenst",
+  "display": 130220,
+  "id": 246931,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Mana Wraith",
+  "names": {
+   "esES": "Ánima de maná",
+   "frFR": "Ame en peine de mana",
+   "ruRU": "Призрак магии",
+   "zhCN": "Mana Wraith"
   }
  },
  "Mangled Cadaver": {
@@ -6050,6 +6362,19 @@
    "zhCN": "平原陆行鸟"
   }
  },
+ "Plunder": {
+  "de": "Schleppweg",
+  "display": 142840,
+  "id": 261311,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Plunder",
+  "names": {
+   "esES": "Pillaje",
+   "frFR": "Pilleur",
+   "ruRU": "Крад",
+   "zhCN": "劫掠者"
+  }
+ },
  "Prairie Wolf": {
   "de": "Präriewolf",
   "display": 1100,
@@ -6272,6 +6597,19 @@
    "zhCN": "狂怒傀儡"
   }
  },
+ "Ragged Ghoul": {
+  "de": "Struppiger Ghul",
+  "display": 414,
+  "id": 250622,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Ragged Ghoul",
+  "names": {
+   "esES": "Necrófago andrajoso",
+   "frFR": "Goule décharnée",
+   "ruRU": "Косматый вурдалак",
+   "zhCN": "肮脏的食尸鬼"
+  }
+ },
  "Ragglesnout": {
   "de": "Struppmähne",
   "display": 11382,
@@ -6322,6 +6660,19 @@
    "frFR": "Ras Murmegivre",
    "ruRU": "Рас Снегошепот",
    "zhCN": "莱斯·霜语"
+  }
+ },
+ "Rath'mael": {
+  "de": "Rath'mael",
+  "display": 144175,
+  "id": 250657,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Rath'mael",
+  "names": {
+   "esES": "Rath'mael",
+   "frFR": "Rath'mael",
+   "ruRU": "Рат'маэль",
+   "zhCN": "拉斯玛尔"
   }
  },
  "Rattlecage Skeleton": {
@@ -6545,6 +6896,19 @@
    "zhCN": "红石蜥蜴"
   }
  },
+ "Relic Guardian": {
+  "de": "Reliktwächter",
+  "display": 144224,
+  "id": 260326,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Relic Guardian",
+  "names": {
+   "esES": "Guardián de reliquias",
+   "frFR": "Gardien des reliques",
+   "ruRU": "Страж реликвий",
+   "zhCN": "遗迹守卫者"
+  }
+ },
  "Renzik \"The Shiv\"": {
   "de": "Renzik \"Das Messer\"",
   "display": 7613,
@@ -6754,6 +7118,19 @@
   }
  },
  "Rotting Horror": null,
+ "Saltspine": {
+  "de": "Salzrücken",
+  "display": 144209,
+  "id": 260322,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Saltspine",
+  "names": {
+   "esES": "Espinasal",
+   "frFR": "Seléchine",
+   "ruRU": "Солеспин",
+   "zhCN": "盐脊"
+  }
+ },
  "Saltstone Basilisk": {
   "de": "Salzsteinbasilisk",
   "display": 12340,
@@ -6895,6 +7272,19 @@
    "frFR": "Limon saturé",
    "ruRU": "Влажный слизнюк",
    "zhCN": "深色软泥怪"
+  }
+ },
+ "Saturated Remnant": {
+  "de": "Saturated Remnant",
+  "display": 130223,
+  "id": 247001,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Saturated Remnant",
+  "names": {
+   "esES": "Saturated Remnant",
+   "frFR": "Saturated Remnant",
+   "ruRU": "Saturated Remnant",
+   "zhCN": "Saturated Remnant"
   }
  },
  "Savannah Huntress": {
@@ -7469,6 +7859,32 @@
    "zhCN": "伊兰尼库斯的阴影"
   }
  },
+ "Shade of the Archmage": {
+  "de": "Schemen des Erzmagiers",
+  "display": 130061,
+  "id": 246020,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Shade of the Archmage",
+  "names": {
+   "esES": "Sombra del archimago",
+   "frFR": "Ombre de l'archimage",
+   "ruRU": "Тень верховного мага",
+   "zhCN": "Shade of the Archmage"
+  }
+ },
+ "Shadetooth": {
+  "de": "Schemenzahn",
+  "display": 144210,
+  "id": 260325,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Shadetooth",
+  "names": {
+   "esES": "Sombradiente",
+   "frFR": "Dent-Sombre",
+   "ruRU": "Тенезуб",
+   "zhCN": "暗齿"
+  }
+ },
  "Shadow Hunter Vosh'gajin": {
   "de": "Schattenjägerin Vosh'gajin",
   "display": 9732,
@@ -7703,6 +8119,19 @@
    "zhCN": "珊蒂斯·羽月"
   }
  },
+ "Shrieking Banshee": {
+  "de": "Kreischende Banshee",
+  "display": 10728,
+  "id": 250617,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Shrieking Banshee",
+  "names": {
+   "esES": "Alma en pena plañidera",
+   "frFR": "Banshee hurlante",
+   "ruRU": "Визжащая банши",
+   "zhCN": "尖叫的女妖"
+  }
+ },
  "Silvermane Stalker": {
   "de": "Silbermähnenpirscher",
   "display": 11418,
@@ -7766,6 +8195,19 @@
    "frFR": "Bien-né squelette",
    "ruRU": "Скелет высокорожденного",
    "zhCN": "上层精灵骷髅"
+  }
+ },
+ "Skeletal Soldier": {
+  "de": "Skelettsoldat",
+  "display": 7848,
+  "id": 250626,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Skeletal Soldier",
+  "names": {
+   "esES": "Soldado esquelético",
+   "frFR": "Soldat squelettique",
+   "ruRU": "Скелет-солдат",
+   "zhCN": "骷髅士兵"
   }
  },
  "Skeletal Warrior": {
@@ -7988,6 +8430,19 @@
    "frFR": "Educateur spectral",
    "ruRU": "Призрачный воспитатель",
    "zhCN": "鬼灵导师"
+  }
+ },
+ "Spider": {
+  "de": "Spinne",
+  "display": 2538,
+  "id": 250484,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Spider",
+  "names": {
+   "esES": "Araña",
+   "frFR": "Araignée",
+   "ruRU": "Паук",
+   "zhCN": "蜘蛛"
   }
  },
  "Spire Spider": {
@@ -8419,6 +8874,19 @@
    "zhCN": "饥饿者塔拉加曼"
   }
  },
+ "Tarantula": {
+  "de": "Tarantel",
+  "display": 1091,
+  "id": 250488,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Tarantula",
+  "names": {
+   "esES": "Tarántula",
+   "frFR": "Tarentule",
+   "ruRU": "Тарантул",
+   "zhCN": "狼蛛"
+  }
+ },
  "Targorr the Dread": {
   "de": "Targorr der Schreckliche",
   "display": 517,
@@ -8456,6 +8924,32 @@
    "frFR": "Tendris Crochebois",
    "ruRU": "Тендрис Криводрев",
    "zhCN": "特迪斯·扭木"
+  }
+ },
+ "The Abandoned": {
+  "de": "Der Verlassene",
+  "display": 138667,
+  "id": 250631,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "The Abandoned",
+  "names": {
+   "esES": "El Abandonado",
+   "frFR": "L'Abandonné",
+   "ruRU": "Покинутый",
+   "zhCN": "被遗弃者"
+  }
+ },
+ "The Baron": {
+  "de": "Der Baron",
+  "display": 144188,
+  "id": 250660,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "The Baron",
+  "names": {
+   "esES": "El barón",
+   "frFR": "Le baron",
+   "ruRU": "Барон",
+   "zhCN": "男爵"
   }
  },
  "The Ravenian": {
@@ -8521,6 +9015,45 @@
    "frFR": "Eclaté Theradrim",
    "ruRU": "Терадримский осколыш",
    "zhCN": "瑟莱德丝碎片"
+  }
+ },
+ "Thicket Hunter": {
+  "de": "Dickichtjäger",
+  "display": 11316,
+  "id": 260801,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Thicket Hunter",
+  "names": {
+   "esES": "Cazador de los matorrales",
+   "frFR": "Chasseur des fourrés",
+   "ruRU": "Хищник из чащи",
+   "zhCN": "灌木林猎人"
+  }
+ },
+ "Thicket Lurker": {
+  "de": "Dickichtlauerer",
+  "display": 1337,
+  "id": 260800,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Thicket Lurker",
+  "names": {
+   "esES": "Thicket Lurker",
+   "frFR": "Thicket Lurker",
+   "ruRU": "Ловчий из чащи",
+   "zhCN": "Thicket Lurker"
+  }
+ },
+ "Thicket Matriarch": {
+  "de": "Dickichtmatriarchin",
+  "display": 11315,
+  "id": 260802,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Thicket Matriarch",
+  "names": {
+   "esES": "Thicket Matriarch",
+   "frFR": "Thicket Matriarch",
+   "ruRU": "Матриарх из чащи",
+   "zhCN": "Thicket Matriarch"
   }
  },
  "Thrall": {
@@ -8677,6 +9210,19 @@
    "frFR": "Ravageur des tombes",
    "ruRU": "Разоритель могил",
    "zhCN": "墓穴劫掠者"
+  }
+ },
+ "Tormented Soul": {
+  "de": "Gepeinigte Seele",
+  "display": 143690,
+  "id": 263390,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Tormented Soul",
+  "names": {
+   "esES": "Alma atormentada",
+   "frFR": "Ame tourmentée",
+   "ruRU": "Замученная душа",
+   "zhCN": "被折磨的幽魂"
   }
  },
  "Torn Fin Tidehunter": {
@@ -8900,6 +9446,19 @@
    "zhCN": "虚弱的尸体"
   }
  },
+ "Unstable Sentinel": {
+  "de": "Instabile Schildwache",
+  "display": 129954,
+  "id": 246017,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Unstable Sentinel",
+  "names": {
+   "esES": "Centinela inestable",
+   "frFR": "Sentinelle instable",
+   "ruRU": "Нестабильный часовой",
+   "zhCN": "Unstable Sentinel"
+  }
+ },
  "Urok Doomhowl": {
   "de": "Urok Schreckensbote",
   "display": 11583,
@@ -8951,6 +9510,19 @@
    "frFR": "Crache venin",
    "ruRU": "Изрыгатель яда",
    "zhCN": "泼毒者"
+  }
+ },
+ "Venom Lurker": {
+  "de": "Giftlauerer",
+  "display": 1087,
+  "id": 250735,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Venom Lurker",
+  "names": {
+   "esES": "Rondador venenoso",
+   "frFR": "Rôdeuse venimeuse",
+   "ruRU": "Ядовитый скрытень",
+   "zhCN": "毒液潜伏者"
   }
  },
  "Venom Web Spider": {
@@ -9042,6 +9614,19 @@
    "frFR": "Verdan l'Immortel",
    "ruRU": "Вердан Бессмертный",
    "zhCN": "永生者沃尔丹"
+  }
+ },
+ "Viktor the Vile": {
+  "de": "Viktor der Üble",
+  "display": 139455,
+  "id": 256035,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Viktor the Vile",
+  "names": {
+   "esES": "Viktor el Abyecto",
+   "frFR": "Viktor le Vil",
+   "ruRU": "Виктор Вероломный",
+   "zhCN": "邪恶的维克多"
   }
  },
  "Vile Familiar": {
@@ -9510,6 +10095,19 @@
    "frFR": "Sorcier-docteur Witherbark",
    "ruRU": "Знахарь из племени Сухокожих",
    "zhCN": "枯木巫医"
+  }
+ },
+ "Witherfang": {
+  "de": "Welkzahn",
+  "display": 144189,
+  "id": 250483,
+  "info": "WoW: Forever (Wowhead, dataEnv 16)",
+  "name": "Witherfang",
+  "names": {
+   "esES": "Colmimarchito",
+   "frFR": "Croc-Flétri",
+   "ruRU": "Сухожвал",
+   "zhCN": "枯牙"
   }
  },
  "Wolf Master Nandos": {

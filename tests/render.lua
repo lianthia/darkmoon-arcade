@@ -291,7 +291,8 @@ if Want("dungeon") then
         { "sm_library", "ek", 1 }, { "sm_armory", "ek", 1 }, { "sm_cathedral", "ek", 1 }, { "downs", "kal", 2 },
         { "uldaman", "ek", 2 }, { "zulfarrak", "kal", 3 }, { "maraudon", "kal", 2 }, { "sunken", "ek", 4 },
         { "brd", "ek", 2 }, { "lbrs", "ek", 2 }, { "dm_east", "kal", 3 }, { "dm_west", "kal", 3 }, { "dm_north", "kal", 3 },
-        { "scholomance", "ek", 1 }, { "strat_live", "ek", 1 }, { "strat_undead", "ek", 1 } }) do
+        { "scholomance", "ek", 1 }, { "strat_live", "ek", 1 }, { "strat_undead", "ek", 1 }, { "thanes", "ek", 2 },
+        { "ruins_lordaeron", "ek", 1 }, { "excavation", "ek", 2 }, { "dalaran", "ek", 1 } }) do
         local id = d[1]
         mc.travelContinent, mc.travelRegion, mc.travelZone = d[2], d[3], id
         mc:ShowView("travel")

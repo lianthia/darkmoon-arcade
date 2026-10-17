@@ -270,6 +270,21 @@ MC.QUEST_CHAINS = {
         { kind = "dungeon", dungeon = "strat_undead" },
         { kind = "kill", race = "undead", zone = "strat_undead", count = 30, what = "UNDEAD" },
     } },
+    jaina_dalaran = { merc = "jaina", requires = { chain = "jaina_theramore", cleared = "shadowfang" }, steps = {
+        { kind = "dungeon", dungeon = "shadowfang", unlock = "dalaran_lyn" },
+    } },
+    sylvanas_lordaeron = { merc = "sylvanas", requires = { chain = "sylvanas_forsaken", cleared = "ruins_lordaeron" }, steps = {
+        { kind = "dungeon", dungeon = "ruins_lordaeron" },
+        { kind = "kill", race = "undead", zone = "ruins_lordaeron", count = 25, what = "UNDEAD" },
+    } },
+    magni_thanes = { merc = "magni", requires = { chain = "magni_ironforge", cleared = "thanes" }, steps = {
+        { kind = "dungeon", dungeon = "thanes" },
+        { kind = "kill", prefix = "dark_iron_", zone = "thanes", count = 20, what = "DARKIRON" },
+    } },
+    bolvar_excavation = { merc = "bolvar", requires = { chain = "bolvar_deadmines", cleared = "excavation" }, steps = {
+        { kind = "dungeon", dungeon = "excavation" },
+        { kind = "kill", prefix = "thicket_", zone = "excavation", count = 20, what = "RAPTOR" },
+    } },
 }
 -- The chains in the order of the collection, a mercenary's chains in the order they follow.
 MC.QUEST_CHAIN_ORDER = {}

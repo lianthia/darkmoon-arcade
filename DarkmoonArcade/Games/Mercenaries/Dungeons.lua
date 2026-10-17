@@ -22,7 +22,8 @@ local Random = MC.Combat.Random
 local Dungeons = {}
 MC.Dungeons = Dungeons
 
-MC.DUNGEON_ORDER = { "ragefire", "deadmines", "wailing", "shadowfang", "blackfathom", "stockade", "gnomeregan", "kraul",
+MC.DUNGEON_ORDER = { "ragefire", "thanes", "ruins_lordaeron", "deadmines", "wailing", "shadowfang", "blackfathom",
+    "stockade", "excavation", "gnomeregan", "kraul", "dalaran",
     "sm_graveyard", "sm_library", "sm_armory", "sm_cathedral", "downs", "uldaman",
     "zulfarrak", "maraudon", "sunken", "brd", "lbrs", "dm_east", "dm_west", "dm_north", "scholomance", "strat_live",
     "strat_undead" }
@@ -533,6 +534,83 @@ MC.Zones.strat_undead = {
             trash = { "bile_spewer", "venom_belcher", "mangled_cadaver", "ravaged_cadaver" }, waves = 2 },
         { boss = "rivendare", adds = { "black_guard_sentry", "thuzadin_necromancer", "black_guard_sentry" }, npcs = { 10440 },
             trash = { "black_guard_sentry", "thuzadin_necromancer" }, elite = true, healer = true },
+    },
+}
+
+-- WoW: Forever's own dungeons (the beta's first four).
+-- The Hall of Thanes beneath Ironforge: restless thanes and Dark Iron looters.
+MC.Zones.thanes = {
+    id = "thanes", dungeon = true, continent = "ek", region = "dunmorogh", spot = { 0.52, 0.34 },
+    min = 13, max = 18, boss = "durgen", tier = 1,
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "faldrim", adds = { "ghostly_attendant", "tormented_soul" }, npcs = { 261306 },
+            trash = { "enraged_apparition", "tormented_soul", "ghostly_attendant" } },
+        { boss = "magmatus", adds = { "dark_iron_summoner" }, npcs = { 261316 },
+            trash = { "dark_iron_looter", "dark_iron_engineer", "dark_iron_summoner" } },
+        { boss = "plunder", adds = { "lesser_stone_golem" }, npcs = { 261311 } },
+        { boss = "durgen", adds = { "lesser_stone_golem", "lesser_stone_golem", "dark_iron_looter" }, npcs = { 261319 },
+            trash = { "dark_iron_looter", "lesser_stone_golem", "dark_iron_summoner" }, elite = true, healer = true },
+    },
+}
+
+-- The Ruins of Lordaeron above the Undercity, still crawling with the Scourge.
+MC.Zones.ruins_lordaeron = {
+    id = "ruins_lordaeron", dungeon = true, continent = "ek", region = "tirisfal", spot = { 0.62, 0.72 },
+    min = 15, max = 20, boss = "rathmael", tier = 1,
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "witherfang", adds = { "spider", "venom_lurker" }, npcs = { 250483 },
+            trash = { "venom_lurker", "spider", "tarantula" } },
+        { boss = "thebaron", adds = { "skeletal_soldier", "shrieking_banshee" }, npcs = { 250660 },
+            trash = { "skeletal_soldier", "shrieking_banshee", "skeletal_soldier" } },
+        { boss = "viktor", adds = { "ghoul", "ragged_ghoul" }, npcs = { 256035 },
+            trash = { "ghoul", "ragged_ghoul", "flesh_golem" }, waves = 2 },
+        { boss = "abandoned", adds = { "ghoul", "shrieking_banshee" }, npcs = { 250631 },
+            trash = { "ragged_ghoul", "shrieking_banshee", "skeletal_soldier" }, elite = true },
+        { boss = "lordaeroncaptain", adds = { "skeletal_soldier" }, npcs = { 255699 }, chance = 0.35 },
+        { boss = "bjork", adds = { "flesh_golem" }, npcs = { 256097 } },
+        { boss = "rathmael", adds = { "skeletal_soldier", "shrieking_banshee", "skeletal_soldier" }, npcs = { 250657 },
+            trash = { "flesh_golem", "ghoul", "shrieking_banshee" }, healer = true },
+    },
+}
+
+-- Excavation Site: Wetlands, Whelgar's dig: raptors in the tall grass, a guardian among the relics.
+MC.Zones.excavation = {
+    id = "excavation", dungeon = true, continent = "ek", region = "wetlands", spot = { 0.38, 0.5 },
+    min = 24, max = 29, boss = "relicguardian", tier = 2,
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "saltspine", adds = { "thicket_lurker" }, npcs = { 260322 },
+            trash = { "thicket_lurker", "thicket_matriarch" } },
+        { boss = "shadetooth", adds = { "thicket_hunter", "thicket_hunter" }, npcs = { 260325 },
+            trash = { "thicket_lurker", "thicket_matriarch", "thicket_hunter" }, waves = 2, elite = true },
+        { boss = "highlandhorror", adds = { "thicket_lurker" }, npcs = { 260808 }, chance = 0.35 },
+        { boss = "relicguardian", adds = { "thicket_hunter", "thicket_matriarch", "thicket_hunter" }, npcs = { 260326 },
+            trash = { "thicket_hunter", "thicket_matriarch" }, healer = true },
+    },
+}
+
+-- The City of Dalaran: its barrier has fallen, the restored city is not yet under control. Lyn the
+-- Ignored waits in the sewers until the Black Tome from Shadowfang Keep calls him (Jaina's task).
+MC.Zones.dalaran = {
+    id = "dalaran", dungeon = true, continent = "ek", region = "alterac", spot = { 0.18, 0.75 },
+    min = 28, max = 33, boss = "archmageshade", tier = 2,
+    power = 0.1, heroicPower = 0.1, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "atrexis", adds = { "skeletal_warrior", "skeletal_warrior" }, npcs = { 247126 },
+            trash = { "saturated_remnant", "mana_phantom", "arcane_manaling" } },
+        { boss = "lyn", adds = { "skeletal_warrior", "skeletal_warrior" }, npcs = { 247032 }, hidden = "dalaran_lyn" },
+        { boss = "anomaly", adds = { "arcane_manaling", "arcane_manaling" }, npcs = { 245999 },
+            trash = { "saturated_remnant", "mana_phantom", "arcane_manaling" } },
+        { boss = "enigma", adds = { "mana_phantom", "mana_phantom", "arcane_manaling" }, npcs = { 246016 } },
+        { boss = "sentinel", adds = { "angry_tome", "angry_tome" }, npcs = { 246017 },
+            trash = { "angry_tome", "saturated_remnant", "mana_wraith" } },
+        { boss = "devourer", adds = { "saturated_remnant", "mana_phantom" }, npcs = { 246008 },
+            trash = { "saturated_remnant", "mana_wraith", "mana_phantom" }, waves = 2, elite = true },
+        { boss = "felancient", adds = { "saturated_remnant" }, npcs = { 246003 } },
+        { boss = "archmageshade", adds = { "mana_wraith", "mana_phantom", "mana_wraith" }, npcs = { 246020 },
+            trash = { "mana_wraith", "saturated_remnant" }, healer = true },
     },
 }
 

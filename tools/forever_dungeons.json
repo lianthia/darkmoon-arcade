@@ -1,0 +1,57 @@
+{
+ "_source": "Wowhead (WoW: Forever beta, dataEnv 16), dungeon guides and NPC pages, gathered 2026-10-17. Drops: [item id, chance in percent].",
+ "ruins_lordaeron": [
+  {"id": 250660, "name": "The Baron", "disp": 144188, "cls": 1, "typ": "Undead", "drops": [[271204, 30.4], [271205, 29], [271206, 31.4]]},
+  {"id": 250657, "name": "Rath'mael", "disp": 144175, "cls": 1, "typ": "Undead", "drops": [[271213, 36.7], [271214, 30.1], [271215, 32.7], [273085, 7.7], [273103, 6.6]]},
+  {"id": 250483, "name": "Witherfang", "disp": 144189, "cls": 1, "typ": "Beast", "drops": [[271201, 25.5], [271202, 28.9], [271203, 31.4]]},
+  {"id": 250735, "name": "Venom Lurker", "disp": 1087, "cls": 1, "typ": "Beast", "drops": []},
+  {"id": 250484, "name": "Spider", "disp": 2538, "cls": 1, "typ": "Beast", "drops": []},
+  {"id": 250488, "name": "Tarantula", "disp": 1091, "cls": 1, "typ": "Beast", "drops": []},
+  {"id": 250626, "name": "Skeletal Soldier", "disp": 7848, "cls": 1, "typ": "Undead", "drops": []},
+  {"id": 250617, "name": "Shrieking Banshee", "disp": 10728, "cls": 1, "typ": "Undead", "drops": []},
+  {"id": 255109, "name": "Flesh Golem", "disp": 1693, "cls": 1, "typ": "Undead", "drops": []},
+  {"id": 250627, "name": "Ghoul", "disp": 1065, "cls": 1, "typ": "Undead", "drops": []},
+  {"id": 250622, "name": "Ragged Ghoul", "disp": 414, "cls": 1, "typ": "Undead", "drops": []},
+  {"id": 256035, "name": "Viktor the Vile", "disp": 139455, "cls": 1, "typ": "Undead", "drops": [[271211, 35.1], [271212, 33], [271218, 31.9]]},
+  {"id": 250631, "name": "The Abandoned", "disp": 138667, "cls": 1, "typ": "Undead", "drops": [[271207, 34.4], [271208, 31.9], [271216, 33.7]]},
+  {"id": 256097, "name": "Bjork", "disp": 144170, "cls": 1, "typ": "Undead", "drops": [[271209, 33.1], [271210, 33.6], [271217, 33.3]]},
+  {"id": 255699, "name": "Lordaeron Captain", "disp": 139050, "cls": 2, "typ": "Undead", "drops": [[6641, 63.6], [6642, 36.4]]}
+ ],
+ "thanes": [
+  {"id": 265002, "name": "Ghostly Attendant", "disp": 144348, "cls": 1, "typ": "Undead", "drops": []},
+  {"id": 263389, "name": "Enraged Apparition", "disp": 143689, "cls": 1, "typ": "Undead", "drops": []},
+  {"id": 263390, "name": "Tormented Soul", "disp": 143690, "cls": 1, "typ": "Undead", "drops": []},
+  {"id": 261319, "name": "Durgen Dirgehammer", "disp": 142837, "cls": 1, "typ": "Humanoid", "drops": [[270256, 28.2], [270260, 23.2], [270261, 23.2]]},
+  {"id": 261306, "name": "Faldrim Anvilmar", "disp": 142826, "cls": 1, "typ": "Undead", "drops": [[270227, 32.8], [271096, 32.8], [271097, 33.8]]},
+  {"id": 263396, "name": "Dark Iron Looter", "disp": 3452, "cls": 1, "typ": "Humanoid", "drops": []},
+  {"id": 263397, "name": "Dark Iron Engineer", "disp": 3954, "cls": 1, "typ": "Humanoid", "drops": []},
+  {"id": 263438, "name": "Dark Iron Summoner", "disp": 143713, "cls": 1, "typ": "Humanoid", "drops": []},
+  {"id": 263466, "name": "Lesser Stone Golem", "disp": 2693, "cls": 1, "typ": "Elemental", "drops": []},
+  {"id": 261316, "name": "Magmatus", "disp": 1070, "cls": 1, "typ": "Elemental", "drops": [[270230, 36.2], [270231, 29], [271095, 34.8]]},
+  {"id": 261311, "name": "Plunder", "disp": 142840, "cls": 1, "typ": "Elemental", "drops": [[270228, 34], [270229, 34.4], [271098, 31.4]]}
+ ],
+ "excavation": [
+  {"id": 260322, "name": "Saltspine", "disp": 144209, "cls": 1, "typ": "Beast", "drops": [[273022, 34.5], [273023, 34.4], [273024, 30.9]]},
+  {"id": 260800, "name": "Thicket Lurker", "disp": 1337, "cls": 1, "typ": "Beast", "drops": []},
+  {"id": 260802, "name": "Thicket Matriarch", "disp": 11315, "cls": 1, "typ": "Beast", "drops": []},
+  {"id": 260325, "name": "Shadetooth", "disp": 144210, "cls": 1, "typ": "Beast", "drops": [[273025, 27.1], [273026, 32.1], [273027, 33.5], [273106, 7.8]]},
+  {"id": 260801, "name": "Thicket Hunter", "disp": 11316, "cls": 1, "typ": "Beast", "drops": []},
+  {"id": 260326, "name": "Relic Guardian", "disp": 144224, "cls": 1, "typ": "Elemental", "drops": [[273028, 33.6], [273029, 31], [273030, 29.7], [273097, 7]]},
+  {"id": 260808, "name": "Highland Horror", "disp": 9010, "cls": 1, "typ": "Elemental", "drops": []}
+ ],
+ "dalaran": [
+  {"id": 269475, "name": "Mana Phantom", "disp": 130112, "cls": 0, "typ": "Elemental", "drops": []},
+  {"id": 247001, "name": "Saturated Remnant", "disp": 130223, "cls": 1, "typ": "Elemental", "drops": []},
+  {"id": 247032, "name": "Lyn the Ignored", "disp": 130235, "cls": 2, "typ": "Humanoid", "drops": [[273053, 28], [273054, 36], [273055, 36]]},
+  {"id": 247126, "name": "Atrexis the Grave Knight", "disp": 145787, "cls": 1, "typ": "Humanoid", "drops": [[273032, 35], [273033, 28], [273036, 36.8]]},
+  {"id": 245999, "name": "Arcane Anomaly", "disp": 129891, "cls": 1, "typ": "Elemental", "drops": [[273031, 35.4], [273034, 33.1], [273035, 31.5]]},
+  {"id": 246016, "name": "Arcanic Enigma", "disp": 129900, "cls": 1, "typ": "Elemental", "drops": [[273043, 33.3], [273044, 32.1], [273045, 34.7]]},
+  {"id": 246893, "name": "Arcane Manaling", "disp": 130209, "cls": 1, "typ": "Elemental", "drops": []},
+  {"id": 246017, "name": "Unstable Sentinel", "disp": 129954, "cls": 1, "typ": "Elemental", "drops": [[273046, 36.6], [273047, 32.6], [273048, 30.1], [273099, 10.5]]},
+  {"id": 254856, "name": "Angry Tome", "disp": 138487, "cls": 0, "typ": "Elemental", "drops": []},
+  {"id": 246008, "name": "Mana Devourer", "disp": 129895, "cls": 1, "typ": "Demon", "drops": [[273040, 32.8], [273041, 33.8], [273042, 33.4]]},
+  {"id": 246003, "name": "Fel Ancient", "disp": 129894, "cls": 1, "typ": "Demon", "drops": [[273037, 28.5], [273038, 35.9], [273039, 35.6]]},
+  {"id": 246020, "name": "Shade of the Archmage", "disp": 130061, "cls": 1, "typ": "Elemental", "drops": [[273049, 31.4], [273051, 32.9], [273052, 32.5], [273103, 6.6]]},
+  {"id": 246931, "name": "Mana Wraith", "disp": 130220, "cls": 1, "typ": "Elemental", "drops": []}
+ ]
+}

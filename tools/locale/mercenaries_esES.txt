@@ -1304,3 +1304,42 @@ MC_A_timmy_s	Garra famélica
 MC_A_balnazzar_s	Dominación
 MC_A_anastari_s	Posesión
 MC_A_ramstein_s	Atropello
+MC_ZD_thanes	Bajo Forjaz vagan los espíritus inquietos de antiguos feudales, y saqueadores Hierro Negro excavan sus tesoros. %s los dirige.
+MC_ZD_ruins_lordaeron	Sobre Entrañas, las ruinas de Lordaeron aún bullen con la Plaga. %s manda sobre lo que queda de los muertos.
+MC_ZD_excavation	En la excavación de Whelgar, en Los Humedales, los raptores acechan entre la hierba alta y un viejo guardián duerme entre las reliquias. %s despierta ante quien las toque.
+MC_ZD_dalaran	La barrera de Dalaran ha caído, pero la ciudad restaurada aún no está bajo control. %s ronda sus alturas.
+MC_QK_RAPTOR	raptores
+MC_QUEST_UNLOCK_dalaran_lyn	Invoca a Lyn el Ignorado en las cloacas de Dalaran
+MC_Q_jaina_dalaran_1_TITLE	El tomo negro
+MC_Q_jaina_dalaran_1_TEXT	Un tomo negro yace en la mesa de Arugal, en el Castillo de Colmillo Oscuro. Leído en la línea Ley de Molino Ámbar, puede llamar a un mago olvidado en las cloacas de Dalaran.
+MC_Q_sylvanas_lordaeron_1_TITLE	La capital caída
+MC_Q_sylvanas_lordaeron_1_TEXT	Rath'mael ya no está, pero la Plaga aún ronda las ruinas sobre la ciudad de Sylvanas. Ella sube para verlas limpias.
+MC_Q_sylvanas_lordaeron_2_TITLE	Sin descanso para la Plaga
+MC_Q_sylvanas_lordaeron_2_TEXT	Cada cadáver alzado en las ruinas amenaza a los Renegados de abajo.
+MC_Q_magni_thanes_1_TITLE	El salón de mis ancestros
+MC_Q_magni_thanes_1_TEXT	Durgen ha caído, pero los Hierro Negro aún saquean las tumbas bajo Forjaz. Magni no dejará que roben a sus ancestros.
+MC_Q_magni_thanes_2_TITLE	Saqueadores de tumbas
+MC_Q_magni_thanes_2_TEXT	Expulsa a los saqueadores Hierro Negro del salón.
+MC_Q_bolvar_excavation_1_TITLE	La excavación de Whelgar
+MC_Q_bolvar_excavation_1_TEXT	El guardián de reliquias duerme de nuevo, pero la excavación aún no es lugar para los eruditos de Ventormenta. Bolvar va a asegurarla.
+MC_Q_bolvar_excavation_2_TITLE	Hierba alta
+MC_Q_bolvar_excavation_2_TEXT	Los raptores de la hierba amenazan a todos en la excavación. Redúcelos.
+MC_A_witherfang_s	Veneno parasitario
+MC_A_thebaron_s	Noquear
+MC_A_abandoned_s	Nova de Escarcha
+MC_A_bjork_s	Escudo antimagia
+MC_A_rathmael_s	Fogonazo
+MC_A_faldrim_s	Maldición de Yunquemar
+MC_A_magmatus_s	Entrar en combustión
+MC_A_plunder_s	Mamporro
+MC_A_durgen_s	Miedo
+MC_A_saltspine_s	Tormenta de polvo
+MC_A_shadetooth_s	Clamor aterrorizador
+MC_A_atrexis_s	Levantar a los muertos
+MC_A_lyn_s	Maldición de espinas
+MC_A_anomaly_s	Explosión focal
+MC_A_enigma_s	Manamorfo
+MC_A_sentinel_s	Avería
+MC_A_devourer_s	Debilitar
+MC_A_felancient_s	Maderas viles
+MC_A_archmageshade_s	Maná rebotador

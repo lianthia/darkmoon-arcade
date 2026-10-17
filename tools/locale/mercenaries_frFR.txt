@@ -1304,3 +1304,42 @@ MC_A_timmy_s	Griffe vorace
 MC_A_balnazzar_s	Domination
 MC_A_anastari_s	Possession
 MC_A_ramstein_s	Piétiner
+MC_ZD_thanes	Sous Forgefer errent les esprits des anciens thanes, et des pillards Sombrefer fouillent leurs trésors. %s les mène.
+MC_ZD_ruins_lordaeron	Au-dessus de Fossoyeuse, les ruines de Lordaeron grouillent encore du Fléau. %s commande ce qu'il reste des morts.
+MC_ZD_excavation	Sur le chantier de Whelgar, dans les Paluns, des raptors rôdent dans les hautes herbes et un vieux gardien dort parmi les reliques. %s s'éveille pour quiconque les touche.
+MC_ZD_dalaran	La barrière de Dalaran est tombée, mais la cité restaurée n'est pas encore sous contrôle. %s hante ses hauteurs.
+MC_QK_RAPTOR	raptors
+MC_QUEST_UNLOCK_dalaran_lyn	Fait venir Lyn l'Ignoré dans les égouts de Dalaran
+MC_Q_jaina_dalaran_1_TITLE	Le tome noir
+MC_Q_jaina_dalaran_1_TEXT	Un tome noir repose sur la table d'Arugal, au donjon d'Ombrecroc. Lu sur la ligne tellurique d'Ambremill, il peut appeler un mage oublié dans les égouts de Dalaran.
+MC_Q_sylvanas_lordaeron_1_TITLE	La capitale déchue
+MC_Q_sylvanas_lordaeron_1_TEXT	Rath'mael n'est plus, mais le Fléau hante encore les ruines au-dessus de la cité de Sylvanas. Elle monte s'assurer qu'elles soient nettoyées.
+MC_Q_sylvanas_lordaeron_2_TITLE	Pas de répit pour le Fléau
+MC_Q_sylvanas_lordaeron_2_TEXT	Chaque cadavre relevé dans les ruines menace les Réprouvés en dessous.
+MC_Q_magni_thanes_1_TITLE	La salle de mes ancêtres
+MC_Q_magni_thanes_1_TEXT	Durgen est tombé, mais des Sombrefer pillent encore les tombes sous Forgefer. Magni ne laissera pas voler ses ancêtres.
+MC_Q_magni_thanes_2_TITLE	Pilleurs de tombes
+MC_Q_magni_thanes_2_TEXT	Chassez les pillards Sombrefer de la salle.
+MC_Q_bolvar_excavation_1_TITLE	Le chantier de Whelgar
+MC_Q_bolvar_excavation_1_TEXT	Le gardien des reliques dort à nouveau, mais le chantier n'est toujours pas sûr pour les érudits de Hurlevent. Bolvar part le sécuriser.
+MC_Q_bolvar_excavation_2_TITLE	Hautes herbes
+MC_Q_bolvar_excavation_2_TEXT	Les raptors dans l'herbe menacent tout le chantier. Réduisez leur nombre.
+MC_A_witherfang_s	Poison de sangsue
+MC_A_thebaron_s	Mise KO
+MC_A_abandoned_s	Nova de givre
+MC_A_bjork_s	Bouclier antimagie
+MC_A_rathmael_s	Choc de flammes
+MC_A_faldrim_s	Malédiction de Courbenclume
+MC_A_magmatus_s	Flamber
+MC_A_plunder_s	Repousser au loin
+MC_A_durgen_s	Peur
+MC_A_saltspine_s	Tempête de poussière
+MC_A_shadetooth_s	Rugissement terrifiant
+MC_A_atrexis_s	Réanimation morbide
+MC_A_lyn_s	Malédiction des épines
+MC_A_anomaly_s	Déflagration focalisée
+MC_A_enigma_s	Manamorphose
+MC_A_sentinel_s	Disfonctionnement
+MC_A_devourer_s	Débiliter
+MC_A_felancient_s	Gangrebraises
+MC_A_archmageshade_s	Mana bondissant

@@ -1304,3 +1304,42 @@ MC_A_timmy_s	Ravenous Claw
 MC_A_balnazzar_s	Domination
 MC_A_anastari_s	Possess
 MC_A_ramstein_s	Trample
+MC_ZD_thanes	Beneath Ironforge the restless spirits of old thanes walk, and Dark Iron looters dig for their treasures. Durgen Dirgehammer leads them.
+MC_ZD_ruins_lordaeron	Above the Undercity the ruins of Lordaeron still crawl with the Scourge. Rath'mael commands what is left of the dead.
+MC_ZD_excavation	At Whelgar's dig in the Wetlands raptors lurk in the tall grass, and an old guardian sleeps among the relics. The Relic Guardian wakes for anyone who touches them.
+MC_ZD_dalaran	The barrier around Dalaran has fallen, but the restored city is not yet under control. The Shade of the Archmage haunts its heights.
+MC_QK_RAPTOR	raptors
+MC_QUEST_UNLOCK_dalaran_lyn	Calls Lyn the Ignored in the sewers of Dalaran
+MC_Q_jaina_dalaran_1_TITLE	The Black Tome
+MC_Q_jaina_dalaran_1_TEXT	A black tome lies on Arugal's table in Shadowfang Keep. Read at Ambermill's leyline, it can call a forgotten mage in Dalaran's sewers.
+MC_Q_sylvanas_lordaeron_1_TITLE	The Fallen Capital
+MC_Q_sylvanas_lordaeron_1_TEXT	Rath'mael is gone, but the Scourge still haunts the ruins above Sylvanas's city. She goes up to see them cleared.
+MC_Q_sylvanas_lordaeron_2_TITLE	No Rest for the Scourge
+MC_Q_sylvanas_lordaeron_2_TEXT	Every risen corpse in the ruins is a threat to the Forsaken below.
+MC_Q_magni_thanes_1_TITLE	The Hall of My Forefathers
+MC_Q_magni_thanes_1_TEXT	Durgen has fallen, but Dark Irons still loot the tombs beneath Ironforge. Magni will not let his ancestors be robbed.
+MC_Q_magni_thanes_2_TITLE	Grave Robbers
+MC_Q_magni_thanes_2_TEXT	Drive the Dark Iron looters from the hall.
+MC_Q_bolvar_excavation_1_TITLE	Whelgar's Dig
+MC_Q_bolvar_excavation_1_TEXT	The Relic Guardian sleeps again, but the dig is still no place for Stormwind's scholars. Bolvar goes to make it safe.
+MC_Q_bolvar_excavation_2_TITLE	Tall Grass
+MC_Q_bolvar_excavation_2_TEXT	The raptors in the grass threaten everyone at the dig. Thin them out.
+MC_A_witherfang_s	Leech Poison
+MC_A_thebaron_s	Knockout
+MC_A_abandoned_s	Frost Nova
+MC_A_bjork_s	Anti-Magic Shield
+MC_A_rathmael_s	Flamestrike
+MC_A_faldrim_s	Anvilmar's Curse
+MC_A_magmatus_s	Combust
+MC_A_plunder_s	Knock Away
+MC_A_durgen_s	Fear
+MC_A_saltspine_s	Dust Storm
+MC_A_shadetooth_s	Terrifying Roar
+MC_A_atrexis_s	Raise Dead
+MC_A_lyn_s	Curse of Thorns
+MC_A_anomaly_s	Focal Blast
+MC_A_enigma_s	Manamorph
+MC_A_sentinel_s	Malfunction
+MC_A_devourer_s	Debilitate
+MC_A_felancient_s	Fel Timbers
+MC_A_archmageshade_s	Bounding Mana

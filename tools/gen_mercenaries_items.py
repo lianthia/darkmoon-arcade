@@ -145,19 +145,35 @@ def atlasloot():
             special = re.search(r'specialType = "(\w+)"', block)
             bosses.append({"npc": int(npc.group(1)), "items": items, "special": special and special.group(1)})
         dungeons[key] = bosses
+    # WoW: Forever's own dungeons are not in AtlasLoot: their bosses and drops (with chances) from
+    # Wowhead, kept in forever_dungeons.json.
+    forever = json.loads((ROOT / "tools" / "forever_dungeons.json").read_text(encoding="utf-8"))
+    for key, npcs in forever.items():
+        if key.startswith("_"):
+            continue
+        dungeons[key] = [{"npc": n["id"], "items": [d[0] for d in n["drops"]], "special": None}
+                         for n in npcs if n["drops"]]
+        for n in npcs:
+            rates[n["id"]] = {d[0]: d[1] for d in n["drops"]}
     return dungeons, rates
 
 
-def tooltip(kind, wid, locale):
-    """Wowhead's tooltip, or None for something Classic does not have (AtlasLoot lists a few later items)."""
-    url = f"https://nether.wowhead.com/tooltip/{kind}/{wid}?dataEnv=4&locale={LOCALES[locale]}"
-    path = CACHE / "wowhead" / f"{kind}-{wid}-{locale}.json"
+def tooltip(kind, wid, locale, env=4):
+    """Wowhead's tooltip, or None for something Classic does not have (AtlasLoot lists a few later items).
+    What only WoW: Forever has (its new items and creatures) comes from Forever's data (dataEnv 16)."""
+    url = f"https://nether.wowhead.com/tooltip/{kind}/{wid}?dataEnv={env}&locale={LOCALES[locale]}"
+    path = CACHE / "wowhead" / (f"{kind}-{wid}-{locale}.json" if env == 4 else f"{kind}-{wid}-{locale}-env{env}.json")
     try:
-        return json.loads(fetch(url, path))
+        data = json.loads(fetch(url, path))
     except urllib.error.HTTPError as exc:
         if exc.code != 404:
             raise
-        return None
+        return tooltip(kind, wid, locale, 16) if env == 4 else None
+    # Forever's untranslated names come in brackets ("[Bonebinder's Signet]"): the English name.
+    name = data.get("name") or ""
+    if name.startswith("[") and name.endswith("]"):
+        data["name"] = name[1:-1]
+    return data
 
 
 def stats_of(html):
