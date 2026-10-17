@@ -17,6 +17,21 @@ local function Percent(v)
     return Round(v * 100)
 end
 
+-- Small bonuses (items since 1.4.0: +0.9 %) keep one decimal, so they never read "0 %"; the
+-- template's "%d%%" takes the text instead. Languages with a decimal comma get one.
+local COMMA = { deDE = true, frFR = true, esES = true, ruRU = true }
+local function FormatPercent(template, v, ...)
+    local pct = v * 100
+    local text
+    if math.abs(pct) >= 10 or math.abs(pct - Round(pct)) < 0.05 then
+        text = tostring(Round(pct))
+    else
+        text = ("%.1f"):format(pct)
+        if COMMA[GetLocale and GetLocale() or "enUS"] then text = text:gsub("%.", ",") end
+    end
+    return (template:gsub("%%d%%%%", "%%s%%%%", 1)):format(text, ...)
+end
+
 local function Turns(n)
     return n == 1 and L.MC_ONE_TURN or L.MC_TURNS:format(n)
 end
@@ -135,15 +150,15 @@ function Describe.Mods(mods, abilities)
                 text = L.MC_MOD_ABIL_CD:format(name, v)
             end
         elseif resist then
-            text = L.MC_MOD_RESIST:format(Percent(v), L["MC_SCHOOL_" .. resist])
+            text = FormatPercent(L.MC_MOD_RESIST, v, L["MC_SCHOOL_" .. resist])
         elseif school then
-            text = L.MC_MOD_SCHOOL:format(Percent(v), DamageName(school))
+            text = FormatPercent(L.MC_MOD_SCHOOL, v, DamageName(school))
         elseif type(v) == "boolean" then
             text = L["MC_MOD_" .. k:upper()]
         elseif k == "thorns" or k == "speed" then
             text = L["MC_MOD_" .. k:upper()]:format(v)
         else
-            text = L["MC_MOD_" .. k:upper()]:format(Percent(math.abs(v)))
+            text = FormatPercent(L["MC_MOD_" .. k:upper()], math.abs(v))
         end
         parts[#parts + 1] = text
     end

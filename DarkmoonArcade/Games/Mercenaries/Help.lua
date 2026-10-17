@@ -55,7 +55,7 @@ function Module:BuildHelp(onBack)
             self:ShowHelpChapter(i)
         end)
         Kit.Hover(b, { grow = 1.03, sound = false })
-        Kit.Place(b, 118, 76 + (i - 1) * 43, page)
+        Kit.Place(b, 118, 74 + (i - 1) * 41, page)
         page.buttons[i] = b
     end
 
@@ -76,7 +76,7 @@ function Module:BuildHelp(onBack)
     page.text:SetSpacing(4)
 
     local back = Kit.Button(page, 140, 30, "BACK", onBack, "red")
-    Kit.Place(back, W - 86, H - 22, page)
+    Kit.Place(back, 86, H - 22, page)
     page.refresh = function() self:ShowHelpChapter(self.helpChapter or 1) end
 end
 

@@ -562,7 +562,7 @@ function Module:CreatePages()
     local pauseTitle = Widgets.PageTitle(pause, "PAUSED", -150)
     local landed = Widgets.Text(pause, 14, "blue")
     landed:SetPoint("TOP", pauseTitle, "BOTTOM", 0, -8)
-    local resume = Widgets.Button(pause, 200, 26, "RESUME", function() self:Route() end)
+    local resume = MC.Kit.Button(pause, 200, 28, "RESUME", function() self:Route() end, "blue")
     resume:SetPoint("TOP", landed, "BOTTOM", 0, -30)
     pause.refresh = function(data) landed:SetText((data and data.landed) and L.LANDED or L.MC_SAVED) end
 
@@ -588,7 +588,7 @@ function Module:CreatePages()
         end)
         tButtons[i] = b
     end
-    local decline = Widgets.Button(treasure, 200, 26, "MC_DECLINE", function()
+    local decline = MC.Kit.Button(treasure, 200, 28, "MC_DECLINE", function()
         local store = self:Store()
         if Bounty.ChooseTreasure(store, store.run, nil) then self:Route() end
     end)
@@ -672,7 +672,7 @@ function Module:CreatePages()
         end)
         hButtons[i] = b
     end
-    local hSkip = Widgets.Button(healer, 200, 26, "MC_CONTINUE", function()
+    local hSkip = MC.Kit.Button(healer, 200, 28, "MC_CONTINUE", function()
         local store = self:Store()
         Bounty.Revive(store.run, nil)
         self:Route()
@@ -764,10 +764,11 @@ function Module:CreatePages()
     local cText = Widgets.LocalizedText(confirm, 14, "blue", "MC_ABANDON_TEXT")
     cText:SetPoint("TOP", 0, -196)
     cText:SetWidth(W - 160)
-    local yes = Widgets.Button(confirm, 180, 26, "MC_ABANDON", function() self:AbandonRun() end)
-    yes:SetPoint("TOP", -96, -260)
-    local no = Widgets.Button(confirm, 180, 26, "BACK", function() self:Route() end)
-    no:SetPoint("TOP", 96, -260)
+    -- Back on the left, the step on the right (as everywhere).
+    local yes = MC.Kit.Button(confirm, 180, 28, "MC_ABANDON", function() self:AbandonRun() end, "red")
+    yes:SetPoint("TOP", 96, -260)
+    local no = MC.Kit.Button(confirm, 180, 28, "BACK", function() self:Route() end)
+    no:SetPoint("TOP", -96, -260)
 
     Widgets.ScoresPage(overlay, W, {
         gameId = self.id,

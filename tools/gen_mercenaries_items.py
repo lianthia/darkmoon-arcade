@@ -138,10 +138,14 @@ def atlasloot():
         section = data[start:end]
         bosses = []
         for block in re.split(r"\n\t\t\{\s*--", section)[1:]:
-            npc = re.search(r"npcID = (\d+)", block)
-            if not npc:
-                continue
+            # A boss with two forms lists both ids ("npcID = {10812, 10813}", Balnazzar): the first counts.
+            npc = re.search(r"npcID = \{?\s*(\d+)", block)
             items = [int(i) for i in re.findall(r"\{ *\d+, *(\d+) *\}", block)]
+            if not npc:
+                # The dungeon's trash drops (npc 0): what bosses without loot of their own share.
+                if 'AL["Trash"]' in block:
+                    bosses.append({"npc": 0, "items": items, "special": "trash"})
+                continue
             special = re.search(r'specialType = "(\w+)"', block)
             bosses.append({"npc": int(npc.group(1)), "items": items, "special": special and special.group(1)})
         dungeons[key] = bosses
@@ -276,7 +280,7 @@ def main():
         loot[dungeon] = []
         for boss in bosses:
             npc = boss["npc"]
-            for loc in LOCALES:
+            for loc in LOCALES if npc else ():
                 boss_names[loc][npc] = tooltip("npc", npc, loc)["name"]
             drops = []
             for wid in boss["items"]:

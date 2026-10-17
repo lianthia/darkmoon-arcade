@@ -120,7 +120,7 @@ function Module:BuildJournal()
     view.formulas:SetJustifyH("LEFT")
 
     local back = Kit.Button(view, 140, 30, "BACK", function() self:ShowView("travel") end, "red")
-    Kit.Place(back, W / 2, H - 30, view)
+    Kit.Place(back, 90, H - 30, view)
     -- The title over the panels.
     view.title:SetFrameLevel(page:GetFrameLevel() + 10)
     view.refresh = function() self:RefreshJournal() end

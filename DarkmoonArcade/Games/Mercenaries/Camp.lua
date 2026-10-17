@@ -467,12 +467,14 @@ function Module:BuildTravel()
         pin:Hide()
         view.pins[i] = pin
     end
+    -- Zooming out sits on the map itself (bottom left), so the window's foot keeps "Back" on the left.
     view.overview = Kit.Button(view, 170, 26, "MC_OVERVIEW", function() self:ZoomToRegion(nil) end)
-    Kit.Place(view.overview, 14 + 95, H - 16)
+    view.overview:SetFrameLevel(layer:GetFrameLevel() + 20)
+    Kit.Place(view.overview, 14 + 8 + 85, 56 + MAP_H - 8 - 13)
 
     self:BuildBossPanel(view)
     local back = Kit.Button(view, 120, 28, "BACK", function() self:ShowView("camp") end, "red")
-    Kit.Place(back, W - 76, H - 18)
+    Kit.Place(back, 76, H - 18)
     view.refresh = function() self:RefreshTravel(true) end
 end
 
@@ -669,7 +671,8 @@ function Module:RefreshTravel(resetView)
     local view = self.views.travel
     self:SetScene(nil)
     local continent = self.travelContinent
-    for c, tab in pairs(view.tabs) do tab:SetEnabled(c ~= continent) end
+    -- The shown continent's tab is gold (selected), the others lead there.
+    for c, tab in pairs(view.tabs) do Kit.SetSelected(tab, c == continent) end
     if resetView and not self.travelZoom then
         local v = self.travelRegion and { RegionView(REGIONS[continent][self.travelRegion]) } or { ContinentView(continent) }
         view.map:SetMap(continent, v[1], v[2], v[3], v[4])
@@ -935,7 +938,7 @@ function Module:BuildCollection()
         self.partySlot = nil
         self:ShowView("camp")
     end, "red")
-    Kit.Place(back, W - 76, H - 18)
+    Kit.Place(back, 76, H - 18)
 
     self:BuildMercView()
     view.refresh = function() self:RefreshCollection() end
@@ -1125,7 +1128,7 @@ function Module:BuildMercView()
     view.gearDesc:SetWidth(520)
 
     local done = Kit.Button(view, 140, 30, "MC_DONE", function() self:ShowView("collection") end, "red")
-    Kit.Place(done, W - 86, H - 20)
+    Kit.Place(done, 86, H - 20)
     self:BuildMercItems(view)
     view.refresh = function() self:RefreshMercView() end
 end

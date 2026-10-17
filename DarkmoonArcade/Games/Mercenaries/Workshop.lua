@@ -198,7 +198,7 @@ function Module:BuildWorkshop()
     view.page:SetPoint("BOTTOM", 0, 16)
 
     local back = Kit.Button(view, 140, 30, "BACK", function() self:ShowView("camp") end, "red")
-    Kit.Place(back, W / 2, H - 30, view)
+    Kit.Place(back, 90, H - 30, view)
 
     -- Dev copy in debug mode: a handful of loot to try the workshop with.
     view.devLoot, view.devItem = false, false
@@ -219,7 +219,7 @@ function Module:BuildWorkshop()
             Bounty.QueueItem(self:Store(), ids[math.random(#ids)])
             self:ShowView("camp")
         end)
-        Kit.Place(view.devItem, 90, H - 30, view)
+        Kit.Place(view.devItem, W / 2, H - 30, view)
     end
 
     view.refresh = function() self:RefreshWorkshop() end

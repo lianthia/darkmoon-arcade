@@ -670,9 +670,11 @@ function Dungeons.Encounters(store, id)
     return out
 end
 
--- The loot of one encounter: { item, chance in % } from the Classic tables of its creatures.
-function Dungeons.LootOf(id, encounter)
-    local enc = MC.Zones[id].encounters[encounter]
+-- What a boss without loot of its own drops (in Classic only world drops): a few items of its
+-- dungeon - the trash drops first, then the other bosses' loot - with this chance each (%).
+Dungeons.SHARED_LOOT, Dungeons.SHARED_CHANCE = 4, 15
+
+local function OwnLoot(id, enc)
     local out = {}
     for _, npc in ipairs(enc.npcs) do
         for _, boss in ipairs(MC.DungeonLoot[MC.Zones[id].lootFrom or id] or {}) do
@@ -682,6 +684,36 @@ function Dungeons.LootOf(id, encounter)
                 end
             end
         end
+    end
+    return out
+end
+
+-- The loot of one encounter: { item, chance in % } from the Classic tables of its creatures, or a
+-- share of the dungeon's loot for a boss that has none (always the same items for the same boss).
+function Dungeons.LootOf(id, encounter)
+    local zone = MC.Zones[id]
+    local out = OwnLoot(id, zone.encounters[encounter])
+    if #out > 0 then return out end
+    local pool, seen = {}, {}
+    local function Add(itemId)
+        if MC.Items[itemId] and not seen[itemId] then
+            seen[itemId] = true
+            pool[#pool + 1] = itemId
+        end
+    end
+    for _, boss in ipairs(MC.DungeonLoot[zone.lootFrom or id] or {}) do
+        if boss.special == "trash" then
+            for _, drop in ipairs(boss.drops) do Add(drop[1]) end
+        end
+    end
+    for i, enc in ipairs(zone.encounters) do
+        if i ~= encounter then
+            for _, drop in ipairs(OwnLoot(id, enc)) do Add(drop[1]) end
+        end
+    end
+    local count = math.min(Dungeons.SHARED_LOOT, #pool)
+    for k = 1, count do
+        out[k] = { pool[(encounter * 3 + k - 1) % #pool + 1], Dungeons.SHARED_CHANCE }
     end
     return out
 end

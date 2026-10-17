@@ -8,6 +8,7 @@ Mercenaries gets its biggest update yet: tasks and stories for every mercenary, 
   - A fixed path where every boss must fall, with trash fights between them and a spirit healer only before the last boss – harder than bounties
   - Wings behind one entrance, as in the game: the Scarlet Monastery, Maraudon, Dire Maul and Stratholme – the arrows in the panel switch between them
   - **Hidden bosses** (e.g. Mutanus the Devourer, Baron Aquanis, the Avatar of Hakkar, Death Knight Darkreaver) wait on a side branch that a task opens; **rare bosses** show up only now and then
+  - Every boss drops loot: bosses that had none of their own in Classic (e.g. Bazil Thredd) share a few items of their dungeon
   - Normal and heroic; the **adventure guide** lists every boss with its loot and the chance of each item before you enter
 - **Items:** the real Classic and WoW Forever loot with its drop chances. You choose which mercenary gets each find; it stays with that mercenary for good. A weapon slot and an armour slot, and a jewellery slot at level 60. Items give small bonuses on purpose (a full set wins about one bounty in twenty more), so the balance holds
 - **Enchanting:** disenchant items you do not need into Classic's enchanting materials, and enchant with formulas found as loot. Materials and formulas live at the workshop (the map table in the camp); the strongest formulas need the materials of the hardest content
@@ -22,6 +23,8 @@ Mercenaries gets its biggest update yet: tasks and stories for every mercenary, 
 - **New role gems** on tabs, cards and portraits, grey for mercenaries not yet recruited, with a gold fighter gem for the colour-blind option
 - The "!" markers show when a mercenary can rank up an ability or hand in a task, on the role tabs and on the mercenary's card too
 - Achievements are now found at the foot of the game's sidebar and on the task board
+- **New buttons** in Mercenaries, with their own looks for hover, press and disabled; the selected continent and difficulty glow gold
+- "Back" is now always on the left and the next step on the right; "Back to the continent" sits on the map itself
 - Mercenaries fills the whole window
 
 #### Darkmoon Arcade

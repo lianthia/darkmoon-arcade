@@ -238,7 +238,39 @@ def zone_maps():
     print("zone maps", len(list(target.glob("*.tga"))))
 
 
+# Mercenaries' buttons (art/buttons, Ben's Figma export: five colours in the states regular, hover and
+# active, and one disabled look) as 3-slice textures of 256x64: the left and right 32 px are the caps
+# (drawn h/2 wide by Kit.Button, so the bevelled corners never stretch), the middle 192 px stretch.
+# Every export is centred on the regular one's canvas, so all states line up; a little of the drop
+# shadow stays round the gold frame.
+BUTTON_CANVAS = (1527, 288)
+BUTTON_CROP = (14, 14, 1513, 274)
+BUTTON_H, BUTTON_CAP, BUTTON_W = 64, 32, 256
+
+
+def mercenaries_buttons():
+    target = MEDIA / "mercs"
+    for old in target.glob("btn_*.tga"):
+        old.unlink()
+    for path in sorted((ROOT / "art" / "buttons").glob("button-*.png")):
+        src = Image.open(path).convert("RGBA")
+        canvas = Image.new("RGBA", BUTTON_CANVAS, (0, 0, 0, 0))
+        canvas.paste(src, ((BUTTON_CANVAS[0] - src.width) // 2, (BUTTON_CANVAS[1] - src.height) // 2))
+        art = canvas.crop(BUTTON_CROP)
+        scaled = art.resize((round(art.width * BUTTON_H / art.height), BUTTON_H), Image.LANCZOS)
+        out = Image.new("RGBA", (BUTTON_W, BUTTON_H), (0, 0, 0, 0))
+        mid = BUTTON_W - 2 * BUTTON_CAP
+        out.paste(scaled.crop((0, 0, BUTTON_CAP, BUTTON_H)), (0, 0))
+        centre = (scaled.width - mid) // 2
+        out.paste(scaled.crop((centre, 0, centre + mid, BUTTON_H)), (BUTTON_CAP, 0))
+        out.paste(scaled.crop((scaled.width - BUTTON_CAP, 0, scaled.width, BUTTON_H)), (BUTTON_W - BUTTON_CAP, 0))
+        # button-primary-hover.png -> btn_primary_hover.tga, button-disabled.png -> btn_disabled.tga
+        out.save(target / ("btn_" + path.stem[len("button-"):].replace("-", "_") + ".tga"))
+    print("buttons", len(list(target.glob("btn_*.tga"))))
+
+
 if __name__ == "__main__":
+    mercenaries_buttons()
     mercenaries_new_marker()
     mercenaries_roles()
     mercenaries_camp()

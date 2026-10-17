@@ -158,6 +158,7 @@ end
 
 -- Keeps the glow lit (and gently pulsing) while the frame is selected.
 function Kit.SetSelected(f, selected, pulse)
+    if f.SetSelectedLook then f:SetSelectedLook(selected) end
     local a = State(f)
     a.selected = selected
     a.glowTarget = selected and 1 or 0
@@ -269,39 +270,77 @@ function Kit.FitText(fs, text, maxW, size, minSize, flags)
     end
 end
 
--- A lacquered button with gold rim and metal caps; grows on hover, sinks on press.
--- `style`: nil (parchment), "red" (back, abandon), "blue" or "green" (go ahead).
+-- A bevelled button in a gold frame (Ben's Figma buttons, media/mercs/btn_*, made by tools/import_art.py)
+-- with its own looks for hover, press and disabled. `style`: nil (parchment), "blue" (go ahead),
+-- "green" (confirm), "red" (back, abandon) or "gold". A selected button (Kit.SetSelected: Normal/Heroic,
+-- the continent tabs) turns gold.
+-- The texture is a 3-slice of 256x64: caps of 32 px drawn h/2 wide, the middle stretches.
+local BUTTON_LOOK = { blue = "primary", green = "success", red = "danger", gold = "warning" }
+local BUTTON_INK = { secondary = { 0.29, 0.17, 0.05 }, warning = { 1, 0.95, 0.82 } }
 function Kit.Button(parent, w, h, key, onClick, style)
     local b = CreateFrame("Button", nil, parent)
     b:SetSize(w, h)
-    b.bg = b:CreateTexture(nil, "ARTWORK")
-    b.bg:SetAllPoints()
-    b.bg:SetTexture(MC.Tex(style and ("button_" .. style) or "button"))
-    b.glowTex = b:CreateTexture(nil, "OVERLAY")
-    b.glowTex:SetPoint("TOPLEFT", 8, -6)
-    b.glowTex:SetPoint("BOTTOMRIGHT", -8, 6)
-    b.glowTex:SetColorTexture(1, 0.9, 0.6, 0.25)
-    b.glowTex:SetBlendMode("ADD")
-    b.glowTex:SetAlpha(0)
-    local size, flags = math.floor(math.min(14, h * 0.45)), style and "OUTLINE" or ""
-    if style then
-        b.label = Kit.Ink(b, size, { 1, 0.96, 0.88 }, flags)
-    else
-        b.label = Kit.Ink(b, size, INK)
+    local look = BUTTON_LOOK[style] or "secondary"
+    local parts = {}
+    for i, coords in ipairs({ { 0, 0.125 }, { 0.125, 0.875 }, { 0.875, 1 } }) do
+        local t = b:CreateTexture(nil, "ARTWORK")
+        t:SetTexCoord(coords[1], coords[2], 0, 1)
+        parts[i] = t
     end
+    parts[1]:SetPoint("TOPLEFT")
+    parts[1]:SetPoint("BOTTOMLEFT")
+    parts[1]:SetWidth(h / 2)
+    parts[3]:SetPoint("TOPRIGHT")
+    parts[3]:SetPoint("BOTTOMRIGHT")
+    parts[3]:SetWidth(h / 2)
+    -- The middle reaches a pixel under each cap, so no seam shows between the slices.
+    parts[2]:SetDrawLayer("ARTWORK", -1)
+    parts[2]:SetPoint("TOPLEFT", parts[1], "TOPRIGHT", -1, 0)
+    parts[2]:SetPoint("BOTTOMRIGHT", parts[3], "BOTTOMLEFT", 1, 0)
+    local size = math.floor(math.min(14, h * 0.45))
+    local hovered, pressed, selected = false, false, false
+    local function Look()
+        local name, current
+        if not b:IsEnabled() then
+            name, current = "btn_disabled", "disabled"
+        else
+            current = selected and "warning" or look
+            name = "btn_" .. current .. "_" .. (pressed and "active" or hovered and "hover" or "regular")
+        end
+        for _, t in ipairs(parts) do t:SetTexture(MC.Tex(name)) end
+        local ink = BUTTON_INK[current] or { 1, 0.96, 0.88 }
+        local alpha = current == "disabled" and 0.55 or 1
+        b.label:SetTextColor(ink[1], ink[2], ink[3], alpha)
+        -- The label sinks with the pressed button.
+        b.label:SetPoint("CENTER", 0, pressed and 0 or 1)
+    end
+    local flags = function() return (look == "secondary" and not selected) and "" or "OUTLINE" end
+    b.label = Kit.Ink(b, size, { 1, 0.96, 0.88 }, flags())
     b.label:SetPoint("CENTER", 0, 1)
     b.label:SetWordWrap(false)
-    -- Long labels (and long translations) shrink to fit between the metal caps.
-    function b:SetText(text) Kit.FitText(self.label, text, w - 44, size, size - 4, flags) end
+    -- Long labels (and long translations) shrink to fit between the caps.
+    function b:SetText(text)
+        self.text = text
+        Kit.FitText(self.label, text, w - h * 0.9, size, size - 4, flags())
+    end
+    function b:SetSelectedLook(on)
+        selected = on and true or false
+        if self.text then self:SetText(self.text) end
+        Look()
+    end
     if key then Widgets.OnRefresh(function() b:SetText(L[key]) end) end
-    b:HookScript("OnEnable", function() b.bg:SetDesaturated(false); b.label:SetAlpha(1) end)
-    b:HookScript("OnDisable", function() b.bg:SetDesaturated(true); b.label:SetAlpha(0.5) end)
+    b:HookScript("OnEnable", Look)
+    b:HookScript("OnDisable", function() pressed = false; Look() end)
+    b:HookScript("OnEnter", function() hovered = true; Look() end)
+    b:HookScript("OnLeave", function() hovered, pressed = false, false; Look() end)
+    b:HookScript("OnMouseDown", function() if b:IsEnabled() then pressed = true; Look() end end)
+    b:HookScript("OnMouseUp", function() pressed = false; Look() end)
     b:SetMotionScriptsWhileDisabled(true)
     b:SetScript("OnClick", function()
         PlaySound(SOUNDKIT.IG_MAINMENU_OPTION)
         if onClick then onClick(b) end
     end)
-    Kit.Hover(b, { grow = 1.05, sound = false })
+    Look()
     return b
 end
 

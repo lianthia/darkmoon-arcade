@@ -174,9 +174,9 @@ function Module:BuildQuests()
     view.turnIn:SetPoint("BOTTOM", 0, 16)
 
     local back = Kit.Button(view, 140, 30, "BACK", function() self:ShowView("camp") end, "red")
-    Kit.Place(back, W / 2, H - 30, view)
+    Kit.Place(back, 90, H - 30, view)
     local achievements = Kit.Button(view, 140, 30, "ACHIEVEMENTS", function() self:ShowAchievements() end)
-    Kit.Place(achievements, 90, H - 30, view)
+    Kit.Place(achievements, W - 90, H - 30, view)
 
     title:SetFrameLevel(page:GetFrameLevel() + 10)
     view.refresh = function() self:RefreshQuests() end
