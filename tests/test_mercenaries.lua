@@ -306,6 +306,31 @@ test("coins recruit and rank up", function()
     assert(not Bounty.CanImprove(store, "jaina"), "no coins left")
 end)
 
+test("every task chain ends with an item of its level for its mercenary", function()
+    local Quests = MC.Quests
+    for _, chain in ipairs(MC.QUEST_CHAIN_ORDER) do
+        local id = Quests.RewardItem(chain)
+        local item = id and MC.Items[id]
+        assert(item, chain .. ": reward item")
+        local level = Quests.ChainLevel(chain)
+        assert(item.level >= level - 8 and item.level <= level + 4, chain .. ": item level " .. item.level .. " for " .. level)
+        assert(item.kind ~= "jewelry" or level >= MC.MAX_LEVEL, chain .. ": jewellery only at the highest level")
+    end
+    -- A mercenary that owns the item already gets its materials instead.
+    local store = NewStore()
+    local chain = "cairne_mulgore"
+    local id = Quests.RewardItem(chain)
+    Bounty.GiveItem(store, "cairne", id)
+    local st = Quests.State(store, chain)
+    st.step = #MC.QUEST_CHAINS[chain].steps
+    local isReady = Quests.IsReady
+    Quests.IsReady = function(s, c) return c == chain or isReady(s, c) end
+    local _, _, item, material, count = Quests.TurnIn(store, chain)
+    Quests.IsReady = isReady
+    eq(item, id)
+    assert(material and count > 0 and (Bounty.Materials(store)[material] or 0) >= count, "disenchanted into materials")
+end)
+
 test("rank IV needs coins and the mercenary's dungeon cleared with it", function()
     for _, id in ipairs(MC.MERC_ORDER) do
         local dungeon = MC.Zones[MC.RANK4_DUNGEON[id]]
@@ -729,8 +754,11 @@ test("tasks: earlier progress counts, kills and abilities count in battle, handi
     Quests.OnBounty(store, { zone = "westfall", party = { { id = "bolvar" } } })
     assert(not Quests.IsReady(store, "bolvar_defias"))
     Quests.OnBounty(store, { zone = "deadmines", dungeon = "deadmines", party = { { id = "bolvar" } } })
-    local _, unlock = Quests.TurnIn(store, "bolvar_defias")
+    local _, unlock, item = Quests.TurnIn(store, "bolvar_defias")
     eq(unlock, nil, "tasks never lock a dungeon")
+    -- The chain's end gives its item to Bolvar.
+    eq(item, Quests.RewardItem("bolvar_defias"))
+    assert(Bounty.OwnsItem(store.mercs.bolvar, item), "the chain's item is Bolvar's")
     assert(Quests.Done(store, "bolvar_defias") and not Quests.IsReady(store, "bolvar_defias"), "the chain is done")
     -- Benedictus 2: shields cast in battle.
     Bounty.ZoneState(store, "tirisfal").normal = 1

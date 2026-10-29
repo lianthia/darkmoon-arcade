@@ -232,6 +232,16 @@ if Want("quests") then
     mc.questShown = "cairne_mulgore"
     mc:RefreshQuests()
     Snap("quests_ready")
+    -- The last task of a chain: its item as the reward, then the window when it is handed in.
+    MC.Quests.State(store, "cairne_mulgore").step = 4
+    mc:RefreshQuests()
+    Snap("quests_reward")
+    local isReady = MC.Quests.IsReady
+    MC.Quests.IsReady = function() return true end
+    mc:TurnInQuest()
+    MC.Quests.IsReady = isReady
+    Snap("quests_reward_got")
+    mc.overlay:Hide()
     mc:ScrollQuests(500)
     Snap("quests_scrolled")
     mc:ScrollQuests(-10000)

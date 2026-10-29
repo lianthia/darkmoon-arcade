@@ -166,6 +166,19 @@ function Module:BuildQuests()
     view.qReward:SetPoint("LEFT", view.qCoin, "RIGHT", 6, 0)
     view.qReward:SetWidth(tw - 30)
     view.qReward:SetJustifyH("LEFT")
+    -- The item at a chain's end: its icon and name in its rarity's colour, the item tooltip under the mouse.
+    view.qItem = CreateFrame("Button", nil, page)
+    view.qItem:SetSize(tw, 22)
+    view.qItem:SetPoint("TOPLEFT", view.qCoin, "BOTTOMLEFT", 0, -6)
+    view.qItem.icon = view.qItem:CreateTexture(nil, "ARTWORK")
+    view.qItem.icon:SetSize(20, 20)
+    view.qItem.icon:SetPoint("LEFT")
+    view.qItem.text = Kit.Ink(view.qItem, 13, INK)
+    view.qItem.text:SetPoint("LEFT", view.qItem.icon, "RIGHT", 6, 0)
+    view.qItem.text:SetPoint("RIGHT")
+    view.qItem.text:SetJustifyH("LEFT")
+    view.qItem:SetScript("OnEnter", function(b) if b.itemId then self:ItemTooltip(b, b.itemId) end end)
+    view.qItem:SetScript("OnLeave", GameTooltip_Hide)
     view.qUnlock = Kit.Ink(page, 13, { 0.05, 0.28, 0.62 })
     view.qUnlock:SetPoint("TOPLEFT", view.qCoin, "BOTTOMLEFT", 0, -6)
     view.qUnlock:SetWidth(tw)
@@ -276,7 +289,7 @@ function Module:RefreshQuests()
         view.qTitle:SetText(L["MC_Q_" .. shown .. "_" .. #def.steps .. "_TITLE"])
         view.qText:SetText(L.MC_QUEST_CHAIN_DONE_TEXT:format(name))
         for _, part in ipairs({ view.goalHead, view.qGoal, view.qProgress, view.rewardHead, view.qCoin,
-            view.qReward, view.qUnlock, view.turnIn }) do part:Hide() end
+            view.qReward, view.qUnlock, view.qItem, view.turnIn }) do part:Hide() end
         return
     end
     for _, part in ipairs({ view.goalHead, view.qGoal, view.qProgress, view.rewardHead, view.qCoin,
@@ -290,6 +303,18 @@ function Module:RefreshQuests()
     local ready = Quests.IsReady(store, shown)
     view.qProgress:SetText(ready and L.MC_QUEST_READY or ("%d / %d"):format(doneCount, need))
     view.qReward:SetText(L.MC_QUEST_COINS:format(Quests.COINS[step] or 0, name))
+    local itemId = step == #def.steps and Quests.RewardItem(shown) or nil
+    local item = itemId and MC.Items[itemId]
+    view.qItem:SetShown(item ~= nil)
+    view.qItem.itemId = itemId
+    if item then
+        local c = MC.RARITY_INKS[item.rarity] or INK
+        view.qItem.icon:SetTexture(item.icon)
+        view.qItem.text:SetText(L.MC_QUEST_ITEM_FOR:format(MC.ItemName(itemId), name))
+        view.qItem.text:SetTextColor(c[1], c[2], c[3])
+    end
+    view.qUnlock:ClearAllPoints()
+    view.qUnlock:SetPoint("TOPLEFT", item and view.qItem or view.qCoin, "BOTTOMLEFT", 0, -6)
     view.qUnlock:SetShown(task.unlock ~= nil)
     if task.unlock then view.qUnlock:SetText(L["MC_QUEST_UNLOCK_" .. task.unlock]) end
     view.turnIn:SetEnabled(ready)
@@ -314,13 +339,22 @@ end
 
 function Module:TurnInQuest()
     local store, merc = self:Store(), self.questShown
-    local coins, unlock = Quests.TurnIn(store, merc)
+    local mercId = MC.QUEST_CHAINS[merc] and MC.QUEST_CHAINS[merc].merc
+    local coins, unlock, item, material, count = Quests.TurnIn(store, merc)
     if not coins then return end
     -- As in WoW: the quest complete sound and the coins.
     PlaySound(SOUNDKIT.IG_QUEST_LIST_COMPLETE)
     if SOUNDKIT.LOOT_WINDOW_COIN_SOUND then PlaySound(SOUNDKIT.LOOT_WINDOW_COIN_SOUND) end
     self:RefreshQuests()
-    if unlock then
+    if item and MC.Items[item] then
+        -- The chain's item: worn at once if its slot was free, else in the bag; a copy owned already
+        -- turned into materials.
+        local who = Describe.MercName(mercId)
+        local text = material and L.MC_QUEST_ITEM_DUP:format(who, MC.ItemName(item), count, L["MC_M_" .. material])
+            or L.MC_QUEST_ITEM_GOT:format(who, MC.ItemName(item))
+        if unlock then text = text .. "\n\n" .. L["MC_QUEST_UNLOCK_" .. unlock] end
+        self.overlay:Show("event", { icon = MC.Items[item].icon, title = L.MC_QUEST_ITEM_TITLE, text = text })
+    elseif unlock then
         self.overlay:Show("event", {
             icon = "Interface\\Icons\\INV_Misc_Key_03", title = L.MC_QUEST_UNLOCKED,
             text = L["MC_QUEST_UNLOCK_" .. unlock],

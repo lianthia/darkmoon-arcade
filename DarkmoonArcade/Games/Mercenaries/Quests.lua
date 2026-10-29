@@ -403,19 +403,108 @@ end
 
 -- Hands in the current task: its coins to the mercenary, its unlock, and the next task.
 -- Returns the coins and the unlock, or nil.
+-- The item at the end of a chain: a rare (early on: uncommon) piece of dungeon loot of about the chain's level that suits
+-- its mercenary's role (from the chain's own dungeon when it ends in one); no two chains of a
+-- mercenary give the same item. Worked out once from the data, so it never changes.
+local WANTS = {
+    protector = { hpPct = 1, takenPct = 1, regenPct = 0.5, atkPct = 0.3 },
+    fighter = { atkPct = 1, critChance = 1, hpPct = 0.3 },
+    caster = { spellPct = 1, critChance = 0.7, hpPct = 0.3 },
+}
+local rewards
+
+-- The level a chain is played at: its zones' and dungeons' boss levels and the levels it asks for.
+function Quests.ChainLevel(chain)
+    local def, level = MC.QUEST_CHAINS[chain], 0
+    for _, task in ipairs(def.steps) do
+        local zone = MC.Zones[task.dungeon or task.zone or ""]
+        if zone then level = math.max(level, Bounty.BossLevel(zone, false)) end
+        if task.level then level = math.max(level, task.level) end
+    end
+    if level == 0 then level = def.requires and def.requires.level or 10 end
+    return level
+end
+
+local function BuildRewards()
+    rewards = {}
+    local dropsOf, all = {}, {}
+    for key, bosses in pairs(MC.DungeonLoot or {}) do
+        dropsOf[key] = {}
+        for _, boss in ipairs(bosses) do
+            for _, drop in ipairs(boss.drops) do
+                dropsOf[key][drop[1]] = true
+                all[drop[1]] = true
+            end
+        end
+    end
+    local used = {}
+    for _, chain in ipairs(MC.QUEST_CHAIN_ORDER) do
+        local def = MC.QUEST_CHAINS[chain]
+        local merc = MC.Mercs[def.merc]
+        local level = Quests.ChainLevel(chain)
+        local last = def.steps[#def.steps]
+        local dungeon = last.dungeon and MC.Zones[last.dungeon]
+        local own = dungeon and dropsOf[dungeon.lootFrom or last.dungeon]
+        used[def.merc] = used[def.merc] or {}
+        local best, bestScore
+        -- A rare item; the first levels have hardly any, so an uncommon one there.
+        -- (For a few early protectors only a slightly higher item fits.)
+        for _, choice in ipairs({ { own, "rare", 1 }, { all, "rare", 1 }, { own, "uncommon", 1 }, { all, "uncommon", 1 },
+            { all, "rare", 4 }, { all, "uncommon", 4 } }) do
+            local pool, rarity, above = choice[1], choice[2], choice[3]
+            if pool then
+                for id in pairs(pool) do
+                    local item = MC.Items[id]
+                    local open = item and item.rarity == rarity and item.level >= level - 8 and item.level <= level + above
+                        and (item.kind ~= "jewelry" or level >= MC.MAX_LEVEL) and not used[def.merc][id]
+                    if open then
+                        local fit = 0
+                        for k, points in pairs(item.points) do fit = fit + (WANTS[merc.role][k] or 0) * points end
+                        local score = fit * 100 - math.abs(level - item.level)
+                        if fit > 0 and (not bestScore or score > bestScore or (score == bestScore and id < best)) then
+                            best, bestScore = id, score
+                        end
+                    end
+                end
+                if best then break end
+            end
+        end
+        if best then
+            rewards[chain] = best
+            used[def.merc][best] = true
+        end
+    end
+end
+
+function Quests.RewardItem(chain)
+    if not rewards then BuildRewards() end
+    return rewards[chain]
+end
+
+-- Hands in the current task: its coins, its unlock, and at a chain's end its item (a mercenary that
+-- owns the item already gets its enchanting materials). Returns coins, unlock, item id, and the
+-- material and count when it was disenchanted.
 function Quests.TurnIn(store, chain)
     if not Quests.IsReady(store, chain) then return nil end
     local task, step = Quests.Current(store, chain)
     local st = Quests.State(store, chain)
     local coins = Quests.COINS[step] or 0
-    local entry = store.mercs[MC.QUEST_CHAINS[chain].merc]
+    local def = MC.QUEST_CHAINS[chain]
+    local entry = store.mercs[def.merc]
     entry.coins = entry.coins + coins
     if task.unlock then
         store.unlocks = store.unlocks or {}
         store.unlocks[task.unlock] = true
     end
+    local item, material, count
+    if step == #def.steps then
+        item = Quests.RewardItem(chain)
+        if item and Bounty.GiveItem(store, def.merc, item) == "duplicate" then
+            material, count = Bounty.Disenchant(store, item)
+        end
+    end
     st.step, st.count = step + 1, 0
-    return coins, task.unlock
+    return coins, task.unlock, item, material, count
 end
 
 -- Progress from play ------------------------------------------------------------------------------
