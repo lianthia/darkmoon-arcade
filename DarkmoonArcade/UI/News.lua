@@ -26,6 +26,13 @@ local CAMP_ART, CAMP_V0, CAMP_V1 = 2821800, 0.255, 0.815
 -- is dimmed and says so.
 News.VERSIONS = {
     {
+        version = "1.4.2",
+        items = {
+            { icon = "Spell_Holy_Resurrection", key = 1 },
+        },
+        thanks = "INV_ValentinesCard02",
+    },
+    {
         version = "1.4.1",
         items = {
             { icon = "INV_Enchant_EssenceEternalLarge", key = 1 },

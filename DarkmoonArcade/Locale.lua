@@ -9,6 +9,9 @@ function ns.AddStrings(language, values)
 end
 
 ns.AddStrings("enUS", {
+    NEWS_142_1_TITLE = "Games on corpse runs",
+    NEWS_142_1_TEXT = "A new option under Flights opens the arcade when you release your spirit and closes it once you are resurrected. Off by default.",
+    NEWS_142_THANKS = "Many thanks to not_buneary on CurseForge for the idea!",
     NEWS_141_1_TITLE = "More enchants",
     NEWS_141_1_TEXT = "34 enchanting formulas from WoW: Forever, such as Grand Crusader, Spellblasting and gloves of nature, arcane and holy power - all found as loot.",
     NEWS_141_2_TITLE = "Rewards for stories",
@@ -236,6 +239,9 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    NEWS_142_1_TITLE = "Spiele beim Leichenlauf",
+    NEWS_142_1_TEXT = "Eine neue Option unter Flüge öffnet die Arcade, wenn du deinen Geist freilässt, und schließt sie nach der Wiederbelebung. Standardmäßig aus.",
+    NEWS_142_THANKS = "Vielen Dank an not_buneary auf CurseForge für die Idee!",
     NEWS_141_1_TITLE = "Mehr Verzauberungen",
     NEWS_141_1_TEXT = "34 Verzauberungsformeln aus WoW: Forever, etwa Oberster Kreuzzügler, Zauberschlag und Handschuhe der Natur-, Arkan- und Heiligmacht - alle als Beute.",
     NEWS_141_2_TITLE = "Lohn für Geschichten",
@@ -460,6 +466,9 @@ ns.AddStrings("deDE", {
 })
 
 ns.AddStrings("frFR", {
+    NEWS_142_1_TITLE = "Des jeux pendant la course au corps",
+    NEWS_142_1_TEXT = "Une nouvelle option dans Vols ouvre l'arcade quand vous libérez votre esprit et la referme une fois ressuscité. Désactivée par défaut.",
+    NEWS_142_THANKS = "Un grand merci à not_buneary sur CurseForge pour l'idée !",
     NEWS_141_1_TITLE = "Plus d'enchantements",
     NEWS_141_1_TEXT = "34 formules d'enchantement de WoW: Forever, comme Grand croisé, Explosion de sort ou des gants de pouvoir naturel, arcanique et sacré - toutes en butin.",
     NEWS_141_2_TITLE = "Des histoires récompensées",
@@ -680,6 +689,9 @@ ns.AddStrings("frFR", {
 })
 
 ns.AddStrings("esES", {
+    NEWS_142_1_TITLE = "Juegos al correr hacia el cadáver",
+    NEWS_142_1_TEXT = "Una nueva opción en Vuelos abre el arcade al liberar tu espíritu y lo cierra al resucitar. Desactivada por defecto.",
+    NEWS_142_THANKS = "¡Muchas gracias a not_buneary en CurseForge por la idea!",
     NEWS_141_1_TITLE = "Más encantamientos",
     NEWS_141_1_TEXT = "34 fórmulas de encantamiento de WoW: Forever, como gran cruzado, explosión de hechizos o guantes de poder natural, arcano y sagrado, todas como botín.",
     NEWS_141_2_TITLE = "Historias con premio",
@@ -900,6 +912,9 @@ ns.AddStrings("esES", {
 })
 
 ns.AddStrings("ruRU", {
+    NEWS_142_1_TITLE = "Игры по пути к телу",
+    NEWS_142_1_TEXT = "Новая настройка в разделе «Полёты» открывает аркаду, когда вы покидаете тело, и закрывает её после воскрешения. По умолчанию выключена.",
+    NEWS_142_THANKS = "Большое спасибо not_buneary на CurseForge за идею!",
     NEWS_141_1_TITLE = "Больше чар",
     NEWS_141_1_TEXT = "34 формулы чар из WoW: Forever, например «верховный рыцарь», «взрыв чар» и перчатки силы природы, тайной магии и Света – всё в добыче.",
     NEWS_141_2_TITLE = "Награда за истории",
@@ -1121,6 +1136,9 @@ ns.AddStrings("ruRU", {
 })
 
 ns.AddStrings("zhCN", {
+    NEWS_142_1_TITLE = "跑尸时玩游戏",
+    NEWS_142_1_TEXT = "“飞行”中的新选项会在你释放灵魂时打开街机，并在复活后关闭。默认关闭。",
+    NEWS_142_THANKS = "非常感谢 CurseForge 用户 not_buneary 的创意！",
     NEWS_141_1_TITLE = "更多附魔",
     NEWS_141_1_TEXT = "34个来自《魔兽世界：永恒》的附魔配方，例如大十字军、法术冲击以及自然、奥术和神圣能量手套——全部作为掉落获得。",
     NEWS_141_2_TITLE = "故事的奖励",
