@@ -82,7 +82,8 @@ JEWELRY_SLOTS = {"finger", "neck", "trinket"}
 # What a formula enchants, from its name ("Enchant Cloak - ..."): one slot, or "weapon" for any melee
 # weapon (as in Classic: no ranged weapons, no off-hand frills).
 RECIPE_TARGETS = [("2H Weapon", "two-hand"), ("Weapon", "weapon"), ("Bracer", "wrist"), ("Chest", "chest"),
-                  ("Cloak", "back"), ("Boots", "feet"), ("Gloves", "hands"), ("Shield", "shield")]
+                  ("Cloak", "back"), ("Boots", "feet"), ("Gloves", "hands"), ("Shield", "shield"),
+                  ("Off-Hand", "held")]
 MELEE = {"one-hand", "two-hand", "main-hand", "off-hand"}
 
 
@@ -102,8 +103,21 @@ RECIPES = [
     13522, 13536, 13538, 13626, 13635, 13657, 13687, 13693, 13822, 13836, 13898, 13915, 13937, 13941, 13943,
     20014, 20015, 20025, 20029, 20030, 20031, 20032, 20034, 22749, 23799, 23803, 23804,
 ]
+# WoW: Forever's new enchanting formulas (spell ids; their formulas are sold or dropped in Forever, here
+# they are loot like all formulas). Left out: necklaces (jewellery takes no enchant here), gathering
+# gloves (Advanced Skinning, Lotus Claw). Their tooltips come from Forever's data (dataEnv 16).
+FOREVER_RECIPES = [
+    1248458, 1248459, 1248460, 1248497, 1248498, 1248500, 1248599, 1248661, 1248665, 1220624,  # bracers
+    1248757, 1248760, 1248805, 1231128, 1231164,                                                # weapons
+    1231139, 1232172, 1248510, 1248511, 1248668, 1248607, 1248636, 1219580,                     # two-handers
+    1249071, 1219587, 1219581, 1220623, 1248640, 1248645, 1213626, 1213622,                     # armour, shields
+    1219577, 1219578, 1219579,                                                                  # off-hands
+]
 # Which bonus an enchant's effect is closest to: the first match wins.
 RECIPE_BONUS = [
+    (r"(nature|arcane|holy) damage", "school"),
+    (r"critical strike|critically", "critChance"),
+    (r"healing spells|healing by|damage and healing", "spellPct"),
     (r"(fire) damage", "school_fire"), (r"(frost) damage|chill", "school_frost"),
     (r"(shadow) damage|life from", "school_shadow"),
     (r"all (?:spell )?resistances|resistance to all", "resist_all"),
@@ -262,7 +276,12 @@ def recipe_of(sid, material_names):
     for pattern, key in RECIPE_BONUS:
         m = re.search(pattern, effect, re.I)
         if m:
-            bonus = "resist_" + (m.group(1) or m.group(2)).lower() if key == "resist" else key
+            if key == "resist":
+                bonus = "resist_" + (m.group(1) or m.group(2)).lower()
+            elif key == "school":
+                bonus = "school_" + m.group(1).lower()
+            else:
+                bonus = key
             break
     return {"name": en["name"], "target": target, "bonus": bonus, "cost": cost, "effect": effect.strip("| "),
             "tier": max((MATERIAL_TIER[mid] for mid, _ in cost), default=0)}
@@ -310,7 +329,7 @@ def main():
         for loc in LOCALES:
             mat_names[loc][mid] = tooltip("item", mid, loc)["name"]
     recipes, recipe_names, recipe_skipped = {}, {loc: {} for loc in LOCALES}, []
-    for sid in RECIPES:
+    for sid in RECIPES + FOREVER_RECIPES:
         r = recipe_of(sid, material_names)
         if not r["bonus"] or not r["cost"] or not r["target"]:
             recipe_skipped.append(f"{sid} {r['name']}: {r['effect']}")
