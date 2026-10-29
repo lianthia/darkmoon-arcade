@@ -272,6 +272,22 @@ function Module:BuildMercItems(view)
         self:RefreshMercItems()
     end, "red")
     pickBack:SetPoint("BOTTOM", 0, 4)
+    -- More formulas than rows: pages, turned with the arrows beside "Back" or the mouse wheel.
+    local function Turn(dir)
+        self.pickPage = (self.pickPage or 1) + dir
+        self:RefreshMercItems()
+    end
+    view.pickPrev = Kit.Arrow(pick, -1, Turn)
+    view.pickPrev:SetSize(30, 30)
+    view.pickPrev:SetPoint("RIGHT", pickBack, "LEFT", -8, 0)
+    view.pickNext = Kit.Arrow(pick, 1, Turn)
+    view.pickNext:SetSize(30, 30)
+    view.pickNext:SetPoint("LEFT", pickBack, "RIGHT", 8, 0)
+    pick:EnableMouseWheel(true)
+    pick:SetScript("OnMouseWheel", function(_, delta)
+        local target = (self.pickPage or 1) - delta
+        if target >= 1 and target <= (self.pickPages or 1) then Turn(-delta) end
+    end)
 
     -- The two sheets' tabs below them.
     local function Tab(key, items)
@@ -412,10 +428,21 @@ function Module:RefreshItemPicker(entry, itemId, item)
     end)
     view.pickNone:SetShown(#list == 0)
     view.pickNone:SetText(L.MC_ITEM_NO_RECIPES)
+    -- A new item starts on the first page.
+    if self.pickItem ~= itemId then self.pickItem, self.pickPage = itemId, 1 end
+    self.pickPages = math.max(1, math.ceil(#list / PICK_ROWS))
+    self.pickPage = math.min(math.max(self.pickPage or 1, 1), self.pickPages)
+    local offset = (self.pickPage - 1) * PICK_ROWS
+    view.pickPrev:SetShown(self.pickPages > 1)
+    view.pickNext:SetShown(self.pickPages > 1)
+    view.pickPrev:SetEnabled(self.pickPage > 1)
+    view.pickNext:SetEnabled(self.pickPage < self.pickPages)
+    view.pickPrev:SetAlpha(self.pickPage > 1 and 1 or 0.35)
+    view.pickNext:SetAlpha(self.pickPage < self.pickPages and 1 or 0.35)
     local current = Bounty.ItemEnchant(entry, itemId)
     local bag = Bounty.Materials(store)
     for i, b in ipairs(view.pickRows) do
-        local rid = list[i]
+        local rid = list[offset + i]
         b:SetShown(rid ~= nil)
         b.recipe = rid
         if rid then

@@ -200,6 +200,12 @@ if Want("items") or Want("itemfound") then
         mc.itemPicking = true
         mc:RefreshMercItems()
         Snap("items_pick")
+        -- Every formula known: the picker turns pages (5444 is a two-hander).
+        for _, rid in ipairs(MC.RECIPE_ORDER) do B.LearnRecipe(store, rid) end
+        mc:RefreshMercItems()
+        Snap("items_pick_many")
+        mc.views.merc.pickNext._scripts.OnClick(mc.views.merc.pickNext)
+        Snap("items_pick_page2")
         mc.itemPicking = false
         mc.mercItemsTab = false
     end
