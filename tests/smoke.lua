@@ -5,6 +5,7 @@
 local frames, timers, now = {}, {}, 0
 local cursorX, cursorY = 300, 300
 local onTaxi = false
+local isGhost = false
 local chat = {}
 
 local NUMBER_GETTERS = {
@@ -172,6 +173,7 @@ date = os.date
 function GetCursorPosition() return cursorX, cursorY end
 function InCombatLockdown() return false end
 function UnitOnTaxi() return onTaxi end
+function UnitIsGhost() return isGhost end
 function IsInGroup() return true end
 function IsInRaid() return false end
 function IsInGuild() return true end
@@ -1106,6 +1108,36 @@ Fire("PLAYER_CONTROL_GAINED")
 Tick(1)
 assert(Window.activeGame.game.state == "PAUSED", "landing should pause")
 assert(DarkmoonArcadeDB.flights["Goldhain > Sturmwind"], "flight duration recorded")
+
+-- Corpse runs: off by default; switched on, releasing opens the arcade and the resurrection closes it.
+Window.frame:Hide()
+assert(DarkmoonArcadeDB.corpseRun == false, "corpse runs: off by default")
+isGhost = true
+Fire("PLAYER_ALIVE")
+Tick(1)
+assert(not Window.frame._shown, "corpse runs: nothing opens while the option is off")
+isGhost = false
+Fire("PLAYER_UNGHOST")
+Tick(1)
+DarkmoonArcadeDB.corpseRun = true
+isGhost = true
+Fire("PLAYER_ALIVE")
+Tick(1)
+assert(Window.frame._shown and Window.activeGame and Window.activeGame.id == "murlocblast", "corpse run opens the flight game")
+isGhost = false
+Fire("PLAYER_UNGHOST")
+Tick(1)
+assert(not Window.frame._shown, "the resurrection closes it again")
+-- A window the player had open stays open.
+Window.frame:Show()
+isGhost = true
+Fire("PLAYER_ALIVE")
+Tick(1)
+isGhost = false
+Fire("PLAYER_ALIVE")
+Tick(1)
+assert(Window.frame._shown, "an already open window stays open")
+DarkmoonArcadeDB.corpseRun = false
 
 -- Guild leaderboard: a guildmate's record arrives, our own bests were broadcast.
 Tick(16)

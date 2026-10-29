@@ -53,6 +53,7 @@ function SettingsPage.Definitions()
                 return choices
             end },
         { kind = "check", tbl = db, key = "flightTime", label = "OPT_FLIGHT_TIME", tip = "OPT_FLIGHT_TIME_TIP", default = true },
+        { kind = "check", tbl = db, key = "corpseRun", label = "OPT_CORPSE_RUN", tip = "OPT_CORPSE_RUN_TIP", default = false },
     }
     -- The dev copy's testing tools, right after the general options.
     if ADDON ~= "DarkmoonArcade" then

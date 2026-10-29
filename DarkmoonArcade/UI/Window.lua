@@ -179,6 +179,7 @@ function Window:Create()
     end)
     f:SetScript("OnHide", function()
         if self.activeGame then self.activeGame:Pause({}) end
+        self.openedForCorpseRun = nil
         ns.Bell:Close()
         PlaySound(SOUNDKIT.IG_CHARACTER_INFO_CLOSE)
     end)
@@ -634,6 +635,24 @@ end
 
 function Window:OnLanded()
     if self.frame:IsShown() and self.activeGame then self.activeGame:Pause({ landed = true }) end
+end
+
+-- A corpse run opens what a flight would (the hub when flights open nothing); a window that was
+-- already open stays as it is and stays open after the resurrection.
+function Window:OpenForCorpseRun()
+    if self.frame:IsShown() then return end
+    if ns.db.flightGame == "off" then
+        self.frame:Show()
+        self:OpenHub()
+    else
+        self:OpenForFlight()
+    end
+    self.openedForCorpseRun = true
+end
+
+function Window:OnResurrected()
+    if self.openedForCorpseRun and self.frame:IsShown() then self.frame:Hide() end
+    self.openedForCorpseRun = nil
 end
 
 function Window:Toggle()

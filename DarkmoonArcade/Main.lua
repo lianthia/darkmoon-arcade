@@ -14,6 +14,7 @@ local DEFAULTS = {
     scale = 1.1,
     fadeMoving = false,
     fadeAlpha = 0.4,
+    corpseRun = false,
     language = "auto",
 }
 
@@ -97,6 +98,21 @@ local function CheckTaxi()
     end
 end
 
+-- Corpse runs (an option, off by default): released as a ghost, the arcade opens like on a flight;
+-- resurrected, it closes again if the corpse run opened it.
+local isGhost = false
+
+local function CheckGhost()
+    local nowGhost = UnitIsGhost("player") and true or false
+    if nowGhost == isGhost then return end
+    isGhost = nowGhost
+    if nowGhost then
+        if ns.db.corpseRun and not InCombatLockdown() then Window:OpenForCorpseRun() end
+    else
+        Window:OnResurrected()
+    end
+end
+
 events:SetScript("OnEvent", function(_, event, arg1)
     if event == "ADDON_LOADED" and arg1 == ADDON then
         events:UnregisterEvent("ADDON_LOADED")
@@ -124,12 +140,18 @@ events:SetScript("OnEvent", function(_, event, arg1)
         ns.SafeCall("Guild", ns.Guild.Init)
         ns.Print(L.LOADED)
         CheckTaxi()
+        -- Logging in as a ghost is no new corpse run.
+        isGhost = UnitIsGhost("player") and true or false
         -- After a first install or an update, once the loading screen is gone.
         C_Timer.After(3, function()
             if not InCombatLockdown() then ns.SafeCall("News", ns.News.ShowIfNew, ns.News) end
         end)
     elseif event == "PLAYER_ENTERING_WORLD" then
         ns.Minimap:Update()
+        C_Timer.After(0.5, CheckGhost)
+    elseif event == "PLAYER_ALIVE" or event == "PLAYER_UNGHOST" then
+        -- PLAYER_ALIVE also fires on releasing the spirit; the ghost state settles shortly after.
+        C_Timer.After(0.5, CheckGhost)
     elseif event == "PLAYER_REGEN_DISABLED" then
         if Window.frame:IsShown() then
             Window.frame:Hide()
@@ -146,6 +168,8 @@ events:RegisterEvent("PLAYER_ENTERING_WORLD")
 events:RegisterEvent("PLAYER_REGEN_DISABLED")
 events:RegisterEvent("PLAYER_CONTROL_LOST")
 events:RegisterEvent("PLAYER_CONTROL_GAINED")
+events:RegisterEvent("PLAYER_ALIVE")
+events:RegisterEvent("PLAYER_UNGHOST")
 
 SLASH_DARKMOONARCADE1 = "/arcade"
 SLASH_DARKMOONARCADE2 = "/darkmoon"

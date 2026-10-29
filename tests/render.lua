@@ -100,6 +100,7 @@ Tab("options", function()
     ns.Window:OpenOptions()
     OptionsPage(2)
 end)
+Tab("options_flights", function() OptionsPage(4) end)
 Tab("options_minigames", function() OptionsPage(6) end)
 -- The launcher's other pages, the bell's list, a minigame and the navigation opened over a game.
 Tab("favorites_empty", function()
