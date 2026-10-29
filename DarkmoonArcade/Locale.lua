@@ -9,6 +9,10 @@ function ns.AddStrings(language, values)
 end
 
 ns.AddStrings("enUS", {
+    NEWS_141_1_TITLE = "More enchants",
+    NEWS_141_1_TEXT = "34 enchanting formulas from WoW: Forever, such as Grand Crusader, Spellblasting and gloves of nature, arcane and holy power - all found as loot.",
+    NEWS_141_2_TITLE = "Rewards for stories",
+    NEWS_141_2_TEXT = "The last task of every chain now also gives an item that suits the mercenary.",
     NEWS_140_9_TITLE = "Quests and stories",
     NEWS_140_9_TEXT = "A quest chain for every mercenary, close to their lore, rewarded with coins and the hidden bosses of the dungeons.",
     NEWS_140_10_TITLE = "Dungeons",
@@ -230,6 +234,10 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    NEWS_141_1_TITLE = "Mehr Verzauberungen",
+    NEWS_141_1_TEXT = "34 Verzauberungsformeln aus WoW: Forever, etwa Oberster Kreuzzügler, Zauberschlag und Handschuhe der Natur-, Arkan- und Heiligmacht - alle als Beute.",
+    NEWS_141_2_TITLE = "Lohn für Geschichten",
+    NEWS_141_2_TEXT = "Die letzte Aufgabe jeder Kette gibt jetzt zusätzlich einen Gegenstand, der zum Söldner passt.",
     NEWS_140_9_TITLE = "Aufgaben und Geschichten",
     NEWS_140_9_TEXT = "Eine Aufgabenkette je Söldner, nah an seiner Geschichte, belohnt mit Münzen und den versteckten Bossen der Dungeons.",
     NEWS_140_10_TITLE = "Dungeons",
@@ -448,6 +456,10 @@ ns.AddStrings("deDE", {
 })
 
 ns.AddStrings("frFR", {
+    NEWS_141_1_TITLE = "Plus d'enchantements",
+    NEWS_141_1_TEXT = "34 formules d'enchantement de WoW: Forever, comme Grand croisé, Explosion de sort ou des gants de pouvoir naturel, arcanique et sacré - toutes en butin.",
+    NEWS_141_2_TITLE = "Des histoires récompensées",
+    NEWS_141_2_TEXT = "La dernière tâche de chaque série donne désormais aussi un objet adapté au mercenaire.",
     NEWS_140_9_TITLE = "Quêtes et histoires",
     NEWS_140_9_TEXT = "Une chaîne de quêtes par mercenaire, fidèle à son histoire, récompensée par des pièces et les boss cachés des donjons.",
     NEWS_140_10_TITLE = "Donjons",
@@ -662,6 +674,10 @@ ns.AddStrings("frFR", {
 })
 
 ns.AddStrings("esES", {
+    NEWS_141_1_TITLE = "Más encantamientos",
+    NEWS_141_1_TEXT = "34 fórmulas de encantamiento de WoW: Forever, como gran cruzado, explosión de hechizos o guantes de poder natural, arcano y sagrado, todas como botín.",
+    NEWS_141_2_TITLE = "Historias con premio",
+    NEWS_141_2_TEXT = "La última tarea de cada cadena ahora también da un objeto adecuado para el mercenario.",
     NEWS_140_9_TITLE = "Misiones e historias",
     NEWS_140_9_TEXT = "Una cadena de misiones por mercenario, fiel a su historia, con monedas y los jefes ocultos de las mazmorras como recompensa.",
     NEWS_140_10_TITLE = "Mazmorras",
@@ -876,6 +892,10 @@ ns.AddStrings("esES", {
 })
 
 ns.AddStrings("ruRU", {
+    NEWS_141_1_TITLE = "Больше чар",
+    NEWS_141_1_TEXT = "34 формулы чар из WoW: Forever, например «верховный рыцарь», «взрыв чар» и перчатки силы природы, тайной магии и Света – всё в добыче.",
+    NEWS_141_2_TITLE = "Награда за истории",
+    NEWS_141_2_TEXT = "Последнее задание каждой цепочки теперь также даёт предмет, подходящий наёмнику.",
     NEWS_140_9_TITLE = "Задания и истории",
     NEWS_140_9_TEXT = "Цепочка заданий для каждого наёмника по мотивам его истории; награды – монеты и скрытые боссы подземелий.",
     NEWS_140_10_TITLE = "Подземелья",
@@ -1091,6 +1111,10 @@ ns.AddStrings("ruRU", {
 })
 
 ns.AddStrings("zhCN", {
+    NEWS_141_1_TITLE = "更多附魔",
+    NEWS_141_1_TEXT = "34个来自《魔兽世界：永恒》的附魔配方，例如大十字军、法术冲击以及自然、奥术和神圣能量手套——全部作为掉落获得。",
+    NEWS_141_2_TITLE = "故事的奖励",
+    NEWS_141_2_TEXT = "每条任务链的最后一个任务现在还会给予一件适合该佣兵的物品。",
     NEWS_140_9_TITLE = "任务与故事",
     NEWS_140_9_TEXT = "每名佣兵都有贴近其背景的任务链，奖励为硬币和地下城中的隐藏首领。",
     NEWS_140_10_TITLE = "地下城",
