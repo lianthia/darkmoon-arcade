@@ -407,7 +407,9 @@ MC_RM_3_TEXT	• Ajustes de equilibrio según vuestros comentarios\n• Las trad
 MC_RM_4_TITLE	Tareas y mazmorras
 MC_RM_4_TEXT	• Cadenas de tareas para los 24 mercenarios, fieles a su historia\n• Todas las mazmorras de Classic y cuatro propias de WoW Forever, con jefes ocultos y raros, en normal y heroico\n• Objetos con tablas de botín reales, desencantar y encantar\n• El rango IV y un modo heroico reajustado
 MC_RM_5_TITLE	Bandas y contenido final
-MC_RM_5_TEXT	• Recompensas de banda como la Cumbre de Roca Negra, el Núcleo de Magma y Naxxramas: varios jefes seguidos, rango V\n• Nuevos mercenarios y las nuevas mazmorras de WoW Forever, Shen'dralas y las Riverglades con los datos reales\n• Desafío de la Luna Negra: un modo infinito cada vez más difícil, con clasificación\n• Mutadores semanales con reglas especiales y su propia clasificación
+MC_RM_5_TEXT	• Más bandas como el Núcleo de Magma y Naxxramas, con sus propios jefes\n• Nuevos mercenarios y las nuevas mazmorras de WoW Forever, Shen'dralas y las Riverglades con los datos reales\n• Desafío de la Luna Negra: un modo infinito cada vez más difícil, con clasificación\n• Mutadores semanales con reglas especiales y su propia clasificación
+MC_RM_8_TITLE	La primera banda
+MC_RM_8_TEXT	• Cumbre de Roca Negra Superior: siete jefes con sus trucos, diez mercenarios, cinco contra cinco, modo heroico\n• Tareas del campamento: el Sello de Ascensión abre la banda\n• Rango V para las habilidades
 MC_RM_6_TITLE	Juntos
 MC_RM_6_TEXT	• Clasificaciones de hermandad para Mercenaries\n• Comparte tu grupo en el chat\n• Desafía al grupo de un miembro de tu hermandad
 MC_RM_7_TITLE	Ideas para más adelante

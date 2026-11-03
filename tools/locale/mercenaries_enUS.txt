@@ -407,7 +407,9 @@ MC_RM_3_TEXT	• Balance tuning based on your feedback\n• The remaining transl
 MC_RM_4_TITLE	Tasks and dungeons
 MC_RM_4_TEXT	• Task chains for all 24 mercenaries, close to their lore\n• Every Classic dungeon and four of WoW Forever's own, with hidden and rare bosses, normal and heroic\n• Items with real loot tables, disenchanting and enchanting\n• Rank IV and a retuned heroic mode
 MC_RM_5_TITLE	Raids and endgame
-MC_RM_5_TEXT	• Raid bounties such as Upper Blackrock Spire, Molten Core and Naxxramas: several bosses in a row, rank V\n• New mercenaries and the new dungeons of WoW Forever, Shen'dralas and the Riverglades with the real data\n• Darkmoon Challenge: an endless mode that grows harder floor by floor, with a leaderboard\n• Weekly mutators with special rules and their own ranking
+MC_RM_5_TEXT	• More raids such as Molten Core and Naxxramas, with bosses of their own\n• New mercenaries and the new dungeons of WoW Forever, Shen'dralas and the Riverglades with the real data\n• Darkmoon Challenge: an endless mode that grows harder floor by floor, with a leaderboard\n• Weekly mutators with special rules and their own ranking
+MC_RM_8_TITLE	The first raid
+MC_RM_8_TEXT	• Upper Blackrock Spire: seven bosses with their own ways, ten mercenaries, five against five, heroic mode\n• Camp tasks: the Seal of Ascension opens the raid\n• Rank V for abilities
 MC_RM_6_TITLE	Together
 MC_RM_6_TEXT	• Guild leaderboards for Mercenaries\n• Share your party in chat\n• Challenge the party of a guildmate
 MC_RM_7_TITLE	Ideas for later

@@ -407,7 +407,9 @@ MC_RM_3_TEXT	• Ajustements d'équilibrage selon vos retours\n• Les dernière
 MC_RM_4_TITLE	Tâches et donjons
 MC_RM_4_TEXT	• Des séries de tâches pour les 24 mercenaires, fidèles à leur histoire\n• Tous les donjons de Classic et quatre propres à WoW Forever, avec boss cachés et rares, en normal et en héroïque\n• Des objets avec de vraies tables de butin, le désenchantement et l'enchantement\n• Le rang IV et un mode héroïque rééquilibré
 MC_RM_5_TITLE	Raids et fin de jeu
-MC_RM_5_TEXT	• Primes de raid comme le sommet du pic Rochenoire, le Cœur du Magma et Naxxramas : plusieurs boss à la suite, rang V\n• De nouveaux mercenaires et les nouveaux donjons de WoW Forever, Shen'dralas et les Riverglades avec les vraies données\n• Défi de Sombrelune : un mode sans fin de plus en plus difficile, avec classement\n• Mutateurs hebdomadaires avec des règles spéciales et leur propre classement
+MC_RM_5_TEXT	• D'autres raids comme le Cœur du Magma et Naxxramas, avec leurs propres boss\n• De nouveaux mercenaires et les nouveaux donjons de WoW Forever, Shen'dralas et les Riverglades avec les vraies données\n• Défi de Sombrelune : un mode sans fin de plus en plus difficile, avec classement\n• Mutateurs hebdomadaires avec des règles spéciales et leur propre classement
+MC_RM_8_TITLE	Le premier raid
+MC_RM_8_TEXT	• Pic Blackrock supérieur : sept boss et leurs ruses, dix mercenaires, cinq contre cinq, mode héroïque\n• Tâches du camp : le Sceau d'ascension ouvre le raid\n• Rang V pour les capacités
 MC_RM_6_TITLE	Ensemble
 MC_RM_6_TEXT	• Classements de guilde pour Mercenaries\n• Partager votre groupe dans la discussion\n• Défier le groupe d'un membre de la guilde
 MC_RM_7_TITLE	Idées pour plus tard
