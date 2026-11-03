@@ -640,6 +640,10 @@ function Module:CreatePages()
     eventToken:EnableMouse(false)
     local eventGo = MC.Kit.Button(eventPage, 180, 30, "MC_CONTINUE", function()
         self.overlay:Hide()
+        -- An event shown over something the run still waits for (a raid boss's blessing before its
+        -- treasure): back to that.
+        local run = self:Store().run
+        if run and run.phase ~= "map" then self:Route() end
         self:CheckPendingItems()
     end, "blue")
     eventGo:SetPoint("TOP", card, "BOTTOM", 0, -16)

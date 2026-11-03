@@ -823,6 +823,33 @@ assert(ns.Achievements.IsDone("mc_hogger"), "hogger achievement")
 DarkmoonArcadeDB.achievements.mc_hogger = nil
 mc:Enter()
 assert(ns.Achievements.IsDone("mc_hogger"), "achievements granted for earlier progress")
+-- The raid: Rend falls, the Warchief's Blessing shows, "Continue" leads on to the treasure.
+do
+    local saved = {}
+    for _, id in ipairs(MC.MERC_ORDER) do
+        local entry = MC.Bounty.Entry(store, id)
+        saved[id] = { entry.owned, entry.level }
+        entry.owned, entry.level = true, 60
+    end
+    store.unlocks = { ubrs_seal = true }
+    local pending, recipes = store.pendingItems, store.recipes and MC.Combat.Copy(store.recipes)
+    mc:StartBounty("ubrs", false)
+    local run = store.run
+    assert(run and run.zone == "ubrs", "raid started")
+    for l, row in ipairs(run.map.layers) do
+        if row[1].boss == "rend" then run.layer, run.index = l, 1 end
+    end
+    run.phase, run.battle = "battle", { phase = "won", turn = 5, units = {}, board = { ally = {}, enemy = {} }, bench = { ally = {}, enemy = {} } }
+    mc:FinishBattle()
+    assert(run.blessed and mc.overlay.current == "event", "the blessing shows: " .. tostring(mc.overlay.current))
+    mc.eventContinue._scripts.OnClick(mc.eventContinue)
+    assert(run.phase == "treasure" and mc.overlay.current == "treasure", "then the treasure: " .. tostring(mc.overlay.current))
+    MC.Bounty.Abandon(store, run)
+    store.run, store.unlocks = nil, nil
+    store.pendingItems, store.recipes = pending, recipes
+    mc.overlay:Hide()
+    for id, v in pairs(saved) do store.mercs[id].owned, store.mercs[id].level = v[1], v[2] end
+end
 -- A run survives a reload of the view: start one and route back into it.
 mc:StartBounty("dunmorogh", false)
 mc:Route()
