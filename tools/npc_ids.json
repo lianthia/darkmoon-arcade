@@ -807,6 +807,84 @@
    "zhCN": "黑暗深渊海潮祭司"
   }
  },
+ "Blackhand Assassin": {
+  "de": "Blackhand-Auftragsmörder",
+  "display": 9691,
+  "id": 10318,
+  "info": "",
+  "name": "Blackhand Assassin",
+  "names": {
+   "esES": "Asesino Puño Negro",
+   "frFR": "Assassin Blackhand",
+   "ruRU": "Убийца из легиона Чернорука",
+   "zhCN": "黑手刺客"
+  }
+ },
+ "Blackhand Dragon Handler": {
+  "de": "Blackhand-Großdrachenführer",
+  "display": 10176,
+  "id": 10742,
+  "info": "",
+  "name": "Blackhand Dragon Handler",
+  "names": {
+   "esES": "Domadragones Puño Negro",
+   "frFR": "Dresseur de dragons Blackhand",
+   "ruRU": "Укротитель драконов легиона Чернорука",
+   "zhCN": "黑手驭龙者"
+  }
+ },
+ "Blackhand Dreadweaver": {
+  "de": "Blackhand-Schreckenswirker",
+  "display": 9670,
+  "id": 9817,
+  "info": "",
+  "name": "Blackhand Dreadweaver",
+  "names": {
+   "esES": "Tejedor de tinieblas Puño Negro",
+   "frFR": "Tisseur d’effroi Blackhand",
+   "ruRU": "Страхопряд легиона Чернорука",
+   "zhCN": "黑手恐法师"
+  }
+ },
+ "Blackhand Elite": {
+  "de": "Blackhand-Elite",
+  "display": 9734,
+  "id": 10317,
+  "info": "",
+  "name": "Blackhand Elite",
+  "names": {
+   "esES": "Élite Puño Negro",
+   "frFR": "Elite Blackhand",
+   "ruRU": "Элитный боец легиона Чернорука",
+   "zhCN": "黑手精英"
+  }
+ },
+ "Blackhand Incarcerator": {
+  "de": "Blackhand-Einkerkerer",
+  "display": 9690,
+  "id": 10316,
+  "info": "",
+  "name": "Blackhand Incarcerator",
+  "names": {
+   "esES": "Carcelero Puño Negro",
+   "frFR": "Geôlier Blackhand",
+   "ruRU": "Тюремщик легиона Чернорука",
+   "zhCN": "黑手监禁者"
+  }
+ },
+ "Blackhand Iron Guard": {
+  "de": "Blackhand-Eisenwache",
+  "display": 9696,
+  "id": 10319,
+  "info": "",
+  "name": "Blackhand Iron Guard",
+  "names": {
+   "esES": "Guarda de hierro Puño Negro",
+   "frFR": "Garde de fer Blackhand",
+   "ruRU": "Железный страж легиона Чернорука",
+   "zhCN": "黑手铁卫士"
+  }
+ },
  "Blackhand Summoner": {
   "de": "Blackhand-Beschwörer",
   "display": 9849,
@@ -1416,6 +1494,32 @@
    "frFR": "Cho'Rush l'Observateur",
    "ruRU": "Чо'Раш Наблюдатель",
    "zhCN": "观察者克鲁什"
+  }
+ },
+ "Chromatic Dragonspawn": {
+  "de": "Chromatische Drachenbrut",
+  "display": 10094,
+  "id": 10447,
+  "info": "",
+  "name": "Chromatic Dragonspawn",
+  "names": {
+   "esES": "Dragauro cromático",
+   "frFR": "Draconide chromatique",
+   "ruRU": "Хроматический драконид",
+   "zhCN": "多彩龙人"
+  }
+ },
+ "Chromatic Elite Guard": {
+  "de": "Chromatische Elitewache",
+  "display": 10116,
+  "id": 10814,
+  "info": "",
+  "name": "Chromatic Elite Guard",
+  "names": {
+   "esES": "Guardia de élite cromático",
+   "frFR": "Garde d'élite chromatique",
+   "ruRU": "Хроматический элитный страж",
+   "zhCN": "多彩精英卫士"
   }
  },
  "Chromatic Whelp": {
@@ -3408,6 +3512,19 @@
    "zhCN": "安格弗将军"
   }
  },
+ "General Drakkisath": {
+  "de": "General Drakkisath",
+  "display": 10115,
+  "id": 10363,
+  "info": "",
+  "name": "General Drakkisath",
+  "names": {
+   "esES": "General Drakkisath",
+   "frFR": "Général Drakkisath",
+   "ruRU": "Генерал Драккисат",
+   "zhCN": "达基萨斯将军"
+  }
+ },
  "Gerenzo Wrenchwhistle": {
   "de": "Gerenzo Wrenchwhistle",
   "display": 3885,
@@ -3640,6 +3757,19 @@
    "frFR": "Seigneur golem Argelmach",
    "ruRU": "Повелитель големов Аргелмах",
    "zhCN": "傀儡统帅阿格曼奇"
+  }
+ },
+ "Goraluk Anvilcrack": {
+  "de": "Goraluk Hammerbruch",
+  "display": 10222,
+  "id": 10899,
+  "info": "",
+  "name": "Goraluk Anvilcrack",
+  "names": {
+   "esES": "Goraluk Yunquegrieta",
+   "frFR": "Goraluk Anvilcrack",
+   "ruRU": "Горалук Треснувшая Наковальня",
+   "zhCN": "古拉鲁克"
   }
  },
  "Gordok Brute": {
@@ -3939,6 +4069,19 @@
    "frFR": "Garde Slip'kik",
    "ruRU": "Стражник Слип'кик",
    "zhCN": "卫兵斯里基克"
+  }
+ },
+ "Gyth": {
+  "de": "Gyth",
+  "display": 9806,
+  "id": 10339,
+  "info": "",
+  "name": "Gyth",
+  "names": {
+   "esES": "Gyth",
+   "frFR": "Gyth",
+   "ruRU": "Гит",
+   "zhCN": "盖斯"
   }
  },
  "Hakkari Frostwing": {
@@ -4668,6 +4811,19 @@
    "frFR": "Jandice Barov",
    "ruRU": "Джандис Баров",
    "zhCN": "詹迪斯·巴罗夫"
+  }
+ },
+ "Jed Runewatcher": {
+  "de": "Jed Runenblick",
+  "display": 9686,
+  "id": 10509,
+  "info": "",
+  "name": "Jed Runewatcher",
+  "names": {
+   "esES": "Jed Observarrunas",
+   "frFR": "Jed Runewatcher",
+   "ruRU": "Джед Руновед",
+   "zhCN": "杰德"
   }
  },
  "Jergosh the Invoker": {
@@ -6505,6 +6661,19 @@
    "zhCN": "腐烂欺骗者"
   }
  },
+ "Pyroguard Emberseer": {
+  "de": "Feuerwache Glutseher",
+  "display": 2172,
+  "id": 9816,
+  "info": "",
+  "name": "Pyroguard Emberseer",
+  "names": {
+   "esES": "Piroguardián brasadivino",
+   "frFR": "Pyrogarde Prophète ardent",
+   "ruRU": "Пиростраж Созерцатель Углей",
+   "zhCN": "烈焰卫士艾博希尔"
+  }
+ },
  "Pyromancer Loregrain": {
   "de": "Pyromant Weiskorn",
   "display": 8762,
@@ -6544,6 +6713,32 @@
    "zhCN": "军需官兹格雷斯"
   }
  },
+ "Rage Talon Captain": {
+  "de": "Captain der Zornkrallen",
+  "display": 8310,
+  "id": 10371,
+  "info": "",
+  "name": "Rage Talon Captain",
+  "names": {
+   "esES": "Capitán Garra de Furia",
+   "frFR": "Capitaine de la Griffe enragée",
+   "ruRU": "Капитан Яростного Когтя",
+   "zhCN": "狂爪队长"
+  }
+ },
+ "Rage Talon Dragon Guard": {
+  "de": "Drachenwache der Zornkrallen",
+  "display": 9753,
+  "id": 10366,
+  "info": "",
+  "name": "Rage Talon Dragon Guard",
+  "names": {
+   "esES": "Guardia Dragón Garra de Furia",
+   "frFR": "Garde de la Griffe enragée",
+   "ruRU": "Дракон-стражник Яростного Когтя",
+   "zhCN": "狂爪龙人卫士"
+  }
+ },
  "Rage Talon Dragonspawn": {
   "de": "Drachenbrut der Zornkrallen",
   "display": 2554,
@@ -6555,6 +6750,32 @@
    "frFR": "Draconide de la Griffe enragée",
    "ruRU": "Драконид Яростного Когтя",
    "zhCN": "狂爪龙人"
+  }
+ },
+ "Rage Talon Fire Tongue": {
+  "de": "Feuerzunge der Zornkrallen",
+  "display": 8309,
+  "id": 10372,
+  "info": "",
+  "name": "Rage Talon Fire Tongue",
+  "names": {
+   "esES": "Lenguáfoga Garra de Furia",
+   "frFR": "Langue de feu de la Griffe enragée",
+   "ruRU": "Огнедышащая драконида Яростного Когтя",
+   "zhCN": "狂爪火舌龙人"
+  }
+ },
+ "Rage Talon Flamescale": {
+  "de": "Flammenschuppe der Zornkrallen",
+  "display": 8249,
+  "id": 10083,
+  "info": "",
+  "name": "Rage Talon Flamescale",
+  "names": {
+   "esES": "Flamascala Garra de Furia",
+   "frFR": "Flammécaille de la Griffe enragée",
+   "ruRU": "Огнечешуйчатая драконида Яростного Когтя",
+   "zhCN": "狂爪火鳞龙人"
   }
  },
  "Rage Winterchill": null,
@@ -7063,6 +7284,45 @@
    "frFR": "Trogg Mâcheroc",
    "ruRU": "Трогг из племени Каменной Челюсти",
    "zhCN": "石腭穴居人"
+  }
+ },
+ "Rookery Guardian": {
+  "de": "Krähenhorstwächter",
+  "display": 2554,
+  "id": 10258,
+  "info": "",
+  "name": "Rookery Guardian",
+  "names": {
+   "esES": "Guardián de la Torre",
+   "frFR": "Gardien de la colonie",
+   "ruRU": "Страж Гнездовья",
+   "zhCN": "群居守卫者"
+  }
+ },
+ "Rookery Hatcher": {
+  "de": "Krähenhorstbrutwächter",
+  "display": 8309,
+  "id": 10683,
+  "info": "",
+  "name": "Rookery Hatcher",
+  "names": {
+   "esES": "Criador de la Torre",
+   "frFR": "Démolisseur de la colonie",
+   "ruRU": "Наседка из Питомника",
+   "zhCN": "群居孵化者"
+  }
+ },
+ "Rookery Whelp": {
+  "de": "Krähenhorstwelpe",
+  "display": 397,
+  "id": 10161,
+  "info": "",
+  "name": "Rookery Whelp",
+  "names": {
+   "esES": "Cría de la Torre",
+   "frFR": "Dragonnet de la colonie",
+   "ruRU": "Дракончик Гнездовья",
+   "zhCN": "群居雏龙"
   }
  },
  "Rot Hide Gnoll": {
@@ -8353,6 +8613,19 @@
    "zhCN": "弯牙土狼"
   }
  },
+ "Solakar Flamewreath": {
+  "de": "Solakar Feuerkrone",
+  "display": 9581,
+  "id": 10264,
+  "info": "",
+  "name": "Solakar Flamewreath",
+  "names": {
+   "esES": "Solakar Corona de Fuego",
+   "frFR": "Solakar Voluteflamme",
+   "ruRU": "Солакарский огнечервь",
+   "zhCN": "索拉卡·火冠"
+  }
+ },
  "Son of Arugal": {
   "de": "Sohn von Arugal",
   "display": 1098,
@@ -8950,6 +9223,19 @@
    "frFR": "Le baron",
    "ruRU": "Барон",
    "zhCN": "男爵"
+  }
+ },
+ "The Beast": {
+  "de": "Die Bestie",
+  "display": 10193,
+  "id": 10430,
+  "info": "",
+  "name": "The Beast",
+  "names": {
+   "esES": "La Bestia",
+   "frFR": "La Bête",
+   "ruRU": "Зверь",
+   "zhCN": "比斯巨兽"
   }
  },
  "The Ravenian": {

@@ -938,6 +938,7 @@ MC_JOURNAL_HIDDEN	Jefe oculto
 MC_JOURNAL_HIDDEN_HINT	Aparece tras una tarea de %s.
 MC_JOURNAL_OWNED	En posesión: %s
 MC_JOURNAL_FORMULAS	Cada jefe puede enseñar una fórmula de encantamiento (hasta grado %d, heroico %d).
+MC_JOURNAL_FORMULAS_RAID	Cada jefe puede enseñar una fórmula de encantamiento (hasta grado %d).
 MC_LOOT_FOUND	Botín: %s
 MC_FORMULA_LEARNT	Fórmula aprendida: %s
 MC_QO_DUNGEON	Completa %s con %s en el grupo.
@@ -1313,6 +1314,11 @@ MC_A_timmy_s	Garra famélica
 MC_A_balnazzar_s	Dominación
 MC_A_anastari_s	Posesión
 MC_A_ramstein_s	Atropello
+MC_A_emberseer_s	Nova de Fuego
+MC_A_solakar_s	Pisotón de guerra
+MC_A_gyth_s	Aliento de llamarada
+MC_A_beast_s	Rompellamas
+MC_A_drakkisath_s	Conflagración
 MC_ZD_thanes	Bajo Forjaz vagan los espíritus inquietos de antiguos feudales, y saqueadores Hierro Negro excavan sus tesoros. %s los dirige.
 MC_ZD_ruins_lordaeron	Sobre Entrañas, las ruinas de Lordaeron aún bullen con la Plaga. %s manda sobre lo que queda de los muertos.
 MC_ZD_excavation	En la excavación de Whelgar, en Los Humedales, los raptores acechan entre la hierba alta y un viejo guardián duerme entre las reliquias. %s despierta ante quien las toque.
@@ -1361,3 +1367,23 @@ MC_ZW_mara_earthsong	Cascadas del Canto de la Tierra
 MC_ZG_maraudon	Maraudon
 MC_ZD_mara_foulspore	El veneno de los sátiros se filtra por las cuevas naranjas de Maraudon y alimenta al limo Noxxion y a %s.
 MC_ZD_mara_grotto	En las cuevas moradas los sátiros se reúnen en torno a su amo. %s gobierna la Gruta Maldita.
+MC_Z_ubrs	Cumbre de Roca Negra Superior
+MC_ZW_ubrs	Cumbre de Roca Negra Superior
+MC_ZD_ubrs	En la cima, el jefe de guerra Desgarro Puño Negro gobierna la Horda Oscura y %s custodia la progenie del Vuelo Negro. Solo el Sello de Ascensión abre la puerta.
+MC_RAID	Banda
+MC_RAID_LOCKED	Bloqueada: la tarea del campamento «Sello de Ascensión» la abre (desde nivel 55).
+MC_RAID_NO_HEROIC	Las bandas no tienen modo heroico.
+MC_QUESTS_GENERAL	Para todo el campamento
+MC_QUEST_GENERAL	Tarea del campamento
+MC_QUEST_GENERAL_DONE	Por ahora no queda nada más que hacer.
+MC_QUEST_COINS_PARTY	%d monedas para cada mercenario del grupo
+MC_QO_KILL_IN_ANY	Derrota a %d %s en %s.
+MC_QO_DUNGEON_ANY	Completa %s.
+MC_QK_SPIRE	ogros y trols de la cumbre
+MC_QUEST_UNLOCK_ubrs_seal	Abre la Cumbre de Roca Negra Superior, la primera banda
+MC_Q_seal_ascension_1_TITLE	Sello de Ascensión
+MC_Q_seal_ascension_1_TEXT	Vaelan espera al pie de la cumbre. Quien quiera enfrentarse a Desgarro y Drakkisath debe demostrar su valía en la cumbre inferior.
+MC_Q_seal_ascension_2_TITLE	Las gemas de los generales
+MC_Q_seal_ascension_2_TEXT	Omokk, Voone y Vosh'gajin guardan cada uno una gema del sello. Acabad con sus ogros y trols hasta que sean vuestras.
+MC_Q_seal_ascension_3_TITLE	Forjado en llamas
+MC_Q_seal_ascension_3_TEXT	Solo la sangre de un dragón negro puede unir las gemas. Limpiad otra vez la cumbre inferior y el sello quedará forjado.

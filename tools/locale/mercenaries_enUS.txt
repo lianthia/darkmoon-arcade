@@ -938,6 +938,7 @@ MC_JOURNAL_HIDDEN	Hidden boss
 MC_JOURNAL_HIDDEN_HINT	Revealed by a task of %s.
 MC_JOURNAL_OWNED	Owned: %s
 MC_JOURNAL_FORMULAS	Every boss may teach an enchanting formula (up to tier %d, heroic %d).
+MC_JOURNAL_FORMULAS_RAID	Every boss may teach an enchanting formula (up to tier %d).
 MC_LOOT_FOUND	Loot: %s
 MC_FORMULA_LEARNT	Formula learnt: %s
 MC_QO_DUNGEON	Clear %s with %s in the party.
@@ -1313,6 +1314,11 @@ MC_A_timmy_s	Ravenous Claw
 MC_A_balnazzar_s	Domination
 MC_A_anastari_s	Possess
 MC_A_ramstein_s	Trample
+MC_A_emberseer_s	Fire Nova
+MC_A_solakar_s	War Stomp
+MC_A_gyth_s	Flame Breath
+MC_A_beast_s	Flamebreak
+MC_A_drakkisath_s	Conflagration
 MC_ZD_thanes	Beneath Ironforge the restless spirits of old thanes walk, and Dark Iron looters dig for their treasures. Durgen Dirgehammer leads them.
 MC_ZD_ruins_lordaeron	Above the Undercity the ruins of Lordaeron still crawl with the Scourge. Rath'mael commands what is left of the dead.
 MC_ZD_excavation	At Whelgar's dig in the Wetlands raptors lurk in the tall grass, and an old guardian sleeps among the relics. The Relic Guardian wakes for anyone who touches them.
@@ -1361,3 +1367,23 @@ MC_ZW_mara_earthsong	Earth Song Falls
 MC_ZG_maraudon	Maraudon
 MC_ZD_mara_foulspore	Satyr poison seeps through the orange caves of Maraudon, feeding the ooze Noxxion and the thorny Razorlash.
 MC_ZD_mara_grotto	In the purple caves the satyrs gather around their master. Lord Vyletongue rules the Wicked Grotto.
+MC_Z_ubrs	Upper Blackrock Spire
+MC_ZW_ubrs	Upper Blackrock Spire
+MC_ZD_ubrs	At the top of the spire Warchief Rend Blackhand rules the Dark Horde, and General Drakkisath guards the black dragonflight's brood. Only the Seal of Ascension opens the gate.
+MC_RAID	Raid
+MC_RAID_LOCKED	Locked: the camp task "Seal of Ascension" opens it (from level 55).
+MC_RAID_NO_HEROIC	Raids have no heroic mode.
+MC_QUESTS_GENERAL	For the whole camp
+MC_QUEST_GENERAL	Camp task
+MC_QUEST_GENERAL_DONE	Nothing more to do here for now.
+MC_QUEST_COINS_PARTY	%d coins for every mercenary in the party
+MC_QO_KILL_IN_ANY	Defeat %d %s in %s.
+MC_QO_DUNGEON_ANY	Clear %s.
+MC_QK_SPIRE	ogres and trolls of the spire
+MC_QUEST_UNLOCK_ubrs_seal	Opens Upper Blackrock Spire, the first raid
+MC_Q_seal_ascension_1_TITLE	Seal of Ascension
+MC_Q_seal_ascension_1_TEXT	Vaelan waits at the foot of the spire. Whoever would stand before Rend and Drakkisath must first prove themselves in the Lower Spire.
+MC_Q_seal_ascension_2_TITLE	The Generals' Gems
+MC_Q_seal_ascension_2_TEXT	Omokk, Voone and Vosh'gajin each keep a gem of the seal. Break their ogres and trolls until the gems are yours.
+MC_Q_seal_ascension_3_TITLE	Forged in Flame
+MC_Q_seal_ascension_3_TEXT	Only the blood of a black dragon can bind the gems. Clear the Lower Spire once more and the seal is forged.

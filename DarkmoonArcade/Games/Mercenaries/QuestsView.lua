@@ -27,6 +27,15 @@ function Quests.Objective(store, chain)
     local task = Quests.Current(store, chain)
     if not task then return "" end
     local merc = MC.QUEST_CHAINS[chain].merc
+    -- A general chain counts for anyone in the party.
+    if not merc then
+        if task.kind == "kill" then
+            return L.MC_QO_KILL_IN_ANY:format(task.count, L["MC_QK_" .. task.what], Describe.ZoneName(task.zone))
+        elseif task.kind == "dungeon" then
+            return L.MC_QO_DUNGEON_ANY:format(Describe.ZoneName(task.dungeon))
+        end
+        return ""
+    end
     local name = Describe.MercName(merc)
     if task.kind == "clear" then
         local zone = Describe.ZoneName(task.zone)
@@ -198,21 +207,21 @@ end
 function Module:RefreshQuests()
     local view, store = self.views.quests, self:Store()
     self:SetScene(nil)
-    -- Sections: chains of the party's mercenaries, those on the bench, finished ones. Inside a section the
+    -- Sections: the camp's general chains, chains of the party's mercenaries, those on the bench, finished ones. Inside a section the
     -- chains with a task to hand in come first.
     local party = {}
     for _, merc in ipairs(store.party or {}) do party[merc] = true end
-    local sections = { { key = "MC_QUESTS_PARTY", list = {} }, { key = "MC_QUESTS_BENCH", list = {} },
-        { key = "MC_QUESTS_DONE", list = {} } }
+    local sections = { { key = "MC_QUESTS_GENERAL", list = {} }, { key = "MC_QUESTS_PARTY", list = {} },
+        { key = "MC_QUESTS_BENCH", list = {} }, { key = "MC_QUESTS_DONE", list = {} } }
     local open = {}
     for _, chain in ipairs(MC.QUEST_CHAIN_ORDER) do
         if Quests.Open(store, chain) then
-            local merc = MC.QUEST_CHAINS[chain].merc
-            local section = Quests.Done(store, chain) and 3 or party[merc] and 1 or 2
+            local def = MC.QUEST_CHAINS[chain]
+            local section = Quests.Done(store, chain) and 4 or def.general and 1 or party[def.merc] and 2 or 3
             table.insert(sections[section].list, chain)
         end
     end
-    for k = 1, 2 do
+    for k = 1, 3 do
         local list, ready, rest = sections[k].list, {}, {}
         for _, chain in ipairs(list) do table.insert(Quests.IsReady(store, chain) and ready or rest, chain) end
         for _, chain in ipairs(rest) do ready[#ready + 1] = chain end
@@ -268,7 +277,7 @@ function Module:RefreshQuests()
                 local chain = entry.chain
                 local merc = MC.QUEST_CHAINS[chain].merc
                 local task, step = Quests.Current(store, chain)
-                b.name:SetText(Describe.MercName(merc))
+                b.name:SetText(merc and Describe.MercName(merc) or L.MC_QUEST_GENERAL)
                 b.mark:SetTexture(not task and ICON_DONE or Quests.IsReady(store, chain) and ICON_READY or ICON_AVAILABLE)
                 b.sub:SetText(L["MC_Q_" .. chain .. "_" .. math.min(step, #MC.QUEST_CHAINS[chain].steps) .. "_TITLE"])
                 b:SetAlpha(task and 1 or 0.55)
@@ -283,11 +292,11 @@ function Module:RefreshQuests()
 
     local def = MC.QUEST_CHAINS[shown]
     local task, step = Quests.Current(store, shown)
-    local name = Describe.MercName(def.merc)
+    local name = def.general and L.MC_QUEST_GENERAL or Describe.MercName(def.merc)
     if not task then
         view.qStep:SetText(name .. "  ·  " .. L.MC_QUEST_CHAIN_DONE)
         view.qTitle:SetText(L["MC_Q_" .. shown .. "_" .. #def.steps .. "_TITLE"])
-        view.qText:SetText(L.MC_QUEST_CHAIN_DONE_TEXT:format(name))
+        view.qText:SetText(def.general and L.MC_QUEST_GENERAL_DONE or L.MC_QUEST_CHAIN_DONE_TEXT:format(name))
         for _, part in ipairs({ view.goalHead, view.qGoal, view.qProgress, view.rewardHead, view.qCoin,
             view.qReward, view.qUnlock, view.qItem, view.turnIn }) do part:Hide() end
         return
@@ -302,7 +311,8 @@ function Module:RefreshQuests()
     local doneCount, need = Quests.Progress(store, shown)
     local ready = Quests.IsReady(store, shown)
     view.qProgress:SetText(ready and L.MC_QUEST_READY or ("%d / %d"):format(doneCount, need))
-    view.qReward:SetText(L.MC_QUEST_COINS:format(Quests.COINS[step] or 0, name))
+    view.qReward:SetText(def.general and L.MC_QUEST_COINS_PARTY:format(Quests.COINS[step] or 0)
+        or L.MC_QUEST_COINS:format(Quests.COINS[step] or 0, name))
     local itemId = step == #def.steps and Quests.RewardItem(shown) or nil
     local item = itemId and MC.Items[itemId]
     view.qItem:SetShown(item ~= nil)

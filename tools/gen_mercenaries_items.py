@@ -53,6 +53,7 @@ DUNGEONS = {
     "sunken": "TheTempleOfAtal'Hakkar",
     "brd": "BlackrockDepths",
     "lbrs": "LowerBlackrockSpire",
+    "ubrs": "UpperBlackrockSpire",
     "dm_east": "DireMaulEast",
     "dm_west": "DireMaulWest",
     "dm_north": "DireMaulNorth",

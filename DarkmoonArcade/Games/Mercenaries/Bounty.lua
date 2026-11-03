@@ -15,7 +15,7 @@ MC.Bounty = Bounty
 Bounty.PARTY_SIZE = 6
 Bounty.HEROIC_LEVEL = 60
 Bounty.RECRUIT_COST = 50
-Bounty.RANK_COST = { [2] = 30, [3] = 80, [4] = 150 }
+Bounty.RANK_COST = { [2] = 30, [3] = 80, [4] = 150, [5] = 250 }
 Bounty.NODE_WEIGHTS = { { "fight", 50 }, { "elite", 14 }, { "healer", 9 }, { "boon", 12 }, { "mystery", 15 } }
 Bounty.MYSTERIES = { "stranger", "sabotage", "portal", "cursed", "bonus", "recruit" }
 Bounty.ROLES = { "protector", "fighter", "caster" }
@@ -120,10 +120,16 @@ function Bounty.RankCost(entry, slot)
     return Bounty.RANK_COST[(entry.ranks[slot] or 1) + 1]
 end
 
--- The dungeon still to clear with this mercenary before the next rank (rank IV), or nil.
+-- The dungeon a mercenary must have cleared for a rank: its own one for rank IV, the raid for rank V.
+function Bounty.RankNeeds(id, rank)
+    if rank == 4 then return MC.RANK4_DUNGEON[id] end
+    if rank == 5 then return MC.RANK5_RAID end
+    return nil
+end
+
+-- The dungeon still to clear with this mercenary before the next rank (rank IV and V), or nil.
 function Bounty.RankDungeon(entry, id, slot)
-    if (entry.ranks[slot] or 1) + 1 < 4 then return nil end
-    local dungeon = MC.RANK4_DUNGEON[id]
+    local dungeon = Bounty.RankNeeds(id, (entry.ranks[slot] or 1) + 1)
     if dungeon and not (entry.dungeons and entry.dungeons[dungeon]) then return dungeon end
     return nil
 end
@@ -363,7 +369,9 @@ function Bounty.ZoneState(store, zoneId)
     return store.zones[zoneId]
 end
 
+-- Heroic opens once the zone was cleared; raids have no heroic mode.
 function Bounty.HeroicUnlocked(store, zoneId)
+    if MC.Zones[zoneId] and MC.Zones[zoneId].raid then return false end
     return Bounty.ZoneState(store, zoneId).normal > 0
 end
 

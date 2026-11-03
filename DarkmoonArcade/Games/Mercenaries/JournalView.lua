@@ -211,5 +211,9 @@ function Module:RefreshJournal()
     -- Heroic teaches one tier more, as far as there are formulas.
     local top = 1
     for _, recipe in pairs(MC.Recipes) do top = math.max(top, recipe.tier) end
-    view.formulas:SetText(L.MC_JOURNAL_FORMULAS:format(zone.tier or 1, math.min((zone.tier or 1) + 1, top)))
+    if zone.raid then
+        view.formulas:SetText(L.MC_JOURNAL_FORMULAS_RAID:format(zone.tier or 1))
+    else
+        view.formulas:SetText(L.MC_JOURNAL_FORMULAS:format(zone.tier or 1, math.min((zone.tier or 1) + 1, top)))
+    end
 end

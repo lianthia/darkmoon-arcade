@@ -289,6 +289,12 @@ Define("timmy_s", "Ability_Druid_Rake", "physical", 4, 1, "enemy", { E("attack",
 Define("balnazzar_s", "Spell_Shadow_ShadowWordDominate", "shadow", 4, 2, "enemy", { E("damage", 6), E("buff", "dmg", -0.4, 2) }, { ai = 0.7 })
 Define("anastari_s", "Spell_Shadow_Possession", "shadow", 4, 3, "enemy", { E("stun"), E("damage", 4) }, { ai = 0.7 })
 Define("ramstein_s", "Ability_WarStomp", "physical", 7, 2, "none", { E("damage", 5, "all"), E("stun", "random") }, { harmful = true, ai = 0.7 })
+-- Upper Blackrock Spire: the raid bosses' own abilities from Classic.
+Define("emberseer_s", "Spell_Fire_SealOfFire", "fire", 6, 2, "none", { E("damage", 5, "all") }, { harmful = true, ai = 0.7 })
+Define("solakar_s", "Ability_BullRush", "physical", 7, 2, "none", { E("damage", 4, "all"), E("stun", "random") }, { harmful = true, ai = 0.7 })
+Define("gyth_s", "Spell_Fire_Fire", "fire", 5, 1, "enemy", { E("damage", 9), E("damage", 4, "adjacent") })
+Define("beast_s", "Spell_Holy_Excorcism_02", "fire", 6, 2, "none", { E("damage", 6, "all") }, { harmful = true, ai = 0.7 })
+Define("drakkisath_s", "Spell_Fire_Incinerate", "fire", 4, 2, "enemy", { E("stun"), E("dot", 6, 3) }, { ai = 0.7 })
 -- WoW: Forever's dungeons: the bosses' abilities from Forever's data.
 Define("witherfang_s", "Spell_nature_nullifypoison", "nature", 4, 1, "enemy", { E("dot", 4, 3), E("heal", 4, "self") })
 Define("thebaron_s", "Inv_gauntlets_05", "physical", 5, 2, "enemy", { E("damage", 8), E("stun") }, { ai = 0.7 })

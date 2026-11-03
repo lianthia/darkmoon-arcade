@@ -12,6 +12,9 @@
 --   boss     the boss of `zone` falls while the mercenary stands
 --   level    the mercenary reaches `level` (counts from before, too)
 --   dungeon  `dungeon` cleared with the mercenary in the party
+-- A general chain (general = true, no merc) belongs to the whole camp: it opens once any mercenary has
+-- the level it requires, every mercenary in the party counts for it, its coins go to each of them and it
+-- gives no item. Raids open with one.
 -- Texts: MC_Q_<chain>_<step>_TITLE / _TEXT; kill targets MC_QK_<what>.
 -- Saved per chain in store.quests[chain] = { step, count }; a step past the last = chain done.
 
@@ -25,6 +28,12 @@ MC.Quests = Quests
 Quests.COINS = { 10, 15, 15, 20 }
 
 MC.QUEST_CHAINS = {
+    -- The Seal of Ascension: the generals' gems of the Lower Spire, forged in its fire, open the Upper Spire.
+    seal_ascension = { general = true, icon = "INV_Jewelry_Ring_01", requires = { level = 55 }, steps = {
+        { kind = "dungeon", dungeon = "lbrs" },
+        { kind = "kill", prefix = { "spirestone_", "smolderthorn_" }, zone = "lbrs", count = 30, what = "SPIRE" },
+        { kind = "dungeon", dungeon = "lbrs", unlock = "ubrs_seal" },
+    } },
     cairne_mulgore = { merc = "cairne", steps = {
         { kind = "clear", zone = "mulgore" },
         { kind = "kill", race = "centaur", count = 15, what = "CENTAUR" },
@@ -289,12 +298,19 @@ MC.QUEST_CHAINS = {
 -- The chains in the order of the collection, a mercenary's chains in the order they follow.
 MC.QUEST_CHAIN_ORDER = {}
 do
-    local byMerc = {}
+    local byMerc, general = {}, {}
     for id, chain in pairs(MC.QUEST_CHAINS) do
         chain.id = id
-        byMerc[chain.merc] = byMerc[chain.merc] or {}
-        table.insert(byMerc[chain.merc], chain)
+        if chain.general then
+            general[#general + 1] = id
+        else
+            byMerc[chain.merc] = byMerc[chain.merc] or {}
+            table.insert(byMerc[chain.merc], chain)
+        end
     end
+    -- The camp's general chains first.
+    table.sort(general)
+    for _, id in ipairs(general) do MC.QUEST_CHAIN_ORDER[#MC.QUEST_CHAIN_ORDER + 1] = id end
     for _, merc in ipairs(MC.MERC_ORDER) do
         local list = byMerc[merc] or {}
         -- A chain that requires another comes after it.
@@ -312,7 +328,7 @@ local function Migrate(store)
     if not store.quests or store.quests.v == 2 then return end
     for _, id in ipairs(MC.QUEST_CHAIN_ORDER) do
         local merc = MC.QUEST_CHAINS[id].merc
-        local old = store.quests[merc]
+        local old = merc and store.quests[merc]
         if type(old) == "table" and old.step then
             store.quests[id] = store.quests[id] or old
             store.quests[merc] = nil
@@ -340,16 +356,33 @@ function Quests.Done(store, chain)
     return Quests.State(store, chain).step > #MC.QUEST_CHAINS[chain].steps
 end
 
--- Whether a chain can be followed: its mercenary is recruited and what it requires is met.
+-- The highest level of the camp's mercenaries (what a general chain's level asks for).
+local function CampLevel(store)
+    local level = 0
+    for _, entry in pairs(store.mercs or {}) do
+        if entry.owned then level = math.max(level, entry.level or 1) end
+    end
+    return level
+end
+
+-- Whether a chain can be followed: its mercenary is recruited (a general chain: any) and what it
+-- requires is met.
 function Quests.Open(store, chain)
     local def = MC.QUEST_CHAINS[chain]
     if not def then return false end
-    local entry = store.mercs[def.merc]
-    if not (entry and entry.owned) then return false end
+    local level
+    if def.general then
+        level = CampLevel(store)
+        if level == 0 then return false end
+    else
+        local entry = store.mercs[def.merc]
+        if not (entry and entry.owned) then return false end
+        level = entry.level
+    end
     local req = def.requires
     if req then
         if req.chain and not Quests.Done(store, req.chain) then return false end
-        if req.level and entry.level < req.level then return false end
+        if req.level and level < req.level then return false end
         if req.unlock and not Quests.Unlocked(store, req.unlock) then return false end
         if req.cleared and (Bounty.ZoneState(store, req.cleared).normal or 0) == 0 then return false end
     end
@@ -429,6 +462,8 @@ local function BuildRewards()
     rewards = {}
     local dropsOf, all = {}, {}
     for key, bosses in pairs(MC.DungeonLoot or {}) do
+        -- Raid loot stays the raid's (and the rewards stay what they were before the raid).
+        if MC.Zones[key] and MC.Zones[key].raid then bosses = {} end
         dropsOf[key] = {}
         for _, boss in ipairs(bosses) do
             for _, drop in ipairs(boss.drops) do
@@ -441,37 +476,39 @@ local function BuildRewards()
     for _, chain in ipairs(MC.QUEST_CHAIN_ORDER) do
         local def = MC.QUEST_CHAINS[chain]
         local merc = MC.Mercs[def.merc]
-        local level = Quests.ChainLevel(chain)
-        local last = def.steps[#def.steps]
-        local dungeon = last.dungeon and MC.Zones[last.dungeon]
-        local own = dungeon and dropsOf[dungeon.lootFrom or last.dungeon]
-        used[def.merc] = used[def.merc] or {}
-        local best, bestScore
-        -- A rare item; the first levels have hardly any, so an uncommon one there.
-        -- (For a few early protectors only a slightly higher item fits.)
-        for _, choice in ipairs({ { own, "rare", 1 }, { all, "rare", 1 }, { own, "uncommon", 1 }, { all, "uncommon", 1 },
-            { all, "rare", 4 }, { all, "uncommon", 4 } }) do
-            local pool, rarity, above = choice[1], choice[2], choice[3]
-            if pool then
-                for id in pairs(pool) do
-                    local item = MC.Items[id]
-                    local open = item and item.rarity == rarity and item.level >= level - 8 and item.level <= level + above
-                        and (item.kind ~= "jewelry" or level >= MC.MAX_LEVEL) and not used[def.merc][id]
-                    if open then
-                        local fit = 0
-                        for k, points in pairs(item.points) do fit = fit + (WANTS[merc.role][k] or 0) * points end
-                        local score = fit * 100 - math.abs(level - item.level)
-                        if fit > 0 and (not bestScore or score > bestScore or (score == bestScore and id < best)) then
-                            best, bestScore = id, score
+        if merc then
+            local level = Quests.ChainLevel(chain)
+            local last = def.steps[#def.steps]
+            local dungeon = last.dungeon and MC.Zones[last.dungeon]
+            local own = dungeon and dropsOf[dungeon.lootFrom or last.dungeon]
+            used[def.merc] = used[def.merc] or {}
+            local best, bestScore
+            -- A rare item; the first levels have hardly any, so an uncommon one there.
+            -- (For a few early protectors only a slightly higher item fits.)
+            for _, choice in ipairs({ { own, "rare", 1 }, { all, "rare", 1 }, { own, "uncommon", 1 }, { all, "uncommon", 1 },
+                { all, "rare", 4 }, { all, "uncommon", 4 } }) do
+                local pool, rarity, above = choice[1], choice[2], choice[3]
+                if pool then
+                    for id in pairs(pool) do
+                        local item = MC.Items[id]
+                        local open = item and item.rarity == rarity and item.level >= level - 8 and item.level <= level + above
+                            and (item.kind ~= "jewelry" or level >= MC.MAX_LEVEL) and not used[def.merc][id]
+                        if open then
+                            local fit = 0
+                            for k, points in pairs(item.points) do fit = fit + (WANTS[merc.role][k] or 0) * points end
+                            local score = fit * 100 - math.abs(level - item.level)
+                            if fit > 0 and (not bestScore or score > bestScore or (score == bestScore and id < best)) then
+                                best, bestScore = id, score
+                            end
                         end
                     end
+                    if best then break end
                 end
-                if best then break end
             end
-        end
-        if best then
-            rewards[chain] = best
-            used[def.merc][best] = true
+            if best then
+                rewards[chain] = best
+                used[def.merc][best] = true
+            end
         end
     end
 end
@@ -490,14 +527,17 @@ function Quests.TurnIn(store, chain)
     local st = Quests.State(store, chain)
     local coins = Quests.COINS[step] or 0
     local def = MC.QUEST_CHAINS[chain]
-    local entry = store.mercs[def.merc]
-    entry.coins = entry.coins + coins
+    -- A general chain pays every mercenary in the party.
+    for _, id in ipairs(def.general and (store.party or {}) or { def.merc }) do
+        local entry = store.mercs[id]
+        if entry and entry.owned then entry.coins = entry.coins + coins end
+    end
     if task.unlock then
         store.unlocks = store.unlocks or {}
         store.unlocks[task.unlock] = true
     end
     local item, material, count
-    if step == #def.steps then
+    if step == #def.steps and not def.general then
         item = Quests.RewardItem(chain)
         if item and Bounty.GiveItem(store, def.merc, item) == "duplicate" then
             material, count = Bounty.Disenchant(store, item)
@@ -519,10 +559,19 @@ local function Matches(task, id)
     return false
 end
 
--- Adds to the counting task of every open chain of `merc` that `test` accepts; chains whose task
--- became ready go into `ready`.
+-- The open general chains.
+local function GeneralChains(store)
+    local out = {}
+    for _, id in ipairs(MC.QUEST_CHAIN_ORDER) do
+        if MC.QUEST_CHAINS[id].general and Quests.Open(store, id) then out[#out + 1] = id end
+    end
+    return out
+end
+
+-- Adds to the counting task of every open chain of `merc` (nil: the general chains) that `test`
+-- accepts; chains whose task became ready go into `ready`.
 local function Count(store, merc, ready, amountOf)
-    for _, chain in ipairs(Quests.ChainsOf(store, merc)) do
+    for _, chain in ipairs(merc and Quests.ChainsOf(store, merc) or GeneralChains(store)) do
         local task = Quests.Current(store, chain)
         local amount = task and amountOf(task) or 0
         if amount > 0 then
@@ -559,6 +608,15 @@ function Quests.OnBattle(store, run, b)
             end)
         end
     end
+    -- The general chains count the party's kills once.
+    Count(store, nil, run.questsReady, function(task)
+        if task.kind ~= "kill" or (task.zone and task.zone ~= run.zone) then return 0 end
+        local n = 0
+        for _, foe in pairs(b.units) do
+            if foe.side == "enemy" and foe.dead and Matches(task, foe.id) then n = n + 1 end
+        end
+        return n
+    end)
 end
 
 -- After a bounty or a dungeon is complete: "clear" and "dungeon" tasks that need the mercenary in the party.
@@ -573,6 +631,11 @@ function Quests.OnBounty(store, run)
             end)
         end
     end
+    Count(store, nil, run.questsReady, function(task)
+        if task.kind == "dungeon" and run.dungeon and task.dungeon == run.dungeon then return 1 end
+        if task.kind == "clear" and task.zone == run.zone and not run.dungeon then return 1 end
+        return 0
+    end)
 end
 
 -- The mercenaries of the chains in a list (the result page names them once each).

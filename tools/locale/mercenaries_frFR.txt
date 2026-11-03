@@ -938,6 +938,7 @@ MC_JOURNAL_HIDDEN	Boss caché
 MC_JOURNAL_HIDDEN_HINT	Apparaît après une tâche de %s.
 MC_JOURNAL_OWNED	Possédé : %s
 MC_JOURNAL_FORMULAS	Chaque boss peut enseigner une formule d'enchantement (jusqu'au rang %d, héroïque %d).
+MC_JOURNAL_FORMULAS_RAID	Chaque boss peut enseigner une formule d'enchantement (jusqu'au rang %d).
 MC_LOOT_FOUND	Butin : %s
 MC_FORMULA_LEARNT	Formule apprise : %s
 MC_QO_DUNGEON	Terminez %s avec %s dans le groupe.
@@ -1313,6 +1314,11 @@ MC_A_timmy_s	Griffe vorace
 MC_A_balnazzar_s	Domination
 MC_A_anastari_s	Possession
 MC_A_ramstein_s	Piétiner
+MC_A_emberseer_s	Nova de feu
+MC_A_solakar_s	Choc martial
+MC_A_gyth_s	Souffle de flammes
+MC_A_beast_s	Cassure des flammes
+MC_A_drakkisath_s	Déflagration
 MC_ZD_thanes	Sous Forgefer errent les esprits des anciens thanes, et des pillards Sombrefer fouillent leurs trésors. %s les mène.
 MC_ZD_ruins_lordaeron	Au-dessus de Fossoyeuse, les ruines de Lordaeron grouillent encore du Fléau. %s commande ce qu'il reste des morts.
 MC_ZD_excavation	Sur le chantier de Whelgar, dans les Paluns, des raptors rôdent dans les hautes herbes et un vieux gardien dort parmi les reliques. %s s'éveille pour quiconque les touche.
@@ -1361,3 +1367,23 @@ MC_ZW_mara_earthsong	Chutes de Chanteterre
 MC_ZG_maraudon	Maraudon
 MC_ZD_mara_foulspore	Le poison des satyres suinte dans les grottes orange de Maraudon, nourrissant la vase Noxxion et %s.
 MC_ZD_mara_grotto	Dans les grottes violettes, les satyres se rassemblent autour de leur maître. %s règne sur la grotte Maudite.
+MC_Z_ubrs	Pic Blackrock supérieur
+MC_ZW_ubrs	Pic Blackrock supérieur
+MC_ZD_ubrs	Au sommet du pic, le chef de guerre Rend Blackhand règne sur la Horde noire et %s garde la couvée du Vol noir. Seul le Sceau d'ascension ouvre la porte.
+MC_RAID	Raid
+MC_RAID_LOCKED	Verrouillé : la tâche du camp « Sceau d'ascension » l'ouvre (dès le niveau 55).
+MC_RAID_NO_HEROIC	Les raids n'ont pas de mode héroïque.
+MC_QUESTS_GENERAL	Pour tout le camp
+MC_QUEST_GENERAL	Tâche du camp
+MC_QUEST_GENERAL_DONE	Plus rien à faire ici pour l'instant.
+MC_QUEST_COINS_PARTY	%d pièces pour chaque mercenaire du groupe
+MC_QO_KILL_IN_ANY	Vaincre %d %s : %s.
+MC_QO_DUNGEON_ANY	Terminer %s.
+MC_QK_SPIRE	ogres et trolls du pic
+MC_QUEST_UNLOCK_ubrs_seal	Ouvre le Pic Blackrock supérieur, le premier raid
+MC_Q_seal_ascension_1_TITLE	Sceau d'ascension
+MC_Q_seal_ascension_1_TEXT	Vaelan attend au pied du pic. Qui veut affronter Rend et Drakkisath doit d'abord faire ses preuves dans le pic inférieur.
+MC_Q_seal_ascension_2_TITLE	Les gemmes des généraux
+MC_Q_seal_ascension_2_TEXT	Omokk, Voone et Vosh'gajin gardent chacun une gemme du sceau. Brisez leurs ogres et leurs trolls jusqu'à les obtenir.
+MC_Q_seal_ascension_3_TITLE	Forgé dans les flammes
+MC_Q_seal_ascension_3_TEXT	Seul le sang d'un dragon noir peut lier les gemmes. Nettoyez encore le pic inférieur et le sceau sera forgé.

@@ -13,6 +13,8 @@
 --   group       wings of one place (the Scarlet Monastery): one portal on the map, the wings picked in
 --               its panel
 --   lootFrom    the loot table it shares (both halves of Stratholme)
+--   raid        a raid: more bosses, the spirit healer halfway, no heroic mode; `requires` names the
+--               unlock (a general task) that opens it
 --   power       extra strength of its foes: a fresh party one level below the last boss wins about 47 %
 --               (heroicPower: a geared party at level 60 about 40 %); tools/balance_mercenaries.py
 --               --tune --dungeons (--heroic)
@@ -28,7 +30,7 @@ MC.Dungeons = Dungeons
 MC.DUNGEON_ORDER = { "ragefire", "thanes", "ruins_lordaeron", "deadmines", "wailing", "shadowfang", "blackfathom",
     "stockade", "excavation", "gnomeregan", "kraul", "dalaran",
     "sm_graveyard", "sm_library", "sm_armory", "sm_cathedral", "downs", "uldaman",
-    "zulfarrak", "mara_foulspore", "mara_grotto", "mara_earthsong", "sunken", "brd", "lbrs", "dm_east", "dm_west", "dm_north", "scholomance", "strat_live",
+    "zulfarrak", "mara_foulspore", "mara_grotto", "mara_earthsong", "sunken", "brd", "lbrs", "ubrs", "dm_east", "dm_west", "dm_north", "scholomance", "strat_live",
     "strat_undead" }
 
 MC.Zones.deadmines = {
@@ -431,6 +433,31 @@ MC.Zones.lbrs = {
     },
 }
 
+-- Upper Blackrock Spire, the first raid: the Dark Horde's hall above the Lower Spire, opened by the Seal
+-- of Ascension (a general task). The spirit healer waits halfway, before Rend.
+MC.Zones.ubrs = {
+    id = "ubrs", dungeon = true, raid = true, requires = "ubrs_seal", group = "blackrock", continent = "ek",
+    region = "searinggorge", spot = { 0.35, 0.85 },
+    min = 60, max = 60, boss = "drakkisath", tier = 4,
+    power = -0.44, pool = {}, adds = {}, loot = {}, gear = {},
+    encounters = {
+        { boss = "emberseer", adds = { "blackhand_incarcerator", "blackhand_incarcerator" }, npcs = { 9816 },
+            trash = { "blackhand_dreadweaver", "blackhand_summoner", "blackhand_veteran", "blackhand_incarcerator" }, waves = 2 },
+        { boss = "solakar", adds = { "rookery_hatcher", "rookery_guardian" }, npcs = { 10264 },
+            trash = { "rookery_whelp", "rookery_hatcher", "rookery_guardian" } },
+        { boss = "jed", adds = { "blackhand_elite" }, npcs = { 10509 }, chance = 0.35 },
+        { boss = "goraluk", adds = { "blackhand_elite", "blackhand_veteran" }, npcs = { 10899 },
+            trash = { "blackhand_elite", "blackhand_veteran", "blackhand_dragon_handler" } },
+        { boss = "gyth", adds = { "chromatic_whelp", "chromatic_dragonspawn" }, npcs = { 10339 },
+            trash = { "blackhand_dragon_handler", "chromatic_whelp", "chromatic_dragonspawn", "blackhand_elite" }, waves = 2 },
+        { boss = "rend", adds = { "blackhand_elite", "blackhand_dragon_handler" }, npcs = { 10429 }, healer = true },
+        { boss = "beast", adds = { "rage_talon_fire_tongue", "rage_talon_fire_tongue" }, npcs = { 10430 },
+            trash = { "rage_talon_flamescale", "rage_talon_fire_tongue", "blackhand_iron_guard" }, elite = true },
+        { boss = "drakkisath", adds = { "chromatic_elite_guard", "chromatic_elite_guard" }, npcs = { 10363 },
+            trash = { "rage_talon_captain", "rage_talon_dragon_guard", "chromatic_elite_guard", "rage_talon_flamescale" }, waves = 2 },
+    },
+}
+
 -- Dire Maul, the ruined city of Eldre'Thalas in Feralas: three wings, one portal. East: the satyrs
 -- of the Warpwood.
 MC.Zones.dm_east = {
@@ -655,10 +682,11 @@ end
 -- How often a boss teaches an unknown formula.
 Dungeons.FORMULA_CHANCE = { normal = 0.12, heroic = 0.25 }
 
--- Dungeons are always open (tasks only reveal hidden bosses).
+-- Dungeons are always open (tasks only reveal hidden bosses); a raid opens with its general task.
 function Dungeons.IsOpen(store, id)
     local zone = MC.Zones[id]
-    return zone ~= nil and zone.dungeon == true
+    if not (zone and zone.dungeon) then return false end
+    return not zone.requires or Quests.Unlocked(store, zone.requires)
 end
 
 -- The encounters on the path: hidden ones only once revealed.

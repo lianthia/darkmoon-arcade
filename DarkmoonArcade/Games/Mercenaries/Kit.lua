@@ -705,7 +705,7 @@ function Kit.AbilityCard(parent)
     c.lockText:SetPoint("TOP", c, "TOPLEFT", cx, -(cy + r + 34))
     c.lockText:SetWidth(Kit.ACARD_W - 24)
 
-    local ROMAN = { "I", "II", "III", "IV" }
+    local ROMAN = { "I", "II", "III", "IV", "V" }
     function c:SetAbility(id, unit, slot, cdLeft, role)
         local def = MC.Abilities[id]
         self.abilityId, self.slot = id, slot

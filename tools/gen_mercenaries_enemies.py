@@ -580,6 +580,22 @@ ENEMIES = {
     "arcane_manaling": ("Arcane Manaling", "caster", "elemental", 0.8, ["e_volley", "e_frostbolt"]),
     "angry_tome": ("Angry Tome", "fighter", "elemental", 0.8, ["e_strike", "e_frenzy"]),
     "mana_wraith": ("Mana Wraith", "caster", "elemental", 1.0, ["e_drain", "e_curse"]),
+    # Upper Blackrock Spire (raid)
+    "blackhand_dreadweaver": ("Blackhand Dreadweaver", "caster", "orc", 1.0, ["e_shadowbolt", "e_curse"]),
+    "blackhand_incarcerator": ("Blackhand Incarcerator", "protector", "orc", 1.1, ["e_strike", "e_net"]),
+    "blackhand_elite": ("Blackhand Elite", "fighter", "orc", 1.1, ["e_cleave", "e_strike"]),
+    "blackhand_assassin": ("Blackhand Assassin", "fighter", "orc", 1.0, ["e_strike", "e_poison"]),
+    "blackhand_iron_guard": ("Blackhand Iron Guard", "protector", "orc", 1.2, ["e_shieldbash", "e_guard"]),
+    "blackhand_dragon_handler": ("Blackhand Dragon Handler", "fighter", "orc", 1.0, ["e_strike", "e_rally"]),
+    "rage_talon_flamescale": ("Rage Talon Flamescale", "caster", "dragonkin", 1.0, ["e_fireball", "e_flamestrike"]),
+    "rage_talon_captain": ("Rage Talon Captain", "fighter", "dragonkin", 1.2, ["e_cleave", "e_rally"]),
+    "rage_talon_fire_tongue": ("Rage Talon Fire Tongue", "caster", "dragonkin", 1.0, ["e_firebolt", "e_fireball"]),
+    "rage_talon_dragon_guard": ("Rage Talon Dragon Guard", "protector", "dragonkin", 1.2, ["e_slam", "e_guard"]),
+    "chromatic_dragonspawn": ("Chromatic Dragonspawn", "fighter", "dragonkin", 1.1, ["e_cleave", "e_strike"]),
+    "chromatic_elite_guard": ("Chromatic Elite Guard", "protector", "dragonkin", 1.2, ["e_slam", "e_thunderclap"]),
+    "rookery_guardian": ("Rookery Guardian", "protector", "dragonkin", 1.1, ["e_slam", "e_harden"]),
+    "rookery_hatcher": ("Rookery Hatcher", "caster", "dragonkin", 1.0, ["e_heal", "e_firebolt"]),
+    "rookery_whelp": ("Rookery Whelp", "fighter", "dragonkin", 0.8, ["e_bite", "e_frenzy"]),
 }
 
 # key: (Wowhead name, role, race, hp, atk[, abilities, heroic ability]); without a list, the boss has its
@@ -765,6 +781,14 @@ BOSSES = {
     "nerubenkan": ("Nerub'enkan", "fighter", "undead", 245, 11, ["e_poison", "e_bite", "e_net"], "e_enrage"),
     "maleki": ("Maleki the Pallid", "caster", "undead", 235, 7, ["e_frostbolt", "e_drain", "e_curse"], "e_volley"),
     "ramstein": ("Ramstein the Gorger", "fighter", "undead", 260, 11, ["e_slam", "e_thunderclap", "ramstein_s"], "e_enrage"),
+    # Upper Blackrock Spire (raid); Rend is the Burning Steppes' boss.
+    "emberseer": ("Pyroguard Emberseer", "caster", "elemental", 275, 8, ["e_fireball", "e_flamestrike", "emberseer_s"], "e_volley"),
+    "solakar": ("Solakar Flamewreath", "fighter", "dragonkin", 270, 11, ["e_cleave", "e_rally", "solakar_s"], "e_enrage"),
+    "jed": ("Jed Runewatcher", "protector", "orc", 270, 10, ["e_shieldbash", "e_guard", "e_strike"], "e_rally"),
+    "goraluk": ("Goraluk Anvilcrack", "fighter", "orc", 265, 11, ["e_strike", "e_sunder", "e_slam"], "e_enrage"),
+    "gyth": ("Gyth", "fighter", "dragonkin", 280, 12, ["e_bite", "e_firebolt", "gyth_s"], "e_frenzy"),
+    "beast": ("The Beast", "fighter", "beast", 295, 12, ["e_bite", "e_firebolt", "beast_s"], "e_enrage"),
+    "drakkisath": ("General Drakkisath", "fighter", "dragonkin", 310, 13, ["e_cleave", "e_flamestrike", "drakkisath_s"], "e_enrage"),
     # WoW: Forever's dungeons
     "witherfang": ("Witherfang", "fighter", "beast", 210, 10, ["e_bite", "e_poison", "witherfang_s"], "e_frenzy"),
     "thebaron": ("The Baron", "fighter", "undead", 225, 10, ["e_strike", "e_slam", "thebaron_s"], "e_enrage"),

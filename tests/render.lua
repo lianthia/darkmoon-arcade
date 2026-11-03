@@ -252,6 +252,21 @@ if Want("quests") then
     mc:ScrollQuests(500)
     Snap("quests_scrolled")
     mc:ScrollQuests(-10000)
+    -- The camp's general task (from level 55): the Seal of Ascension, its last step opens the raid.
+    store.mercs[store.party[1]].level = 55
+    mc.questShown = "seal_ascension"
+    mc:RefreshQuests()
+    Snap("quests_general")
+    MC.Quests.State(store, "seal_ascension").step = 3
+    mc:RefreshQuests()
+    Snap("quests_general_last")
+    MC.Quests.IsReady = function() return true end
+    mc:TurnInQuest()
+    MC.Quests.IsReady = isReady
+    Snap("quests_general_unlock")
+    mc.overlay:Hide()
+    store.unlocks = nil
+    store.mercs[store.party[1]].level = 1
     mc:ShowView("camp")
     Snap("quests_camp")
     store.quests, mc.questShown = nil, nil
@@ -302,12 +317,17 @@ if Want("dungeon") then
     Snap("dungeon_wc_map")
     MC.Bounty.Abandon(store, store.run)
     store.run = nil
+    -- The raid: locked until the Seal of Ascension, then a wing like the others.
+    mc.travelContinent, mc.travelRegion, mc.travelZone = "ek", 2, "ubrs"
+    mc:ShowView("travel")
+    Snap("dungeon_ubrs_locked")
+    store.unlocks.ubrs_seal = true
     -- The others: travel pin, guide on the final boss and the path of each.
     for _, d in ipairs({ { "ragefire", "kal", 2 }, { "shadowfang", "ek", 1 }, { "blackfathom", "kal", 1 },
         { "stockade", "ek", 3 }, { "gnomeregan", "ek", 2 }, { "kraul", "kal", 2 }, { "sm_graveyard", "ek", 1 },
         { "sm_library", "ek", 1 }, { "sm_armory", "ek", 1 }, { "sm_cathedral", "ek", 1 }, { "downs", "kal", 2 },
         { "uldaman", "ek", 2 }, { "zulfarrak", "kal", 3 }, { "mara_foulspore", "kal", 2 }, { "mara_grotto", "kal", 2 }, { "mara_earthsong", "kal", 2 }, { "sunken", "ek", 4 },
-        { "brd", "ek", 2 }, { "lbrs", "ek", 2 }, { "dm_east", "kal", 3 }, { "dm_west", "kal", 3 }, { "dm_north", "kal", 3 },
+        { "brd", "ek", 2 }, { "lbrs", "ek", 2 }, { "ubrs", "ek", 2 }, { "dm_east", "kal", 3 }, { "dm_west", "kal", 3 }, { "dm_north", "kal", 3 },
         { "scholomance", "ek", 1 }, { "strat_live", "ek", 1 }, { "strat_undead", "ek", 1 }, { "thanes", "ek", 2 },
         { "ruins_lordaeron", "ek", 1 }, { "excavation", "ek", 2 }, { "dalaran", "ek", 1 } }) do
         local id = d[1]

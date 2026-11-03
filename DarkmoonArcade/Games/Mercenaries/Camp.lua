@@ -11,7 +11,7 @@ local W, H = MC.W, MC.H
 
 local INK = { 0.24, 0.14, 0.06 }
 local ROLES = { "protector", "fighter", "caster" }
-local ROMAN = { "I", "II", "III", "IV" }
+local ROMAN = { "I", "II", "III", "IV", "V" }
 
 -- What the travel point shows of each zone: a starting-zone picture, a dungeon loading screen
 -- (cropped to its painting) or, failing both, the zone's own map.
@@ -32,6 +32,11 @@ local ZONE_ART = {
 local BOSS_ART = {
     hogger = 607646, vancleef = 5875507, thermaplugg = 607714, whitemane = 607643, akumai = 607532,
 }
+-- "Level 55-60", or "Level 60" for a zone of one level (the raid).
+local function LevelRange(zone)
+    return zone.min == zone.max and L.LEVEL:format(zone.min) or L.MC_LEVEL_RANGE:format(zone.min, zone.max)
+end
+
 local BOSS_ICON = {
     melenas = "Spell_Shadow_Metamorphosis", zalazane = "INV_Misc_Head_Troll_01", arrachea = "Ability_Mount_Kodo_01",
     lorthuna = "Spell_Nature_CallStorm", galgosh = "Ability_Warrior_PunishingBlow", arugal = "Spell_Shadow_ShadowWordDominate",
@@ -454,7 +459,7 @@ function Module:BuildTravel()
             local zone = MC.Zones[pin.zone]
             GameTooltip:SetOwner(pin, "ANCHOR_RIGHT")
             GameTooltip:SetText(Describe.ZoneName(pin.zone), 1, 0.82, 0)
-            GameTooltip:AddLine(L.MC_LEVEL_RANGE:format(zone.min, zone.max), 1, 1, 1)
+            GameTooltip:AddLine(LevelRange(zone), 1, 1, 1)
             GameTooltip:AddLine(L["MC_E_" .. zone.boss], 0.8, 0.8, 0.8)
             if zone.dungeon then
                 GameTooltip:AddLine(L.MC_DUNGEON, 0.4, 0.7, 1)
@@ -553,8 +558,9 @@ function Module:BuildBossPanel(view)
     panel.heroic:SetPoint("TOPRIGHT", note, "BOTTOMRIGHT", 0, -8)
     panel.heroic:HookScript("OnEnter", function(b)
         if not b:IsEnabled() then
+            local zone = MC.Zones[self.travelZone or ""]
             GameTooltip:SetOwner(b, "ANCHOR_TOP")
-            GameTooltip:SetText(L.MC_HEROIC_LOCKED, 1, 1, 1, 1, true)
+            GameTooltip:SetText(zone and zone.raid and L.MC_RAID_NO_HEROIC or L.MC_HEROIC_LOCKED, 1, 1, 1, 1, true)
             GameTooltip:Show()
         end
     end)
@@ -576,6 +582,7 @@ function Module:BuildBossPanel(view)
         if not (zone and zone.dungeon) then return end
         local store = self:Store()
         store.unlocks = store.unlocks or {}
+        if zone.requires then store.unlocks[zone.requires] = true end
         for _, enc in ipairs(zone.encounters) do
             if enc.hidden then store.unlocks[enc.hidden] = true end
         end
@@ -764,7 +771,7 @@ function Module:RefreshBossPanel()
     panel.wingNext:SetShown(zone ~= nil and zone.group ~= nil)
     panel.devUnlock:SetShown(zone ~= nil and zone.dungeon == true and MC.AutoBattleAllowed()
         and not (MC.Dungeons.IsOpen(store, zid) and #MC.Dungeons.Encounters(store, zid) == #zone.encounters))
-    panel.title.text:SetText((zone and zone.dungeon) and L.MC_DUNGEON or L.MC_BOSS_INFO)
+    panel.title.text:SetText((zone and zone.raid) and L.MC_RAID or (zone and zone.dungeon) and L.MC_DUNGEON or L.MC_BOSS_INFO)
     if not zone then return end
     local art = ZONE_ART[zid]
     panel.picture:SetShown(art ~= nil)
@@ -789,7 +796,7 @@ function Module:RefreshBossPanel()
     panel.level.text:SetText(MC.LevelText(bossLevel, reference))
     panel.level.text:SetTextColor(MC.ConColor(bossLevel, reference))
     panel.name.text:SetText(L["MC_E_" .. zone.boss])
-    Kit.FitText(panel.levels, Describe.ZoneName(zid) .. "  ·  " .. L.MC_LEVEL_RANGE:format(zone.min, zone.max), 220, 11, 8)
+    Kit.FitText(panel.levels, Describe.ZoneName(zid) .. "  ·  " .. LevelRange(zone), 220, 11, 8)
     local story = L["MC_ZD_" .. zid]
     if story:find("%s", 1, true) then story = story:format(L["MC_E_" .. zone.boss]) end
     panel.story:SetText(story)
@@ -798,15 +805,17 @@ function Module:RefreshBossPanel()
     panel.heroic:SetEnabled(unlocked)
     Kit.SetSelected(panel.normal, not self.travelHeroic)
     Kit.SetSelected(panel.heroic, self.travelHeroic or false)
-    panel.choose:SetEnabled(store.run == nil)
+    -- A raid opens with its general task; until then the panel says which.
+    local open = not zone.dungeon or MC.Dungeons.IsOpen(store, zid)
+    panel.choose:SetEnabled(store.run == nil and open)
     local partyLevel = math.floor(Bounty.PartyLevel(store))
     local needed = self.travelHeroic and Bounty.HEROIC_LEVEL or zone.min
-    panel.warning:SetText(partyLevel < needed and L.MC_WARN_LEVEL:format(partyLevel, needed) or "")
+    panel.warning:SetText(not open and L.MC_RAID_LOCKED or partyLevel < needed and L.MC_WARN_LEVEL:format(partyLevel, needed) or "")
     if zone.dungeon then
         panel.name.text:SetText(zone.group and L["MC_ZG_" .. zone.group] or Describe.ZoneName(zid))
         -- Between the wing arrows the line has to fit 180 pixels.
-        Kit.FitText(panel.levels, (zone.group and L["MC_ZW_" .. zid] or L.MC_DUNGEON) .. "  ·  "
-            .. L.MC_LEVEL_RANGE:format(zone.min, zone.max), zone.group and 180 or 220, 11, 8)
+        Kit.FitText(panel.levels, (zone.group and L["MC_ZW_" .. zid] or zone.raid and L.MC_RAID or L.MC_DUNGEON) .. "  ·  "
+            .. LevelRange(zone), zone.group and 180 or 220, 11, 8)
     end
 end
 
@@ -1087,14 +1096,15 @@ function Module:BuildMercView()
             end
         end, "green")
         Kit.Place(up, x, 292, sheet)
-        -- Rank IV also needs a dungeon cleared with this mercenary: the tooltip names it.
+        -- Rank IV and V also need a dungeon (V: the raid) cleared with this mercenary: the tooltip names it.
         up:HookScript("OnEnter", function(b)
             local entry = self:Store().mercs[self.mercShown]
-            local dungeon = entry and MC.RANK4_DUNGEON[self.mercShown]
-            if not entry or (entry.ranks[i] or 1) ~= 3 or not dungeon then return end
+            local rank = entry and (entry.ranks[i] or 1) + 1
+            local dungeon = rank and Bounty.RankNeeds(self.mercShown, rank)
+            if not dungeon then return end
             local done = entry.dungeons and entry.dungeons[dungeon]
             GameTooltip:SetOwner(b, "ANCHOR_RIGHT")
-            GameTooltip:SetText(L.MC_RANK_UP:format(ROMAN[4], Bounty.RANK_COST[4]), 1, 0.82, 0)
+            GameTooltip:SetText(L.MC_RANK_UP:format(ROMAN[rank], Bounty.RANK_COST[rank]), 1, 0.82, 0)
             GameTooltip:AddLine(L.MC_RANK4_NEEDS:format(Describe.ZoneName(dungeon), Describe.MercName(self.mercShown)),
                 done and 0.3 or 1, done and 1 or 0.3, done and 0.3 or 0.3, true)
             GameTooltip:Show()

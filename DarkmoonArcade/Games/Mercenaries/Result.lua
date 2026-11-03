@@ -240,6 +240,12 @@ function Module:RefreshResult()
     if run.questsReady and #run.questsReady > 0 then
         local names = {}
         for _, merc in ipairs(MC.Quests.MercsOf(run.questsReady)) do names[#names + 1] = Describe.MercName(merc) end
+        for _, chain in ipairs(run.questsReady) do
+            if MC.QUEST_CHAINS[chain] and MC.QUEST_CHAINS[chain].general then
+                names[#names + 1] = L.MC_QUEST_GENERAL
+                break
+            end
+        end
         out[#out + 1] = "|cffffd100" .. L.MC_QUEST_DONE_RESULT:format(table.concat(names, ", ")) .. "|r"
     end
     if won then

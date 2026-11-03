@@ -311,10 +311,20 @@ test("every task chain ends with an item of its level for its mercenary", functi
     for _, chain in ipairs(MC.QUEST_CHAIN_ORDER) do
         local id = Quests.RewardItem(chain)
         local item = id and MC.Items[id]
-        assert(item, chain .. ": reward item")
-        local level = Quests.ChainLevel(chain)
-        assert(item.level >= level - 8 and item.level <= level + 4, chain .. ": item level " .. item.level .. " for " .. level)
-        assert(item.kind ~= "jewelry" or level >= MC.MAX_LEVEL, chain .. ": jewellery only at the highest level")
+        -- The camp's general chains give no item.
+        if MC.QUEST_CHAINS[chain].general then
+            eq(id, nil, chain .. ": no item")
+        else
+            assert(item, chain .. ": reward item")
+            local level = Quests.ChainLevel(chain)
+            assert(item.level >= level - 8 and item.level <= level + 4, chain .. ": item level " .. item.level .. " for " .. level)
+            assert(item.kind ~= "jewelry" or level >= MC.MAX_LEVEL, chain .. ": jewellery only at the highest level")
+            assert(not MC.Zones.ubrs or not (function()
+                for _, boss in ipairs(MC.DungeonLoot.ubrs or {}) do
+                    for _, drop in ipairs(boss.drops) do if drop[1] == id then return true end end
+                end
+            end)(), chain .. ": no raid loot")
+        end
     end
     -- A mercenary that owns the item already gets its materials instead.
     local store = NewStore()
@@ -354,9 +364,86 @@ test("rank IV needs coins and the mercenary's dungeon cleared with it", function
     eq(entry.ranks[1], 4)
     -- A won fight gives a coin, the end its reward.
     eq(entry.coins, 1000 - Bounty.RANK_COST[4] + 1 + (run.rewards.coins.cairne or 0))
-    eq(Bounty.RankCost(entry, 1), nil)
+    eq(Bounty.RankCost(entry, 1), Bounty.RANK_COST[5], "rank V comes next")
     assert(Combat.RANK_BONUS[4] > Combat.RANK_BONUS[3], "rank IV is stronger")
     assert(last.final, "the last stop ends the dungeon")
+end)
+
+test("rank V needs coins and the raid cleared with the mercenary", function()
+    local store = NewStore()
+    local entry = Bounty.Entry(store, "cairne")
+    entry.ranks[1], entry.coins = 4, 1000
+    eq(Bounty.RankCost(entry, 1), Bounty.RANK_COST[5])
+    eq(Bounty.RankDungeon(entry, "cairne", 1), MC.RANK5_RAID)
+    assert(MC.Zones[MC.RANK5_RAID].raid, "rank V asks for the raid")
+    assert(not Bounty.CanRankUp(store, "cairne", 1), "raid not cleared yet")
+    entry.dungeons = { [MC.RANK5_RAID] = true }
+    assert(Bounty.RankUp(store, "cairne", 1), "rank V")
+    eq(entry.ranks[1], 5)
+    eq(entry.coins, 1000 - Bounty.RANK_COST[5])
+    eq(Bounty.RankCost(entry, 1), nil, "rank V is the last")
+    assert(Combat.RANK_BONUS[5] > Combat.RANK_BONUS[4], "rank V is stronger")
+end)
+
+test("raid: the camp's Seal of Ascension opens Upper Blackrock Spire; no heroic, the healer halfway", function()
+    local Quests, Dungeons = MC.Quests, MC.Dungeons
+    local store = NewStore()
+    local zone = MC.Zones.ubrs
+    assert(zone.raid and zone.group == "blackrock", "a wing of Blackrock Mountain")
+    assert(not Dungeons.IsOpen(store, "ubrs") and Bounty.NewRun(store, "ubrs", false, 1) == nil, "locked")
+    -- The camp's chain opens once any mercenary reaches level 55.
+    local chain = "seal_ascension"
+    assert(MC.QUEST_CHAINS[chain].general and MC.QUEST_CHAIN_ORDER[1] == chain, "general, first on the board")
+    assert(not Quests.Open(store, chain), "not before level 55")
+    local a, b = store.party[1], store.party[2]
+    store.mercs[b].level = 55
+    assert(Quests.Open(store, chain), "any mercenary's level opens it")
+    -- 1: the Lower Spire cleared by the party (counted once).
+    Quests.OnBounty(store, { zone = "lbrs", dungeon = "lbrs", party = { { id = a }, { id = b } } })
+    eq(Quests.Progress(store, chain), 1)
+    assert(Quests.IsReady(store, chain))
+    local coinsA, coinsB = store.mercs[a].coins, store.mercs[b].coins
+    local coins, _, item = Quests.TurnIn(store, chain)
+    eq(coins, Quests.COINS[1])
+    eq(item, nil, "no item")
+    eq(store.mercs[a].coins, coinsA + coins, "every party member is paid")
+    eq(store.mercs[b].coins, coinsB + coins)
+    -- 2: thirty ogres and trolls of the spire, once per foe however many are in the party.
+    local run = { zone = "lbrs", party = { { id = a }, { id = b } } }
+    local battle = { phase = "won", units = {
+        x = { side = "ally", pidx = 1 }, y = { side = "ally", pidx = 2 },
+        e1 = { side = "enemy", id = "spirestone_reaver", dead = true },
+        e2 = { side = "enemy", id = "smolderthorn_seer", dead = true },
+        e3 = { side = "enemy", id = "firebrand_grunt", dead = true },
+    } }
+    Quests.OnBattle(store, run, battle)
+    eq(Quests.Progress(store, chain), 2, "two of them, counted once")
+    for _ = 1, 14 do Quests.OnBattle(store, run, battle) end
+    assert(Quests.IsReady(store, chain))
+    eq(run.questsReady[#run.questsReady], chain, "the result page learns of it")
+    Quests.TurnIn(store, chain)
+    -- 3: the Lower Spire once more forges the seal: the raid opens.
+    Quests.OnBounty(store, { zone = "lbrs", dungeon = "lbrs", party = { { id = a } } })
+    local _, unlock = Quests.TurnIn(store, chain)
+    eq(unlock, "ubrs_seal")
+    assert(Quests.Done(store, chain) and Dungeons.IsOpen(store, "ubrs"), "open")
+    -- No heroic, even once cleared.
+    Bounty.ZoneState(store, "ubrs").normal = 1
+    assert(not Bounty.HeroicUnlocked(store, "ubrs"), "no heroic mode")
+    -- The path: the spirit healer before Rend (halfway), Drakkisath ends it.
+    local runU = Bounty.NewRun(store, "ubrs", false, 7)
+    assert(runU and runU.dungeon == "ubrs")
+    local kinds, healerAt, rendAt = {}, nil, nil
+    for l, row in ipairs(runU.map.layers) do
+        kinds[#kinds + 1] = row[1].type
+        if row[1].type == "healer" then healerAt = l end
+        if row[1].boss == "rend" then rendAt = l end
+    end
+    eq(healerAt, rendAt - 1, "the healer before Rend")
+    eq(#kinds - healerAt > 3, true, "and not right before the end")
+    local last = runU.map.layers[#runU.map.layers][1]
+    assert(last.boss == "drakkisath" and last.final, "Drakkisath ends it")
+    for _, l in ipairs(runU.map.layers) do eq(l[1].level, 60, "all at level 60") end
 end)
 
 test("a full bounty run reaches an end", function()
@@ -687,14 +774,14 @@ test("task chains: every task is known, playable and has its texts' targets", fu
     local count = 0
     for id, chain in pairs(MC.QUEST_CHAINS) do
         count = count + 1
-        assert(MC.Mercs[chain.merc], id .. ": mercenary")
+        assert(MC.Mercs[chain.merc] or (chain.general and not chain.merc), id .. ": mercenary or general")
         assert(#chain.steps > 0, id .. ": tasks")
         if chain.requires and chain.requires.chain then assert(MC.QUEST_CHAINS[chain.requires.chain], id .. ": requires") end
         for i, task in ipairs(chain.steps) do
             local where = id .. " " .. i
             if task.zone then assert(MC.Zones[task.zone], where .. ": zone") end
             if task.kind == "ability" then
-                assert(MC.Mercs[chain.merc].abilities[task.slot], where .. ": ability")
+                assert(not chain.general and MC.Mercs[chain.merc].abilities[task.slot], where .. ": ability")
             elseif task.kind == "kill" then
                 assert(task.what and task.count > 0, where .. ": target")
                 -- Somewhere a foe of that kind turns up (in the zone, if one is named).
@@ -823,7 +910,7 @@ test("dungeons: wings of a group share one portal, long wings fight several tras
     eq(table.concat(kinds, " "), "fight fight elite healer boss")
 end)
 
-test("dungeons: always open, the path is fixed, a hidden boss on a side branch, Classic loot, the last ends it", function()
+test("dungeons: open (raids after their task), the path is fixed, a hidden boss on a side branch, Classic loot, the last ends it", function()
     local Dungeons, Quests = MC.Dungeons, MC.Quests
     for _, id in ipairs(MC.DUNGEON_ORDER) do
         local zone = MC.Zones[id]

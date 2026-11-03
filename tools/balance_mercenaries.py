@@ -18,7 +18,9 @@ Further reports:
   --items     a full set of rare items alone: at most about +5 points of win rate on bounties
   --dungeons  every dungeon at boss level - 1: normal 40-55 % in the profile "fresh"
   --heroic    bounties and dungeons at level 60: about 40 % "geared", clearly less "fresh"
-`--tune --dungeons` and `--tune --heroic` find each zone's `power` / `heroicPower` for these targets.
+  --raid      raids at level 60: 35-40 % "geared", more for "full" and "rank5" (full at rank V)
+`--tune --dungeons`, `--tune --heroic` and `--tune --raid` find each zone's `power` / `heroicPower`
+for these targets.
 """
 import pathlib
 import sys
@@ -37,11 +39,14 @@ SWEEP = "--sweep" in sys.argv
 TUNE = "--tune" in sys.argv
 DUNGEONS = "--dungeons" in sys.argv
 HEROIC = "--heroic" in sys.argv
+RAID = "--raid" in sys.argv
 PROFILE = sys.argv[sys.argv.index("--profile") + 1] if "--profile" in sys.argv else "fresh"
 TARGET = 0.6
 # Dungeons: normal at boss level - 1 in the profile "fresh"; heroic at level 60 in the profile "geared".
 DUNGEON_TARGET, DUNGEON_RANGE = 0.47, (0.4, 0.55)
 HEROIC_TARGET, HEROIC_RANGE = 0.4, (0.35, 0.45)
+# Raids at level 60 in the profile "geared".
+RAID_TARGET, RAID_RANGE = 0.38, (0.33, 0.43)
 # --planner: the bot plays like the debug mode's "Play all turns" (best orders found by simulation).
 USE_PLANNER = "--planner" in sys.argv
 
@@ -149,8 +154,9 @@ function ApplyProfile(store, profile)
         if entry.owned then
             local role = MC.Mercs[id].role
             if profile == "geared" then entry.ranks = { 4, 3, 3 }
-            elseif profile == "full" then entry.ranks = { 4, 4, 4 } end
-            local full = profile == "full"
+            elseif profile == "full" then entry.ranks = { 4, 4, 4 }
+            elseif profile == "rank5" then entry.ranks = { 5, 5, 5 } end
+            local full = profile == "full" or profile == "rank5"
             entry.items, entry.worn, entry.enchants = {}, {}, {}
             for slot = 1, MC.ItemSlots(entry) do
                 -- Items of about the mercenary's level (they drop in the dungeons of its levels).
@@ -172,6 +178,11 @@ function FixedStore(level, profile)
     local store = {}
     Bounty.Init(store)
     for _, id in ipairs(store.party) do store.mercs[id].level = level end
+    -- Raids open with their general task.
+    store.unlocks = {}
+    for _, zone in pairs(MC.Zones) do
+        if zone.requires then store.unlocks[zone.requires] = true end
+    end
     ApplyProfile(store, profile or "fresh")
     return store
 end
@@ -248,6 +259,9 @@ if "--gapparams" in sys.argv:
         MC.Combat.GAP[key] = value
 order = [MC.ZONE_ORDER[i] for i in range(1, len(MC.ZONE_ORDER) + 1)]
 dungeons = [MC.DUNGEON_ORDER[i] for i in range(1, len(MC.DUNGEON_ORDER) + 1)]
+# Raids are measured apart (--raid).
+raids = [z for z in dungeons if MC.Zones[z].raid]
+dungeons = [z for z in dungeons if not MC.Zones[z].raid]
 # --zone a,b,c: only these zones and dungeons (several processes can tune in parallel).
 only = sys.argv[sys.argv.index("--zone") + 1].split(",") if "--zone" in sys.argv else None
 if only:
@@ -273,14 +287,14 @@ if TUNE:
     # Finds each zone's `power`: bounties 60 % at boss level - 1 ("fresh"), dungeons 47 % there,
     # heroic 40 % at level 60 for a geared party (bounties and dungeons, or only dungeons with --dungeons).
     bounty = MC.Bounty
-    profile = "geared" if HEROIC else PROFILE
-    target = HEROIC_TARGET if HEROIC else DUNGEON_TARGET if DUNGEONS else TARGET
-    zones = dungeons if DUNGEONS else order + (dungeons if HEROIC else [])
+    profile = "geared" if HEROIC or RAID else PROFILE
+    target = RAID_TARGET if RAID else HEROIC_TARGET if HEROIC else DUNGEON_TARGET if DUNGEONS else TARGET
+    zones = raids if RAID else dungeons if DUNGEONS else order + (dungeons if HEROIC else [])
     key = "heroicPower" if HEROIC else "power"
     found = {}
     for zid in zones:
         zone = MC.Zones[zid]
-        level = 60 if HEROIC else bounty.BossLevel(zone, False) - 1
+        level = 60 if HEROIC or RAID else bounty.BossLevel(zone, False) - 1
         lo, hi = -0.8, 3.5
         for _ in range(9):
             mid = (lo + hi) / 2
@@ -315,6 +329,20 @@ if PROGRESS:
         print(f"{zid:12} cleared after {tries:3} runs, party level {level:5.1f}")
     print("total runs:", runs)
     sys.exit(0)
+
+if RAID:
+    # Raids at level 60: 35-40 % for a geared party; ranks and the best items help clearly.
+    print(f"{'raid':15} {'fresh':>7} {'geared':>7} {'full':>7} {'rank5':>7}")
+    failures = []
+    for zid in raids:
+        rates = [g.WinRate(zid, 60, False, RUNS, p)[0] for p in ("fresh", "geared", "full", "rank5")]
+        print(f"{zid:15} " + " ".join(f"{r * 100:6.1f}%" for r in rates), flush=True)
+        if not RAID_RANGE[0] <= rates[1] <= RAID_RANGE[1]:
+            failures.append(f"{zid}: {rates[1]:.0%} geared (want 33-43 %)")
+        if not rates[0] < rates[1] < rates[3]:
+            failures.append(f"{zid}: fresh < geared < rank V does not hold")
+    print("\n".join(failures) if failures else "all raid criteria met")
+    sys.exit(1 if failures else 0)
 
 if HEROIC:
     # Heroic at level 60: about 40 % for a geared party, clearly less for a fresh one.

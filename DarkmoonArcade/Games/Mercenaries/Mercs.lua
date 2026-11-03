@@ -163,6 +163,9 @@ MC.RANK4_DUNGEON = {
     hamuul = "mara_foulspore", fandral = "mara_earthsong", drekthar = "brd",
 }
 
+-- Rank V: every mercenary must have cleared the first raid.
+MC.RANK5_RAID = "ubrs"
+
 MC.MERC_ORDER = {
     "cairne", "bolvar", "magni", "tirion", "eitrigg", "taelan", "saurfang", "windsor",
     "rexxar", "sylvanas", "voljin", "shandris", "mankrik", "renzik", "jorach", "natpagle",
