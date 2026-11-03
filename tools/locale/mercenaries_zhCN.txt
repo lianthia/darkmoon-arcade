@@ -1391,7 +1391,9 @@ MC_Q_seal_ascension_3_TEXT	只有黑龙之血才能将宝石熔合。再次肃�
 MC_RAID_SETUP	组建团队
 MC_RAID_ROSTER	团队（%d/%d）
 MC_RAID_GO	出发
-MC_RAID_HINT	你的队伍已在其中。点击佣兵以加入或移出：最多%d名出发，其中%d名同时作战。
+MC_RAID_HINT	你的队伍总会出发。最多选择%d名援军；同时作战%d名。
+MC_RAID_EXTRA	援军
+MC_RAID_FREE	- 空位 -
 MC_BLESSING_TITLE	酋长的祝福
 MC_BLESSING_TEXT	雷德倒下了，他的头颅被高高举起。整个团队直到结束都获得15%的攻击和生命。
 MC_BLESSING_LINE	酋长的祝福：攻击和生命+15%

@@ -1391,7 +1391,9 @@ MC_Q_seal_ascension_3_TEXT	Seul le sang d'un dragon noir peut lier les gemmes. N
 MC_RAID_SETUP	Former le raid
 MC_RAID_ROSTER	Raid (%d/%d)
 MC_RAID_GO	En route
-MC_RAID_HINT	Votre groupe en fait déjà partie. Cliquez sur des mercenaires pour les ajouter ou les retirer : jusqu'à %d partent, %d d'entre eux combattent en même temps.
+MC_RAID_HINT	Votre groupe part toujours. Choisissez jusqu'à %d renforts ; %d combattent en même temps.
+MC_RAID_EXTRA	Renforts
+MC_RAID_FREE	- place libre -
 MC_BLESSING_TITLE	Bénédiction du chef de guerre
 MC_BLESSING_TEXT	Rend est tombé et sa tête est brandie bien haut. Tout le raid gagne 15 % d'attaque et de vie jusqu'à la fin.
 MC_BLESSING_LINE	Bénédiction du chef de guerre : +15 % d'attaque et de vie

@@ -450,14 +450,17 @@ test("raid: ten go, five fight; Rend waits for Gyth, the Beast enrages, Drakkisa
         entry.owned, entry.level = true, 60
     end
     store.unlocks = { ubrs_seal = true }
-    -- The roster: the party first, then the highest; a saved roster is kept, owned ones only, ten at most.
+    -- The roster: the party always (it cannot be left out), then the chosen reinforcements; nothing
+    -- is filled in by itself.
     local roster = Bounty.RaidRoster(store)
-    eq(#roster, Bounty.RAID_SIZE)
+    eq(#roster, #store.party, "only the party at first")
     for i, id in ipairs(store.party) do eq(roster[i], id, "the party first") end
-    local chosen = Bounty.SetRaidRoster(store, { "thrall", "thrall", "jaina", "nobody" })
-    eq(#chosen, 2, "each once, owned only")
-    eq(Bounty.RaidRoster(store)[1], "thrall", "the saved roster comes first")
-    eq(#Bounty.RaidRoster(store), Bounty.RAID_SIZE, "filled up to ten")
+    roster = Bounty.SetRaidRoster(store, { "thrall", "thrall", store.party[1], "jaina", "nobody" })
+    eq(#roster, #store.party + 2, "reinforcements once each, owned, outside the party")
+    eq(roster[#store.party + 1], "thrall")
+    assert(Bounty.InParty(store, store.party[1]) and not Bounty.InParty(store, "thrall"))
+    roster = Bounty.SetRaidRoster(store, { "thrall", "jaina", "rexxar", "tyrande", "magni", "voljin" })
+    eq(#roster, Bounty.RAID_SIZE, "at most ten")
     local run = Bounty.NewRun(store, "ubrs", false, 3)
     eq(#run.party, Bounty.RAID_SIZE, "ten go in")
     -- The Rend fight: Gyth alone on the board, Rend waits off it until Gyth falls; both stronger for it.

@@ -361,6 +361,9 @@ if Want("raid") then
     mc:ShowView("travel")
     Click(mc.views.travel.boss.choose)
     Snap("raid_roster")
+    -- Four reinforcements chosen; a click on a party member changes nothing.
+    for _, id in ipairs({ "thrall", "jaina", "rexxar", "tyrande", "cairne" }) do mc:ToggleRaidMember(id) end
+    Snap("raid_roster_chosen")
     Click(mc.views.raid.go)
     Tick(0.5)
     Snap("raid_map")

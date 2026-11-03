@@ -181,6 +181,7 @@ function FixedStore(level, profile, all)
     if all then
         for _, id in ipairs(MC.MERC_ORDER) do Bounty.Entry(store, id).owned = true end
         for id, entry in pairs(store.mercs) do entry.level = level end
+        Bounty.SetRaidRoster(store, MC.MERC_ORDER)
     end
     for _, id in ipairs(store.party) do store.mercs[id].level = level end
     -- Raids open with their general task.

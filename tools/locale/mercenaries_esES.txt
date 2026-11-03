@@ -1391,7 +1391,9 @@ MC_Q_seal_ascension_3_TEXT	Solo la sangre de un dragón negro puede unir las gem
 MC_RAID_SETUP	Formar la banda
 MC_RAID_ROSTER	Banda (%d/%d)
 MC_RAID_GO	Partir
-MC_RAID_HINT	Tu grupo ya está dentro. Haz clic en mercenarios para añadirlos o quitarlos: van hasta %d y %d de ellos luchan a la vez.
+MC_RAID_HINT	Tu grupo siempre va. Elige hasta %d refuerzos; %d luchan a la vez.
+MC_RAID_EXTRA	Refuerzos
+MC_RAID_FREE	- plaza libre -
 MC_BLESSING_TITLE	Bendición del Jefe de Guerra
 MC_BLESSING_TEXT	Desgarro ha caído y su cabeza se alza en lo alto. Toda la banda gana un 15 % de ataque y salud hasta el final.
 MC_BLESSING_LINE	Bendición del Jefe de Guerra: +15 % de ataque y salud

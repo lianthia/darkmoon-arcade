@@ -169,8 +169,8 @@ function Bounty.SetGear(store, id, index)
     return true
 end
 
--- The raid's roster (store.raid): saved apart from the party; the party comes first, then the
--- mercenaries chosen for the raid, then the highest owned ones, up to ten.
+-- The raid's roster: the party (always, in its order), then the reinforcements chosen for the raid
+-- (store.raid), up to ten. Nothing is filled in by itself.
 function Bounty.RaidRoster(store)
     local out, seen = {}, {}
     local function Add(id)
@@ -180,31 +180,32 @@ function Bounty.RaidRoster(store)
             seen[id] = true
         end
     end
-    for _, id in ipairs(store.raid or store.party or {}) do Add(id) end
     for _, id in ipairs(store.party or {}) do Add(id) end
-    local rest = {}
-    for _, id in ipairs(MC.MERC_ORDER) do
-        if store.mercs[id] and store.mercs[id].owned and not seen[id] then rest[#rest + 1] = id end
-    end
-    table.sort(rest, function(a, b)
-        if store.mercs[a].level ~= store.mercs[b].level then return store.mercs[a].level > store.mercs[b].level end
-        return a < b
-    end)
-    for _, id in ipairs(rest) do Add(id) end
+    for _, id in ipairs(store.raid or {}) do Add(id) end
     return out
 end
 
--- Sets the raid's roster (owned mercenaries, each once, at most ten).
+-- Whether a mercenary is in the party (and so in every raid, not to be taken out).
+function Bounty.InParty(store, id)
+    for _, other in ipairs(store.party or {}) do
+        if other == id then return true end
+    end
+    return false
+end
+
+-- Sets the raid's reinforcements (owned mercenaries outside the party, each once); returns the roster.
 function Bounty.SetRaidRoster(store, ids)
     local out, seen = {}, {}
+    local room = Bounty.RAID_SIZE - #(store.party or {})
     for _, id in ipairs(ids) do
-        if MC.Mercs[id] and store.mercs[id] and store.mercs[id].owned and not seen[id] and #out < Bounty.RAID_SIZE then
+        if MC.Mercs[id] and store.mercs[id] and store.mercs[id].owned and not seen[id] and not Bounty.InParty(store, id)
+            and #out < room then
             out[#out + 1] = id
             seen[id] = true
         end
     end
     store.raid = out
-    return out
+    return Bounty.RaidRoster(store)
 end
 
 -- Swaps a party slot; returns false for mercenaries not owned or already in the party.
