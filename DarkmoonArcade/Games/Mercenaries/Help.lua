@@ -17,6 +17,7 @@ local CHAPTERS = {
     { key = "EFFECTS", icon = "Interface\\Icons\\Spell_Holy_DivineIntervention" },
     { key = "MERCS", icon = "Interface\\Icons\\INV_Misc_Coin_02" },
     { key = "TASKS", icon = "Interface\\Icons\\INV_Misc_Bone_HumanSkull_01" },
+    { key = "RAIDS", icon = "Interface\\Icons\\INV_Misc_Head_Dragon_Black" },
     { key = "ITEMS", icon = "Interface\\Icons\\INV_Enchant_DustStrange" },
     { key = "TREASURES", icon = "Interface\\Icons\\INV_Misc_Bag_10" },
     { key = "CONTROLS", icon = "Interface\\Icons\\INV_Misc_Note_01" },
@@ -33,7 +34,7 @@ function Module:BuildHelp(onBack)
     page.buttons = {}
     for i, chapter in ipairs(CHAPTERS) do
         local b = CreateFrame("Button", nil, page)
-        b:SetSize(196, 40)
+        b:SetSize(196, 36)
         local bg = b:CreateTexture(nil, "BACKGROUND")
         bg:SetAllPoints()
         Kit.Atlas(bg, "GarrMission_FollowerListButton", MC.Tex("plate"))
@@ -55,7 +56,7 @@ function Module:BuildHelp(onBack)
             self:ShowHelpChapter(i)
         end)
         Kit.Hover(b, { grow = 1.03, sound = false })
-        Kit.Place(b, 118, 74 + (i - 1) * 41, page)
+        Kit.Place(b, 118, 72 + (i - 1) * 37, page)
         page.buttons[i] = b
     end
 

@@ -279,6 +279,8 @@ function MC.CreateToken(parent)
     bubble.ring:SetSize(44, 44)
     bubble.speed = Badge(bubble, "speed", 22, 11)
     bubble.speed:SetPoint("CENTER", bubble, "BOTTOMRIGHT", 0, 2)
+    -- Dark on the light badge: a black outline smears a number this small, so none.
+    bubble.speed.text:SetFont(Media.FontFile(), 12, "")
     bubble.speed.text:SetTextColor(0.1, 0.1, 0.15)
     bubble.speed.text:SetShadowOffset(0, 0)
     bubble.order = bubble:CreateFontString(nil, "OVERLAY")

@@ -546,6 +546,8 @@ if Want("help") then Snap("help_battle") end
 if Want("help") then mc:ShowHelpChapter(8) end
 if Want("help") then Snap("help_tasks") end
 if Want("help") then mc:ShowHelpChapter(9) end
+if Want("help") then Snap("help_raids") end
+if Want("help") then mc:ShowHelpChapter(10) end
 if Want("help") then Snap("help_items") end
 
 -- The result after a won bounty: two mercenaries gained levels on the way.
