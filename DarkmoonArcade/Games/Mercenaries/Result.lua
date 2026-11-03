@@ -90,7 +90,7 @@ function Module:CreateResultPage()
 
     -- The party: portrait, a "Level up!" ribbon, rising sparks and the coins it earned.
     page.members = {}
-    for i = 1, Bounty.PARTY_SIZE do
+    for i = 1, math.max(Bounty.PARTY_SIZE, Bounty.RAID_SIZE) do
         local m = {}
         m.token = MC.CreateToken(page)
         m.token:EnableMouse(false)
@@ -176,6 +176,9 @@ function Module:RefreshResult()
         if not member.guest then members[#members + 1] = member end
     end
     local n = #members
+    -- A raid's ten stand closer and smaller.
+    local gap, scale = GAP, SCALE
+    if n > Bounty.PARTY_SIZE then gap, scale = 86, 0.6 end
     local order = 0
     self.resultAnims = {}
     for i, m in ipairs(page.members) do
@@ -187,20 +190,21 @@ function Module:RefreshResult()
         m.coins:SetText("")
         for _, s in ipairs(m.sparks) do s:Hide() end
         if shown then
-            local x = W / 2 + (i - (n + 1) / 2) * GAP
-            m.x = x
-            m.token:SetScale(SCALE)
+            local x = W / 2 + (i - (n + 1) / 2) * gap
+            m.x, m.scale = x, scale
+            m.token:SetScale(scale)
+            m.token.name:SetWidth(gap / scale)
             m.token:ClearAllPoints()
-            m.token:SetPoint("CENTER", page, "TOPLEFT", x / SCALE, -PARTY_Y / SCALE)
+            m.token:SetPoint("CENTER", page, "TOPLEFT", x / scale, -PARTY_Y / scale)
             local unit = MC.PreviewUnit(store, member.id)
             unit.side = "ally"
             m.token:SetData(unit)
             m.token.glow:Hide()
             m.token:SetAlpha(member.dead and 0.55 or 1)
             m.ribbon:ClearAllPoints()
-            m.ribbon:SetPoint("BOTTOM", page, "TOPLEFT", x, -(PARTY_Y - MC.TOKEN_H * SCALE / 2 - 4))
+            m.ribbon:SetPoint("BOTTOM", page, "TOPLEFT", x, -(PARTY_Y - MC.TOKEN_H * scale / 2 - 4))
             m.coin:ClearAllPoints()
-            m.coin:SetPoint("TOPRIGHT", page, "TOPLEFT", x - 2, -(PARTY_Y + MC.TOKEN_H * SCALE / 2 + 22))
+            m.coin:SetPoint("TOPRIGHT", page, "TOPLEFT", x - 2, -(PARTY_Y + MC.TOKEN_H * scale / 2 + 22))
             if coins[member.id] then m.coins:SetText("+" .. coins[member.id]) end
             local before = gained[member.id]
             if before then
@@ -340,9 +344,9 @@ function Module:AnimateResult(dt)
             -- A quick jump that settles back.
             local jump = math.sin(math.min(1, t / 0.45) * math.pi) * 18
             local grow = 1 + math.sin(math.min(1, t / 0.45) * math.pi) * 0.12
-            m.token:SetScale(SCALE * grow)
+            m.token:SetScale(m.scale * grow)
             m.token:ClearAllPoints()
-            m.token:SetPoint("CENTER", m.token:GetParent(), "TOPLEFT", m.x / (SCALE * grow), -(PARTY_Y - jump) / (SCALE * grow))
+            m.token:SetPoint("CENTER", m.token:GetParent(), "TOPLEFT", m.x / (m.scale * grow), -(PARTY_Y - jump) / (m.scale * grow))
             m.token.level.text:SetText(math.floor(a.from + (a.to - a.from) * p + 0.5))
             for k, s in ipairs(m.sparks) do
                 local sp = (t * 0.9 + k / #m.sparks) % 1
@@ -354,9 +358,9 @@ function Module:AnimateResult(dt)
             if t > 0.45 then m.ribbon:Show() end
             if t >= 2.2 then
                 a.done = true
-                m.token:SetScale(SCALE)
+                m.token:SetScale(m.scale)
                 m.token:ClearAllPoints()
-                m.token:SetPoint("CENTER", m.token:GetParent(), "TOPLEFT", m.x / SCALE, -PARTY_Y / SCALE)
+                m.token:SetPoint("CENTER", m.token:GetParent(), "TOPLEFT", m.x / m.scale, -PARTY_Y / m.scale)
                 m.token.level.text:SetText(a.to)
             end
         end

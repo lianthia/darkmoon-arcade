@@ -34,7 +34,7 @@ local BOSS_ART = {
 }
 -- "Level 55-60", or "Level 60" for a zone of one level (the raid).
 local function LevelRange(zone)
-    return zone.min == zone.max and L.LEVEL:format(zone.min) or L.MC_LEVEL_RANGE:format(zone.min, zone.max)
+    return zone.min == zone.max and L.MC_LEVEL_ONE:format(zone.min) or L.MC_LEVEL_RANGE:format(zone.min, zone.max)
 end
 
 local BOSS_ICON = {
@@ -570,6 +570,12 @@ function Module:BuildBossPanel(view)
     panel.warning:SetPoint("TOP", panel.normal, "BOTTOMRIGHT", 7, -6)
     panel.warning:SetWidth(214)
     panel.choose = Kit.BigButton(panel, 82, "MC_CHOOSE", function()
+        -- A raid first gathers its ten.
+        local zone = MC.Zones[self.travelZone or ""]
+        if zone and zone.raid then
+            self:ShowView("raid", self.travelZone)
+            return
+        end
         self:StartBounty(self.travelZone, self.travelHeroic or false)
     end)
     Kit.Place(panel.choose, 119, 466, panel)

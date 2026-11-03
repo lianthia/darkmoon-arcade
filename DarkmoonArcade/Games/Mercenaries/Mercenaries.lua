@@ -166,6 +166,7 @@ function Module:Build(container)
     self:BuildWorkshop()
     self:BuildQuests()
     self:BuildJournal()
+    self:BuildRaid()
     self:BuildMap()
     self:BuildBattle()
     if MC.DEV then self:BuildFxGallery() end
@@ -308,6 +309,12 @@ function Module:FinishBattle()
     end
     self:CheckLevels()
     self:Route()
+    -- A raid boss that leaves a blessing (Rend: the Warchief's Blessing).
+    if run.blessingNew then
+        run.blessingNew = nil
+        self.overlay:Show("event", { icon = "Interface\\Icons\\Spell_Arcane_TeleportOrgrimmar",
+            title = L.MC_BLESSING_TITLE, text = L.MC_BLESSING_TEXT })
+    end
 end
 
 local ROLE_ONLY = { caster = "mc_casters", protector = "mc_protectors", fighter = "mc_fighters" }

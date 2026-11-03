@@ -13,8 +13,10 @@
 --   group       wings of one place (the Scarlet Monastery): one portal on the map, the wings picked in
 --               its panel
 --   lootFrom    the loot table it shares (both halves of Stratholme)
---   raid        a raid: more bosses, the spirit healer halfway, no heroic mode; `requires` names the
---               unlock (a general task) that opens it
+--   raid        a raid: a roster of ten, `board` of them fight at once, every boss revives the party,
+--               no heroic mode; `requires` names the unlock (a general task) that opens it. Its bosses
+--               may have a `mount` (fought first, the boss enters when it falls), an `enrage` or a
+--               `summon` (Combat), and a `blessing` follows one of them
 --   power       extra strength of its foes: a fresh party one level below the last boss wins about 47 %
 --               (heroicPower: a geared party at level 60 about 40 %); tools/balance_mercenaries.py
 --               --tune --dungeons (--heroic)
@@ -434,27 +436,37 @@ MC.Zones.lbrs = {
 }
 
 -- Upper Blackrock Spire, the first raid: the Dark Horde's hall above the Lower Spire, opened by the Seal
--- of Ascension (a general task). The spirit healer waits halfway, before Rend.
+-- of Ascension (a general task). Ten mercenaries go in, five fight at once; every boss brings four of
+-- its guard. Rend rides Gyth and jumps down when the drake falls, the Beast grows angrier every turn,
+-- Drakkisath calls his elite guards back. Every fallen boss raises the whole party again.
 MC.Zones.ubrs = {
     id = "ubrs", dungeon = true, raid = true, requires = "ubrs_seal", group = "blackrock", continent = "ek",
     region = "searinggorge", spot = { 0.35, 0.85 },
-    min = 60, max = 60, boss = "drakkisath", tier = 4,
-    power = -0.44, pool = {}, adds = {}, loot = {}, gear = {},
+    min = 60, max = 60, boss = "drakkisath", tier = 4, board = 5,
+    power = 0.35, pool = {}, adds = {}, loot = {}, gear = {},
+    -- After Rend's fall the Warchief's Blessing lasts for the rest of the raid.
+    blessing = { after = "rend", mods = { atkPct = 0.15, hpPct = 0.15 } },
     encounters = {
-        { boss = "emberseer", adds = { "blackhand_incarcerator", "blackhand_incarcerator" }, npcs = { 9816 },
-            trash = { "blackhand_dreadweaver", "blackhand_summoner", "blackhand_veteran", "blackhand_incarcerator" }, waves = 2 },
-        { boss = "solakar", adds = { "rookery_hatcher", "rookery_guardian" }, npcs = { 10264 },
+        { boss = "emberseer", adds = { "blackhand_incarcerator", "blackhand_incarcerator", "blackhand_incarcerator", "blackhand_dreadweaver" },
+            npcs = { 9816 }, waves = 2,
+            trash = { "blackhand_dreadweaver", "blackhand_summoner", "blackhand_veteran", "blackhand_incarcerator" } },
+        { boss = "solakar", adds = { "rookery_hatcher", "rookery_guardian", "rookery_whelp", "rookery_guardian" }, npcs = { 10264 },
             trash = { "rookery_whelp", "rookery_hatcher", "rookery_guardian" } },
-        { boss = "jed", adds = { "blackhand_elite" }, npcs = { 10509 }, chance = 0.35 },
-        { boss = "goraluk", adds = { "blackhand_elite", "blackhand_veteran" }, npcs = { 10899 },
-            trash = { "blackhand_elite", "blackhand_veteran", "blackhand_dragon_handler" } },
-        { boss = "gyth", adds = { "chromatic_whelp", "chromatic_dragonspawn" }, npcs = { 10339 },
-            trash = { "blackhand_dragon_handler", "chromatic_whelp", "chromatic_dragonspawn", "blackhand_elite" }, waves = 2 },
-        { boss = "rend", adds = { "blackhand_elite", "blackhand_dragon_handler" }, npcs = { 10429 }, healer = true },
-        { boss = "beast", adds = { "rage_talon_fire_tongue", "rage_talon_fire_tongue" }, npcs = { 10430 },
-            trash = { "rage_talon_flamescale", "rage_talon_fire_tongue", "blackhand_iron_guard" }, elite = true },
-        { boss = "drakkisath", adds = { "chromatic_elite_guard", "chromatic_elite_guard" }, npcs = { 10363 },
-            trash = { "rage_talon_captain", "rage_talon_dragon_guard", "chromatic_elite_guard", "rage_talon_flamescale" }, waves = 2 },
+        { boss = "jed", adds = { "blackhand_elite", "blackhand_elite", "blackhand_veteran", "blackhand_iron_guard" }, npcs = { 10509 },
+            chance = 0.35 },
+        { boss = "goraluk", adds = { "blackhand_elite", "blackhand_veteran", "blackhand_dragon_handler", "blackhand_summoner" },
+            npcs = { 10899 }, trash = { "blackhand_elite", "blackhand_veteran", "blackhand_dragon_handler" } },
+        { boss = "rend", mount = "gyth", adds = { "chromatic_whelp", "chromatic_dragonspawn", "blackhand_elite", "blackhand_dragon_handler" },
+            npcs = { 10339, 10429 }, waves = 2,
+            trash = { "blackhand_dragon_handler", "chromatic_whelp", "chromatic_dragonspawn", "blackhand_elite" } },
+        { boss = "beast", enrage = { turn = 6, v = 0.15 },
+            adds = { "rage_talon_fire_tongue", "rage_talon_fire_tongue", "rage_talon_flamescale", "rage_talon_fire_tongue" },
+            npcs = { 10430 }, elite = true,
+            trash = { "rage_talon_flamescale", "rage_talon_fire_tongue", "blackhand_iron_guard" } },
+        { boss = "drakkisath", summon = { id = "chromatic_elite_guard", every = 3 },
+            adds = { "chromatic_elite_guard", "rage_talon_dragon_guard", "chromatic_elite_guard", "rage_talon_captain" },
+            npcs = { 10363 }, waves = 2,
+            trash = { "rage_talon_captain", "rage_talon_dragon_guard", "chromatic_elite_guard", "rage_talon_flamescale" } },
     },
 }
 
@@ -679,6 +691,25 @@ for _, id in ipairs(MC.DUNGEON_ORDER) do
     end
 end
 
+-- A raid boss's own way in words (the adventure guide): short for its row, `long` with the blessing.
+function Dungeons.Mechanic(enc, long)
+    local L = ns.L
+    local text
+    if enc.mount then
+        text = L.MC_RAID_MOUNT:format(L["MC_E_" .. enc.mount])
+    elseif enc.enrage then
+        text = L.MC_RAID_ENRAGE:format(enc.enrage.turn, math.floor(enc.enrage.v * 100 + 0.5))
+    elseif enc.summon then
+        text = L.MC_RAID_SUMMON:format(enc.summon.every)
+    end
+    if long and text then
+        for _, zone in pairs(MC.Zones) do
+            if zone.blessing and zone.blessing.after == enc.boss then text = text .. "  " .. L.MC_RAID_BLESSING_NOTE end
+        end
+    end
+    return text
+end
+
 -- How often a boss teaches an unknown formula.
 Dungeons.FORMULA_CHANCE = { normal = 0.12, heroic = 0.25 }
 
@@ -801,20 +832,28 @@ function Dungeons.GenerateMap(rng, store, zone, heroic)
             end
             local node = { type = step.kind, level = level, links = links }
             if step.kind == "fight" then
-                node.enemies = Roll(rng, step.pool, heroic and 4 or 3)
+                node.enemies = Roll(rng, step.pool, zone.board or (heroic and 4 or 3))
             elseif step.kind == "elite" then
                 node.level = math.min(level + 1, Bounty.BossLevel(zone, heroic))
-                node.enemies = Roll(rng, step.pool, 4)
+                node.enemies = Roll(rng, step.pool, zone.board or 4)
             elseif step.kind == "boss" then
                 local enc = zone.encounters[step.encounter]
                 node.boss, node.encounter, node.final = enc.boss, step.encounter, step.final == true
                 node.hidden = step.hidden
                 node.locked = step.hidden ~= nil and not Quests.Unlocked(store, step.hidden) or nil
                 node.enemies = {}
-                if enc.adds[1] then node.enemies[#node.enemies + 1] = enc.adds[1] end
-                node.enemies[#node.enemies + 1] = enc.boss
-                if enc.adds[2] then node.enemies[#node.enemies + 1] = enc.adds[2] end
-                if heroic and enc.adds[3] then node.enemies[#node.enemies + 1] = enc.adds[3] end
+                if zone.raid then
+                    -- A raid boss in the middle of four of its guard; a rider waits for its mount.
+                    for k = 1, 2 do node.enemies[#node.enemies + 1] = enc.adds[k] end
+                    node.enemies[#node.enemies + 1] = enc.mount or enc.boss
+                    for k = 3, 4 do node.enemies[#node.enemies + 1] = enc.adds[k] end
+                    if enc.mount then node.enemies[#node.enemies + 1] = enc.boss end
+                else
+                    if enc.adds[1] then node.enemies[#node.enemies + 1] = enc.adds[1] end
+                    node.enemies[#node.enemies + 1] = enc.boss
+                    if enc.adds[2] then node.enemies[#node.enemies + 1] = enc.adds[2] end
+                    if heroic and enc.adds[3] then node.enemies[#node.enemies + 1] = enc.adds[3] end
+                end
             end
             layers[l][k] = node
         end

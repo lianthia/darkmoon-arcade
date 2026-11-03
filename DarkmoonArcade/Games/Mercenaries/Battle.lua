@@ -268,13 +268,17 @@ function Module:LayoutBattle(b, boards)
         end
     end
     local center = self:BoardCenter()
-    Row(boards.enemy, ENEMY_Y, SPACING, 1, center)
-    Row(boards.ally, ALLY_Y, SPACING, 1, center)
+    -- A raid's five a side stand closer and a little smaller; its long bench smaller still.
+    local wide = MC.Combat.Size(b) > MC.Combat.BOARD
+    local spacing, scale = wide and 124 or SPACING, wide and 0.84 or 1
+    Row(boards.enemy, ENEMY_Y, spacing, scale, center)
+    Row(boards.ally, ALLY_Y, spacing, scale, center)
     local view = self.views.battle
     view.hint:SetPoint("CENTER", view, "TOPLEFT", center, -MID_Y)
     view.banner:SetPoint("CENTER", view, "TOPLEFT", center, -MID_Y)
     if (b.phase == "deploy" or b.phase == "replace") and not self.playing then
-        Row(b.bench.ally, TRAY_Y, BENCH_SPACING, BENCH_SCALE, BENCH_X)
+        local many = #b.bench.ally > 6
+        Row(b.bench.ally, TRAY_Y, many and 72 or BENCH_SPACING, many and 0.52 or BENCH_SCALE, BENCH_X)
     end
     for uid, t in pairs(self.tokens) do
         if not wanted[uid] then

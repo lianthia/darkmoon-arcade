@@ -18,7 +18,7 @@ Further reports:
   --items     a full set of rare items alone: at most about +5 points of win rate on bounties
   --dungeons  every dungeon at boss level - 1: normal 40-55 % in the profile "fresh"
   --heroic    bounties and dungeons at level 60: about 40 % "geared", clearly less "fresh"
-  --raid      raids at level 60: 35-40 % "geared", more for "full" and "rank5" (full at rank V)
+  --raid      raids at level 60 with ten: 25-35 % "geared", more for "full" and "rank5" (full at rank V)
 `--tune --dungeons`, `--tune --heroic` and `--tune --raid` find each zone's `power` / `heroicPower`
 for these targets.
 """
@@ -45,8 +45,8 @@ TARGET = 0.6
 # Dungeons: normal at boss level - 1 in the profile "fresh"; heroic at level 60 in the profile "geared".
 DUNGEON_TARGET, DUNGEON_RANGE = 0.47, (0.4, 0.55)
 HEROIC_TARGET, HEROIC_RANGE = 0.4, (0.35, 0.45)
-# Raids at level 60 in the profile "geared".
-RAID_TARGET, RAID_RANGE = 0.38, (0.33, 0.43)
+# Raids at level 60 in the profile "geared" (ten mercenaries): hard, every boss raises the raid.
+RAID_TARGET, RAID_RANGE = 0.3, (0.25, 0.35)
 # --planner: the bot plays like the debug mode's "Play all turns" (best orders found by simulation).
 USE_PLANNER = "--planner" in sys.argv
 
@@ -174,9 +174,14 @@ function ApplyProfile(store, profile)
     end
 end
 
-function FixedStore(level, profile)
+function FixedStore(level, profile, all)
     local store = {}
     Bounty.Init(store)
+    -- A raid takes ten: then every mercenary is owned at that level.
+    if all then
+        for _, id in ipairs(MC.MERC_ORDER) do Bounty.Entry(store, id).owned = true end
+        for id, entry in pairs(store.mercs) do entry.level = level end
+    end
     for _, id in ipairs(store.party) do store.mercs[id].level = level end
     -- Raids open with their general task.
     store.unlocks = {}
@@ -196,7 +201,7 @@ function WinRate(zone, level, heroic, runs, profile)
     FreezeLevels(true)
     local wins, fights = 0, 0
     for seed = 1, runs do
-        local store = FixedStore(level, profile or PROFILE)
+        local store = FixedStore(level, profile or PROFILE, MC.Zones[zone].raid)
         if heroic then Bounty.ZoneState(store, zone).normal = 1 end
         local won, f = PlayRun(store, zone, heroic, seed * 7919)
         if won then wins = wins + 1 end
@@ -338,7 +343,7 @@ if RAID:
         rates = [g.WinRate(zid, 60, False, RUNS, p)[0] for p in ("fresh", "geared", "full", "rank5")]
         print(f"{zid:15} " + " ".join(f"{r * 100:6.1f}%" for r in rates), flush=True)
         if not RAID_RANGE[0] <= rates[1] <= RAID_RANGE[1]:
-            failures.append(f"{zid}: {rates[1]:.0%} geared (want 33-43 %)")
+            failures.append(f"{zid}: {rates[1]:.0%} geared (want 25-35 %)")
         if not rates[0] < rates[1] < rates[3]:
             failures.append(f"{zid}: fresh < geared < rank V does not hold")
     print("\n".join(failures) if failures else "all raid criteria met")

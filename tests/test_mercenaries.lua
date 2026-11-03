@@ -385,7 +385,7 @@ test("rank V needs coins and the raid cleared with the mercenary", function()
     assert(Combat.RANK_BONUS[5] > Combat.RANK_BONUS[4], "rank V is stronger")
 end)
 
-test("raid: the camp's Seal of Ascension opens Upper Blackrock Spire; no heroic, the healer halfway", function()
+test("raid: the camp's Seal of Ascension opens Upper Blackrock Spire; no heroic, no healer", function()
     local Quests, Dungeons = MC.Quests, MC.Dungeons
     local store = NewStore()
     local zone = MC.Zones.ubrs
@@ -430,20 +430,102 @@ test("raid: the camp's Seal of Ascension opens Upper Blackrock Spire; no heroic,
     -- No heroic, even once cleared.
     Bounty.ZoneState(store, "ubrs").normal = 1
     assert(not Bounty.HeroicUnlocked(store, "ubrs"), "no heroic mode")
-    -- The path: the spirit healer before Rend (halfway), Drakkisath ends it.
+    -- The path: no spirit healer (every boss raises the raid), Drakkisath ends it, five foes a fight.
     local runU = Bounty.NewRun(store, "ubrs", false, 7)
     assert(runU and runU.dungeon == "ubrs")
-    local kinds, healerAt, rendAt = {}, nil, nil
-    for l, row in ipairs(runU.map.layers) do
-        kinds[#kinds + 1] = row[1].type
-        if row[1].type == "healer" then healerAt = l end
-        if row[1].boss == "rend" then rendAt = l end
+    for _, row in ipairs(runU.map.layers) do
+        assert(row[1].type ~= "healer", "no spirit healer")
+        eq(row[1].level, 60, "all at level 60")
+        if row[1].type == "fight" or row[1].type == "elite" then eq(#row[1].enemies, 5, "five foes") end
     end
-    eq(healerAt, rendAt - 1, "the healer before Rend")
-    eq(#kinds - healerAt > 3, true, "and not right before the end")
     local last = runU.map.layers[#runU.map.layers][1]
     assert(last.boss == "drakkisath" and last.final, "Drakkisath ends it")
-    for _, l in ipairs(runU.map.layers) do eq(l[1].level, 60, "all at level 60") end
+    eq(#last.enemies, 5, "the boss and four guards")
+end)
+
+test("raid: ten go, five fight; Rend waits for Gyth, the Beast enrages, Drakkisath calls guards; bosses raise all", function()
+    local store = NewStore()
+    for _, id in ipairs(MC.MERC_ORDER) do
+        local entry = Bounty.Entry(store, id)
+        entry.owned, entry.level = true, 60
+    end
+    store.unlocks = { ubrs_seal = true }
+    -- The roster: the party first, then the highest; a saved roster is kept, owned ones only, ten at most.
+    local roster = Bounty.RaidRoster(store)
+    eq(#roster, Bounty.RAID_SIZE)
+    for i, id in ipairs(store.party) do eq(roster[i], id, "the party first") end
+    local chosen = Bounty.SetRaidRoster(store, { "thrall", "thrall", "jaina", "nobody" })
+    eq(#chosen, 2, "each once, owned only")
+    eq(Bounty.RaidRoster(store)[1], "thrall", "the saved roster comes first")
+    eq(#Bounty.RaidRoster(store), Bounty.RAID_SIZE, "filled up to ten")
+    local run = Bounty.NewRun(store, "ubrs", false, 3)
+    eq(#run.party, Bounty.RAID_SIZE, "ten go in")
+    -- The Rend fight: Gyth on the board with four guards, Rend waits off it until Gyth falls.
+    local rendNode
+    for l, row in ipairs(run.map.layers) do
+        if row[1].boss == "rend" then rendNode, run.layer, run.index = row[1], l, 1 end
+    end
+    assert(rendNode, "Rend's stop")
+    eq(rendNode.enemies[3], "gyth", "Gyth in the middle")
+    eq(rendNode.enemies[6], "rend", "Rend after")
+    run.phase = "map"
+    run.layer = run.layer - 1
+    assert(Bounty.Travel(store, run, run.layer + 1, 1))
+    local b = run.battle
+    eq(Combat.Size(b), 5)
+    eq(#b.bench.ally, 10, "all ten can fight")
+    eq(#b.board.enemy, 5)
+    eq(b.units[b.bench.enemy[1]].id, "rend", "Rend waits")
+    for _ = 1, 5 do Combat.Deploy(b, b.bench.ally[1]) end
+    eq(b.phase, "command", "five on the board")
+    -- An add falls: Rend still waits; Gyth falls: Rend comes down.
+    local function Kill(id)
+        for _, uid in ipairs(b.board.enemy) do
+            local u = b.units[uid]
+            if u.id == id and not u.dead then u.dead, u.hp = true, 0 return end
+        end
+    end
+    Kill(rendNode.enemies[1])
+    for _, uid in ipairs(b.board.ally) do b.units[uid].choice = { slot = 1 } end
+    Combat.AutoChoose(b)
+    Combat.Resolve(b)
+    local onBoard = {}
+    for _, uid in ipairs(b.board.enemy) do onBoard[b.units[uid].id] = true end
+    assert(not onBoard.rend, "Rend waits while Gyth stands")
+    Kill("gyth")
+    Combat.AutoChoose(b)
+    Combat.Resolve(b)
+    onBoard = {}
+    for _, uid in ipairs(b.board.enemy) do onBoard[b.units[uid].id] = true end
+    assert(onBoard.rend, "Rend comes down once Gyth fell")
+    -- Won: everyone stands again and the Warchief's Blessing follows.
+    run.party[2].dead = true
+    run.battle = { phase = "won", units = { x = { side = "ally", pidx = 3, dead = true } } }
+    Bounty.AfterBattle(store, run)
+    eq(#Bounty.DeadMembers(run), 0, "a fallen boss raises the raid")
+    assert(run.blessed and run.blessingNew, "the Warchief's Blessing")
+    local spec = Bounty.MercSpec(store, run.party[1].id, run.party[1], run)
+    assert((spec.mods.atkPct or 0) >= 0.15 and (spec.mods.hpPct or 0) >= 0.15, "blessed")
+    -- The Beast: more attack every turn from its enrage turn on.
+    local beast = Combat.New({ Spec("a", "fighter", 60) }, { (function()
+        local s = Bounty.EnemySpec("beast", 60, {})
+        s.enrage = { turn = 1, v = 0.15 }
+        return s
+    end)() }, 1, 5)
+    Combat.Deploy(beast, beast.bench.ally[1])
+    Combat.AutoChoose(beast)
+    Combat.Resolve(beast)
+    local u = beast.units[beast.board.enemy[1]]
+    eq(#u.buffs > 0 and u.buffs[#u.buffs].k, "atkPct", "enraged")
+    -- Drakkisath: a guard comes back while he stands and there is room.
+    local guard = Bounty.EnemySpec("chromatic_elite_guard", 60, {})
+    local boss = Bounty.EnemySpec("drakkisath", 60, {})
+    boss.summon = { spec = guard, every = 1 }
+    local d = Combat.New({ Spec("a", "protector", 60, nil, { hp = 100000 }) }, { boss }, 1, 5)
+    Combat.Deploy(d, d.bench.ally[1])
+    Combat.AutoChoose(d)
+    Combat.Resolve(d)
+    eq(#d.board.enemy, 2, "a guard called")
 end)
 
 test("a full bounty run reaches an end", function()

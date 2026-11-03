@@ -383,7 +383,7 @@ function MC.UnitTooltip(owner, u, reference)
     local name = Describe.UnitName(u.kind == "elite" and "enemy" or (u.kind == "boss" and "enemy" or u.kind), u.id)
     GameTooltip:SetText(name, 1, 0.82, 0)
     local roleColor = MC.RoleColor(u.role)
-    local levelText = L.LEVEL:format(u.level)
+    local levelText = L.MC_LEVEL_ONE:format(u.level)
     if reference and u.level - reference >= 10 then levelText = L.MC_LEVEL_SKULL end
     GameTooltip:AddLine(levelText .. "  ·  " .. Describe.RoleName(u.role), roleColor[1], roleColor[2], roleColor[3])
     local circle = Describe.RoleCircle(u.role)

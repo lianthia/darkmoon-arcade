@@ -13,6 +13,8 @@ local Bounty = {}
 MC.Bounty = Bounty
 
 Bounty.PARTY_SIZE = 6
+-- A raid takes ten: the party and four more.
+Bounty.RAID_SIZE = 10
 Bounty.HEROIC_LEVEL = 60
 Bounty.RECRUIT_COST = 50
 Bounty.RANK_COST = { [2] = 30, [3] = 80, [4] = 150, [5] = 250 }
@@ -165,6 +167,44 @@ function Bounty.SetGear(store, id, index)
     return true
 end
 
+-- The raid's roster (store.raid): saved apart from the party; the party comes first, then the
+-- mercenaries chosen for the raid, then the highest owned ones, up to ten.
+function Bounty.RaidRoster(store)
+    local out, seen = {}, {}
+    local function Add(id)
+        local entry = store.mercs[id]
+        if MC.Mercs[id] and entry and entry.owned and not seen[id] and #out < Bounty.RAID_SIZE then
+            out[#out + 1] = id
+            seen[id] = true
+        end
+    end
+    for _, id in ipairs(store.raid or store.party or {}) do Add(id) end
+    for _, id in ipairs(store.party or {}) do Add(id) end
+    local rest = {}
+    for _, id in ipairs(MC.MERC_ORDER) do
+        if store.mercs[id] and store.mercs[id].owned and not seen[id] then rest[#rest + 1] = id end
+    end
+    table.sort(rest, function(a, b)
+        if store.mercs[a].level ~= store.mercs[b].level then return store.mercs[a].level > store.mercs[b].level end
+        return a < b
+    end)
+    for _, id in ipairs(rest) do Add(id) end
+    return out
+end
+
+-- Sets the raid's roster (owned mercenaries, each once, at most ten).
+function Bounty.SetRaidRoster(store, ids)
+    local out, seen = {}, {}
+    for _, id in ipairs(ids) do
+        if MC.Mercs[id] and store.mercs[id] and store.mercs[id].owned and not seen[id] and #out < Bounty.RAID_SIZE then
+            out[#out + 1] = id
+            seen[id] = true
+        end
+    end
+    store.raid = out
+    return out
+end
+
 -- Swaps a party slot; returns false for mercenaries not owned or already in the party.
 function Bounty.SetPartySlot(store, slot, id)
     local entry = store.mercs[id]
@@ -206,6 +246,8 @@ function Bounty.MercSpec(store, id, member, run)
     if run then
         local tier = run.boons[def.role] or 0
         if tier > 0 then AddMods(mods, { atkPct = 0.1 * tier, hpPct = 0.1 * tier }) end
+        local blessing = run.blessed and MC.Zones[run.zone].blessing
+        if blessing then AddMods(mods, blessing.mods) end
         if (run.curse or 0) > 0 then AddMods(mods, { hpPct = -MC.CURSE_HEALTH * run.curse }) end
     end
     local abilities = {}
@@ -386,7 +428,7 @@ function Bounty.NewRun(store, zoneId, heroic, seed)
     }
     -- Levels at the start, so the result can show every level gained on the way.
     run.startLevels = {}
-    for _, id in ipairs(store.party) do
+    for _, id in ipairs(zone.raid and Bounty.RaidRoster(store) or store.party) do
         run.party[#run.party + 1] = { id = id, dead = false, treasures = {} }
         run.startLevels[id] = Bounty.Entry(store, id).level
     end
@@ -452,8 +494,21 @@ local function StartBattle(store, run, node)
     local power = run.heroic and zone.heroicPower or zone.power
     local opts = { elite = node.type == "elite", heroic = run.heroic, sabotage = run.sabotage, power = power }
     for i, id in ipairs(node.enemies) do enemies[i] = Bounty.EnemySpec(id, node.level, opts) end
+    -- A raid boss's own ways: a rider waiting for its mount, an enrage, guards it calls back.
+    local enc = node.encounter and zone.raid and zone.encounters[node.encounter]
+    if enc then
+        for _, spec in ipairs(enemies) do
+            if spec.id == enc.boss then
+                spec.after = enc.mount
+                spec.enrage = enc.enrage
+                if enc.summon then
+                    spec.summon = { spec = Bounty.EnemySpec(enc.summon.id, node.level, opts), every = enc.summon.every }
+                end
+            end
+        end
+    end
     run.sabotage = nil
-    run.battle = Combat.New(allies, enemies, Random(run, 1000000000))
+    run.battle = Combat.New(allies, enemies, Random(run, 1000000000), zone.board)
     run.phase = "battle"
 end
 
@@ -723,6 +778,14 @@ function Bounty.AfterBattle(store, run)
     if node.type == "boss" then
         -- A dungeon's bosses drop loot; only its last one ends the run, the others offer treasures.
         if run.dungeon then MC.Dungeons.Loot(store, run, node) end
+        local zone = MC.Zones[run.zone]
+        if zone.raid then
+            -- A fallen raid boss raises the whole party; one of them leaves a blessing.
+            for _, member in ipairs(run.party) do member.dead = false end
+            if zone.blessing and zone.blessing.after == node.boss and not run.blessed then
+                run.blessed, run.blessingNew = true, true
+            end
+        end
         if node.final == false then
             OfferTreasure(store, run, true)
         else

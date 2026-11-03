@@ -349,6 +349,43 @@ if Want("dungeon") then
     mc:ShowView("camp")
     MC.DEV = false
 end
+if Want("raid") then
+    -- The raid: assembling the ten, its map with ten in the party, a fight of five against five.
+    MC.DEV = true
+    for _, id in ipairs(MC.MERC_ORDER) do
+        local entry = MC.Bounty.Entry(store, id)
+        entry.owned, entry.level = true, 60
+    end
+    store.unlocks = { ubrs_seal = true }
+    mc.travelContinent, mc.travelRegion, mc.travelZone = "ek", 2, "ubrs"
+    mc:ShowView("travel")
+    Click(mc.views.travel.boss.choose)
+    Snap("raid_roster")
+    Click(mc.views.raid.go)
+    Tick(0.5)
+    Snap("raid_map")
+    local raidRun = store.run
+    local first = MC.Bounty.Choices(raidRun)[1]
+    mc:Travel(first.layer, first.index)
+    mc:Route()
+    Tick(0.5)
+    Snap("raid_deploy")
+    local b = raidRun.battle
+    for _ = 1, 5 do MC.Combat.Deploy(b, b.bench.ally[1]) end
+    mc:RefreshBattle()
+    Tick(0.5)
+    Snap("raid_battle")
+    MC.Bounty.Abandon(store, raidRun)
+    store.run = nil
+    for _, id in ipairs(MC.MERC_ORDER) do
+        store.mercs[id].owned, store.mercs[id].level = false, 1
+    end
+    for _, id in ipairs(MC.STARTERS) do store.mercs[id].owned = true end
+    store.unlocks, store.raid = nil, nil
+    mc.travelZone, mc.travelRegion = nil, nil
+    mc:ShowView("camp")
+    MC.DEV = false
+end
 mc:ShowView("collection")
 if Want("collection") then
     Snap("collection")

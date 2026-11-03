@@ -1,4 +1,4 @@
--- Mercenaries combat: two parties of three on the board, everyone picks an ability each turn and
+-- Mercenaries combat: two parties of three (in a raid more) on the board, everyone picks an ability each turn and
 -- all of them resolve by speed, lowest first. Pure logic on plain tables, so a battle can sit in the
 -- saved variables between flights and continue exactly where it stopped.
 
@@ -12,6 +12,11 @@ MC.Combat = Combat
 -- Each role deals double damage to the role it beats.
 Combat.BEATS = { protector = "fighter", fighter = "caster", caster = "protector" }
 Combat.BOARD = 3
+
+-- How many units of each side stand on the board in this battle (a raid has more).
+function Combat.Size(b)
+    return b.size or Combat.BOARD
+end
 -- From this turn on everyone takes growing damage, so no battle can stall forever.
 Combat.FATIGUE_TURN = 30
 
@@ -105,7 +110,9 @@ end
 Combat.Opponent = Opponent
 
 -- spec: { id, kind, role, race, level, atk, hp (both at level 60), abilities = { {id, rank} },
---         mods = { ... }, display, npc }
+--         mods = { ... }, display, npc }; raid bosses also: after (waits off the board until the
+--         unit with this id has fallen), enrage = { turn, v } (more attack every turn from `turn`),
+--         summon = { spec, every } (calls another of `spec` every `every` turns while it stands)
 local function NewUnit(b, side, spec)
     b.nextUid = b.nextUid + 1
     local factor = Combat.LevelFactor(spec.level)
@@ -129,6 +136,9 @@ local function NewUnit(b, side, spec)
         st = {},
         buffs = {},
         dots = {},
+        after = spec.after,
+        enrage = spec.enrage,
+        summon = spec.summon,
     }
     for i, entry in ipairs(spec.abilities) do
         u.abilities[i] = { id = entry.id or entry[1], rank = entry.rank or entry[2] or 1, cd = 0 }
@@ -145,9 +155,10 @@ function Combat.Unit(b, uid)
 end
 
 -- A new battle: the allies wait on the bench until they are deployed, the enemies start on the
--- board with any extras waiting in reserve.
-function Combat.New(allySpecs, enemySpecs, seed)
+-- board with any extras waiting in reserve. `size`: units per side on the board (default 3).
+function Combat.New(allySpecs, enemySpecs, seed, size)
     local b = {
+        size = size and size ~= Combat.BOARD and size or nil,
         rng = Combat.Seed(seed),
         turn = 1,
         phase = "deploy",
@@ -162,11 +173,12 @@ function Combat.New(allySpecs, enemySpecs, seed)
         local u = NewUnit(b, "ally", spec)
         b.bench.ally[#b.bench.ally + 1] = u.uid
     end
-    for i, spec in ipairs(enemySpecs) do
+    for _, spec in ipairs(enemySpecs) do
         local u = NewUnit(b, "enemy", spec)
-        local list = i <= Combat.BOARD and b.board.enemy or b.bench.enemy
+        local onBoard = #b.board.enemy < Combat.Size(b) and not spec.after
+        local list = onBoard and b.board.enemy or b.bench.enemy
         list[#list + 1] = u.uid
-        if i <= Combat.BOARD then Combat.OnEnter(b, u) end
+        if onBoard then Combat.OnEnter(b, u) end
     end
     return b
 end
@@ -185,13 +197,13 @@ end
 
 -- How many allies the player still has to put on the board.
 function Combat.DeploySlots(b)
-    return math.min(Combat.BOARD - #b.board.ally, #b.bench.ally)
+    return math.min(Combat.Size(b) - #b.board.ally, #b.bench.ally)
 end
 
 function Combat.Deploy(b, uid)
     if b.phase ~= "deploy" and b.phase ~= "replace" then return false end
     for i, id in ipairs(b.bench.ally) do
-        if id == uid and #b.board.ally < Combat.BOARD then
+        if id == uid and #b.board.ally < Combat.Size(b) then
             table.remove(b.bench.ally, i)
             b.board.ally[#b.board.ally + 1] = uid
             Combat.OnEnter(b, b.units[uid])
@@ -757,11 +769,36 @@ local function EndOfTurn(b)
     end
     Compact(b, "ally")
     Compact(b, "enemy")
-    while #b.board.enemy < Combat.BOARD and #b.bench.enemy > 0 do
-        local uid = table.remove(b.bench.enemy, 1)
-        b.board.enemy[#b.board.enemy + 1] = uid
-        Combat.OnEnter(b, b.units[uid])
-        Event(b, { t = "enter", dst = uid })
+    -- Raid bosses: an enrage that grows every turn, guards called back while the boss stands.
+    for _, u in ipairs(Alive(b, "enemy")) do
+        if u.enrage and b.turn >= u.enrage.turn then
+            u.buffs[#u.buffs + 1] = { k = "atkPct", v = u.enrage.v }
+            Event(b, { t = "buff", dst = u.uid, k = "atkPct", v = u.enrage.v })
+        end
+        if u.summon and b.turn % u.summon.every == 0 and #b.board.enemy + #b.bench.enemy < Combat.Size(b) then
+            local called = NewUnit(b, "enemy", u.summon.spec)
+            b.bench.enemy[#b.bench.enemy + 1] = called.uid
+        end
+    end
+    -- Into free places: the first waiting foe whose `after` has fallen (a rider whose mount died).
+    local function Free(u)
+        if not u.after then return true end
+        for _, other in ipairs(Alive(b, "enemy")) do
+            if other.id == u.after then return false end
+        end
+        return true
+    end
+    local k = 1
+    while #b.board.enemy < Combat.Size(b) and k <= #b.bench.enemy do
+        local uid = b.bench.enemy[k]
+        if Free(b.units[uid]) then
+            table.remove(b.bench.enemy, k)
+            b.board.enemy[#b.board.enemy + 1] = uid
+            Combat.OnEnter(b, b.units[uid])
+            Event(b, { t = "enter", dst = uid })
+        else
+            k = k + 1
+        end
     end
     b.turn = b.turn + 1
     local allyLeft = #b.board.ally + #b.bench.ally

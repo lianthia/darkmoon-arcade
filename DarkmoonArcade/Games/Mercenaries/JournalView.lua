@@ -171,7 +171,7 @@ function Module:RefreshJournal()
             b.coin:SetMetal(enc.hidden and "gold" or "silver")
             b.name:SetText(known and L["MC_E_" .. enc.boss] or "???")
             b.sub:SetText(enc.hidden and L.MC_JOURNAL_HIDDEN
-                or enc.chance and L.MC_JOURNAL_RARE:format(math.floor(enc.chance * 100 + 0.5)) or "")
+                or enc.chance and L.MC_JOURNAL_RARE:format(math.floor(enc.chance * 100 + 0.5)) or Dungeons.Mechanic(enc) or "")
             b.shade:SetColorTexture(1, 0.85, 0.5, i == self.journalEncounter and 0.2 or 0.06)
         end
     end
@@ -185,7 +185,7 @@ function Module:RefreshJournal()
         view.bossText:SetText(L.MC_JOURNAL_HIDDEN_HINT:format(merc and Describe.MercName(merc) or "?"))
     else
         view.bossText:SetText(enc.hidden and L.MC_JOURNAL_HIDDEN
-            or enc.chance and L.MC_JOURNAL_RARE:format(math.floor(enc.chance * 100 + 0.5)) or "")
+            or enc.chance and L.MC_JOURNAL_RARE:format(math.floor(enc.chance * 100 + 0.5)) or Dungeons.Mechanic(enc, true) or "")
     end
     local loot = known and Dungeons.LootOf(id, i) or {}
     table.sort(loot, function(a, b) return a[2] > b[2] end)

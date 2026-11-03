@@ -144,7 +144,8 @@ function Module:BuildMap()
     local partyTitle = Kit.Plaque(party, 176, "MC_PARTY", 14)
     partyTitle:SetPoint("TOP", 0, 6)
     self.partyRows = {}
-    for i = 1, Bounty.PARTY_SIZE + 1 do
+    -- A raid's ten fit in tighter rows (LayoutPartyRows).
+    for i = 1, math.max(Bounty.PARTY_SIZE + 1, Bounty.RAID_SIZE) do
         local row = CreateFrame("Frame", nil, party)
         row:SetSize(MAP_LEFT - 34, 60)
         row:SetPoint("TOP", 0, -46 - (i - 1) * 58)
@@ -152,6 +153,7 @@ function Module:BuildMap()
         local bg = row:CreateTexture(nil, "BACKGROUND")
         bg:SetPoint("TOPLEFT", 0, -2)
         bg:SetPoint("BOTTOMRIGHT", 0, 16)
+        row.bg = bg
         Kit.Atlas(bg, "GarrMission_FollowerListButton", MC.Tex("plate"))
         row.level = MC.Badge(row, "level", 28, 11)
         row.level:SetPoint("LEFT", 4, 8)
@@ -406,6 +408,7 @@ function Module:RefreshMap()
 
     -- Party, boons and curse.
     local reference = math.floor(Bounty.PartyLevel(store) + 0.5)
+    self:LayoutPartyRows(#run.party > Bounty.PARTY_SIZE + 1)
     for i, row in ipairs(self.partyRows) do
         local member = run.party[i]
         row:SetShown(member ~= nil)
@@ -431,10 +434,31 @@ function Module:RefreshMap()
     if run.curse > 0 then effects[#effects + 1] = "|cffc060ff" .. L.MC_CURSE_LINE:format(run.curse * MC.CURSE_HEALTH * 100) .. "|r" end
     if run.sabotage then effects[#effects + 1] = L.MC_SABOTAGE_LINE end
     if run.portal then effects[#effects + 1] = L.MC_PORTAL_LINE end
+    if run.blessed then effects[#effects + 1] = "|cffffd100" .. L.MC_BLESSING_LINE .. "|r" end
     view.effects:SetText(table.concat(effects, "\n"))
 
     self.partyReference = reference
     self:ShowNodeInfo()
+end
+
+-- Party rows: 58 pixels apart, or 40 for a raid's ten (smaller treasure icons, the line closer).
+function Module:LayoutPartyRows(compact)
+    if self.partyCompact == compact then return end
+    self.partyCompact = compact
+    local step, h, icon = compact and 40 or 58, compact and 42 or 60, compact and 10 or 14
+    for i, row in ipairs(self.partyRows) do
+        row:SetHeight(h)
+        row:ClearAllPoints()
+        row:SetPoint("TOP", 0, -46 - (i - 1) * step)
+        row.bg:SetPoint("BOTTOMRIGHT", 0, compact and 12 or 16)
+        row.level:SetPoint("LEFT", 4, compact and 6 or 8)
+        row.role:SetPoint("RIGHT", -6, compact and 6 or 8)
+        for k, tex in ipairs(row.treasures) do
+            tex:SetSize(icon, icon)
+            tex:ClearAllPoints()
+            tex:SetPoint("BOTTOMLEFT", (compact and 34 or 6) + (k - 1) * (icon + 2), 0)
+        end
+    end
 end
 
 function Module:SelectNode(layer, index, clicked)
@@ -483,7 +507,7 @@ function Module:ShowNodeInfo(layer, index)
         view.infoName.text:SetText(kind == "boss" and L["MC_E_" .. lead] or L["MC_NODE_" .. kind:upper()])
         local r, g, b = MC.ConColor(node.level, reference)
         view.infoLevel:SetText(("|cff%02x%02x%02x%s|r"):format(r * 255, g * 255, b * 255,
-            node.level - reference >= 10 and L.MC_LEVEL_SKULL or L.LEVEL:format(node.level)))
+            node.level - reference >= 10 and L.MC_LEVEL_SKULL or L.MC_LEVEL_ONE:format(node.level)))
         for _, id in ipairs(node.enemies) do
             lines[#lines + 1] = ("|T%s:14:14|t %s"):format(MC.RoleTex("role_", MC.Enemies[id].role), L["MC_E_" .. id])
         end
@@ -530,7 +554,7 @@ function Module:PartyTooltip(owner, i)
     if not member then return end
     GameTooltip:SetOwner(owner, "ANCHOR_RIGHT")
     GameTooltip:SetText(Describe.MercName(member.id), 1, 0.82, 0)
-    GameTooltip:AddLine(L.LEVEL:format(Bounty.MemberEntry(store, member).level) .. "  ·  " .. Describe.RoleName(MC.Mercs[member.id].role), 0.8, 0.8, 0.8)
+    GameTooltip:AddLine(L.MC_LEVEL_ONE:format(Bounty.MemberEntry(store, member).level) .. "  ·  " .. Describe.RoleName(MC.Mercs[member.id].role), 0.8, 0.8, 0.8)
     GameTooltip:AddLine(Describe.RoleCircle(MC.Mercs[member.id].role), 0.7, 0.7, 0.7, true)
     if member.guest then GameTooltip:AddLine(L.MC_GUEST_INFO, 0.5, 0.75, 1, true) end
     if member.dead then GameTooltip:AddLine(L.MC_FALLEN, 1, 0.3, 0.3) end

@@ -95,5 +95,6 @@ Games\Mercenaries\Quests.lua
 Games\Mercenaries\Dungeons.lua
 Games\Mercenaries\QuestsView.lua
 Games\Mercenaries\JournalView.lua
+Games\Mercenaries\RaidView.lua
 
 Main.lua
