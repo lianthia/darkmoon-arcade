@@ -17,7 +17,8 @@
 --               `requires` names the unlock (a general task) that opens it. Heroic raids drop their
 --               loot half as often again (Dungeons.RAID_HEROIC_LOOT). Its bosses
 --               may have a `mount` (fought first, the boss enters when it falls), an `enrage` or a
---               `summon` (Combat), and a `blessing` follows one of them
+--               `summon` (Combat), and a `blessing` follows one of them; `aggro`: the sound kit of its
+--               entrance (the creature's aggro sound from the client, Gyth's roar for Rend)
 --   power       extra strength of its foes: a fresh party one level below the last boss wins about 47 %
 --               (heroicPower: a geared party at level 60 about 40 %); tools/balance_mercenaries.py
 --               --tune --dungeons (--heroic)
@@ -449,18 +450,18 @@ MC.Zones.ubrs = {
     -- After Rend's fall the Warchief's Blessing lasts for the rest of the raid.
     blessing = { after = "rend", mods = { atkPct = 0.15, hpPct = 0.15 } },
     encounters = {
-        { boss = "emberseer", adds = {}, npcs = { 9816 }, waves = 2,
+        { boss = "emberseer", aggro = 1288, adds = {}, npcs = { 9816 }, waves = 2,
             trash = { "blackhand_incarcerator", "blackhand_dreadweaver", "blackhand_summoner", "blackhand_veteran" } },
-        { boss = "solakar", adds = {}, npcs = { 10264 }, waves = 2,
+        { boss = "solakar", aggro = 367, adds = {}, npcs = { 10264 }, waves = 2,
             trash = { "rookery_whelp", "rookery_hatcher", "rookery_guardian" } },
-        { boss = "jed", adds = { "blackhand_elite", "blackhand_elite" }, npcs = { 10509 }, chance = 0.35 },
-        { boss = "goraluk", adds = {}, npcs = { 10899 },
+        { boss = "jed", aggro = 1319, adds = { "blackhand_elite", "blackhand_elite" }, npcs = { 10509 }, chance = 0.35 },
+        { boss = "goraluk", aggro = 1319, adds = {}, npcs = { 10899 },
             trash = { "blackhand_elite", "blackhand_veteran", "blackhand_dragon_handler" } },
-        { boss = "rend", mount = "gyth", adds = {}, npcs = { 10339, 10429 }, waves = 2,
+        { boss = "rend", aggro = 4065, mount = "gyth", adds = {}, npcs = { 10339, 10429 }, waves = 2,
             trash = { "blackhand_dragon_handler", "chromatic_whelp", "chromatic_dragonspawn", "blackhand_elite" } },
-        { boss = "beast", enrage = { turn = 6, v = 0.15 }, adds = {}, npcs = { 10430 }, elite = true,
+        { boss = "beast", aggro = 6819, enrage = { turn = 6, v = 0.15 }, adds = {}, npcs = { 10430 }, elite = true,
             trash = { "rage_talon_flamescale", "rage_talon_fire_tongue", "blackhand_iron_guard" } },
-        { boss = "drakkisath", summon = { id = "chromatic_elite_guard", every = 3 },
+        { boss = "drakkisath", aggro = 368, summon = { id = "chromatic_elite_guard", every = 3 },
             adds = { "chromatic_elite_guard", "chromatic_elite_guard" }, npcs = { 10363 }, waves = 2,
             trash = { "rage_talon_captain", "rage_talon_dragon_guard", "chromatic_elite_guard", "rage_talon_flamescale" } },
     },

@@ -274,10 +274,15 @@ function Module:Travel(layer, index)
     end
     self:Route()
     if event and self:Store().run.phase == "map" then self.overlay:Show("event", event) end
-    -- A raid boss makes its entrance: its portrait, its words and the raid warning sound.
+    -- A raid boss makes its entrance: its portrait, its words and its own sound.
     if node.type == "boss" and run.phase == "battle" and MC.Zones[run.zone].raid then
         local enc = MC.Zones[run.zone].encounters[node.encounter]
-        if SOUNDKIT.RAID_WARNING then PlaySound(SOUNDKIT.RAID_WARNING) end
+        -- The boss's own aggro sound (the raid warning where it has none), unless sound is off.
+        if not ns.db or ns.db.sound then
+            if not (enc.aggro and pcall(PlaySound, enc.aggro, "SFX")) and SOUNDKIT.RAID_WARNING then
+                PlaySound(SOUNDKIT.RAID_WARNING, "SFX")
+            end
+        end
         self.overlay:Show("event", { creature = enc.mount or enc.boss, icon = "Interface\\Icons\\INV_Misc_Head_Dragon_Black",
             title = L["MC_E_" .. enc.boss], text = L.MC_RAID_INTRO:format(L["MC_RAID_INTRO_" .. enc.boss]) })
     end
