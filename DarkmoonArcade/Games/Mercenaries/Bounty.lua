@@ -185,6 +185,17 @@ function Bounty.RaidRoster(store)
     return out
 end
 
+-- A raid's progress: bosses fallen and bosses on its path (a rare one counts only when it showed up).
+function Bounty.RaidProgress(run)
+    local total = 0
+    for _, row in ipairs(run.map.layers) do
+        for _, node in ipairs(row) do
+            if node.type == "boss" and not node.locked then total = total + 1 end
+        end
+    end
+    return run.bossesDown or 0, total
+end
+
 -- Whether a mercenary is in the party (and so in every raid, not to be taken out).
 function Bounty.InParty(store, id)
     for _, other in ipairs(store.party or {}) do
@@ -414,9 +425,8 @@ function Bounty.ZoneState(store, zoneId)
     return store.zones[zoneId]
 end
 
--- Heroic opens once the zone was cleared; raids have no heroic mode.
+-- Heroic opens once the zone was cleared (raids too).
 function Bounty.HeroicUnlocked(store, zoneId)
-    if MC.Zones[zoneId] and MC.Zones[zoneId].raid then return false end
     return Bounty.ZoneState(store, zoneId).normal > 0
 end
 
@@ -789,6 +799,7 @@ function Bounty.AfterBattle(store, run)
         if run.dungeon then MC.Dungeons.Loot(store, run, node) end
         local zone = MC.Zones[run.zone]
         if zone.raid then
+            run.bossesDown = (run.bossesDown or 0) + 1
             -- A fallen raid boss raises the whole party; one of them leaves a blessing.
             for _, member in ipairs(run.party) do member.dead = false end
             if zone.blessing and zone.blessing.after == node.boss and not run.blessed then

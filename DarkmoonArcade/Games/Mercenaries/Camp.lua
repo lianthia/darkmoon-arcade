@@ -55,6 +55,15 @@ local BOSS_ICON = {
 MC.BOSS_ART, MC.BOSS_ICON = BOSS_ART, BOSS_ICON
 -- A dungeon's entrance on the travel map: a portal (as on WoW's maps).
 local DUNGEON_ICON = "Spell_Arcane_PortalStormWind"
+-- A portal that also leads into a raid (Blackrock Mountain) shows a black dragon instead.
+local RAID_ICON = "INV_Misc_Head_Dragon_Black"
+
+local function HasRaid(zone)
+    for _, did in ipairs(MC.Dungeons.Wings(zone.id)) do
+        if MC.Zones[did].raid then return true end
+    end
+    return false
+end
 
 -- Regions of each continent the travel point zooms into.
 local REGIONS = {
@@ -462,7 +471,8 @@ function Module:BuildTravel()
             GameTooltip:AddLine(LevelRange(zone), 1, 1, 1)
             GameTooltip:AddLine(L["MC_E_" .. zone.boss], 0.8, 0.8, 0.8)
             if zone.dungeon then
-                GameTooltip:AddLine(L.MC_DUNGEON, 0.4, 0.7, 1)
+                local raid = HasRaid(zone)
+                GameTooltip:AddLine(raid and L.MC_DUNGEON_AND_RAID or L.MC_DUNGEON, raid and 1 or 0.4, raid and 0.5 or 0.7, raid and 0.2 or 1)
             end
             GameTooltip:Show()
         end)
@@ -560,7 +570,7 @@ function Module:BuildBossPanel(view)
         if not b:IsEnabled() then
             local zone = MC.Zones[self.travelZone or ""]
             GameTooltip:SetOwner(b, "ANCHOR_TOP")
-            GameTooltip:SetText(zone and zone.raid and L.MC_RAID_NO_HEROIC or L.MC_HEROIC_LOCKED, 1, 1, 1, 1, true)
+            GameTooltip:SetText(L.MC_HEROIC_LOCKED, 1, 1, 1, 1, true)
             GameTooltip:Show()
         end
     end)
@@ -573,6 +583,7 @@ function Module:BuildBossPanel(view)
         -- A raid first gathers its ten.
         local zone = MC.Zones[self.travelZone or ""]
         if zone and zone.raid then
+            self.raidHeroic = self.travelHeroic or false
             self:ShowView("raid", self.travelZone)
             return
         end
@@ -748,7 +759,7 @@ function Module:RefreshTravel(resetView)
             local pin = view.pins[used]
             pin.zone, pin.region = did, self.travelRegion
             local state = Bounty.ZoneState(store, did)
-            pin:SetIcon("Interface\\Icons\\" .. DUNGEON_ICON)
+            pin:SetIcon("Interface\\Icons\\" .. (HasRaid(dungeon) and RAID_ICON or DUNGEON_ICON))
             pin.icon:SetDesaturated(false)
             pin:SetMetal(state.heroic > 0 and "gold" or (state.normal > 0 and "silver" or "bronze"))
             pin.check:SetShown(state.normal > 0)

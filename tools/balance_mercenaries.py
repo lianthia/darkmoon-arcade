@@ -18,7 +18,8 @@ Further reports:
   --items     a full set of rare items alone: at most about +5 points of win rate on bounties
   --dungeons  every dungeon at boss level - 1: normal 40-55 % in the profile "fresh"
   --heroic    bounties and dungeons at level 60: about 40 % "geared", clearly less "fresh"
-  --raid      raids at level 60 with ten: 25-35 % "geared", more for "full" and "rank5" (full at rank V)
+  --raid      raids at level 60 with ten: 10-20 % "geared", more for "full" and "rank5" (full at rank V);
+              with --heroic: 10-20 % "full" (harder than normal at every step)
 `--tune --dungeons`, `--tune --heroic` and `--tune --raid` find each zone's `power` / `heroicPower`
 for these targets.
 """
@@ -46,7 +47,9 @@ TARGET = 0.6
 DUNGEON_TARGET, DUNGEON_RANGE = 0.47, (0.4, 0.55)
 HEROIC_TARGET, HEROIC_RANGE = 0.4, (0.35, 0.45)
 # Raids at level 60 in the profile "geared" (ten mercenaries): hard, every boss raises the raid.
-RAID_TARGET, RAID_RANGE = 0.3, (0.25, 0.35)
+RAID_TARGET, RAID_RANGE = 0.15, (0.1, 0.2)
+# Heroic raids at level 60 in the profile "full".
+RAID_HEROIC_TARGET, RAID_HEROIC_RANGE = 0.15, (0.1, 0.2)
 # --planner: the bot plays like the debug mode's "Play all turns" (best orders found by simulation).
 USE_PLANNER = "--planner" in sys.argv
 
@@ -293,8 +296,8 @@ if TUNE:
     # Finds each zone's `power`: bounties 60 % at boss level - 1 ("fresh"), dungeons 47 % there,
     # heroic 40 % at level 60 for a geared party (bounties and dungeons, or only dungeons with --dungeons).
     bounty = MC.Bounty
-    profile = "geared" if HEROIC or RAID else PROFILE
-    target = RAID_TARGET if RAID else HEROIC_TARGET if HEROIC else DUNGEON_TARGET if DUNGEONS else TARGET
+    profile = "full" if RAID and HEROIC else "geared" if HEROIC or RAID else PROFILE
+    target = (RAID_HEROIC_TARGET if HEROIC else RAID_TARGET) if RAID else HEROIC_TARGET if HEROIC else DUNGEON_TARGET if DUNGEONS else TARGET
     zones = raids if RAID else dungeons if DUNGEONS else order + (dungeons if HEROIC else [])
     key = "heroicPower" if HEROIC else "power"
     found = {}
@@ -341,11 +344,13 @@ if RAID:
     print(f"{'raid':15} {'fresh':>7} {'geared':>7} {'full':>7} {'rank5':>7}")
     failures = []
     for zid in raids:
-        rates = [g.WinRate(zid, 60, False, RUNS, p)[0] for p in ("fresh", "geared", "full", "rank5")]
+        rates = [g.WinRate(zid, 60, HEROIC, RUNS, p)[0] for p in ("fresh", "geared", "full", "rank5")]
         print(f"{zid:15} " + " ".join(f"{r * 100:6.1f}%" for r in rates), flush=True)
-        if not RAID_RANGE[0] <= rates[1] <= RAID_RANGE[1]:
-            failures.append(f"{zid}: {rates[1]:.0%} geared (want 25-35 %)")
-        if not rates[0] < rates[1] < rates[3]:
+        if HEROIC and not RAID_HEROIC_RANGE[0] <= rates[2] <= RAID_HEROIC_RANGE[1]:
+            failures.append(f"{zid}: {rates[2]:.0%} heroic full (want 10-20 %)")
+        if not HEROIC and not RAID_RANGE[0] <= rates[1] <= RAID_RANGE[1]:
+            failures.append(f"{zid}: {rates[1]:.0%} geared (want 10-20 %)")
+        if not rates[0] <= rates[1] < rates[3]:
             failures.append(f"{zid}: fresh < geared < rank V does not hold")
     print("\n".join(failures) if failures else "all raid criteria met")
     sys.exit(1 if failures else 0)

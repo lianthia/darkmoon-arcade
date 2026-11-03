@@ -378,6 +378,15 @@ if Want("raid") then
     mc:RefreshBattle()
     Tick(0.5)
     Snap("raid_battle")
+    -- A boss's entrance: straight to the stop before Emberseer.
+    raidRun.battle, raidRun.phase = nil, "map"
+    for l, row in ipairs(raidRun.map.layers) do
+        if row[1].boss == "emberseer" then raidRun.layer, raidRun.index = l - 1, 1 end
+    end
+    mc:Travel(raidRun.layer + 1, 1)
+    Tick(0.5)
+    Snap("raid_boss_intro")
+    mc.overlay:Hide()
     MC.Bounty.Abandon(store, raidRun)
     store.run = nil
     for _, id in ipairs(MC.MERC_ORDER) do

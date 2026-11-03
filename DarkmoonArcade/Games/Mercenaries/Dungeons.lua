@@ -13,8 +13,9 @@
 --   group       wings of one place (the Scarlet Monastery): one portal on the map, the wings picked in
 --               its panel
 --   lootFrom    the loot table it shares (both halves of Stratholme)
---   raid        a raid: a roster of ten, `board` of them fight at once, every boss revives the party,
---               no heroic mode; `requires` names the unlock (a general task) that opens it. Its bosses
+--   raid        a raid: a roster of ten, `board` of them fight at once, every boss revives the party;
+--               `requires` names the unlock (a general task) that opens it. Heroic raids drop their
+--               loot half as often again (Dungeons.RAID_HEROIC_LOOT). Its bosses
 --               may have a `mount` (fought first, the boss enters when it falls), an `enrage` or a
 --               `summon` (Combat), and a `blessing` follows one of them
 --   power       extra strength of its foes: a fresh party one level below the last boss wins about 47 %
@@ -444,7 +445,7 @@ MC.Zones.ubrs = {
     id = "ubrs", dungeon = true, raid = true, requires = "ubrs_seal", group = "blackrock", continent = "ek",
     region = "searinggorge", spot = { 0.35, 0.85 },
     min = 60, max = 60, boss = "drakkisath", tier = 4, board = 5,
-    power = -0.3, pool = {}, adds = {}, loot = {}, gear = {},
+    power = 0.1, heroicPower = 0.42, pool = {}, adds = {}, loot = {}, gear = {},
     -- After Rend's fall the Warchief's Blessing lasts for the rest of the raid.
     blessing = { after = "rend", mods = { atkPct = 0.15, hpPct = 0.15 } },
     encounters = {
@@ -705,6 +706,9 @@ function Dungeons.Mechanic(enc, long)
     return text
 end
 
+-- A heroic raid's bosses drop their items this much more often.
+Dungeons.RAID_HEROIC_LOOT = 1.5
+
 -- How often a boss teaches an unknown formula.
 Dungeons.FORMULA_CHANCE = { normal = 0.12, heroic = 0.25 }
 
@@ -862,8 +866,9 @@ end
 function Dungeons.Loot(store, run, node)
     run.itemsFound = run.itemsFound or {}
     run.recipesFound = run.recipesFound or {}
+    local factor = (run.heroic and MC.Zones[run.zone].raid) and Dungeons.RAID_HEROIC_LOOT or 1
     for _, drop in ipairs(Dungeons.LootOf(run.zone, node.encounter)) do
-        if Random(run) * 100 < drop[2] then
+        if Random(run) * 100 < drop[2] * factor then
             Bounty.QueueItem(store, drop[1])
             run.itemsFound[#run.itemsFound + 1] = drop[1]
         end

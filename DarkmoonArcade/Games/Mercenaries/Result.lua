@@ -146,7 +146,8 @@ function Module:RefreshResult()
     local run = store.run
     if not run then return end
     local won = run.phase == "complete"
-    Kit.FitText(page.banner.text, won and L.MC_COMPLETE or L.MC_DEFEAT, 380 * 0.7, 22, 15)
+    local raidWon = won and MC.Zones[run.zone].raid
+    Kit.FitText(page.banner.text, raidWon and L.MC_RAID_CLEARED or won and L.MC_COMPLETE or L.MC_DEFEAT, 380 * 0.7, 22, 15)
     page.banner.text:SetTextColor(won and 0.24 or 0.5, won and 0.14 or 0.05, won and 0.06 or 0.03)
     page.zone:SetText(Describe.ZoneName(run.zone) .. (run.heroic and (" (" .. L.MC_HEROIC .. ")") or ""))
 

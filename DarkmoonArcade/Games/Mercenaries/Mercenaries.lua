@@ -119,6 +119,8 @@ Achievements.Register("mercenaries", {
     { id = "mc_heroic10", nameKey = "MC_ACH_HEROIC10", descKey = "MC_ACH_HEROIC10_DESC", icon = "Interface\\Icons\\INV_Crown_01" },
     { id = "mc_level60", nameKey = "MC_ACH_LEVEL60", descKey = "MC_ACH_LEVEL60_DESC", icon = "Interface\\Icons\\INV_Misc_Book_07" },
     { id = "mc_heroic_flawless", nameKey = "MC_ACH_HEROIC_FLAWLESS", descKey = "MC_ACH_HEROIC_FLAWLESS_DESC", icon = "Interface\\Icons\\Spell_Holy_SealOfProtection" },
+    { id = "mc_raid_ubrs", nameKey = "MC_ACH_RAID_UBRS", descKey = "MC_ACH_RAID_UBRS_DESC", icon = "Interface\\Icons\\INV_Misc_Head_Dragon_Black" },
+    { id = "mc_raid_ubrs_heroic", nameKey = "MC_ACH_RAID_UBRS_HEROIC", descKey = "MC_ACH_RAID_UBRS_HEROIC_DESC", icon = "Interface\\Icons\\INV_Misc_Head_Dragon_01" },
 })
 local STARTING_ZONES = { "elwynn", "dunmorogh", "tirisfal", "teldrassil", "durotar", "mulgore", "zephras" }
 
@@ -272,6 +274,13 @@ function Module:Travel(layer, index)
     end
     self:Route()
     if event and self:Store().run.phase == "map" then self.overlay:Show("event", event) end
+    -- A raid boss makes its entrance: its portrait, its words and the raid warning sound.
+    if node.type == "boss" and run.phase == "battle" and MC.Zones[run.zone].raid then
+        local enc = MC.Zones[run.zone].encounters[node.encounter]
+        if SOUNDKIT.RAID_WARNING then PlaySound(SOUNDKIT.RAID_WARNING) end
+        self.overlay:Show("event", { creature = enc.mount or enc.boss, icon = "Interface\\Icons\\INV_Misc_Head_Dragon_Black",
+            title = L["MC_E_" .. enc.boss], text = L.MC_RAID_INTRO:format(L["MC_RAID_INTRO_" .. enc.boss]) })
+    end
 end
 
 -- Called by the battle view once the last animation of a finished battle has played.
@@ -331,6 +340,11 @@ function Module:OnBountyComplete(run, survivors)
         store.stats.heroics = store.stats.heroics + 1
         Achievements.Unlock("mc_heroic")
         if flawless then Achievements.Unlock("mc_heroic_flawless") end
+    end
+    -- The raid conquered (and its heroic mode).
+    if run.zone == "ubrs" then
+        Achievements.Unlock("mc_raid_ubrs")
+        if run.heroic then Achievements.Unlock("mc_raid_ubrs_heroic") end
     end
     -- How the bounty was won: one role only, a party well below the boss, a cursed treasure, a guest
     -- landing the last blow.
@@ -638,6 +652,10 @@ function Module:CreatePages()
     eventToken:SetScale(0.7)
     eventToken:SetPoint("BOTTOM", card, "TOP", 0, -30 / 0.7)
     eventToken:EnableMouse(false)
+    local eventCoin = MC.Kit.Coin(eventPage, 96)
+    eventCoin:SetPoint("CENTER", card.icon, "CENTER", 0, 14)
+    eventCoin:SetFrameLevel(card:GetFrameLevel() + 5)
+    eventCoin:EnableMouse(false)
     local eventGo = MC.Kit.Button(eventPage, 180, 30, "MC_CONTINUE", function()
         self.overlay:Hide()
         -- An event shown over something the run still waits for (a raid boss's blessing before its
@@ -655,6 +673,14 @@ function Module:CreatePages()
         card.name:SetText(ev.title)
         card.desc:SetText(ev.text)
         eventToken:SetShown(ev.merc ~= nil)
+        -- A creature's portrait (a raid boss's entrance).
+        eventCoin:SetShown(ev.creature ~= nil)
+        card.icon:SetShown(ev.creature == nil)
+        card.ring:SetShown(ev.creature == nil)
+        if ev.creature then
+            if not eventCoin:SetCreature(MC.Enemies[ev.creature].display) then eventCoin:SetIcon(ev.icon) end
+            eventCoin:SetMetal("gold")
+        end
         if ev.merc then
             local run = self:Store().run
             local member = run and run.party[#run.party]

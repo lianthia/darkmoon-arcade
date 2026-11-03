@@ -385,7 +385,7 @@ test("rank V needs coins and the raid cleared with the mercenary", function()
     assert(Combat.RANK_BONUS[5] > Combat.RANK_BONUS[4], "rank V is stronger")
 end)
 
-test("raid: the camp's Seal of Ascension opens Upper Blackrock Spire; no heroic, no healer", function()
+test("raid: the camp's Seal of Ascension opens Upper Blackrock Spire; heroic after a clear, no healer", function()
     local Quests, Dungeons = MC.Quests, MC.Dungeons
     local store = NewStore()
     local zone = MC.Zones.ubrs
@@ -427,9 +427,10 @@ test("raid: the camp's Seal of Ascension opens Upper Blackrock Spire; no heroic,
     local _, unlock = Quests.TurnIn(store, chain)
     eq(unlock, "ubrs_seal")
     assert(Quests.Done(store, chain) and Dungeons.IsOpen(store, "ubrs"), "open")
-    -- No heroic, even once cleared.
+    -- Heroic once cleared, as everywhere.
+    assert(not Bounty.HeroicUnlocked(store, "ubrs"), "no heroic before the first clear")
     Bounty.ZoneState(store, "ubrs").normal = 1
-    assert(not Bounty.HeroicUnlocked(store, "ubrs"), "no heroic mode")
+    assert(Bounty.HeroicUnlocked(store, "ubrs"), "heroic after it")
     -- The path: no spirit healer (every boss raises the raid), Drakkisath ends it, five foes a fight.
     local runU = Bounty.NewRun(store, "ubrs", false, 7)
     assert(runU and runU.dungeon == "ubrs")
@@ -508,6 +509,8 @@ test("raid: ten go, five fight; Rend waits for Gyth, the Beast enrages, Drakkisa
     Bounty.AfterBattle(store, run)
     eq(#Bounty.DeadMembers(run), 0, "a fallen boss raises the raid")
     assert(run.blessed and run.blessingNew, "the Warchief's Blessing")
+    eq(select(1, Bounty.RaidProgress(run)), 1, "one boss down")
+    assert(select(2, Bounty.RaidProgress(run)) >= 6, "of six or seven")
     local spec = Bounty.MercSpec(store, run.party[1].id, run.party[1], run)
     assert((spec.mods.atkPct or 0) >= 0.15 and (spec.mods.hpPct or 0) >= 0.15, "blessed")
     -- The Beast: more attack every turn from its enrage turn on.

@@ -326,7 +326,10 @@ function Module:RefreshMap()
         local first = Bounty.Choices(run)[1]
         self.mapSelection = first and { layer = first.layer, index = first.index } or nil
     end
-    view.title:SetText(Describe.ZoneName(run.zone) .. (run.heroic and (" (" .. L.MC_HEROIC .. ")") or ""))
+    local title = Describe.ZoneName(run.zone) .. (run.heroic and (" (" .. L.MC_HEROIC .. ")") or "")
+    -- A raid shows how far it has come.
+    if MC.Zones[run.zone].raid then title = title .. "  ·  " .. L.MC_RAID_PROGRESS:format(Bounty.RaidProgress(run)) end
+    Kit.FitText(view.title, title, 280, 16, 11)
 
     local visited = {}
     for _, key in ipairs(run.visited) do visited[key] = true end

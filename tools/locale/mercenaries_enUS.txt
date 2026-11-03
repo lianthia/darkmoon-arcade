@@ -59,7 +59,7 @@ MC_HELP_MERCS	|cff8a4a10Experience:|r every mercenary of the party gains experie
 MC_HELP_TASKS_TITLE	Tasks and dungeons
 MC_HELP_TASKS	|cff8a4a10Tasks:|r every mercenary has task chains close to its story - fight in a zone, use an ability, beat a boss, clear a dungeon. Progress runs along as you play. When a step is done, hand it in at the task board for coins; some chains open the hidden boss of a dungeon.\n\n|cff8a4a10Dungeons:|r their entrances lie on the travel map (zoom into the zone). A dungeon is always open; its level range is a recommendation. The path is fixed and every boss must fall; trash fights lie between them and a spirit healer only waits before the last boss, so dungeons are harder than bounties. Some places have several wings behind one entrance - the arrows in the panel switch between them.\n\n|cff8a4a10Hidden bosses|r wait on a side branch that a task opens; until then the party walks past. Rare bosses show up only now and then. |cff8a4a10Adventure guide:|r before you enter, it lists every boss with its loot and the chance of each item. Heroic opens after the first clear.\n\n|cff8a4a10Chain reward:|r the last task of every chain also gives an item that suits the mercenary.\n\n|cff8a4a10Camp tasks:|r some chains belong to the whole camp. They open with the level of your highest mercenary, everyone in the party counts for them and each of them is paid.
 MC_HELP_RAIDS_TITLE	Raids
-MC_HELP_RAIDS	Raids are the hardest part of Mercenaries.\n\n|cff8a4a10Opening:|r a camp task opens each raid - Upper Blackrock Spire opens with the Seal of Ascension (task board, from level 55). Its entrance is a wing of Blackrock Mountain on the travel map.\n\n|cff8a4a10Assembling:|r |cff8a4a10Choose|r opens a page of its own. Your party always goes; add up to four reinforcements from your mercenaries. Your choice is kept for the next raid.\n\n|cff8a4a10Fights:|r five against five. All ten can be sent in from the bench, and every trash fight brings five foes.\n\n|cff8a4a10Bosses:|r they stand as in the original raid - some alone (and much stronger for it), some with companions. Many have their own ways:\n- Rend rides Gyth and only comes down when the drake falls.\n- The Beast grows angrier every turn from turn 6.\n- Drakkisath calls an elite guard every third turn.\nThe adventure guide names each boss's way.\n\n|cff8a4a10After a boss:|r every fallen boss raises the whole raid - there is no spirit healer. Rend's fall grants the |cff8a4a10Warchief's Blessing|r: +15% attack and health until the raid ends.\n\n|cff8a4a10Rewards:|r the raid's own loot with the first epic items, formulas up to tier 4. A mercenary that cleared the raid can reach rank V. There is no heroic mode.
+MC_HELP_RAIDS	Raids are the hardest part of Mercenaries.\n\n|cff8a4a10Opening:|r a camp task opens each raid - Upper Blackrock Spire opens with the Seal of Ascension (task board, from level 55). Its entrance is a wing of Blackrock Mountain on the travel map.\n\n|cff8a4a10Assembling:|r |cff8a4a10Choose|r opens a page of its own. Your party always goes; add up to four reinforcements from your mercenaries. Your choice is kept for the next raid.\n\n|cff8a4a10Fights:|r five against five. All ten can be sent in from the bench, and every trash fight brings five foes.\n\n|cff8a4a10Bosses:|r they stand as in the original raid - some alone (and much stronger for it), some with companions. Many have their own ways:\n- Rend rides Gyth and only comes down when the drake falls.\n- The Beast grows angrier every turn from turn 6.\n- Drakkisath calls an elite guard every third turn.\nThe adventure guide names each boss's way.\n\n|cff8a4a10After a boss:|r every fallen boss raises the whole raid - there is no spirit healer. Rend's fall grants the |cff8a4a10Warchief's Blessing|r: +15% attack and health until the raid ends.\n\n|cff8a4a10Rewards:|r the raid's own loot with the first epic items, formulas up to tier 4. A mercenary that cleared the raid can reach rank V. After the first clear its heroic mode opens: stronger foes, bosses with one more ability, loot half as often again and more formulas.
 MC_HELP_ITEMS_TITLE	Items and enchanting
 MC_HELP_ITEMS	|cff8a4a10Items|r drop from dungeon bosses with their Classic chances. After the run you choose which mercenary gets each one; it stays with that mercenary for good. Every mercenary has a weapon slot and an armour slot, and a jewellery slot at level 60. Items give small bonuses on purpose - attack, health, critical strikes, resistances and more; the mercenary page shows them on its tab |cff8a4a10Items|r.\n\n|cff8a4a10Disenchanting:|r an item you do not need (or a second copy) turns into enchanting materials, by the item's level and rarity as in Classic.\n\n|cff8a4a10Enchanting:|r formulas are found as loot only. At the |cff8a4a10workshop|r (the map table in the camp) you see your materials and formulas; on the mercenary page you enchant an item with a known formula that fits its slot. An item holds one enchant. The strongest formulas need the materials of the hardest content.
 MC_HELP_TREASURES_TITLE	Treasures and events
@@ -936,6 +936,7 @@ MC_A_greenskin_s	Poisoned Harpoon
 MC_A_cookie_s	Cookie's Cooking
 MC_ZD_deadmines	Beneath Moonbrook the Defias Brotherhood builds a warship in an old mine. Fight through miners, goblins and pirates to Edwin VanCleef.
 MC_DUNGEON	Dungeon
+MC_DUNGEON_AND_RAID	Dungeons and a raid
 MC_JOURNAL	Adventure Guide
 MC_JOURNAL_HIDDEN	Hidden boss
 MC_JOURNAL_HIDDEN_HINT	Revealed by a task of %s.
@@ -1375,7 +1376,6 @@ MC_ZW_ubrs	Upper Blackrock Spire
 MC_ZD_ubrs	At the top of the spire Warchief Rend Blackhand rules the Dark Horde, and General Drakkisath guards the black dragonflight's brood. Only the Seal of Ascension opens the gate.
 MC_RAID	Raid
 MC_RAID_LOCKED	Locked: the camp task "Seal of Ascension" opens it (from level 55).
-MC_RAID_NO_HEROIC	Raids have no heroic mode.
 MC_QUESTS_GENERAL	For the whole camp
 MC_QUEST_GENERAL	Camp task
 MC_QUEST_GENERAL_DONE	Nothing more to do here for now.
@@ -1403,3 +1403,17 @@ MC_RAID_MOUNT	Rides %s: comes down when it falls
 MC_RAID_ENRAGE	Enrage: from turn %d, +%d%% attack every turn
 MC_RAID_SUMMON	Calls an elite guard every %d turns
 MC_RAID_BLESSING_NOTE	His fall grants the Warchief's Blessing.
+MC_RAID_INTRO	"%s"
+MC_RAID_INTRO_emberseer	The flame obeys only Blackhand. Burn!
+MC_RAID_INTRO_solakar	Who dares disturb the brood of the black dragonflight?
+MC_RAID_INTRO_jed	Nobody leaves the spire alive.
+MC_RAID_INTRO_goraluk	My forge wants fresh iron - your bones will do.
+MC_RAID_INTRO_rend	Gyth! Tear these fools apart!
+MC_RAID_INTRO_beast	A roar shakes the whole hall.
+MC_RAID_INTRO_drakkisath	You have come far. Here your path ends - in fire.
+MC_RAID_PROGRESS	Boss %d/%d
+MC_RAID_CLEARED	Raid conquered!
+MC_ACH_RAID_UBRS	Ascended
+MC_ACH_RAID_UBRS_DESC	Conquer Upper Blackrock Spire.
+MC_ACH_RAID_UBRS_HEROIC	Bane of the Dark Horde
+MC_ACH_RAID_UBRS_HEROIC_DESC	Conquer Upper Blackrock Spire in heroic mode.
