@@ -440,7 +440,7 @@ test("raid: the camp's Seal of Ascension opens Upper Blackrock Spire; no heroic,
     end
     local last = runU.map.layers[#runU.map.layers][1]
     assert(last.boss == "drakkisath" and last.final, "Drakkisath ends it")
-    eq(#last.enemies, 5, "the boss and four guards")
+    eq(#last.enemies, 3, "Drakkisath and his two elite guards, as in Classic")
 end)
 
 test("raid: ten go, five fight; Rend waits for Gyth, the Beast enrages, Drakkisath calls guards; bosses raise all", function()
@@ -460,22 +460,25 @@ test("raid: ten go, five fight; Rend waits for Gyth, the Beast enrages, Drakkisa
     eq(#Bounty.RaidRoster(store), Bounty.RAID_SIZE, "filled up to ten")
     local run = Bounty.NewRun(store, "ubrs", false, 3)
     eq(#run.party, Bounty.RAID_SIZE, "ten go in")
-    -- The Rend fight: Gyth on the board with four guards, Rend waits off it until Gyth falls.
+    -- The Rend fight: Gyth alone on the board, Rend waits off it until Gyth falls; both stronger for it.
     local rendNode
     for l, row in ipairs(run.map.layers) do
         if row[1].boss == "rend" then rendNode, run.layer, run.index = row[1], l, 1 end
     end
     assert(rendNode, "Rend's stop")
-    eq(rendNode.enemies[3], "gyth", "Gyth in the middle")
-    eq(rendNode.enemies[6], "rend", "Rend after")
+    eq(rendNode.enemies[1], "gyth", "Gyth first")
+    eq(rendNode.enemies[2], "rend", "Rend after")
     run.phase = "map"
     run.layer = run.layer - 1
     assert(Bounty.Travel(store, run, run.layer + 1, 1))
     local b = run.battle
     eq(Combat.Size(b), 5)
     eq(#b.bench.ally, 10, "all ten can fight")
-    eq(#b.board.enemy, 5)
+    eq(#b.board.enemy, 1, "Gyth alone")
     eq(b.units[b.bench.enemy[1]].id, "rend", "Rend waits")
+    local gyth = b.units[b.board.enemy[1]]
+    local plain = Combat.New({}, { Bounty.EnemySpec("gyth", 60, { power = MC.Zones.ubrs.power }) }, 1, 5)
+    assert(gyth.maxHp > plain.units[plain.board.enemy[1]].maxHp * 2, "a lone boss has far more health")
     for _ = 1, 5 do Combat.Deploy(b, b.bench.ally[1]) end
     eq(b.phase, "command", "five on the board")
     -- An add falls: Rend still waits; Gyth falls: Rend comes down.
@@ -485,8 +488,6 @@ test("raid: ten go, five fight; Rend waits for Gyth, the Beast enrages, Drakkisa
             if u.id == id and not u.dead then u.dead, u.hp = true, 0 return end
         end
     end
-    Kill(rendNode.enemies[1])
-    for _, uid in ipairs(b.board.ally) do b.units[uid].choice = { slot = 1 } end
     Combat.AutoChoose(b)
     Combat.Resolve(b)
     local onBoard = {}

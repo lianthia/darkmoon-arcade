@@ -15,6 +15,8 @@ MC.Bounty = Bounty
 Bounty.PARTY_SIZE = 6
 -- A raid takes ten: the party and four more.
 Bounty.RAID_SIZE = 10
+-- What a raid boss gains for every companion it lacks (a lone boss stands for a whole group).
+Bounty.RAID_ALONE = { hpPct = 0.8, atkPct = 0.25 }
 Bounty.HEROIC_LEVEL = 60
 Bounty.RECRUIT_COST = 50
 Bounty.RANK_COST = { [2] = 30, [3] = 80, [4] = 150, [5] = 250 }
@@ -494,10 +496,16 @@ local function StartBattle(store, run, node)
     local power = run.heroic and zone.heroicPower or zone.power
     local opts = { elite = node.type == "elite", heroic = run.heroic, sabotage = run.sabotage, power = power }
     for i, id in ipairs(node.enemies) do enemies[i] = Bounty.EnemySpec(id, node.level, opts) end
-    -- A raid boss's own ways: a rider waiting for its mount, an enrage, guards it calls back.
+    -- A raid boss's own ways: a rider waiting for its mount, an enrage, guards it calls back. A boss
+    -- with fewer companions than places on the board is stronger for each one missing (a mount and
+    -- its rider fight one after the other, so each counts as alone with the other).
     local enc = node.encounter and zone.raid and zone.encounters[node.encounter]
     if enc then
+        local missing = math.max(0, (zone.board or Combat.BOARD) - 1 - #enc.adds - (enc.mount and 1 or 0))
         for _, spec in ipairs(enemies) do
+            if (spec.id == enc.boss or spec.id == enc.mount) and missing > 0 then
+                AddMods(spec.mods, { hpPct = Bounty.RAID_ALONE.hpPct * missing, atkPct = Bounty.RAID_ALONE.atkPct * missing })
+            end
             if spec.id == enc.boss then
                 spec.after = enc.mount
                 spec.enrage = enc.enrage
