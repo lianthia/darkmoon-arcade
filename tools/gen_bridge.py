@@ -321,6 +321,9 @@ def key_art(logo_img):
         lg = logo_img.resize((400, 200), Image.LANCZOS)
         img.alpha_composite(lg, ((512 - 400) // 2, 28))
     img.save(ROOT / "DarkmoonArcade" / "media" / "tiles" / "bridgearchitect.tga")
+    # The small picture in the launcher's navigation: the foreman goblin's face, 64 x 64.
+    src.crop((250, 200, 590, 540)).resize((64, 64), Image.LANCZOS).save(
+        ROOT / "DarkmoonArcade" / "media" / "launcher" / "thumb_bridgearchitect.tga")
     return True
 
 

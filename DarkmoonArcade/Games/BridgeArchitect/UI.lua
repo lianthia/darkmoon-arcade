@@ -441,6 +441,11 @@ function Module:BuildMenus(container)
     help:SetPoint("TOP", levels, "BOTTOM", 0, -12)
 
     self:BuildHelpPage(self.overlay:AddPage("help"))
+    Widgets.AchievementsPage(self.overlay, W, self.id, function()
+        if self.achievementsBack == "game" and self.level then self.overlay:Hide()
+        elseif self.achievementsBack == "pause" then self.overlay:Show("pause")
+        else self:ShowMenu() end
+    end)
 end
 
 function Module:ShowMenu()
@@ -472,6 +477,8 @@ function Module:BuildLevelMenu(page)
     vignette:SetVertexColor(0, 0, 0, 0.6)
     local help = Kit.Button(page, 90, 26, "GBA_HELP_BTN", function() self:ShowHelp() end)
     help:SetPoint("TOPLEFT", 20, -18)
+    local ach = Kit.Button(page, 90, 26, "ACHIEVEMENTS", function() self:ShowAchievements() end)
+    ach:SetPoint("LEFT", help, "RIGHT", 8, 0)
     local logo = page:CreateTexture(nil, "ARTWORK")
     logo:SetTexture(Tex("logo"))
     logo:SetSize(250, 125)

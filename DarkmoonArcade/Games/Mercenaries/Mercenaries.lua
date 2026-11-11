@@ -24,9 +24,9 @@ local Module = {
     helpKey = "MC_HELP",
     tile = "tiles/mercenaries",
     updated = "1.4.0",
-    -- The launcher's spotlight, with the key art (media/launcher/mercenaries: 910x512 of 1024x512):
-    -- texture coordinates for the spotlight's picture and for the game's card.
-    featured = true,
+    -- The key art (media/launcher/mercenaries: 910x512 of 1024x512): texture coordinates for the
+    -- spotlight's picture and for the game's card. Goblin Bridge Architect asks for the spotlight;
+    -- where it is not registered, Mercenaries takes it as the first game in the order.
     spotlight = {
         art = "launcher/mercenaries",
         banner = { 0.0407, 0.8480, 0, 1 },

@@ -18,7 +18,7 @@ local PITCH_SIGN = -1
 
 local Module = {
     id = "bridgearchitect",
-    rank = -1,
+    rank = 0.5, -- right after Mercenaries
     fullArea = true,
     fieldWidth = W,
     fieldHeight = H,
@@ -28,8 +28,9 @@ local Module = {
     taglineKey = "GBA_CARD_TEXT",
     helpKey = "GBA_HELP",
     tile = "tiles/bridgearchitect",
+    thumb = "launcher/thumb_bridgearchitect",
     -- The launcher's spotlight: the teaser art (media/launcher/bridgearchitect, 910x512 of 1024x512).
-    -- Before Mercenaries in the order (rank), so it takes the spotlight wherever it is registered.
+    -- The only game asking for it, so it takes the spotlight wherever it is registered.
     featured = true,
     spotlight = {
         art = "launcher/bridgearchitect",
@@ -41,6 +42,67 @@ local Module = {
     defaults = { best = {}, builds = {}, level = 1, tests = 0, broken = 0 },
 }
 BA.Module = Module
+
+-- Achievements: checked when a test ends (Module:CheckAchievements) and on the counters.
+local Achievements = ns.Achievements
+local function Icon(name) return "Interface\\Icons\\" .. name end
+Achievements.Register("bridgearchitect", {
+    { id = "gba_first", nameKey = "GBA_ACH_FIRST", descKey = "GBA_ACH_FIRST_DESC", icon = Icon("INV_Hammer_20") },
+    { id = "gba_star3", nameKey = "GBA_ACH_STAR3", descKey = "GBA_ACH_STAR3_DESC", icon = Icon("INV_Misc_Gem_Variety_01") },
+    { id = "gba_ch1", nameKey = "GBA_ACH_CH1", descKey = "GBA_ACH_CH1_DESC", icon = Icon("INV_Misc_Map_01") },
+    { id = "gba_half", nameKey = "GBA_ACH_HALF", descKey = "GBA_ACH_HALF_DESC", icon = Icon("INV_Misc_Coin_02") },
+    { id = "gba_rope", nameKey = "GBA_ACH_ROPE", descKey = "GBA_ACH_ROPE_DESC", icon = Icon("INV_Fabric_Linen_01") },
+    { id = "gba_nosteel", nameKey = "GBA_ACH_NOSTEEL", descKey = "GBA_ACH_NOSTEEL_DESC", icon = Icon("INV_Axe_02") },
+    { id = "gba_peak", nameKey = "GBA_ACH_PEAK", descKey = "GBA_ACH_PEAK_DESC", icon = Icon("Spell_Fire_SelfDestruct") },
+    { id = "gba_lava", nameKey = "GBA_ACH_LAVA", descKey = "GBA_ACH_LAVA_DESC", icon = Icon("Spell_Fire_Volcano") },
+    { id = "gba_ch2", nameKey = "GBA_ACH_CH2", descKey = "GBA_ACH_CH2_DESC", icon = Icon("INV_Misc_Map02") },
+    { id = "gba_stars36", nameKey = "GBA_ACH_STARS36", descKey = "GBA_ACH_STARS36_DESC", icon = Icon("Spell_Nature_StarFall") },
+    { id = "gba_tests", nameKey = "GBA_ACH_TESTS", descKey = "GBA_ACH_TESTS_DESC", icon = Icon("INV_Misc_PocketWatch_01") },
+    { id = "gba_snap", nameKey = "GBA_ACH_SNAP", descKey = "GBA_ACH_SNAP_DESC", icon = Icon("INV_Misc_Bomb_04") },
+    { id = "gba_ch3", nameKey = "GBA_ACH_CH3", descKey = "GBA_ACH_CH3_DESC", icon = Icon("Trade_Engineering") },
+    { id = "gba_stars72", nameKey = "GBA_ACH_STARS72", descKey = "GBA_ACH_STARS72_DESC", icon = Icon("Spell_Arcane_StarFire") },
+    { id = "gba_flight", nameKey = "GBA_ACH_FLIGHT", descKey = "GBA_ACH_FLIGHT_DESC", icon = "Interface\\TaxiFrame\\UI-Taxi-Icon-Green" },
+})
+BA.ACH_GOALS = { tests = 100, snapped = 100, stars = 36, peak = 0.95 }
+
+-- After a test: what the bridge (`build`), the level and the store have earned.
+function Module:CheckAchievements(won, why, cost, peak)
+    local store = self:Store()
+    local G = BA.ACH_GOALS
+    if (store.tests or 0) >= G.tests then Achievements.Unlock("gba_tests") end
+    if (store.broken or 0) >= G.snapped then Achievements.Unlock("gba_snap") end
+    if why == "lava" then Achievements.Unlock("gba_lava") end
+    if not won then return end
+    local level = self.level
+    local stars = P.Stars(level, cost)
+    if stars < 1 then return end
+    Achievements.Unlock("gba_first")
+    if stars >= 3 then Achievements.Unlock("gba_star3") end
+    if cost * 2 <= level.budget then Achievements.Unlock("gba_half") end
+    if peak >= G.peak then Achievements.Unlock("gba_peak") end
+    if ns.Flight and ns.Flight.current then Achievements.Unlock("gba_flight") end
+    local used, offersSteel = {}, false
+    for _, beam in ipairs(self.build.beams) do used[beam.mat] = true end
+    for _, m in ipairs(level.materials) do
+        if m == "steel" then offersSteel = true end
+    end
+    if used.rope and not used.wood and not used.steel then Achievements.Unlock("gba_rope") end
+    if offersSteel and not used.steel then Achievements.Unlock("gba_nosteel") end
+    -- Chapters and stars over all contracts.
+    local total = 0
+    local chapterDone = {}
+    for c = 1, #BA.CHAPTERS do chapterDone[c] = true end
+    for _, l in ipairs(BA.LEVELS) do
+        local b = store.best[l.id]
+        total = total + (b and b.stars or 0)
+        if not b then chapterDone[l.chapter] = false end
+    end
+    if chapterDone[1] then Achievements.Unlock("gba_ch1") end
+    if chapterDone[2] then Achievements.Unlock("gba_ch2") end
+    if chapterDone[3] then Achievements.Unlock("gba_ch3") end
+    if total >= G.stars then Achievements.Unlock("gba_stars36") end
+    if total >= #BA.LEVELS * 3 then Achievements.Unlock("gba_stars72") end
+end
 
 function Module:Store()
     local s = Arcade.Settings(self)
@@ -946,6 +1008,7 @@ function Module:Finish(won, why)
         end
     end
     self.result = info
+    self:CheckAchievements(won, why, self.cost, info.peak)
     -- The panel comes a moment later, so the end can be seen.
     self.resultAt = self.realClock + (won and 1.2 or 1.6)
 end
@@ -1070,10 +1133,14 @@ end
 function Module:HubInfo()
     local stars, done = self:Stars()
     local n = #BA.LEVELS
+    local achDone, achTotal = Achievements.Count(self.id)
+    local played = ns.Stats and ns.Stats.DB().time[self.id] or 0
     return {
         stats = {
             { value = stars .. "/" .. n * 3, label = L.GBA_HUB_STARS, share = stars / (n * 3) },
             { value = done .. "/" .. n, label = L.GBA_HUB_LEVELS, share = done / n },
+            { value = achDone .. "/" .. achTotal, label = L.ACHIEVEMENTS, share = achTotal > 0 and achDone / achTotal or 0 },
+            { value = ns.FormatDuration(played), label = L.STATS_TIME },
         },
         status = done > 0 and L.GBA_HUB_AT:format(math.min(n, done + 1), n) or L.GBA_HUB_READY,
     }
@@ -1098,7 +1165,10 @@ function Module:ShowHelp()
 end
 
 function Module:ShowAchievements()
-    self:ShowHelp()
+    if self.overlay then
+        self.achievementsBack = self.overlay.current or "game"
+        self.overlay:Show("achievements")
+    end
 end
 
 function Module:ResetProgress()

@@ -670,4 +670,7 @@ if Want("gba_") then
     GSnap("gba_menu2")
     game:ShowHelp()
     GSnap("gba_help")
+    ns.Achievements.Unlock("gba_first")
+    game:ShowAchievements()
+    GSnap("gba_achievements")
 end

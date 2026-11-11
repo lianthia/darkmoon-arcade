@@ -37,6 +37,7 @@ News.VERSIONS = {
             { icon = "INV_Misc_Coin_01", key = 3 },
             { icon = "Spell_Frost_IceStorm", key = 4 },
             { icon = "INV_Misc_Gear_01", key = 5 },
+            { icon = "INV_Hammer_20", key = 6 },
         },
     },
     {

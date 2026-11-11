@@ -353,7 +353,11 @@ local Nav = ns.Nav
 assert(Window.page == "news", "the window opens on the page it showed last")
 Window:OpenHub()
 assert(Window.page == "discover" and Window.tab == "home" and Nav.wide, "the launcher opens on discover, navigation wide")
-assert(#Nav.games == #Nav.HIGHLIGHTED, "the highlighted games in the navigation")
+local registeredHighlights = 0
+for _, id in ipairs(Nav.HIGHLIGHTED) do
+    if Arcade.games[id] then registeredHighlights = registeredHighlights + 1 end
+end
+assert(#Nav.games == registeredHighlights, "the highlighted games in the navigation")
 -- A game: the games tab stays active, the navigation shrinks to its icons and marks the game.
 SlashCmdList.DARKMOONARCADE("mercenaries")
 assert(Window.tab == "home" and not Nav.wide and Nav.width == ns.Arcade.NAV_COLLAPSED, "game: narrow navigation")
@@ -1319,6 +1323,8 @@ do
     end
     assert(game.resultShown and game.result and game.result.won, "bridge: the truss holds")
     assert(game:Store().best.gorge, "bridge: best kept")
+    assert(ns.Achievements.IsDone("gba_first"), "bridge: first contract achievement")
+    assert(not ns.Achievements.IsDone("gba_ch1"), "bridge: chapter not done yet")
     game.resultPanel.next:GetScript("OnClick")(game.resultPanel.next)
     assert(game.level.index == 2 and not game.sim, "bridge: next contract")
     -- An empty bridge: the strider falls (or sticks) and the panel offers building again.
@@ -1358,9 +1364,15 @@ do
         if game.resultShown then break end
     end
     assert(game.resultShown and game.result.why == "lava", "bridge: into the lava")
+    assert(ns.Achievements.IsDone("gba_lava"), "bridge: lava achievement")
+    game:ShowAchievements()
+    assert(game.overlay.current == "achievements", "bridge: achievements page")
+    game.overlay.pages.achievements.refresh()
     game:StopTest()
     game:ShowMenu()
-    game:HubInfo()
+    local info = game:HubInfo()
+    assert(#info.stats == 4, "bridge: four numbers under the spotlight")
+    assert(ns.Arcade.order[2] == "bridgearchitect" and ns.Arcade.Featured() == game, "bridge: after Mercenaries, in the spotlight")
     game:StatLines()
     game:RefreshTexts()
     game:Leave()

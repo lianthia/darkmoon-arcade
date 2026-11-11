@@ -71,6 +71,11 @@ def collect(retail=False):
         for table_name in ("VEHICLES", "FLYERS"):
             for name, d in (ba[table_name] or {}).items():
                 add("display", str(int(d.display)), f"bridge {table_name.lower()} {name}")
+    # Every achievement's icon (the lists are only shown page by page).
+    for i in range(1, len(g.ADDON_NS.Achievements.list) + 1):
+        icon = g.ADDON_NS.Achievements.list[i].icon
+        if isinstance(icon, str) and icon.lower().startswith("interface"):
+            add("texture", icon, f"achievement {g.ADDON_NS.Achievements.list[i].id}")
     mc = g.ADDON_NS.Mercenaries
     for name, art in mc.MapArt.items():
         for fid in art.files.values():

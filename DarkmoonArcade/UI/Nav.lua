@@ -15,7 +15,7 @@ local Nav = {}
 ns.Nav = Nav
 
 -- The games the navigation always lists, in this order.
-Nav.HIGHLIGHTED = { "mercenaries", "spellbounce", "darkmoondeck", "murlocblast", "jewelsofuldum" }
+Nav.HIGHLIGHTED = { "mercenaries", "bridgearchitect", "spellbounce", "darkmoondeck", "murlocblast", "jewelsofuldum" }
 
 local WIDE, NARROW = Arcade.NAV_W, Arcade.NAV_COLLAPSED
 local PAD, ITEM_H, STEP = 8, 44, 54

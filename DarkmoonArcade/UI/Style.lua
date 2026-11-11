@@ -252,8 +252,14 @@ function Style.SetThumb(tex, gameId)
             return
         end
     end
-    -- A game without a picture of its own: the middle of its card.
     local game = ns.Arcade.games[gameId]
+    -- A picture of its own outside the shared sheet (game.thumb).
+    if game.thumb then
+        tex:SetTexture(Media.Tex(game.thumb))
+        tex:SetTexCoord(0, 1, 0, 1)
+        return
+    end
+    -- A game without a picture of its own: the middle of its card.
     tex:SetTexture(Media.Tex(game.tile))
     tex:SetTexCoord(0.25, 0.75, 0, 1)
 end
