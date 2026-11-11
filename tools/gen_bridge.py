@@ -228,6 +228,19 @@ def star():
     save(img.resize((64, 64), Image.LANCZOS), "star")
 
 
+def stars():
+    """A night sky's stars, tiling: 256 x 256, white dots of different brightness (drawn added)."""
+    s = 256
+    img = Image.new("RGBA", (s, s), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    for _ in range(70):
+        x, y = RNG.integers(0, s, 2)
+        b = int(RNG.integers(90, 255))
+        r = 1 if RNG.random() < 0.85 else 2
+        d.ellipse([x - r, y - r, x + r, y + r], fill=(b, b, min(255, b + 20), 255))
+    save(img, "stars")
+
+
 if __name__ == "__main__":
     beam("beam_wood", (0.78, 0.55, 0.3), "wood")
     beam("beam_road", (0.55, 0.37, 0.2), "road")
@@ -242,5 +255,6 @@ if __name__ == "__main__":
     crane()
     flag()
     star()
+    stars()
     tile(logo())
     print("ok", sorted(p.name for p in OUT.glob("*.tga")))

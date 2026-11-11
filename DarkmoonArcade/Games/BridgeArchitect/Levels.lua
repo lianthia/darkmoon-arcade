@@ -17,7 +17,24 @@ BA.ZONES = {
         water = { 0.2, 0.38, 0.48 }, far = { 0.66, 0.42, 0.3 } },
     desolace = { rock = 187009, top = 187001, tint = { 0.9, 0.88, 0.85 }, sky = { { 0.72, 0.68, 0.6 }, { 0.32, 0.36, 0.45 } },
         water = { 0.2, 0.3, 0.26 }, far = { 0.4, 0.38, 0.36 } },
+    stranglethorn = { rock = 188833, top = 188821, tint = { 0.85, 0.95, 0.8 }, sky = { { 0.85, 0.9, 0.7 }, { 0.3, 0.55, 0.65 } },
+        water = { 0.16, 0.38, 0.3 }, far = { 0.25, 0.42, 0.28 } },
+    duskwood = { rock = 187092, top = 187084, tint = { 0.7, 0.72, 0.85 }, sky = { { 0.3, 0.3, 0.48 }, { 0.04, 0.05, 0.14 } },
+        water = { 0.08, 0.12, 0.2 }, far = { 0.12, 0.13, 0.22 }, stars = true },
+    steppes = { rock = 186950, top = 186933, tint = { 0.85, 0.75, 0.7 }, sky = { { 0.85, 0.35, 0.15 }, { 0.2, 0.08, 0.08 } },
+        water = { 1, 0.45, 0.1 }, far = { 0.3, 0.12, 0.08 }, lava = 186942 },
+    winterspring = { rock = 189049, top = 189053, tint = { 0.92, 0.96, 1 }, sky = { { 0.85, 0.9, 1 }, { 0.4, 0.55, 0.85 } },
+        water = { 0.55, 0.75, 0.88 }, far = { 0.75, 0.82, 0.92 } },
+    tanaris = { rock = 188866, top = 188870, tint = { 1, 0.95, 0.85 }, sky = { { 1, 0.85, 0.55 }, { 0.35, 0.6, 0.95 } },
+        water = { 0.15, 0.55, 0.6 }, far = { 0.85, 0.65, 0.4 } },
+    ungoro = { rock = 188978, top = 188974, tint = { 0.9, 0.95, 0.85 }, sky = { { 0.9, 0.85, 0.65 }, { 0.45, 0.6, 0.55 } },
+        water = { 0.2, 0.4, 0.3 }, far = { 0.35, 0.45, 0.32 } },
+    feralas = { rock = 188509, top = 188505, tint = { 0.9, 0.95, 0.88 }, sky = { { 0.8, 0.85, 0.75 }, { 0.3, 0.45, 0.6 } },
+        water = { 0.15, 0.32, 0.38 }, far = { 0.3, 0.4, 0.35 } },
 }
+
+-- The chapters of the campaign: eight contracts each.
+BA.CHAPTERS = { "kalimdor", "kingdoms", "south" }
 
 local WATER = 440
 
@@ -72,6 +89,114 @@ BA.LEVELS = {
         cranes = { { 200, 140 }, { 720, 140 } },
         start = { 70, 280 }, goal = 850, water = WATER, budget = 1700,
     },
+
+    -- Chapter 2: the Eastern Kingdoms.
+    {
+        id = "vines", zone = "stranglethorn", vehicle = "tallstrider", materials = { "road", "wood", "rope" },
+        terrain = { { -40, 240, 300 }, { 680, 960, 300 } },
+        anchors = { { 240, 300 }, { 680, 300 }, { 220, 140 }, { 700, 140 } },
+        cranes = { { 220, 140 }, { 700, 140 } },
+        start = { 70, 300 }, goal = 840, water = WATER, budget = 1750,
+    },
+    {
+        id = "island", zone = "stranglethorn", vehicle = "wolf", materials = { "road", "wood" },
+        terrain = { { -40, 260, 300 }, { 420, 520, 300 }, { 680, 960, 300 } },
+        anchors = { { 260, 300 }, { 420, 300 }, { 520, 300 }, { 680, 300 }, { 260, 360 }, { 420, 360 }, { 520, 360 }, { 680, 360 } },
+        start = { 70, 300 }, goal = 840, water = WATER, budget = 1400,
+    },
+    {
+        id = "ruins", zone = "duskwood", vehicle = "nightmare", materials = { "road", "wood", "steel" },
+        terrain = { { -40, 280, 300 }, { 600, 960, 300 } },
+        anchors = { { 280, 300 }, { 600, 300 }, { 280, 360 }, { 600, 360 } },
+        start = { 70, 300 }, goal = 840, water = WATER, budget = 1800,
+    },
+    {
+        id = "drop", zone = "duskwood", vehicle = "wolf", materials = { "road", "wood", "steel" },
+        terrain = { { -40, 300, 240 }, { 580, 960, 300 } },
+        anchors = { { 300, 240 }, { 300, 300 }, { 580, 300 }, { 580, 360 } },
+        start = { 70, 240 }, goal = 840, water = WATER, budget = 1750,
+    },
+    {
+        id = "lava", zone = "steppes", vehicle = "shredder", materials = { "road", "wood", "steel" },
+        terrain = { { -40, 260, 300 }, { 620, 960, 300 } },
+        anchors = { { 260, 300 }, { 620, 300 }, { 260, 360 }, { 620, 360 } },
+        start = { 70, 300 }, goal = 840, water = WATER, budget = 5250,
+    },
+    {
+        id = "forge", zone = "steppes", vehicle = "spidertank", materials = { "road", "wood", "steel" },
+        terrain = { { -40, 200, 300 }, { 360, 400, 380 }, { 520, 560, 380 }, { 720, 960, 300 } },
+        anchors = { { 200, 300 }, { 720, 300 }, { 200, 360 }, { 720, 360 }, { 360, 380 }, { 400, 380 }, { 520, 380 }, { 560, 380 } },
+        start = { 70, 300 }, goal = 850, water = WATER, budget = 6600,
+    },
+    {
+        id = "glacier", zone = "winterspring", vehicle = "raptor", materials = { "road", "wood", "steel", "rope" },
+        terrain = { { -40, 160, 300 }, { 760, 960, 300 } },
+        anchors = { { 160, 300 }, { 760, 300 }, { 140, 100 }, { 780, 100 } },
+        cranes = { { 140, 100 }, { 780, 100 } },
+        start = { 50, 300 }, goal = 870, water = WATER, budget = 2550,
+    },
+    {
+        id = "golem", zone = "winterspring", vehicle = "golem", materials = { "road", "wood", "steel" },
+        terrain = { { -40, 280, 300 }, { 640, 960, 300 } },
+        anchors = { { 280, 300 }, { 640, 300 }, { 280, 360 }, { 640, 360 } },
+        start = { 70, 300 }, goal = 840, water = WATER, budget = 5250,
+    },
+    -- Chapter 3: the wild south of Kalimdor.
+    {
+        id = "dunes", zone = "tanaris", vehicle = "rocketcar", materials = { "road", "wood", "steel", "rope" },
+        terrain = { { -40, 140, 300 }, { 780, 960, 300 } },
+        anchors = { { 140, 300 }, { 780, 300 }, { 120, 80 }, { 800, 80 } },
+        cranes = { { 120, 80 }, { 800, 80 } },
+        start = { 50, 300 }, goal = 880, water = WATER, budget = 2650,
+    },
+    {
+        id = "oasis", zone = "tanaris", vehicle = "horse", materials = { "road", "wood", "steel" },
+        terrain = { { -40, 300, 300 }, { 620, 960, 300 } },
+        anchors = { { 300, 300 }, { 620, 300 }, { 300, 360 }, { 620, 360 } },
+        start = { 70, 300 }, goal = 840, water = WATER, budget = 1750,
+    },
+    {
+        id = "crater", zone = "ungoro", vehicle = "kodo", materials = { "road", "wood", "steel", "rope" },
+        terrain = { { -40, 220, 300 }, { 420, 460, 360 }, { 700, 960, 300 } },
+        anchors = { { 220, 300 }, { 700, 300 }, { 220, 360 }, { 700, 360 }, { 420, 360 }, { 460, 360 } },
+        start = { 90, 300 }, goal = 840, water = WATER, budget = 6450,
+    },
+    {
+        id = "climb", zone = "ungoro", vehicle = "raptor", materials = { "road", "wood", "steel" },
+        terrain = { { -40, 300, 300 }, { 580, 960, 240 } },
+        anchors = { { 300, 300 }, { 300, 360 }, { 580, 240 }, { 580, 300 } },
+        start = { 70, 300 }, goal = 840, water = WATER, budget = 2600,
+    },
+    {
+        id = "giants", zone = "feralas", vehicle = "spidertank", materials = { "road", "wood", "steel", "rope" },
+        terrain = { { -40, 200, 300 }, { 440, 480, 380 }, { 720, 960, 300 } },
+        anchors = { { 200, 300 }, { 720, 300 }, { 200, 360 }, { 720, 360 }, { 440, 380 }, { 480, 380 }, { 180, 120 }, { 740, 120 } },
+        cranes = { { 180, 120 }, { 740, 120 } },
+        start = { 70, 300 }, goal = 850, water = WATER, budget = 7050,
+    },
+    {
+        id = "deep", zone = "feralas", vehicle = "wolf", materials = { "road", "wood", "steel" },
+        terrain = { { -40, 240, 300 }, { 680, 960, 300 } },
+        anchors = { { 240, 300 }, { 680, 300 } },
+        start = { 70, 300 }, goal = 840, water = WATER, budget = 4300,
+    },
+    {
+        id = "gadgetzan", zone = "tanaris", vehicle = "kodo", materials = { "road", "wood", "steel", "rope" },
+        terrain = { { -40, 180, 300 }, { 740, 960, 300 } },
+        anchors = { { 180, 300 }, { 740, 300 }, { 160, 100 }, { 760, 100 } },
+        cranes = { { 160, 100 }, { 760, 100 } },
+        start = { 80, 300 }, goal = 860, water = WATER, budget = 4850,
+    },
+    {
+        id = "grand", zone = "ungoro", vehicle = "spidertank", materials = { "road", "wood", "steel", "rope" },
+        terrain = { { -40, 160, 300 }, { 440, 480, 400 }, { 760, 960, 300 } },
+        anchors = { { 160, 300 }, { 760, 300 }, { 160, 360 }, { 760, 360 }, { 440, 400 }, { 480, 400 }, { 140, 100 }, { 780, 100 } },
+        cranes = { { 140, 100 }, { 780, 100 } },
+        start = { 60, 300 }, goal = 870, water = WATER, budget = 8700,
+    },
 }
 
-for i, level in ipairs(BA.LEVELS) do level.index = i end
+for i, level in ipairs(BA.LEVELS) do
+    level.index = i
+    level.chapter = math.floor((i - 1) / 8) + 1
+end

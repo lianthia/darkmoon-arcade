@@ -48,6 +48,7 @@ local SFX = {
     steel = { 565339, 566071 },
     rope = { 565321, 565322 },
     splash = { 540232, 540233 },
+    lava = { 568315, 568733 },
     cheer = { 541890, 542010 },
     laugh = { 541902 },
 }
@@ -108,6 +109,11 @@ function Module:BuildField(container)
     self.horizon:SetPoint("BOTTOMRIGHT", 0, FH - 460)
     self.horizon:SetHeight(360)
     self.horizon:SetTexture(Tex("gradient"))
+    self.stars = back:CreateTexture(nil, "BACKGROUND", nil, -7)
+    self.stars:SetAllPoints()
+    self.stars:SetTexture(Tex("stars"), "REPEAT", "REPEAT")
+    self.stars:SetTexCoord(0, FW / 256, 0, FH / 256)
+    self.stars:SetBlendMode("ADD")
     self.hills = back:CreateTexture(nil, "BACKGROUND", nil, -6)
     -- Far mesas behind the gorge, faded into the haze (without the art's sandy foot).
     self.hills:SetPoint("BOTTOMLEFT", 0, FH - 330)
@@ -187,6 +193,9 @@ function Module:BuildField(container)
     self.previewJoint:SetTexture(Tex("joint"))
     self.previewJoint:SetSize(12, 12)
     self.previewJoint:Hide()
+    self.reach = beamLayer:CreateTexture(nil, "BACKGROUND")
+    self.reach:SetTexture(Media.Tex("ring"))
+    self.reach:Hide()
     self.hoverRing = beamLayer:CreateTexture(nil, "OVERLAY", nil, 4)
     self.hoverRing:SetTexture(Media.Tex("glow"))
     self.hoverRing:SetBlendMode("ADD")
@@ -246,9 +255,24 @@ function Module:DrawLevel()
     PlaceRect(self.backWallShade, back, 0, wallTop, FW, wy)
     self.backWallShade:SetVertexColor(0, 0, 0, 0.6)
     PlaceRect(self.water, back, 0, wy, FW, FH)
-    self.water:SetColorTexture(wc[1], wc[2], wc[3], 1)
+    if zone.lava then
+        -- Lava: the client's own, glowing, the ripples bright.
+        self.water:SetTexture(zone.lava, "REPEAT", "REPEAT")
+        self.water:SetTexCoord(0, FW / 128, 0, (FH - wy) / 128)
+        self.water:SetVertexColor(1, 0.75, 0.55)
+    else
+        self.water:SetColorTexture(wc[1], wc[2], wc[3], 1)
+    end
+    self.stars:SetShown(zone.stars and true or false)
+    self.stars:SetAlpha(0.8)
     PlaceRect(self.ripples, back, 0, wy, FW, FH)
-    self.ripples:SetVertexColor(0.8, 0.95, 1, 0.8)
+    if zone.lava then
+        self.ripples:SetVertexColor(1, 0.7, 0.25, 0.9)
+        self.ripples:SetBlendMode("ADD")
+    else
+        self.ripples:SetVertexColor(0.8, 0.95, 1, 0.8)
+        self.ripples:SetBlendMode("BLEND")
+    end
     PlaceRect(self.waterShade, back, 0, wy, FW, FH)
     self.waterShade:SetVertexColor(0, 0.04, 0.08, 0.7)
     -- Rocks: the tileset's rock, its ground on top, shaded at the edges and towards the water.
@@ -500,6 +524,8 @@ function Module:StartLevel(index)
     self:VehicleAtStart()
     self:SyncBridge()
     self.overlay:Hide()
+    self.topBar:Show()
+    self.toolBar:Show()
     self:HideResult()
     self:ShowForeman(L["GBA_LI_" .. level.id])
     self:RefreshBars()
@@ -581,6 +607,7 @@ function Module:OnFieldDown(button)
     local node = P.NodeAt(self.build, x, y, 11)
     if node then
         self.dragFrom = node
+        self:HideForeman()
     else
         self:Hint(L.GBA_HINT_DRAG, x, y)
     end
@@ -643,6 +670,7 @@ function Module:UpdateEditor()
     label:Hide()
     joint:Hide()
     self.hoverRing:Hide()
+    self.reach:Hide()
     local hoverBeam
     if x and not self.overlay.current then
         if self.dragFrom then
@@ -656,6 +684,12 @@ function Module:UpdateEditor()
             SetLine(preview, self.beamLayer, n.x, n.y, ex, ey)
             if ok then preview:SetVertexColor(0.75, 1, 0.75, 0.9) else preview:SetVertexColor(1, 0.35, 0.3, 0.9) end
             preview:Show()
+            local reach = BA.MATERIALS[self.material].maxLen * GRID * 2
+            self.reach:ClearAllPoints()
+            self.reach:SetPoint("CENTER", self.beamLayer, "TOPLEFT", n.x, -n.y)
+            self.reach:SetSize(reach, reach)
+            self.reach:SetVertexColor(1, 0.9, 0.6, 0.35)
+            self.reach:Show()
             joint:ClearAllPoints()
             joint:SetPoint("CENTER", self.beamLayer, "TOPLEFT", ex, -ey)
             joint:Show()
@@ -674,6 +708,16 @@ function Module:UpdateEditor()
                 self.hoverRing:Show()
             else
                 hoverBeam = P.BeamAt(build, x, y, 7)
+                if hoverBeam then
+                    local beam = build.beams[hoverBeam]
+                    local len = P.BeamLength(build, beam)
+                    label:SetText(L["GBA_MAT_" .. beam.mat] .. " · " .. L.GBA_LEN:format(len / GRID,
+                        math.floor(P.BeamCost(len, beam.mat) + 0.5)) .. "\n" .. L.GBA_REMOVE_HINT)
+                    label:ClearAllPoints()
+                    label:SetPoint("BOTTOM", self.fxLayer, "TOPLEFT", x, -(y - 12))
+                    label:SetTextColor(1, 0.75, 0.6)
+                    label:Show()
+                end
             end
         end
     end
@@ -705,6 +749,12 @@ function Module:StartTest()
     self:RefreshBars()
 end
 
+function Module:ToggleFast()
+    self.fast = not self.fast
+    BA.UiSound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
+    self:RefreshBars()
+end
+
 function Module:StopTest(silent)
     if not self.sim then return end
     self.sim = nil
@@ -721,9 +771,9 @@ end
 
 function Module:UpdateTest(dt)
     local s = self.sim
-    self.acc = self.acc + dt
+    self.acc = self.acc + dt * (self.fast and 2 or 1)
     local steps = 0
-    while self.acc >= STEP and steps < 4 do
+    while self.acc >= STEP and steps < 8 do
         P.Step(s, STEP)
         self.acc = self.acc - STEP
         steps = steps + 1
@@ -792,18 +842,20 @@ function Module:On_lost(e)
     if e.why == "water" then
         local s = self.sim
         local x = P.VehiclePose(s)
-        self:Splash(x, self.level.water)
-        BA.Play("splash")
+        local lava = BA.ZONES[self.level.zone].lava
+        self:Splash(x, self.level.water, lava)
+        BA.Play(lava and "lava" or "splash")
+        if lava then e.why = "lava" end
     end
     self:Finish(false, e.why)
 end
 
-function Module:Splash(x, y)
+function Module:Splash(x, y, lava)
     for i = 1, 3 do
         local t = self.fxPool.Acquire()
         t:SetTexture(Media.Tex("glow"))
         t:SetBlendMode("ADD")
-        t:SetVertexColor(0.75, 0.9, 1)
+        if lava then t:SetVertexColor(1, 0.5, 0.1) else t:SetVertexColor(0.75, 0.9, 1) end
         t:Show()
         self:AddEffect(0.6 + i * 0.15, function(p)
             local s = 30 + 90 * p * i / 2
@@ -859,7 +911,7 @@ end
 function Module:Finish(won, why)
     local level = self.level
     local store = self:Store()
-    local info = { won = won, why = why, cost = self.cost, budget = level.budget }
+    local info = { won = won, why = why, cost = self.cost, budget = level.budget, peak = self.sim and self.sim.peak or 0 }
     if won then
         local stars = P.Stars(level, self.cost)
         info.stars = stars
@@ -895,6 +947,8 @@ function Module:OnUpdate(dt)
     -- The river moves.
     local o = (self.realClock * 0.04) % 1
     self.ripples:SetTexCoord(o, o + FW / 128, 0, (FH - self.level.water) / 64)
+    local f = self.foreman
+    if f and f:IsShown() and self.foremanAt and self.realClock - self.foremanAt > 14 then self:HideForeman() end
     if self.hintTime then
         self.hintTime = self.hintTime + dt
         self.hint:SetAlpha(math.max(0, 1 - math.max(0, self.hintTime - 1.2) / 0.5))
@@ -924,6 +978,8 @@ end
 
 function Module:Resume()
     self.overlay:Hide()
+    self.topBar:Show()
+    self.toolBar:Show()
 end
 
 function Module:OnKey(key)
@@ -947,6 +1003,10 @@ function Module:OnKey(key)
     end
     if key == "SPACE" then
         if self.sim then self:StopTest() else self:StartTest() end
+        return true
+    end
+    if key == "F" then
+        self:ToggleFast()
         return true
     end
     if self.sim then return false end

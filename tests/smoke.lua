@@ -1348,6 +1348,18 @@ do
     game.overlay.pages.help.refresh()
     game:ShowMenu()
     game.overlay.pages.menu.refresh()
+    for _ = 1, 4 do game:MenuChapter(1) end
+    game:MenuChapter(-1)
+    game:StartLevel(13)
+    game:StartTest()
+    game:OnKey("F")
+    for _ = 1, 60 * 30 do
+        game:OnUpdate(1 / 60)
+        if game.resultShown then break end
+    end
+    assert(game.resultShown and game.result.why == "lava", "bridge: into the lava")
+    game:StopTest()
+    game:ShowMenu()
     game:HubInfo()
     game:StatLines()
     game:RefreshTexts()

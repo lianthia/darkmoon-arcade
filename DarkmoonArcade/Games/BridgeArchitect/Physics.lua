@@ -41,6 +41,13 @@ BA.VEHICLES = {
     ram = { mass = 18, speed = 75, base = 34, radius = 8, display = 2736, len = 3.54, cx = 0.33, px = 52 },
     rocketcar = { mass = 16, speed = 130, base = 44, radius = 8, display = 10318, len = 8.87, cx = 0.37, px = 64 },
     shredder = { mass = 26, speed = 50, base = 36, radius = 9, display = 1269, len = 4.9, cx = 1.08, px = 58 },
+    tallstrider = { mass = 12, speed = 80, base = 28, radius = 7, display = 38, len = 3.32, cx = -0.26, px = 46 },
+    wolf = { mass = 16, speed = 95, base = 34, radius = 8, display = 207, len = 4.67, cx = -0.43, px = 54 },
+    nightmare = { mass = 18, speed = 90, base = 36, radius = 8, display = 5228, len = 3.5, cx = 0.1, px = 52 },
+    horse = { mass = 18, speed = 85, base = 36, radius = 8, display = 2402, len = 3.25, cx = 0.38, px = 52 },
+    raptor = { mass = 18, speed = 105, base = 40, radius = 8, display = 6469, len = 6.46, cx = -1.1, px = 62 },
+    golem = { mass = 30, speed = 40, base = 26, radius = 9, display = 71, len = 1.8, cx = -0.17, px = 40 },
+    spidertank = { mass = 42, speed = 42, base = 50, radius = 10, display = 5926, len = 6.56, cx = 1.06, px = 74 },
     kodo = { mass = 36, speed = 45, base = 54, radius = 10, display = 7933, len = 10.63, cx = -1.97, px = 86 },
 }
 
@@ -241,7 +248,7 @@ local function StaticSegments(level)
 end
 
 function P.NewSim(build, level)
-    local s = { t = 0, level = level, nodes = {}, beams = {}, events = {}, broken = 0 }
+    local s = { t = 0, level = level, nodes = {}, beams = {}, events = {}, broken = 0, peak = 0 }
     local mass = {}
     for i, n in ipairs(build.nodes) do
         s.nodes[i] = { x = n.x, y = n.y, px = n.x, py = n.y, anchor = n.anchor }
@@ -401,6 +408,7 @@ local function Substep(s, h)
         if not beam.broken then
             beam.smooth = beam.smooth + (math.abs(beam.force) - beam.smooth) * follow
             beam.load = beam.smooth / beam.strength
+            if beam.load > s.peak then s.peak = beam.load end
             if beam.load > 1 then
                 beam.broken = true
                 s.broken = s.broken + 1
