@@ -327,6 +327,25 @@ def key_art(logo_img):
     return True
 
 
+def card_glow():
+    """The glow round the next contract's card in the menu: a soft halo along the edges of a 200 x 150
+    card, drawn in its own 228 x 178 pixels (14 px round the card) and stored as 256 x 256 (stretched
+    back by the game). White, tinted and added in the game."""
+    w, h, pad = 228, 178, 14
+    ys, xs = np.mgrid[0:h, 0:w].astype(np.float64) + 0.5
+    # Distance to the card's edge, outside positive, inside negative.
+    dx = np.maximum(pad - xs, xs - (w - pad))
+    dy = np.maximum(pad - ys, ys - (h - pad))
+    outside = np.hypot(np.maximum(dx, 0), np.maximum(dy, 0))
+    inside = np.minimum(np.maximum(dx, dy), 0)
+    d = np.where((dx > 0) | (dy > 0), outside, inside)
+    a = np.where(d >= 0, np.exp(-d / 6.5), 0.85 * np.exp(d / 7.0))
+    a *= 1 - smooth(d, pad - 3, pad)
+    img = np.ones((h, w, 4))
+    img[..., 3] = np.clip(a, 0, 1) * 0.9
+    save(arr_img(img).resize((256, 256), Image.LANCZOS), "card_glow")
+
+
 if __name__ == "__main__":
     beam("beam_wood", (0.78, 0.55, 0.3), "wood")
     beam("beam_road", (0.55, 0.37, 0.2), "road")
@@ -343,6 +362,7 @@ if __name__ == "__main__":
     star()
     stars()
     weather()
+    card_glow()
     lg = logo()
     if not key_art(lg):
         tile(lg)

@@ -441,11 +441,63 @@ function Module:BuildMenus(container)
     help:SetPoint("TOP", levels, "BOTTOM", 0, -12)
 
     self:BuildHelpPage(self.overlay:AddPage("help"))
-    Widgets.AchievementsPage(self.overlay, W, self.id, function()
+    self:BuildAchievementsPage(self.overlay:AddPage("achievements"))
+end
+
+-- Achievements: all fifteen on one page, two columns of plates; done ones in colour with a tick.
+-- The back button sits where the help page has it.
+function Module:BuildAchievementsPage(page)
+    local title = Widgets.PageTitle(page, "ACHIEVEMENTS", -24)
+    local count = Text(page, 12, MUTED)
+    count:SetPoint("TOP", title, "BOTTOM", 0, -4)
+    local defs = ns.Achievements.ForGame(self.id)
+    local colW, rowH, gap = 436, 44, 4
+    local perCol = math.ceil(#defs / 2)
+    local left = (W - (colW * 2 + 12)) / 2
+    local rows = {}
+    for i, def in ipairs(defs) do
+        local col, row = math.floor((i - 1) / perCol), (i - 1) % perCol
+        local r = Plate(page, 0.6)
+        r:SetSize(colW, rowH)
+        r:SetPoint("TOPLEFT", left + col * (colW + 12), -86 - row * (rowH + gap))
+        r.icon = r:CreateTexture(nil, "ARTWORK")
+        r.icon:SetSize(34, 34)
+        r.icon:SetPoint("LEFT", 8, 0)
+        r.icon:SetTexture(def.icon)
+        r.name = Text(r, 12, GOLD)
+        r.name:SetPoint("TOPLEFT", r.icon, "TOPRIGHT", 10, 3)
+        r.name:SetJustifyH("LEFT")
+        r.desc = Text(r, 10, CREAM)
+        r.desc:SetPoint("TOPLEFT", r.name, "BOTTOMLEFT", 0, -2)
+        r.desc:SetWidth(colW - 90)
+        r.desc:SetJustifyH("LEFT")
+        r.check = r:CreateTexture(nil, "OVERLAY")
+        r.check:SetSize(20, 20)
+        r.check:SetPoint("RIGHT", -10, 0)
+        r.check:SetTexture("Interface\\RaidFrame\\ReadyCheck-Ready")
+        r.def = def
+        rows[i] = r
+    end
+    local back = Kit.Button(page, 160, 30, "BACK", function()
         if self.achievementsBack == "game" and self.level then self.overlay:Hide()
         elseif self.achievementsBack == "pause" then self.overlay:Show("pause")
         else self:ShowMenu() end
-    end)
+    end, "red")
+    back:SetPoint("BOTTOM", 0, 16)
+    page.refresh = function()
+        local done, total = ns.Achievements.Count(self.id)
+        count:SetText(("%d / %d"):format(done, total))
+        for _, r in ipairs(rows) do
+            local unlocked = ns.Achievements.IsDone(r.def.id)
+            r.name:SetText(L[r.def.nameKey])
+            r.desc:SetText(L[r.def.descKey])
+            r.icon:SetDesaturated(not unlocked)
+            r.icon:SetAlpha(unlocked and 1 or 0.5)
+            r.name:SetAlpha(unlocked and 1 or 0.65)
+            r.desc:SetAlpha(unlocked and 1 or 0.65)
+            r.check:SetShown(unlocked)
+        end
+    end
 end
 
 function Module:ShowMenu()
@@ -533,9 +585,10 @@ function Module:BuildLevelMenu(page)
         top:SetColorTexture(0, 0, 0, 0.45)
         WoodFrame(c, cw, ch)
         c.glow = c:CreateTexture(nil, "OVERLAY")
-        c.glow:SetPoint("TOPLEFT", -3, 3)
-        c.glow:SetPoint("BOTTOMRIGHT", 3, -3)
-        c.glow:SetTexture(MC.Tex("glow_card"))
+        -- A soft halo along the card's edges (media/bridge/card_glow: 14 px round a 200 x 150 card).
+        c.glow:SetPoint("TOPLEFT", -14, 14)
+        c.glow:SetPoint("BOTTOMRIGHT", 14, -14)
+        c.glow:SetTexture(Tex("card_glow"))
         c.glow:SetBlendMode("ADD")
         c.glow:SetVertexColor(1, 0.8, 0.35)
         local hl = c:CreateTexture(nil, "HIGHLIGHT")
@@ -639,7 +692,7 @@ function Module:BuildLevelMenu(page)
                 c:SetAlpha(c.open and 1 or 0.75)
                 c.num:SetTextColor(c.open and GOLD[1] or 0.5, c.open and GOLD[2] or 0.45, c.open and GOLD[3] or 0.4)
                 c.glow:SetShown(c.open and not b)
-                c.glow:SetAlpha(i == current and 0.9 or 0.45)
+                c.glow:SetAlpha(i == current and 1 or 0.7)
             end
         end
     end
