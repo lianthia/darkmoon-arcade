@@ -1,9 +1,9 @@
--- Goblin Bridge Architect: the game module (prototype). The field shows a gorge from the side: sky,
+-- Goblin Bridge Architect: the game module. The field shows a gorge from the side: sky,
 -- far hills, the rocks (client tilesets), the river and the bridge. In building mode beams are drawn
 -- by dragging from a joint; in a test the physics (Physics.lua) runs and the vehicle, a client model
 -- in a ModelScene, crosses. The toolbar, the top bar and the menus live in UI.lua.
 
-local ADDON, ns = ...
+local _, ns = ...
 local BA = ns.BridgeArchitect
 local P = BA.Physics
 local Arcade, Media, L = ns.Arcade, ns.Media, ns.L
@@ -1191,5 +1191,4 @@ SlashCmdList.GOBLINBRIDGE = function(msg)
     end
 end
 
--- The dev copy only, while it is a prototype.
-if ADDON ~= "DarkmoonArcade" then Arcade.RegisterGame(Module) end
+Arcade.RegisterGame(Module)

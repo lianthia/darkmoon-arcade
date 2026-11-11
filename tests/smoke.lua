@@ -305,9 +305,11 @@ assert(not ns.DevCopyActive(), "disabled dev copy does not count")
 C_AddOns = nil
 
 local Window, Arcade = ns.Window, ns.Arcade
-assert(#Arcade.order == 7, "seven games registered")
-assert(Arcade.order[1] == "mercenaries", "newest game first")
-assert(Arcade.order[2] == "spellbounce", "then the most popular game")
+assert(#Arcade.order == 8, "eight games registered")
+assert(Arcade.order[1] == "mercenaries", "Mercenaries first")
+assert(Arcade.order[2] == "bridgearchitect", "then the newest game")
+assert(Arcade.order[3] == "spellbounce", "then the most popular game")
+assert(Arcade.Featured().id == "bridgearchitect", "the newest game in the spotlight")
 
 -- Every version of the news, in every language, has the texts of its rows; newest first.
 local function NewsText(key, what)
@@ -380,9 +382,9 @@ assert(Window.frame._shown and News.frame._shown, "news after an update")
 Window.tabButtons.home._scripts.OnClick(Window.tabButtons.home)
 assert(Window.hubPages.discover._shown and not News.frame._shown, "back to discover")
 -- Discover: the spotlight game with the player's progress, the recently updated games below.
-assert(Window.featured.id == "mercenaries", "Mercenaries in the spotlight")
+assert(Window.featured.id == "bridgearchitect", "Goblin Bridge Architect in the spotlight")
 assert(Window.metrics[1].value._text ~= nil and Window.metrics[4].label._text ~= nil, "progress figures")
-assert(Window.spotPlay.label._text == ns.L.HUB_PLAY_GAME:format(ns.L.MC_NAME), "play, no bounty under way yet")
+assert(Window.spotPlay.label._text == ns.L.HUB_PLAY_GAME:format(ns.L.GBA_NAME), "play the spotlight game")
 local recent = ns.Arcade.RecentlyUpdated()
 assert(#recent == #ns.Arcade.order - 1 and recent[1] ~= Window.featured, "explore: all but the spotlight game")
 local shownCards = 0
@@ -1265,12 +1267,12 @@ _G.DarkmoonArcadeMinimapButton._scripts.OnEnter(_G.DarkmoonArcadeMinimapButton)
 _G.DarkmoonArcadeMinimapButton._scripts.OnClick(_G.DarkmoonArcadeMinimapButton, "RightButton")
 Tick(1)
 
--- Goblin Bridge Architect (listed by the dev copy only): build by dragging, test, win, lose, menus.
+-- Goblin Bridge Architect: build by dragging, test, win, lose, menus.
 do
     local BA = ns.BridgeArchitect
     local P = BA.Physics
     local game = BA.Module
-    Arcade.RegisterGame(game)
+    assert(Arcade.games.bridgearchitect == game, "bridge: registered")
     Window.frame:Show()
     Window:OpenGame("bridgearchitect")
     assert(game.overlay.current == "menu", "bridge: start menu")
