@@ -23,7 +23,7 @@ import casc_local  # noqa: E402
 import check_client  # noqa: E402
 
 OUT = ROOT / "DarkmoonArcade" / "Games" / "Mercenaries" / "Retail.lua"
-FOREVER = casc_local.build_info("wow_classic_beta")["Version"]
+FOREVER = casc_local.build_info("wowf")["Version"]
 RETAIL = casc_local.build_info("wow")["Version"]
 
 CONTINENTS = {"ek": (13, 1415), "kal": (12, 1414)}

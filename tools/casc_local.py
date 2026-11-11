@@ -12,13 +12,13 @@ import sys
 import zlib
 
 WOW = pathlib.Path(r"G:\Battle.net\World of Warcraft")
-PRODUCT = "wow_classic_beta"
+PRODUCT = "wowf"
 ENCRYPTED = 0x8000000
 NO_NAMES = 0x10000000
 
 
 def build_info(product=PRODUCT):
-    """The .build.info row of an installed product (wow_classic_beta = Forever, wow = retail)."""
+    """The .build.info row of an installed product (wowf = Forever, wow = retail)."""
     lines = (WOW / ".build.info").read_text().splitlines()
     head = [h.split("!")[0] for h in lines[0].split("|")]
     for line in lines[1:]:

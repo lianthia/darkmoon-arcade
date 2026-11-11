@@ -171,6 +171,7 @@ function GetTime() return now end
 function time() return 1760000000 + math.floor(now) end
 date = os.date
 function GetCursorPosition() return cursorX, cursorY end
+function tContains(t, v) for _, x in ipairs(t) do if x == v then return true end end return false end
 function InCombatLockdown() return false end
 function UnitOnTaxi() return onTaxi end
 function UnitIsGhost() return isGhost end
@@ -1259,6 +1260,102 @@ DarkmoonArcade_OnAddonCompartmentClick(nil, "LeftButton")
 _G.DarkmoonArcadeMinimapButton._scripts.OnEnter(_G.DarkmoonArcadeMinimapButton)
 _G.DarkmoonArcadeMinimapButton._scripts.OnClick(_G.DarkmoonArcadeMinimapButton, "RightButton")
 Tick(1)
+
+-- Goblin Bridge Architect (listed by the dev copy only): build by dragging, test, win, lose, menus.
+do
+    local BA = ns.BridgeArchitect
+    local P = BA.Physics
+    local game = BA.Module
+    Arcade.RegisterGame(game)
+    Window.frame:Show()
+    Window:OpenGame("bridgearchitect")
+    assert(game.overlay.current == "menu", "bridge: start menu")
+    game.overlay.pages.menu.refresh()
+    game:StartLevel(1)
+    assert(game.level and not game.overlay.current, "bridge: level started")
+    -- Field pixels from the cursor: the mock field's top left is at (100, 600).
+    local function At(x, y) cursorX, cursorY = x + 100, 600 - y end
+    local function Drag(x1, y1, x2, y2)
+        At(x1, y1)
+        game:OnFieldDown("LeftButton")
+        At(x2, y2)
+        game:OnUpdate(0.02)
+        game:OnFieldUp("LeftButton")
+    end
+    game.build = P.NewBuild(game.level)
+    Drag(340, 300, 400, 300)
+    assert(#game.build.beams == 1, "bridge: a beam by dragging")
+    Drag(400, 300, 520, 300) -- too long: pulled back to 4 m
+    assert(#game.build.beams == 2 and game.build.nodes[#game.build.nodes].x == 480, "bridge: long beam shortened")
+    game:OnKey("Z")
+    assert(#game.build.beams == 1, "bridge: undo")
+    game:OnKey("2")
+    assert(game.material == "wood", "bridge: material key")
+    At(10, 10)
+    game:OnFieldDown("LeftButton") -- no joint there: a hint
+    At(370, 300)
+    game:OnFieldDown("RightButton")
+    assert(#game.build.beams == 0, "bridge: right click removes")
+    game:Clear()
+    -- A real truss, then a test that holds.
+    local level = game.level
+    local function B(x1, y1, x2, y2, mat)
+        assert(P.AddBeam(game.build, level, P.NodeAt(game.build, x1, y1, 1), x2, y2, mat), "bridge: beam")
+    end
+    for x = 340, 520, 60 do B(x, 300, x + 60, 300, "road") end
+    for x = 400, 520, 60 do B(x, 300, x, 260, "wood") end
+    B(400, 260, 460, 260, "wood")
+    B(460, 260, 520, 260, "wood")
+    B(340, 300, 400, 260, "wood")
+    B(580, 300, 520, 260, "wood")
+    B(400, 260, 460, 300, "wood")
+    B(520, 260, 460, 300, "wood")
+    game:Changed()
+    game:OnKey("SPACE")
+    assert(game.sim, "bridge: test started")
+    for _ = 1, 60 * 20 do
+        game:OnUpdate(1 / 60)
+        if game.resultShown then break end
+    end
+    assert(game.resultShown and game.result and game.result.won, "bridge: the truss holds")
+    assert(game:Store().best.gorge, "bridge: best kept")
+    game.resultPanel.next:GetScript("OnClick")(game.resultPanel.next)
+    assert(game.level.index == 2 and not game.sim, "bridge: next contract")
+    -- An empty bridge: the strider falls (or sticks) and the panel offers building again.
+    game:StartTest()
+    for _ = 1, 60 * 40 do
+        game:OnUpdate(1 / 60)
+        if game.resultShown then break end
+    end
+    assert(game.resultShown and not game.result.won, "bridge: lost without a bridge")
+    game:OnKey("ESCAPE")
+    assert(not game.sim, "bridge: back to building")
+    for i = 1, #BA.LEVELS do
+        game:StartLevel(i)
+        game:OnUpdate(0.1)
+        game:RefreshBars()
+    end
+    for _, b in ipairs(game.toolBar.mats) do
+        b:GetScript("OnEnter")(b)
+        b:GetScript("OnClick")(b)
+    end
+    game.toolBar.erase:GetScript("OnClick")(game.toolBar.erase)
+    game.topBar.meter:GetScript("OnEnter")(game.topBar.meter)
+    game:OnKey("ESCAPE")
+    assert(game.overlay.current == "pause", "bridge: pause")
+    game:ShowHelp()
+    assert(game.overlay.current == "help", "bridge: help")
+    game.overlay.pages.help.refresh()
+    game:ShowMenu()
+    game.overlay.pages.menu.refresh()
+    game:HubInfo()
+    game:StatLines()
+    game:RefreshTexts()
+    game:Leave()
+    game:Enter()
+    game:ResetProgress()
+    SlashCmdList.GOBLINBRIDGE("pitch")
+end
 
 for _, line in ipairs(printed) do
     if tostring(line):find("error") then error("captured: " .. tostring(line)) end

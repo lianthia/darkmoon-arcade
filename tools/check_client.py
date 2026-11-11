@@ -26,7 +26,7 @@ CACHE = ROOT / "tools" / ".cache"
 sys.path.insert(0, str(ROOT / "tools"))
 import casc_local  # noqa: E402
 
-CLIENTS = {"forever": "wow_classic_beta", "retail": "wow"}
+CLIENTS = {"forever": "wowf", "retail": "wow"}
 UA = {"User-Agent": "Mozilla/5.0"}
 
 

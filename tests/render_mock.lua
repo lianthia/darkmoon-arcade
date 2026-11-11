@@ -136,6 +136,15 @@ local function NewRegion(kind, parent, layer, sub)
 end
 
 function M:CreateTexture(_, layer, _, sub) return NewRegion("texture", self, layer, sub) end
+-- Lines (beams, rays): drawn between two points as a rotated strip.
+function M:CreateLine(_, layer, _, sub)
+    local l = NewRegion("texture", self, layer, sub)
+    l._line, l._thick = true, 1
+    return l
+end
+function M:SetStartPoint(point, rel, x, y) self._from = { point, rel, x or 0, y or 0 } end
+function M:SetEndPoint(point, rel, x, y) self._to = { point, rel, x or 0, y or 0 } end
+function M:SetThickness(t) self._thick = t end
 function M:CreateMaskTexture() local m = NewRegion("mask", self, "ARTWORK"); m._isMask = true; return m end
 function M:CreateFontString(_, layer)
     local fs = NewRegion("font", self, layer)
@@ -392,7 +401,25 @@ function RenderDump(root)
             end
         end
         for _, reg in ipairs(regions) do
-            local r = RenderRect(reg)
+            if reg._line then
+                local function End(e)
+                    if not e then return nil end
+                    local rr = RenderRect(e[2])
+                    if not rr then return nil end
+                    local sc = RenderScale(e[2])
+                    local px = e[1]:find("LEFT") and rr.l or e[1]:find("RIGHT") and rr.r or (rr.l + rr.r) / 2
+                    local py = e[1]:find("TOP") and rr.t or e[1]:find("BOTTOM") and rr.b or (rr.t + rr.b) / 2
+                    return px + e[3] * sc, py - e[4] * sc, sc
+                end
+                local x1, y1, sc = End(reg._from)
+                local x2, y2 = End(reg._to)
+                if x1 and x2 and (reg._file or reg._solid) then
+                    out[#out + 1] = { kind = "line", x1 = x1 - origin.l, y1 = y1 - origin.t, x2 = x2 - origin.l, y2 = y2 - origin.t,
+                        thick = reg._thick * sc, file = reg._file and tostring(reg._file), solid = reg._solid, color = reg._color,
+                        alpha = alpha * (reg._alpha or 1), clip = entry.clip and Rel(entry.clip), layer = reg._layer }
+                end
+            end
+            local r = not reg._line and RenderRect(reg)
             if r and r.r > r.l and r.b > r.t then
                 local item = { rect = Rel(r), alpha = alpha * (reg._alpha or 1), clip = entry.clip and Rel(entry.clip), layer = reg._layer }
                 if reg._kind == "font" then

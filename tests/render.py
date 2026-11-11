@@ -27,7 +27,7 @@ CACHE = ROOT / "tools" / ".cache"
 
 
 class Assets:
-    def __init__(self, product="wow_classic_beta"):
+    def __init__(self, product="wowf"):
         import check_client
         self.client = casc_local.Client(product)
         self.images = {}
@@ -116,6 +116,20 @@ def lua_list(t):
 
 def crop_coord(img, coord):
     u0, u1, v0, v1 = coord
+    # Texture coordinates beyond 0..1 repeat the image (REPEAT wrap), as the client does.
+    lo_u, hi_u, lo_v, hi_v = min(u0, u1), max(u0, u1), min(v0, v1), max(v0, v1)
+    if (lo_u < 0 or hi_u > 1 or lo_v < 0 or hi_v > 1) and (hi_u - lo_u) * (hi_v - lo_v) < 400:
+        fu, fv = math.floor(lo_u), math.floor(lo_v)
+        nu, nv = math.ceil(hi_u) - fu, math.ceil(hi_v) - fv
+        tw, th = max(1, img.width // max(1, nu // 4 + 1)), max(1, img.height // max(1, nv // 4 + 1))
+        small = img.resize((tw, th))
+        tiled = Image.new("RGBA", (tw * nu, th * nv))
+        for i in range(nu):
+            for j in range(nv):
+                tiled.paste(small, (i * tw, j * th))
+        box = (int((lo_u - fu) * tw), int((lo_v - fv) * th), int((hi_u - fu) * tw), int((hi_v - fv) * th))
+        if box[2] > box[0] and box[3] > box[1]:
+            return tiled.crop(box)
     flip_x, flip_y = u0 > u1, v0 > v1
     u0, u1 = sorted((u0, u1))
     v0, v1 = sorted((v0, v1))
@@ -147,6 +161,21 @@ COLOR_CODE = re.compile(r"\|c([0-9a-fA-F]{8})|\|r|\|T.*?\|t")
 
 
 def draw_item(canvas, item, assets):
+    if item["kind"] == "line":
+        x1, y1, x2, y2 = (item[k] * S for k in ("x1", "y1", "x2", "y2"))
+        length = max(1, int(math.hypot(x2 - x1, y2 - y1)))
+        thick = max(1, int(item["thick"] * S))
+        if item["solid"] is not None:
+            c = lua_list(item["solid"])
+            img = Image.new("RGBA", (length, thick), tuple(int(v * 255) for v in c[:3]) + (int(255 * (c[3] if len(c) > 3 else 1)),))
+        else:
+            src = assets.texture(item["file"])
+            img = (src or Image.new("RGBA", (8, 8), (0, 255, 0, 255))).resize((length, thick), Image.BICUBIC)
+        img = tint(img, lua_list(item["color"]), item["alpha"] if item["alpha"] is not None else 1, False)
+        img = img.rotate(-math.degrees(math.atan2(y2 - y1, x2 - x1)), resample=Image.BICUBIC, expand=True)
+        cx, cy = (x1 + x2) / 2, (y1 + y2) / 2
+        canvas.alpha_composite(img, (int(cx - img.width / 2), int(cy - img.height / 2))) if cx - img.width / 2 >= 0 and cy - img.height / 2 >= 0 else canvas.paste(img, (int(cx - img.width / 2), int(cy - img.height / 2)), img)
+        return
     x0, y0, x1, y1 = [v * S for v in lua_list(item["rect"])]
     w, h = int(round(x1 - x0)), int(round(y1 - y0))
     if w <= 0 or h <= 0:
@@ -280,7 +309,7 @@ def main():
     out.mkdir(parents=True, exist_ok=True)
     only = sys.argv[2] if len(sys.argv) > 2 else None
     retail = os.environ.get("RENDER_CLIENT") == "retail"
-    assets = Assets("wow" if retail else "wow_classic_beta")
+    assets = Assets("wow" if retail else "wowf")
     toc = (ADDON / "DarkmoonArcade.toc").read_text(encoding="utf-8")
     files = [line.strip().replace("\\", "/") for line in toc.splitlines() if line.strip() and not line.startswith("#")]
     lua = lupa.LuaRuntime(unpack_returned_tuples=True)

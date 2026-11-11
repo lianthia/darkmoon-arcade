@@ -596,3 +596,57 @@ if Want("event") then
     mc.overlay:Show("event", { icon = MC.MYSTERY_ICON.sabotage, title = ns.L.MC_MYSTERY_SABOTAGE, text = ns.L.MC_EVENT_SABOTAGE })
     Snap("event")
 end
+
+-- Goblin Bridge Architect: the contracts, building, a test under load, the result and the help.
+if Want("gba_") then
+    local BA = ns.BridgeArchitect
+    local P = BA.Physics
+    local game = BA.Module
+    ns.Arcade.RegisterGame(game)
+    ns.Window:OpenGame("bridgearchitect")
+    local function GSnap(name)
+        Tick(0.3)
+        local items, w, h = RenderDump(game.container)
+        Shots[#Shots + 1] = { name = name, items = items, w = w, h = h }
+    end
+    local store = game:Store()
+    store.best.gorge = { cost = 812, stars = 3 }
+    store.best.wider = { cost = 1590, stars = 1 }
+    game:ShowMenu()
+    GSnap("gba_menu")
+    game:StartLevel(1)
+    GSnap("gba_level")
+    -- A truss on the first gorge, one beam being dragged.
+    local level = game.level
+    local function B(x1, y1, x2, y2, mat)
+        P.AddBeam(game.build, level, P.NodeAt(game.build, x1, y1, 1), x2, y2, mat)
+    end
+    for x = 340, 520, 60 do B(x, 300, x + 60, 300, "road") end
+    for x = 400, 520, 60 do B(x, 300, x, 260, "wood") end
+    B(400, 260, 460, 260, "wood")
+    B(340, 300, 400, 260, "wood")
+    B(400, 260, 460, 300, "wood")
+    game:Changed()
+    game:HideForeman()
+    game.dragFrom = P.NodeAt(game.build, 460, 260, 1)
+    game.Cursor = function() return 515, 262 end
+    GSnap("gba_build")
+    game.dragFrom = nil
+    B(460, 260, 520, 260, "wood")
+    B(580, 300, 520, 260, "wood")
+    B(520, 260, 460, 300, "wood")
+    game:Changed()
+    game:StartTest()
+    for _ = 1, 60 * 6 do game:OnUpdate(1 / 60) end
+    GSnap("gba_test")
+    for _ = 1, 60 * 10 do
+        game:OnUpdate(1 / 60)
+        if game.resultShown then break end
+    end
+    GSnap("gba_result")
+    game:StartLevel(6)
+    game:HideForeman()
+    GSnap("gba_crane")
+    game:ShowHelp()
+    GSnap("gba_help")
+end

@@ -4,7 +4,7 @@
 # Usage: powershell -File tools/deploy.ps1 [-AddOnsDir <path>] [-Copy]
 param(
     [string[]]$AddOnsDir = @(
-        "G:\Battle.net\World of Warcraft\_classic_beta_\Interface\AddOns",
+        "G:\Battle.net\World of Warcraft\_forever_\Interface\AddOns",
         "G:\Battle.net\World of Warcraft\_retail_\Interface\AddOns"
     ),
     [switch]$Copy

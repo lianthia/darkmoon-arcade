@@ -38,6 +38,8 @@ def main() -> int:
         "Games/Mercenaries/Enchanting.lua",
         "Games/Mercenaries/Quests.lua",
         "Games/Mercenaries/Dungeons.lua",
+        "Games/BridgeArchitect/Physics.lua",
+        "Games/BridgeArchitect/Levels.lua",
     ):
         loader((ADDON / rel).read_text(encoding="utf-8"), "@" + rel)
 
