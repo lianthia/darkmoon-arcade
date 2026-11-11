@@ -51,6 +51,10 @@ local function Snap(name)
 end
 
 DarkmoonArcadeDB = nil
+-- "hub_gba": with Goblin Bridge Architect registered (only the dev copy registers it).
+if RENDER_ONLY and RENDER_ONLY:find("gba", 1, true) and not ns.Arcade.games.bridgearchitect then
+    ns.Arcade.RegisterGame(ns.BridgeArchitect.Module)
+end
 Fire("ADDON_LOADED", "DarkmoonArcade")
 Fire("PLAYER_LOGIN")
 if RENDER_LANG then
@@ -602,7 +606,7 @@ if Want("gba_") then
     local BA = ns.BridgeArchitect
     local P = BA.Physics
     local game = BA.Module
-    ns.Arcade.RegisterGame(game)
+    if not ns.Arcade.games.bridgearchitect then ns.Arcade.RegisterGame(game) end
     ns.Window:OpenGame("bridgearchitect")
     local function GSnap(name)
         Tick(0.3)

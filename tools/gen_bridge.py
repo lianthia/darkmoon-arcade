@@ -297,6 +297,33 @@ def weather():
     save(arr_img(a), "moon")
 
 
+def key_art(logo_img):
+    """The teaser (art/launcher/bridgearchitect_teaser.png) for the launcher's spotlight and the contracts
+    menu: 910x512 at the left of a 1024x512 texture, like the Mercenaries key art. The launcher tile
+    becomes a cut of it with the logo."""
+    src_path = ROOT / "art" / "launcher" / "bridgearchitect_teaser.png"
+    if not src_path.exists():
+        return False
+    src = Image.open(src_path).convert("RGB")
+    canvas = Image.new("RGB", (1024, 512), (60, 30, 20))
+    w = round(512 * src.width / src.height)
+    canvas.paste(src.resize((w, 512), Image.LANCZOS), (0, 0))
+    (ROOT / "DarkmoonArcade" / "media" / "launcher").mkdir(parents=True, exist_ok=True)
+    canvas.save(ROOT / "DarkmoonArcade" / "media" / "launcher" / "bridgearchitect.tga")
+    # Tile 512 x 256: the middle of the scene, the logo on top.
+    tile_w = src.width * 0.62
+    left = (src.width - tile_w) / 2 + src.width * 0.08
+    crop = src.crop((int(left), int(src.height * 0.18), int(left + tile_w), int(src.height * 0.18 + tile_w / 2)))
+    img = crop.resize((512, 256), Image.LANCZOS).convert("RGBA")
+    shade = Image.new("RGBA", (512, 256), (0, 0, 0, 70))
+    img.alpha_composite(shade)
+    if logo_img is not None:
+        lg = logo_img.resize((400, 200), Image.LANCZOS)
+        img.alpha_composite(lg, ((512 - 400) // 2, 28))
+    img.save(ROOT / "DarkmoonArcade" / "media" / "tiles" / "bridgearchitect.tga")
+    return True
+
+
 if __name__ == "__main__":
     beam("beam_wood", (0.78, 0.55, 0.3), "wood")
     beam("beam_road", (0.55, 0.37, 0.2), "road")
@@ -313,5 +340,7 @@ if __name__ == "__main__":
     star()
     stars()
     weather()
-    tile(logo())
+    lg = logo()
+    if not key_art(lg):
+        tile(lg)
     print("ok", sorted(p.name for p in OUT.glob("*.tga")))

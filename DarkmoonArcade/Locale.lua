@@ -9,6 +9,17 @@ function ns.AddStrings(language, values)
 end
 
 ns.AddStrings("enUS", {
+    NEWS_160_HEADLINE = "Goblin Bridge Architect",
+    NEWS_160_1_TITLE = "A new game: Goblin Bridge Architect",
+    NEWS_160_1_TEXT = "Build bridges from wood, steel and rope over the gorges of Azeroth, then send the vehicle across. Every beam feels its load – and snaps when it is too much.",
+    NEWS_160_2_TITLE = "24 contracts in three chapters",
+    NEWS_160_2_TEXT = "From the Barrens to Duskwood at night, the lava of the Burning Steppes, snowy Winterspring and Tanaris – each with its own vehicle, from the mechanostrider to the spider tank.",
+    NEWS_160_3_TITLE = "Three stars – always possible",
+    NEWS_160_3_TEXT = "Stay within the budget for one star, build cheaper for two or three. Every three-star mark is proven reachable – it just takes a clever bridge.",
+    NEWS_160_4_TITLE = "Weather and wildlife",
+    NEWS_160_4_TEXT = "Clouds, rain, snow, embers over the lava and fireflies at night; now and then a wyvern or a bat flies past.",
+    NEWS_160_5_TITLE = "Test, watch, improve",
+    NEWS_160_5_TEXT = "Beams glow from yellow to red under load, the result shows the highest load, and double speed (F) saves waiting. Help is one click away in the contracts menu.",
     NEWS_150_HEADLINE = "The First Raid",
     NEWS_150_1_TITLE = "Upper Blackrock Spire",
     NEWS_150_1_TEXT = "Mercenaries' first raid: seven bosses from Pyroguard Emberseer to General Drakkisath, a wing of Blackrock Mountain (the black dragon on the map).",
@@ -254,6 +265,17 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    NEWS_160_HEADLINE = "Goblin Bridge Architect",
+    NEWS_160_1_TITLE = "Neues Spiel: Goblin Bridge Architect",
+    NEWS_160_1_TEXT = "Baue Brücken aus Holz, Stahl und Seil über die Schluchten Azeroths und schick das Fahrzeug hinüber. Jeder Balken spürt seine Last – und bricht, wenn es zu viel wird.",
+    NEWS_160_2_TITLE = "24 Aufträge in drei Kapiteln",
+    NEWS_160_2_TEXT = "Vom Brachland über den nächtlichen Dämmerwald, die Lava der Brennenden Steppe und das verschneite Winterquell bis nach Tanaris – jeder mit eigenem Fahrzeug, vom Mechanoschreiter bis zum Spinnenpanzer.",
+    NEWS_160_3_TITLE = "Drei Sterne – immer machbar",
+    NEWS_160_3_TEXT = "Im Budget gibt es einen Stern, sparsamer gebaut zwei oder drei. Jede 3-Sterne-Marke ist nachweislich erreichbar – es braucht nur eine clevere Brücke.",
+    NEWS_160_4_TITLE = "Wetter und Leben",
+    NEWS_160_4_TEXT = "Wolken, Regen, Schnee, Glut über der Lava und Glühwürmchen bei Nacht; ab und zu fliegt ein Windreiter oder eine Fledermaus vorbei.",
+    NEWS_160_5_TITLE = "Testen, zuschauen, verbessern",
+    NEWS_160_5_TEXT = "Balken glühen unter Last von Gelb bis Rot, das Ergebnis zeigt die höchste Last, und doppeltes Tempo (F) spart Wartezeit. Die Hilfe ist im Auftragsmenü nur einen Klick entfernt.",
     NEWS_150_HEADLINE = "Der erste Schlachtzug",
     NEWS_150_1_TITLE = "Obere Schwarzfelsspitze",
     NEWS_150_1_TEXT = "Der erste Schlachtzug von Mercenaries: sieben Bosse von Feuerwache Glutseher bis General Drakkisath, ein Flügel des Schwarzfels (der schwarze Drache auf der Karte).",
@@ -496,6 +518,17 @@ ns.AddStrings("deDE", {
 })
 
 ns.AddStrings("frFR", {
+    NEWS_160_HEADLINE = "Goblin Bridge Architect",
+    NEWS_160_1_TITLE = "Nouveau jeu : Goblin Bridge Architect",
+    NEWS_160_1_TEXT = "Construisez des ponts en bois, en acier et en corde au-dessus des gorges d'Azeroth, puis envoyez le véhicule de l'autre côté. Chaque poutre sent sa charge – et cède quand c'en est trop.",
+    NEWS_160_2_TITLE = "24 contrats en trois chapitres",
+    NEWS_160_2_TEXT = "Des Tarides au Bois de la Pénombre de nuit, de la lave des Steppes ardentes au Berceau-de-l'Hiver enneigé jusqu'à Tanaris – chacun avec son véhicule, du mécanotrotteur au tank araignée.",
+    NEWS_160_3_TITLE = "Trois étoiles – toujours possibles",
+    NEWS_160_3_TEXT = "Restez dans le budget pour une étoile, construisez moins cher pour deux ou trois. Chaque palier de trois étoiles est atteignable – il suffit d'un pont astucieux.",
+    NEWS_160_4_TITLE = "Météo et faune",
+    NEWS_160_4_TEXT = "Nuages, pluie, neige, braises au-dessus de la lave et lucioles la nuit ; de temps en temps, une wyverne ou une chauve-souris passe.",
+    NEWS_160_5_TITLE = "Tester, observer, améliorer",
+    NEWS_160_5_TEXT = "Les poutres passent du jaune au rouge sous la charge, le résultat montre la charge maximale et la vitesse double (F) évite d'attendre. L'aide est à un clic dans le menu des contrats.",
     NEWS_150_HEADLINE = "Le premier raid",
     NEWS_150_1_TITLE = "Pic Blackrock supérieur",
     NEWS_150_1_TEXT = "Le premier raid de Mercenaries : sept boss, du Pyrogarde Prophète ardent au général Drakkisath, une aile du Mont Blackrock (le dragon noir sur la carte).",
@@ -734,6 +767,17 @@ ns.AddStrings("frFR", {
 })
 
 ns.AddStrings("esES", {
+    NEWS_160_HEADLINE = "Goblin Bridge Architect",
+    NEWS_160_1_TITLE = "Nuevo juego: Goblin Bridge Architect",
+    NEWS_160_1_TEXT = "Construye puentes de madera, acero y cuerda sobre los desfiladeros de Azeroth y envía el vehículo al otro lado. Cada viga siente su carga – y se rompe cuando es demasiada.",
+    NEWS_160_2_TITLE = "24 encargos en tres capítulos",
+    NEWS_160_2_TEXT = "De Los Baldíos al Bosque del Ocaso de noche, la lava de las Estepas Ardientes, la nevada Cuna del Invierno y Tanaris – cada uno con su vehículo, del mecazancudo al tanque araña.",
+    NEWS_160_3_TITLE = "Tres estrellas – siempre posibles",
+    NEWS_160_3_TEXT = "Dentro del presupuesto ganas una estrella; más barato, dos o tres. Cada marca de tres estrellas es alcanzable – solo hace falta un puente ingenioso.",
+    NEWS_160_4_TITLE = "Clima y fauna",
+    NEWS_160_4_TEXT = "Nubes, lluvia, nieve, brasas sobre la lava y luciérnagas de noche; de vez en cuando pasa volando un dracoleón o un murciélago.",
+    NEWS_160_5_TITLE = "Probar, mirar, mejorar",
+    NEWS_160_5_TEXT = "Las vigas brillan de amarillo a rojo bajo carga, el resultado muestra la carga máxima y la velocidad doble (F) ahorra esperas. La ayuda está a un clic en el menú de encargos.",
     NEWS_150_HEADLINE = "La primera banda",
     NEWS_150_1_TITLE = "Cumbre de Roca Negra Superior",
     NEWS_150_1_TEXT = "La primera banda de Mercenaries: siete jefes, del Piroguardián brasadivino al general Drakkisath, un ala de la Montaña Roca Negra (el dragón negro en el mapa).",
@@ -972,6 +1016,17 @@ ns.AddStrings("esES", {
 })
 
 ns.AddStrings("ruRU", {
+    NEWS_160_HEADLINE = "Goblin Bridge Architect",
+    NEWS_160_1_TITLE = "Новая игра: Goblin Bridge Architect",
+    NEWS_160_1_TEXT = "Стройте мосты из дерева, стали и канатов над ущельями Азерота и отправляйте транспорт на другую сторону. Каждая балка чувствует нагрузку – и ломается, если она слишком велика.",
+    NEWS_160_2_TITLE = "24 заказа в трёх главах",
+    NEWS_160_2_TEXT = "От Степей до ночного Сумеречного леса, лавы Пылающих степей, заснеженных Зимних Ключей и Танариса – у каждого свой транспорт, от механодолгонога до паучьего танка.",
+    NEWS_160_3_TITLE = "Три звезды – всегда достижимо",
+    NEWS_160_3_TEXT = "В рамках бюджета – одна звезда, дешевле – две или три. Каждая отметка в три звезды достижима – нужен лишь хитрый мост.",
+    NEWS_160_4_TITLE = "Погода и живность",
+    NEWS_160_4_TEXT = "Облака, дождь, снег, искры над лавой и светлячки ночью; иногда мимо пролетает виверна или летучая мышь.",
+    NEWS_160_5_TITLE = "Тест, наблюдение, улучшение",
+    NEWS_160_5_TEXT = "Под нагрузкой балки светятся от жёлтого до красного, итог показывает пиковую нагрузку, а двойная скорость (F) экономит время. Справка – в один клик из меню заказов.",
     NEWS_150_HEADLINE = "Первый рейд",
     NEWS_150_1_TITLE = "Верхняя часть пика Черной горы",
     NEWS_150_1_TEXT = "Первый рейд Mercenaries: семь боссов от Пиростража Созерцателя Углей до генерала Драккисата, крыло Черной горы (черный дракон на карте).",
@@ -1211,6 +1266,17 @@ ns.AddStrings("ruRU", {
 })
 
 ns.AddStrings("zhCN", {
+    NEWS_160_HEADLINE = "Goblin Bridge Architect",
+    NEWS_160_1_TITLE = "新游戏：Goblin Bridge Architect",
+    NEWS_160_1_TEXT = "用木材、钢材和绳索在艾泽拉斯的峡谷上架桥，然后让载具驶过。每根梁都能感受到负荷——超载就会断裂。",
+    NEWS_160_2_TITLE = "三章共24份合同",
+    NEWS_160_2_TEXT = "从贫瘠之地到夜晚的暮色森林、燃烧平原的熔岩、白雪皑皑的冬泉谷直到塔纳利斯——每关都有专属载具，从机械陆行鸟到蜘蛛坦克。",
+    NEWS_160_3_TITLE = "三星——总能达成",
+    NEWS_160_3_TEXT = "不超预算得一星，造得更省得两星或三星。每个三星标准都确定可以达成——只需要一座巧妙的桥。",
+    NEWS_160_4_TITLE = "天气与生灵",
+    NEWS_160_4_TEXT = "云、雨、雪、熔岩上的火星和夜晚的萤火虫；时不时还有双足飞龙或蝙蝠飞过。",
+    NEWS_160_5_TITLE = "测试、观察、改进",
+    NEWS_160_5_TEXT = "梁在负荷下由黄变红，结果显示最高负荷，双倍速度（F）省去等待。在合同菜单中一键即可打开帮助。",
     NEWS_150_HEADLINE = "第一个团队副本",
     NEWS_150_1_TITLE = "黑石塔上层",
     NEWS_150_1_TEXT = "Mercenaries的第一个团队副本：从烈焰卫士艾博希尔到达基萨斯将军共七个首领，位于黑石山的一翼（地图上的黑龙）。",

@@ -26,6 +26,20 @@ local CAMP_ART, CAMP_V0, CAMP_V1 = 2821800, 0.255, 0.815
 -- is dimmed and says so.
 News.VERSIONS = {
     {
+        version = "1.6.0",
+        headline = true,
+        -- The Goblin Bridge Architect teaser (910x512 of a 1024x512 texture), round the goblins.
+        art = { tex = "launcher/bridgearchitect", width = 910, height = 512, texWidth = 1024, texHeight = 512, v = 0.45,
+            logo = { tex = "bridge/logo", width = 260, height = 130 } },
+        items = {
+            { icon = "Trade_Engineering", key = 1 },
+            { icon = "INV_Misc_Map_01", key = 2 },
+            { icon = "INV_Misc_Coin_01", key = 3 },
+            { icon = "Spell_Frost_IceStorm", key = 4 },
+            { icon = "INV_Misc_Gear_01", key = 5 },
+        },
+    },
+    {
         version = "1.5.0",
         headline = true,
         items = {
@@ -212,12 +226,13 @@ function News:Create(parent)
     dusk:SetAllPoints()
     dusk:SetTexture(Media.Tex("mercs/vignette"))
     dusk:SetAlpha(0.85)
+    -- The Mercenaries logo (with its shadow), or the logo a version's own art names.
+    self.logos = {}
     for i, name in ipairs({ "logo_shadow", "logo" }) do
         local t = art:CreateTexture(nil, "OVERLAY", nil, i)
-        t:SetSize(240, 240 * 347 / 1024)
         t:SetPoint("LEFT", 24, 6)
-        t:SetTexture(Media.Tex("mercs/" .. name))
-        t:SetTexCoord(0, 1, 0, 347 / 512)
+        t.mercs = Media.Tex("mercs/" .. name)
+        self.logos[i] = t
     end
     local top = CreateFrame("Frame", nil, art)
     top:SetAllPoints()
@@ -364,6 +379,23 @@ function News:Fill(index)
     return y
 end
 
+-- logo: { tex, width, height, coords } of a version's own logo, or nil for the Mercenaries logo.
+function News:SetLogo(logo)
+    for i, t in ipairs(self.logos) do
+        if logo then
+            t:SetShown(i == 2)
+            t:SetTexture(Media.Tex(logo.tex))
+            t:SetSize(logo.width, logo.height)
+            t:SetTexCoord(unpack(logo.coords or { 0, 1, 0, 1 }))
+        else
+            t:Show()
+            t:SetTexture(t.mercs)
+            t:SetSize(240, 240 * 347 / 1024)
+            t:SetTexCoord(0, 1, 0, 347 / 512)
+        end
+    end
+end
+
 function News:Select(index, quiet)
     index = math.max(1, math.min(#News.VERSIONS, index or 1))
     local changed = index ~= self.selected
@@ -378,12 +410,14 @@ function News:Select(index, quiet)
         local top = math.max(0, math.min(ph / v.art.texHeight - span, v.art.v - span / 2))
         self.picture:SetTexture(Media.Tex(v.art.tex))
         self.picture:SetTexCoord(0, pw / v.art.texWidth, top, top + span)
+        self:SetLogo(v.art.logo)
     else
         -- The camp painting at the banner's shape, a little further along for older versions.
         local span = math.min(CAMP_V1 - CAMP_V0, (ART_H / math.max(1, w)) * 1024 / 768)
         local top = CAMP_V0 + (CAMP_V1 - CAMP_V0 - span) * ((index - 1) % 3) / 2
         self.picture:SetTexture(CAMP_ART)
         self.picture:SetTexCoord(0, 1, top, top + span)
+        self:SetLogo(nil)
     end
     for i, b in ipairs(self.tabs) do
         local vi = News.VERSIONS[i]

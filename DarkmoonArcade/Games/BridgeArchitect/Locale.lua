@@ -1,11 +1,11 @@
 local _, ns = ...
 
--- Goblin Bridge Architect (prototype): English and German; other languages fall back to English.
+-- Goblin Bridge Architect: English and German (French, Spanish, Russian and Chinese in Translations.lua).
 ns.AddStrings("enUS", {
     GBA_NAME = "Goblin Bridge Architect",
     GBA_GENRE = "Physics puzzle",
     GBA_CARD_TEXT = "Build bridges from wood, steel and rope - and watch the caravan cross. Or not.",
-    GBA_DESC = "Design bridges over the gorges of Kalimdor with a tight budget, then send a mechanostrider, a kodo or a rocket car across. Every beam feels its load.",
+    GBA_DESC = "Build bridges on a goblin's budget, then send a kodo or a rocket car across. Every beam feels its load.",
     GBA_HELP = "Drag from a joint to build a beam · Right click: remove a beam · 1-4: material · Space: test · F: speed · Z: undo · X: remove tool · Esc: menu",
 
     GBA_PLAY = "Play",
@@ -115,7 +115,7 @@ ns.AddStrings("deDE", {
     GBA_NAME = "Goblin Bridge Architect",
     GBA_GENRE = "Physik-Puzzle",
     GBA_CARD_TEXT = "Baue Brücken aus Holz, Stahl und Seil – und sieh zu, wie die Karawane hinüberkommt. Oder nicht.",
-    GBA_DESC = "Plane Brücken über die Schluchten Kalimdors mit knappem Budget und schicke dann Mechanoschreiter, Kodo oder Raketenauto hinüber. Jeder Balken spürt seine Last.",
+    GBA_DESC = "Baue Brücken mit Goblin-Budget und schick Kodo oder Raketenauto hinüber. Jeder Balken spürt seine Last.",
     GBA_HELP = "Von einem Gelenk aus ziehen: Balken bauen · Rechtsklick: Balken entfernen · 1–4: Material · Leertaste: testen · F: Tempo · Z: rückgängig · X: Entfernen-Werkzeug · Esc: Menü",
 
     GBA_PLAY = "Spielen",

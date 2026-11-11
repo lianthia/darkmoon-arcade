@@ -1,3 +1,21 @@
+### Darkmoon Arcade 1.6.0 – Goblin Bridge Architect
+
+A new game joins the arcade and takes the spotlight: Goblin Bridge Architect, a physics puzzle about building bridges on a goblin's budget.
+
+#### New game: Goblin Bridge Architect
+- **Build and test:** drag beams from joint to joint – road, wood, steel and rope – then send the vehicle across. Every beam feels its load, glows from yellow to red and snaps when it is too much
+- **24 contracts in three chapters:** the gorges of Kalimdor, the Eastern Kingdoms and the wild south – from the Barrens to Duskwood at night, a lava river in the Burning Steppes, snowy Winterspring, Tanaris, Un'Goro and Feralas
+- **13 vehicles:** from the gnome mechanostrider and the pack mule to the rocket car, the harvest golem and the spider tank, each with its own weight and speed
+- **Stars:** one within the budget, two or three for cheaper bridges. Every three-star mark is proven reachable – it just takes a clever bridge
+- **Weather and wildlife:** drifting clouds, rain, snow, embers over the lava and fireflies at night; now and then a wyvern, a bat or a hippogryph flies past
+- **Comfort:** reach ring while dragging, beam info on hover, undo, double speed (F), the highest load in the result, and help right in the contracts menu
+- **Languages:** English, German, French, Spanish, Russian and Chinese
+
+#### Launcher
+- Goblin Bridge Architect is the new game in the spotlight, with its own teaser art
+
+Ideas, wishes or bugs? Let us know on CurseForge or GitHub.
+
 ### Darkmoon Arcade 1.5.0 – The First Raid
 
 Mercenaries gets its first raid: Upper Blackrock Spire, with ten mercenaries, five against five and bosses that fight in their own ways. Together with it come camp tasks, a fifth rank and a heroic raid for those who want more.

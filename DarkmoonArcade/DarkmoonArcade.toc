@@ -97,6 +97,7 @@ Games\Mercenaries\QuestsView.lua
 Games\Mercenaries\JournalView.lua
 Games\Mercenaries\RaidView.lua
 Games\BridgeArchitect\Locale.lua
+Games\BridgeArchitect\Translations.lua
 Games\BridgeArchitect\Physics.lua
 Games\BridgeArchitect\Levels.lua
 Games\BridgeArchitect\BridgeArchitect.lua

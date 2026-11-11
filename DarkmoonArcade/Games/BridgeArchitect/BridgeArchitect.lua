@@ -28,6 +28,15 @@ local Module = {
     taglineKey = "GBA_CARD_TEXT",
     helpKey = "GBA_HELP",
     tile = "tiles/bridgearchitect",
+    -- The launcher's spotlight: the teaser art (media/launcher/bridgearchitect, 910x512 of 1024x512).
+    -- Before Mercenaries in the order (rank), so it takes the spotlight wherever it is registered.
+    featured = true,
+    spotlight = {
+        art = "launcher/bridgearchitect",
+        banner = { 0.0407, 0.8480, 0, 1 },
+        card = { 0, 0.8887, 0.0545, 0.9455 },
+        titleSize = 32,
+    },
     updated = "1.6.0",
     defaults = { best = {}, builds = {}, level = 1, tests = 0, broken = 0 },
 }
