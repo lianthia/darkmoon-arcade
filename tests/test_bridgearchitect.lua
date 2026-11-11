@@ -197,6 +197,16 @@ local SOLUTIONS = {
     end,
 }
 
+local function tContainsMat(level, mat)
+    for _, m in ipairs(level.materials) do
+        if m == mat then return true end
+    end
+    return false
+end
+
+-- For tools/optimize_bridges.py.
+BA_SOLUTIONS = SOLUTIONS
+
 test("building rules", function()
     local level = BA.LEVELS[1]
     local b = P.NewBuild(level)
@@ -243,20 +253,41 @@ test("a plain road falls, a truss holds", function()
     eq(r2, "won", "truss (" .. tostring(why) .. ", broken " .. s.broken .. ")")
 end)
 
-test("reference bridges hold within budget", function()
+test("reference bridges hold", function()
     for _, level in ipairs(BA.LEVELS) do
         local solve = SOLUTIONS[level.id]
         assert(solve, "no reference bridge for " .. level.id)
-        do
-            local b = P.NewBuild(level)
-            solve(b, level)
-            local cost = P.Cost(b)
-            local result, why, s = P.Run(b, level)
-            print(("  bridge %-8s cost %5d / %5d  stars %d  %s %s  t=%.1f broken %d"):format(level.id, cost, level.budget,
-                P.Stars(level, cost), result, why or "", s.t, s.broken))
-            assert(cost <= level.budget, level.id .. " over budget")
-            eq(result, "won", level.id)
+        local b = P.NewBuild(level)
+        solve(b, level)
+        local result, why, s = P.Run(b, level)
+        assert(result == "won", level.id .. " reference: " .. tostring(why) .. ", broken " .. s.broken)
+    end
+end)
+
+-- Three stars must always be possible: the cheapest known bridge (tools/optimize_bridges.py) holds
+-- and costs no more than the level's three star mark.
+test("three stars are possible on every level", function()
+    assert(BRIDGE_BEST, "tests/bridge_best.lua not loaded")
+    for _, level in ipairs(BA.LEVELS) do
+        local data = BRIDGE_BEST[level.id]
+        assert(data, "no cheapest bridge for " .. level.id)
+        assert(level.star3 and level.star2, level.id .. " has no star marks")
+        assert(level.star3 < level.star2 and level.star2 < 1, level.id .. " star marks out of order")
+        local b = P.Deserialize(data, level)
+        for _, beam in ipairs(b.beams) do
+            assert(tContainsMat(level, beam.mat), level.id .. " uses " .. beam.mat)
+            assert(P.BeamLength(b, beam) <= BA.MATERIALS[beam.mat].maxLen * P.GRID + 0.01, level.id .. " beam too long")
         end
+        for _, n in ipairs(b.nodes) do
+            assert(n.anchor or P.CanStand(level, n.x, n.y), level.id .. " joint in the rock")
+        end
+        local cost = P.Cost(b)
+        local result, why, s = P.Run(b, level)
+        print(("  3 stars %-9s cost %5d  mark %5d  budget %5d  peak %.2f  %s"):format(level.id, cost,
+            math.floor(level.budget * level.star3), level.budget, s.peak, result))
+        assert(result == "won", level.id .. " cheapest bridge: " .. tostring(why))
+        eq(s.broken, 0, level.id .. " broken beams")
+        eq(P.Stars(level, cost), 3, level.id .. " stars")
     end
 end)
 

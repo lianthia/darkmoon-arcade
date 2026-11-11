@@ -43,6 +43,8 @@ def main() -> int:
     ):
         loader((ADDON / rel).read_text(encoding="utf-8"), "@" + rel)
 
+    # The cheapest known bridges, for the three star test of Goblin Bridge Architect.
+    lua.execute("BRIDGE_BEST = (function() " + (ROOT / "tests" / "bridge_best.lua").read_text(encoding="utf-8") + " end)()")
     failures = 0
     for test_file in sorted((ROOT / "tests").glob("test_*.lua")):
         result = lua.execute(test_file.read_text(encoding="utf-8"))
