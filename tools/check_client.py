@@ -65,6 +65,12 @@ def collect(retail=False):
     for i in range(1, len(g.ASSET_LOG) + 1):
         kind, value = g.ASSET_LOG[i].split("\t", 1)
         add(kind, value, "UI")
+    # Goblin Bridge Architect: every vehicle and the creatures that fly past (shown at random).
+    ba = g.ADDON_NS.BridgeArchitect
+    if ba:
+        for table_name in ("VEHICLES", "FLYERS"):
+            for name, d in (ba[table_name] or {}).items():
+                add("display", str(int(d.display)), f"bridge {table_name.lower()} {name}")
     mc = g.ADDON_NS.Mercenaries
     for name, art in mc.MapArt.items():
         for fid in art.files.values():

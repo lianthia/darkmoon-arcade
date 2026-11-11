@@ -241,6 +241,62 @@ def stars():
     save(img, "stars")
 
 
+def weather():
+    """Weather and sky: a soft cloud (256 x 128), a snow flake, a rain streak, a dust mote and the moon.
+    All white, tinted in the game. Own random source, so the older textures stay as they were."""
+    rng = np.random.default_rng(23)
+    # Cloud: a heap of soft round puffs, flat at the bottom, lit from above.
+    w, h = 256, 128
+    ys, xs = np.mgrid[0:h, 0:w].astype(np.float64)
+    dens = np.zeros((h, w))
+    for _ in range(20):
+        cx = rng.uniform(40, 216)
+        cy = rng.uniform(64, 88) - 34 * np.exp(-((cx - 118) / 42) ** 2) - 14 * np.exp(-((cx - 170) / 26) ** 2)
+        r = rng.uniform(14, 34) * (1.3 - abs(cx - 128) / 200)
+        dens = np.maximum(dens, 1 - smooth(np.hypot(xs - cx, (ys - cy) * 1.15), r * 0.55, r))
+    dens *= 1 - smooth(ys, 92, 104)
+    light = 1 - 0.28 * smooth(ys, 50, 100)
+    a = np.zeros((h, w, 4))
+    a[..., 0] = light
+    a[..., 1] = light
+    a[..., 2] = light * 1.02
+    a[..., 3] = smooth(dens, 0.0, 0.6) * 0.95
+    save(arr_img(a).filter(ImageFilter.GaussianBlur(1.5)), "cloud")
+    # Snow flake: a soft white dot with a bright core.
+    s = 32
+    ys, xs = np.mgrid[0:s, 0:s].astype(np.float64)
+    r = np.hypot(xs - s / 2 + 0.5, ys - s / 2 + 0.5)
+    a = np.ones((s, s, 4))
+    a[..., 3] = (1 - smooth(r, 3, 12)) * 0.85 + (1 - smooth(r, 0, 4)) * 0.15
+    save(arr_img(a), "flake")
+    # Dust mote: fainter and softer.
+    a = np.ones((s, s, 4))
+    a[..., 3] = (1 - smooth(r, 0, 14)) ** 2
+    save(arr_img(a), "mote")
+    # Rain streak: 8 x 64, thin, fading at both ends.
+    w, h = 8, 64
+    ys, xs = np.mgrid[0:h, 0:w].astype(np.float64)
+    a = np.ones((h, w, 4))
+    a[..., 3] = (1 - smooth(np.abs(xs - w / 2 + 0.5), 0.6, 2.4)) * np.sin(np.pi * (ys + 0.5) / h) ** 0.7
+    save(arr_img(a), "rain")
+    # Moon: a pale disc with soft craters and a halo.
+    s = 128
+    ys, xs = np.mgrid[0:s, 0:s].astype(np.float64)
+    r = np.hypot(xs - s / 2 + 0.5, ys - s / 2 + 0.5)
+    disc_a = 1 - smooth(r, 25, 27)
+    shade = np.ones((s, s))
+    for _ in range(7):
+        cx, cy, cr = rng.uniform(46, 82), rng.uniform(46, 82), rng.uniform(5, 11)
+        shade -= 0.07 * (1 - smooth(np.hypot(xs - cx, ys - cy), cr * 0.5, cr))
+    halo = (1 - smooth(r, 26, 62)) ** 2 * 0.35
+    a = np.zeros((s, s, 4))
+    a[..., 0] = np.where(disc_a > 0, 0.95 * shade, 0.75)
+    a[..., 1] = np.where(disc_a > 0, 0.95 * shade, 0.8)
+    a[..., 2] = np.where(disc_a > 0, 0.88 * shade, 1)
+    a[..., 3] = np.maximum(disc_a, halo)
+    save(arr_img(a), "moon")
+
+
 if __name__ == "__main__":
     beam("beam_wood", (0.78, 0.55, 0.3), "wood")
     beam("beam_road", (0.55, 0.37, 0.2), "road")
@@ -256,5 +312,6 @@ if __name__ == "__main__":
     flag()
     star()
     stars()
+    weather()
     tile(logo())
     print("ok", sorted(p.name for p in OUT.glob("*.tga")))

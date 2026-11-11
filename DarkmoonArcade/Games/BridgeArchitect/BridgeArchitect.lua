@@ -97,7 +97,8 @@ function Module:BuildField(container)
         return l
     end
     self.backLayer = Layer(1)   -- sky, hills, rocks, river
-    self.beamLayer = Layer(3)   -- the bridge
+    self.beamLayer = Layer(3)   -- the bridge (flyers far away at 2, the vehicle at 5)
+    self.weatherLayer = Layer(6) -- snow, rain, embers in front of it all
     self.fxLayer = Layer(8)     -- splinters, coins, labels
     self.hudLayer = Layer(10)   -- messages over the field
 
@@ -109,12 +110,12 @@ function Module:BuildField(container)
     self.horizon:SetPoint("BOTTOMRIGHT", 0, FH - 460)
     self.horizon:SetHeight(360)
     self.horizon:SetTexture(Tex("gradient"))
-    self.stars = back:CreateTexture(nil, "BACKGROUND", nil, -7)
+    self.stars = back:CreateTexture(nil, "BACKGROUND", nil, -6)
     self.stars:SetAllPoints()
     self.stars:SetTexture(Tex("stars"), "REPEAT", "REPEAT")
     self.stars:SetTexCoord(0, FW / 256, 0, FH / 256)
     self.stars:SetBlendMode("ADD")
-    self.hills = back:CreateTexture(nil, "BACKGROUND", nil, -6)
+    self.hills = back:CreateTexture(nil, "BACKGROUND", nil, -3)
     -- Far mesas behind the gorge, faded into the haze (without the art's sandy foot).
     self.hills:SetPoint("BOTTOMLEFT", 0, FH - 330)
     self.hills:SetPoint("BOTTOMRIGHT", 0, FH - 330)
@@ -122,8 +123,8 @@ function Module:BuildField(container)
     self.hills:SetTexture(Media.Tex("flappy/mountains_desert"), "REPEAT", "CLAMP")
     self.hills:SetTexCoord(0, 1.6, 0, 0.74)
     -- The far wall of the gorge, dark, behind the rocks.
-    self.backWall = back:CreateTexture(nil, "BACKGROUND", nil, -5)
-    self.backWallShade = back:CreateTexture(nil, "BACKGROUND", nil, -4)
+    self.backWall = back:CreateTexture(nil, "BACKGROUND", nil, -2)
+    self.backWallShade = back:CreateTexture(nil, "BACKGROUND", nil, -1)
     self.backWallShade:SetTexture(Tex("gradient"))
     self.water = back:CreateTexture(nil, "BORDER", nil, 0)
     self.ripples = back:CreateTexture(nil, "BORDER", nil, 1)
@@ -147,19 +148,7 @@ function Module:BuildField(container)
         scene:SetFrameLevel(base + 5)
         if scene.EnableMouse then scene:EnableMouse(false) end
         self.scene = scene
-        local diag = math.sqrt(FW * FW + FH * FH) / 2
-        local fov = 0.3
-        local dist = diag / math.tan(fov / 2) / PPY
-        pcall(scene.SetCameraFieldOfView, scene, fov)
-        pcall(scene.SetCameraNearClip, scene, 1)
-        pcall(scene.SetCameraFarClip, scene, dist * 3)
-        pcall(scene.SetCameraPosition, scene, -dist, 0, 0)
-        pcall(scene.SetCameraOrientationByYawPitchRoll, scene, 0, 0, 0)
-        pcall(scene.SetLightVisible, scene, true)
-        pcall(scene.SetLightType, scene, 0)
-        pcall(scene.SetLightDirection, scene, 0.6, -0.3, -0.6)
-        pcall(scene.SetLightAmbientColor, scene, 0.6, 0.58, 0.55)
-        pcall(scene.SetLightDiffuseColor, scene, 0.95, 0.88, 0.78)
+        self:SetupCamera(scene)
         self.actor = scene:CreateActor()
         self.actor:Hide()
     end
@@ -176,6 +165,12 @@ function Module:BuildField(container)
         l:Hide()
         l:SetVertexColor(1, 1, 1, 1)
     end)
+    -- Every beam casts a soft shadow onto the gorge's far wall.
+    self.shadowPool = Media.Pool(function()
+        local l = beamLayer:CreateLine(nil, "BACKGROUND", nil, 1)
+        l:SetColorTexture(0, 0, 0, 1)
+        return l
+    end, function(l) l:Hide() end)
     self.jointPool = Media.Pool(function()
         local t = beamLayer:CreateTexture(nil, "OVERLAY")
         return t
@@ -204,7 +199,8 @@ function Module:BuildField(container)
     self.label = fx:CreateFontString(nil, "OVERLAY")
     self.label:SetFont(Media.FontFile(), 11, "OUTLINE")
     self.label:Hide()
-    self.beamVis, self.jointVis, self.effects = {}, {}, {}
+    self.beamVis, self.shadowVis, self.jointVis, self.effects = {}, {}, {}, {}
+    self:BuildAmbience(f, back, self.weatherLayer, base)
 end
 
 function Module:BuildInput()
@@ -244,7 +240,10 @@ function Module:DrawLevel()
     self.sky:SetColorTexture(zenith[1], zenith[2], zenith[3], 1)
     self.horizon:SetVertexColor(horizon[1], horizon[2], horizon[3], 1)
     -- Mixed towards the horizon's colour: far away.
-    self.hills:SetVertexColor((zone.far[1] + horizon[1]) / 2, (zone.far[2] + horizon[2]) / 2, (zone.far[3] + horizon[3]) / 2, 0.85)
+    -- Grey first, then the zone's own haze: snowy hills in Winterspring, dark ones at night.
+    self.hills:SetDesaturated(true)
+    local function Haze(i) return math.min(1, (zone.far[i] + horizon[i]) / 2 * 1.35) end
+    self.hills:SetVertexColor(Haze(1), Haze(2), Haze(3), 0.85)
     local wy = level.water
     local wc = zone.water
     local wallTop = 330
@@ -347,6 +346,7 @@ function Module:DrawLevel()
         if level.goal >= rect[1] and level.goal <= rect[2] then goalTop = rect[3] end
     end
     self.goalFlag:SetPoint("BOTTOMLEFT", back, "TOPLEFT", level.goal, -goalTop - 2)
+    self:SetAmbience(level.zone)
 end
 
 -- The bridge ---------------------------------------------------------------------------------------------
@@ -405,6 +405,15 @@ function Module:SyncBridge()
             end
             local look = BEAM_LOOK[beam.mat]
             local a, b = nodes[beam.a], nodes[beam.b]
+            local sh = self.shadowVis[n]
+            if not sh then
+                sh = self.shadowPool.Acquire()
+                self.shadowVis[n] = sh
+            end
+            sh:SetThickness(look.width * 0.8)
+            SetLine(sh, layer, a.x + 4, a.y + 6, b.x + 4, b.y + 6)
+            sh:SetAlpha(0.22)
+            sh:Show()
             l:SetTexture(Tex(look.tex))
             l:SetThickness(look.width)
             SetLine(l, layer, a.x, a.y, b.x, b.y)
@@ -424,6 +433,10 @@ function Module:SyncBridge()
     for i = n + 1, #self.beamVis do
         self.beamPool.Release(self.beamVis[i])
         self.beamVis[i] = nil
+    end
+    for i = n + 1, #self.shadowVis do
+        self.shadowPool.Release(self.shadowVis[i])
+        self.shadowVis[i] = nil
     end
     -- Joints: bolts, anchors in gold.
     local used = {}
@@ -944,6 +957,7 @@ function Module:OnUpdate(dt)
         self:UpdateEditor()
     end
     if not paused then self:RunEffects(dt) end
+    self:UpdateAmbience(dt)
     -- The river moves.
     local o = (self.realClock * 0.04) % 1
     self.ripples:SetTexCoord(o, o + FW / 128, 0, (FH - self.level.water) / 64)

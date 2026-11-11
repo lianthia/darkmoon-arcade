@@ -655,6 +655,12 @@ if Want("gba_") then
     game:StartLevel(15)
     game:HideForeman()
     GSnap("gba_snow")
+    game:StartLevel(9)
+    game:HideForeman()
+    GSnap("gba_rain")
+    game:StartLevel(17)
+    game:HideForeman()
+    GSnap("gba_dunes")
     game.menuChapter = 2
     game:ShowMenu()
     GSnap("gba_menu2")

@@ -100,6 +100,7 @@ Games\BridgeArchitect\Locale.lua
 Games\BridgeArchitect\Physics.lua
 Games\BridgeArchitect\Levels.lua
 Games\BridgeArchitect\BridgeArchitect.lua
+Games\BridgeArchitect\Ambience.lua
 Games\BridgeArchitect\UI.lua
 
 Main.lua

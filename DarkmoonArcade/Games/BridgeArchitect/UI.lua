@@ -62,6 +62,28 @@ local function Stars(parent, size)
 end
 BA.Stars = Stars
 
+-- A frame of wooden beams with a bolt at each corner, like the bridges themselves.
+local function WoodFrame(parent, w, h)
+    local function Beam(x1, y1, x2, y2)
+        local l = parent:CreateLine(nil, "OVERLAY", nil, 1)
+        l:SetTexture(Tex("beam_wood"))
+        l:SetThickness(9)
+        l:SetStartPoint("TOPLEFT", parent, x1, -y1)
+        l:SetEndPoint("TOPLEFT", parent, x2, -y2)
+        l:SetVertexColor(0.85, 0.75, 0.62)
+    end
+    Beam(-3, 0, w + 3, 0)
+    Beam(-3, h, w + 3, h)
+    Beam(0, -3, 0, h + 3)
+    Beam(w, -3, w, h + 3)
+    for _, c in ipairs({ { 0, 0 }, { w, 0 }, { 0, h }, { w, h } }) do
+        local b = parent:CreateTexture(nil, "OVERLAY", nil, 2)
+        b:SetTexture(Tex("joint"))
+        b:SetSize(11, 11)
+        b:SetPoint("CENTER", parent, "TOPLEFT", c[1], -c[2])
+    end
+end
+
 -- Bars ----------------------------------------------------------------------------------------------------
 
 function Module:BuildBars(container)
@@ -432,6 +454,37 @@ end
 
 -- The contracts: the logo small at the top, a chapter of eight cards, arrows between chapters.
 function Module:BuildLevelMenu(page)
+    -- The chapter's land behind the cards: its sky, far hills and rock, darkened to read on.
+    local bg = {}
+    bg.sky = page:CreateTexture(nil, "BACKGROUND", nil, -8)
+    bg.sky:SetAllPoints()
+    bg.horizon = page:CreateTexture(nil, "BACKGROUND", nil, -7)
+    bg.horizon:SetPoint("TOPLEFT", 0, -60)
+    bg.horizon:SetPoint("TOPRIGHT", 0, -60)
+    bg.horizon:SetHeight(380)
+    bg.horizon:SetTexture(Tex("gradient"))
+    bg.hills = page:CreateTexture(nil, "BACKGROUND", nil, -6)
+    bg.hills:SetPoint("BOTTOMLEFT", 0, 90)
+    bg.hills:SetPoint("BOTTOMRIGHT", 0, 90)
+    bg.hills:SetHeight(170)
+    bg.hills:SetTexture(Media.Tex("flappy/mountains_desert"), "REPEAT", "CLAMP")
+    bg.hills:SetTexCoord(0, 1.6, 0, 0.74)
+    bg.rock = page:CreateTexture(nil, "BACKGROUND", nil, -5)
+    bg.rock:SetPoint("BOTTOMLEFT")
+    bg.rock:SetPoint("BOTTOMRIGHT")
+    bg.rock:SetHeight(100)
+    bg.top = page:CreateTexture(nil, "BACKGROUND", nil, -4)
+    bg.top:SetPoint("BOTTOMLEFT", 0, 88)
+    bg.top:SetPoint("BOTTOMRIGHT", 0, 88)
+    bg.top:SetHeight(16)
+    local dim = page:CreateTexture(nil, "BACKGROUND", nil, -3)
+    dim:SetAllPoints()
+    dim:SetColorTexture(0.02, 0.015, 0.03, 0.35)
+    local vignette = page:CreateTexture(nil, "BACKGROUND", nil, -2)
+    vignette:SetAllPoints()
+    vignette:SetTexture(Tex("gradient"))
+    vignette:SetVertexColor(0, 0, 0, 0.45)
+    vignette:SetTexCoord(0, 1, 1, 0)
     local logo = page:CreateTexture(nil, "ARTWORK")
     logo:SetTexture(Tex("logo"))
     logo:SetSize(250, 125)
@@ -459,7 +512,8 @@ function Module:BuildLevelMenu(page)
         local c = CreateFrame("Button", nil, page)
         c:SetSize(cw, ch)
         local row, col = math.floor((slot - 1) / 4), (slot - 1) % 4
-        c:SetPoint("TOPLEFT", left + col * (cw + gap), -176 - row * (ch + gap))
+        c.baseX, c.baseY = left + col * (cw + gap), -176 - row * (ch + gap)
+        c:SetPoint("TOPLEFT", c.baseX, c.baseY)
         -- A little picture of the place: sky, the rock, the river.
         c.sky = c:CreateTexture(nil, "BACKGROUND", nil, 0)
         c.sky:SetPoint("TOPLEFT")
@@ -483,7 +537,7 @@ function Module:BuildLevelMenu(page)
         top:SetPoint("TOPRIGHT")
         top:SetHeight(34)
         top:SetColorTexture(0, 0, 0, 0.45)
-        Widgets.Rim(c, c)
+        WoodFrame(c, cw, ch)
         c.glow = c:CreateTexture(nil, "OVERLAY")
         c.glow:SetPoint("TOPLEFT", -3, 3)
         c.glow:SetPoint("BOTTOMRIGHT", 3, -3)
@@ -527,6 +581,7 @@ function Module:BuildLevelMenu(page)
         c:SetScript("OnLeave", function() GameTooltip:Hide() end)
         cards[slot] = c
     end
+    page.cards = cards
     page.refresh = function()
         local store = self:Store()
         local best = store.best
@@ -544,6 +599,20 @@ function Module:BuildLevelMenu(page)
         local chap = math.max(1, math.min(chapters, self.menuChapter))
         self.menuChapter = chap
         chapter:SetText(L["GBA_CH_" .. BA.CHAPTERS[chap]])
+        -- The land of the chapter's first contract.
+        local zone = BA.ZONES[BA.LEVELS[(chap - 1) * 8 + 1].zone]
+        local zt, zh = zone.sky[2], zone.sky[1]
+        bg.sky:SetColorTexture(zt[1], zt[2], zt[3], 1)
+        bg.horizon:SetVertexColor(zh[1], zh[2], zh[3], 1)
+        bg.hills:SetDesaturated(true)
+        bg.hills:SetVertexColor(math.min(1, (zone.far[1] + zh[1]) * 0.67), math.min(1, (zone.far[2] + zh[2]) * 0.67),
+            math.min(1, (zone.far[3] + zh[3]) * 0.67), 0.9)
+        bg.rock:SetTexture(zone.rock, "REPEAT", "REPEAT")
+        bg.rock:SetTexCoord(0, W / 128, 0, 100 / 128)
+        bg.rock:SetVertexColor(zone.tint[1] * 0.7, zone.tint[2] * 0.65, zone.tint[3] * 0.62)
+        bg.top:SetTexture(zone.top, "REPEAT", "REPEAT")
+        bg.top:SetTexCoord(0, W / 64, 0, 16 / 64)
+        bg.top:SetVertexColor(zone.tint[1], zone.tint[2], zone.tint[3])
         sub:SetText(L.GBA_CHAPTER:format(chap, chapters))
         prev:SetEnabled(chap > 1)
         prev:SetAlpha(chap > 1 and 1 or 0.3)
@@ -599,7 +668,24 @@ end
 function Module:MenuChapter(dir)
     self.menuChapter = (self.menuChapter or 1) + dir
     BA.UiSound(SOUNDKIT.IG_MAINMENU_OPTION)
-    self.overlay.pages.menu.refresh()
+    local page = self.overlay.pages.menu
+    page.refresh()
+    -- The new chapter's cards slide in from the side it was turned to, one after another.
+    local t = 0
+    local cards = page.cards
+    page:SetScript("OnUpdate", function(_, dt)
+        t = t + dt
+        local done = true
+        for slot, c in ipairs(cards) do
+            local p = math.max(0, math.min(1, (t - (slot - 1) * 0.025) / 0.22))
+            if p < 1 then done = false end
+            local e = 1 - (1 - p) ^ 3
+            c:ClearAllPoints()
+            c:SetPoint("TOPLEFT", c.baseX + dir * 70 * (1 - e), c.baseY)
+            c:SetAlpha((c.open and 1 or 0.75) * e)
+        end
+        if done then page:SetScript("OnUpdate", nil) end
+    end)
 end
 
 -- Help: four steps and the materials.
