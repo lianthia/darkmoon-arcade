@@ -548,9 +548,10 @@ function Module:BuildLevelMenu(page)
     local sub = Text(page, 10, MUTED)
     sub:SetPoint("TOP", chapter, "BOTTOM", 0, -3)
     local prev = Kit.Arrow(page, -1, function() self:MenuChapter(-1) end)
-    prev:SetPoint("RIGHT", chapter, "LEFT", -150, -6)
+    -- Fixed places, not next to the chapter's name: names differ in length, the arrows must not move.
+    prev:SetPoint("CENTER", page, "TOP", -330, -140)
     local nextArrow = Kit.Arrow(page, 1, function() self:MenuChapter(1) end)
-    nextArrow:SetPoint("LEFT", chapter, "RIGHT", 150, -6)
+    nextArrow:SetPoint("CENTER", page, "TOP", 330, -140)
     local cards = {}
     local cw, ch, gap = 200, 150, 12
     local left = (W - (cw * 4 + gap * 3)) / 2
