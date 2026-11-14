@@ -157,6 +157,8 @@ function Window:Create()
 
     f:EnableKeyboard(true)
     f:SetScript("OnKeyDown", function(frame, key)
+        -- In combat (window kept open) the keys belong to the game; see PLAYER_REGEN_DISABLED in Main.lua.
+        if InCombatLockdown() then return end
         local game = self.activeGame
         local handled = false
         if game and game.OnKey then

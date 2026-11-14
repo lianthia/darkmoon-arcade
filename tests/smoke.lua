@@ -1201,6 +1201,13 @@ for _, row in ipairs(ns.OptionsView.rows) do
     end
 end
 assert(math.abs(DarkmoonArcadeDB.scale - 1.1) < 0.001, "scale stepped back")
+-- More addons from us: the last page, the CurseForge link while the other addon is missing.
+local morePage = #ns.OptionsView.panels
+ns.OptionsView.navButtons[morePage]._scripts.OnClick(ns.OptionsView.navButtons[morePage])
+local tile = ns.OptionsView.panels[morePage].tiles[1]
+assert(tile and tile.link._shown, "more addons: link to Forever QoL Panel")
+tile.link._scripts.OnClick(tile.link)
+ns.OptionsView:SelectTab(1)
 for _, row in ipairs(ns.OptionsView.rows) do
     if row.dropdown then
         local radios = {}
@@ -1256,6 +1263,15 @@ for variable, fn in pairs(settingCallbacks) do fn(nil, nil, true) end
 DarkmoonArcadeDB.language = "auto"
 Window:ApplyLanguage()
 
+-- Combat: the window stays only with the option; every key goes to the game then.
+DarkmoonArcadeDB.stayInCombat = true
+Window.frame:Show()
+Fire("PLAYER_REGEN_DISABLED")
+assert(Window.frame._shown, "the option keeps the window open in combat")
+InCombatLockdown = function() return true end
+Window.frame._scripts.OnKeyDown(Window.frame, "SPACE")
+InCombatLockdown = function() return false end
+DarkmoonArcadeDB.stayInCombat = false
 Fire("PLAYER_REGEN_DISABLED")
 assert(not Window.frame._shown, "combat should hide the window")
 for _, cmd in ipairs({ "options", "minimap", "minimap", "fg anim 4", "fg facing 1.5", "fg nope", "reset", "help" }) do

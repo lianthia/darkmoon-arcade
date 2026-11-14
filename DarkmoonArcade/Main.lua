@@ -15,6 +15,7 @@ local DEFAULTS = {
     fadeMoving = false,
     fadeAlpha = 0.4,
     corpseRun = false,
+    stayInCombat = false,
     language = "auto",
 }
 
@@ -153,7 +154,10 @@ events:SetScript("OnEvent", function(_, event, arg1)
         -- PLAYER_ALIVE also fires on releasing the spirit; the ghost state settles shortly after.
         C_Timer.After(0.5, CheckGhost)
     elseif event == "PLAYER_REGEN_DISABLED" then
-        if Window.frame:IsShown() then
+        -- Still allowed here, not once the fight has begun: every key goes to the game in combat, so
+        -- moving and casting never get stuck in the arcade (its games ignore keys until the fight ends).
+        if Window.frame and not InCombatLockdown() then Window.frame:SetPropagateKeyboardInput(true) end
+        if Window.frame and Window.frame:IsShown() and not ns.db.stayInCombat then
             Window.frame:Hide()
             ns.Print(L.COMBAT)
         end
@@ -182,7 +186,7 @@ SlashCmdList.DARKMOONARCADE = function(input)
     end
     local cmd = strtrim(input or ""):lower()
     if cmd == "" then
-        if InCombatLockdown() then
+        if InCombatLockdown() and not ns.db.stayInCombat then
             ns.Print(L.COMBAT)
         else
             Window:Toggle()

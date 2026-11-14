@@ -79,10 +79,14 @@ end
 -- minigames), the chosen category's settings on the right.
 local PAD = Style.PAGE_PAD
 
--- Sorts the shared definitions into categories. Every arcade section is a category of its own; the
--- featured game gets one, the other games share "minigames" and keep their names as headings.
+-- Sorts the shared definitions into categories. Every arcade section is a category of its own; a big
+-- game (one with key art for the spotlight, like Mercenaries) gets one, the other games share
+-- "minigames" and keep their names as headings.
 function OptionsView.Categories()
-    local featured = ns.Arcade.Featured()
+    local big = {}
+    for _, game in pairs(ns.Arcade.games) do
+        if game.spotlight then big[game.nameKey] = true end
+    end
     local list, byId, current = {}, {}, nil
     local function Category(id, label)
         if not byId[id] then
@@ -95,8 +99,8 @@ function OptionsView.Categories()
         if def.kind == "section" then
             if def.tab ~= "games" then
                 current = Category(def.label, def.label)
-            elseif def.label == featured.nameKey then
-                current = Category("featured", def.label)
+            elseif big[def.label] then
+                current = Category(def.label, def.label)
             else
                 current = Category("minigames", "STATS_MINIGAMES")
                 current.defs[#current.defs + 1] = def
@@ -173,6 +177,112 @@ function OptionsView:CreateTab(view, category)
     return panel
 end
 
+-- "More addons from us": our other addons for WoW: Forever, each with its logo (shipped here, so it shows
+-- without the other addon), what it is, and whether it is installed or where to get it. Only on this page.
+OptionsView.MORE = {
+    { folder = "ForeverQoLPanel", name = "Forever QoL Panel", logo = "launcher/more_foreverqolpanel", text = "MORE_FQP",
+        url = "https://www.curseforge.com/wow/addons/forever-qol-panel" },
+}
+
+local function AddonLoaded(folder)
+    local A = C_AddOns
+    if A and A.IsAddOnLoaded then return A.IsAddOnLoaded(folder) or A.IsAddOnLoaded(folder .. "_Dev") end
+    return IsAddOnLoaded and (IsAddOnLoaded(folder) or IsAddOnLoaded(folder .. "_Dev")) or false
+end
+
+-- A box with the link, selected for Ctrl+C (an addon cannot open a browser).
+function ns.CopyLink(title, url)
+    if not StaticPopupDialogs then return end
+    StaticPopupDialogs.DARKMOONARCADE_COPY_LINK = StaticPopupDialogs.DARKMOONARCADE_COPY_LINK or {
+        text = "%s", button1 = CLOSE or OKAY, hasEditBox = true, editBoxWidth = 360, timeout = 0,
+        whileDead = true, hideOnEscape = true, preferredIndex = 3,
+        OnShow = function(popup, data)
+            local box = (popup.GetEditBox and popup:GetEditBox()) or rawget(popup, "editBox") or rawget(popup, "EditBox")
+            if not box then return end
+            box:SetText(data or "")
+            box:HighlightText()
+            box:SetFocus()
+            -- The text stays the link, whatever is typed.
+            box:SetScript("OnTextChanged", function(b)
+                if b:GetText() ~= data then
+                    b:SetText(data or "")
+                    b:HighlightText()
+                end
+            end)
+        end,
+        OnHide = function(popup)
+            local box = (popup.GetEditBox and popup:GetEditBox()) or rawget(popup, "editBox") or rawget(popup, "EditBox")
+            if box then box:SetScript("OnTextChanged", nil) end
+        end,
+        EditBoxOnEscapePressed = function(box) box:GetParent():Hide() end,
+        EditBoxOnEnterPressed = function(box) box:GetParent():Hide() end,
+    }
+    StaticPopup_Show("DARKMOONARCADE_COPY_LINK", title, nil, url)
+end
+
+function OptionsView:CreateMoreTab(view)
+    local panel = CreateFrame("Frame", nil, view)
+    panel:SetPoint("TOPLEFT", Style.CONTENT_X, -PAD)
+    panel:SetPoint("BOTTOMRIGHT", -PAD, PAD)
+    local title = Style.LocalizedText(panel, 22, C.text, "MORE_ADDONS")
+    title:SetPoint("TOPLEFT", 4, -4)
+    local plate = Style.Panel(panel)
+    plate:SetPoint("TOPLEFT", 0, -40)
+    plate:SetPoint("BOTTOMRIGHT")
+    local tip = Style.LocalizedText(plate, 12, C.muted, "MORE_TIP")
+    tip:SetPoint("TOPLEFT", 22, -18)
+    panel.tiles = {}
+    for i, addon in ipairs(OptionsView.MORE) do
+        local tile = CreateFrame("Frame", nil, plate)
+        tile:SetPoint("TOPLEFT", 16, -44 - (i - 1) * 144)
+        tile:SetPoint("RIGHT", -16, 0)
+        tile:SetHeight(132)
+        Style.Rounded(tile, tile, 6, C.item)
+        local logo = tile:CreateTexture(nil, "ARTWORK")
+        logo:SetSize(84, 84)
+        logo:SetPoint("TOPLEFT", 12, -12)
+        logo:SetTexture(ns.Media.Tex(addon.logo))
+        local name = Style.Text(tile, 15, C.text)
+        name:SetPoint("TOPLEFT", logo, "TOPRIGHT", 16, -4)
+        name:SetText(addon.name)
+        local text = Style.Text(tile, 11, C.body)
+        text:SetPoint("TOPLEFT", name, "BOTTOMLEFT", 0, -6)
+        text:SetPoint("RIGHT", tile, "RIGHT", -20, 0)
+        text:SetJustifyH("LEFT")
+        text:SetWordWrap(true)
+        tile.status = Style.Text(tile, 11, C.gold)
+        tile.status:SetPoint("BOTTOMLEFT", tile, "BOTTOMLEFT", 112, 16)
+        -- Not installed: a quiet button with the CurseForge link to copy.
+        local link = CreateFrame("Button", nil, tile)
+        link:SetSize(150, 24)
+        link:SetPoint("BOTTOMRIGHT", -16, 12)
+        link.plate = Style.Rounded(link, link, 4, C.secondary)
+        link.label = Style.Text(link, 11, C.text)
+        link.label:SetPoint("CENTER")
+        link:SetScript("OnEnter", function() link.plate:SetColor(C.secondaryHover) end)
+        link:SetScript("OnLeave", function() link.plate:SetColor(C.secondary) end)
+        link:SetScript("OnClick", function()
+            PlaySound(SOUNDKIT.IG_MAINMENU_OPTION)
+            ns.CopyLink(L.MORE_LINK_TITLE:format(addon.name), addon.url)
+        end)
+        tile.link = link
+        tile.addon = addon
+        Widgets.OnRefresh(function()
+            text:SetText(L[addon.text])
+            link.label:SetText(L.MORE_LINK)
+        end)
+        panel.tiles[i] = tile
+    end
+    panel.refresh = function()
+        for _, tile in ipairs(panel.tiles) do
+            local have = AddonLoaded(tile.addon.folder)
+            tile.status:SetText(have and ("|cff20ff20" .. L.MORE_INSTALLED .. "|r") or L.MORE_GET:format(tile.addon.name))
+            tile.link:SetShown(not have)
+        end
+    end
+    return panel
+end
+
 function OptionsView:Create(parent)
     local view = CreateFrame("Frame", nil, parent)
     view:SetAllPoints()
@@ -193,6 +303,16 @@ function OptionsView:Create(parent)
         Widgets.OnRefresh(function() b.label:SetText(L[category.label]) end)
         self.navButtons[i] = b
     end
+    -- Last in the list, a little apart: our other addons.
+    local more = #self.categories + 1
+    self.panels[more] = self:CreateMoreTab(view)
+    local b = Style.ListItem(nav, function()
+        PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB)
+        self:SelectTab(more)
+    end)
+    b:SetPoint("TOPLEFT", 8, -nav.top - (more - 1) * 50 - 12)
+    Widgets.OnRefresh(function() b.label:SetText(L.MORE_ADDONS) end)
+    self.navButtons[more] = b
     -- The installed version at the foot of the list.
     local version = Style.Text(nav, 10, C.dim)
     version:SetPoint("BOTTOMLEFT", 16, 14)
@@ -208,6 +328,8 @@ function OptionsView:SelectTab(index)
         panel:SetShown(i == index)
         self.navButtons[i]:SetActive(i == index)
     end
+    local panel = self.panels[index]
+    if panel and panel.refresh then panel.refresh() end
 end
 
 function OptionsView:Step(row, dir)
