@@ -9,6 +9,13 @@ function ns.AddStrings(language, values)
 end
 
 ns.AddStrings("enUS", {
+    NEWS_161_1_TITLE = "Stay open in combat",
+    NEWS_161_1_TEXT = "A new option under Window keeps the arcade open when a fight starts, and /arcade opens it in combat too. During the fight your keys go to the game, so moving and casting always work; the mouse keeps playing. Off by default.",
+    NEWS_161_2_TITLE = "More addons from us",
+    NEWS_161_2_TEXT = "The last page of the options introduces our other addon for WoW: Forever, the Forever QoL Panel – with a link to copy if you would like to try it.",
+    NEWS_161_3_TITLE = "Mercenaries options",
+    NEWS_161_3_TEXT = "Mercenaries has its own page in the options again.",
+    NEWS_161_THANKS = "Many thanks to Deklatis on CurseForge for the idea!",
     NEWS_160_HEADLINE = "Goblin Bridge Architect",
     NEWS_160_1_TITLE = "A new game: Goblin Bridge Architect",
     NEWS_160_1_TEXT = "Build bridges from wood, steel and rope over the gorges of Azeroth, then send the vehicle across. Every beam feels its load – and snaps when it is too much.",
@@ -276,6 +283,13 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    NEWS_161_1_TITLE = "Im Kampf geöffnet lassen",
+    NEWS_161_1_TEXT = "Eine neue Option unter Fenster hält die Arcade offen, wenn ein Kampf beginnt, und /arcade öffnet sie auch im Kampf. Im Kampf gehen deine Tasten ans Spiel, Laufen und Zaubern funktionieren also immer; mit der Maus spielst du weiter. Standardmäßig aus.",
+    NEWS_161_2_TITLE = "Weitere Addons von uns",
+    NEWS_161_2_TEXT = "Die letzte Seite der Optionen stellt unser anderes Addon für WoW: Forever vor, das Forever QoL Panel – mit einem Link zum Kopieren, falls du es ausprobieren möchtest.",
+    NEWS_161_3_TITLE = "Mercenaries-Optionen",
+    NEWS_161_3_TEXT = "Mercenaries hat in den Optionen wieder eine eigene Seite.",
+    NEWS_161_THANKS = "Vielen Dank an Deklatis auf CurseForge für die Idee!",
     NEWS_160_HEADLINE = "Goblin Bridge Architect",
     NEWS_160_1_TITLE = "Neues Spiel: Goblin Bridge Architect",
     NEWS_160_1_TEXT = "Baue Brücken aus Holz, Stahl und Seil über die Schluchten Azeroths und schick das Fahrzeug hinüber. Jeder Balken spürt seine Last – und bricht, wenn es zu viel wird.",
@@ -540,6 +554,13 @@ ns.AddStrings("deDE", {
 })
 
 ns.AddStrings("frFR", {
+    NEWS_161_1_TITLE = "Rester ouvert en combat",
+    NEWS_161_1_TEXT = "Une nouvelle option dans Fenêtre garde l'arcade ouverte quand un combat commence, et /arcade l'ouvre aussi en combat. Pendant le combat, vos touches vont au jeu : se déplacer et lancer des sorts fonctionne toujours ; la souris continue de jouer. Désactivée par défaut.",
+    NEWS_161_2_TITLE = "Autres addons de notre part",
+    NEWS_161_2_TEXT = "La dernière page des options présente notre autre addon pour WoW: Forever, le Forever QoL Panel – avec un lien à copier si vous voulez l'essayer.",
+    NEWS_161_3_TITLE = "Options de Mercenaries",
+    NEWS_161_3_TEXT = "Mercenaries a de nouveau sa propre page dans les options.",
+    NEWS_161_THANKS = "Un grand merci à Deklatis sur CurseForge pour l'idée !",
     NEWS_160_HEADLINE = "Goblin Bridge Architect",
     NEWS_160_1_TITLE = "Nouveau jeu : Goblin Bridge Architect",
     NEWS_160_1_TEXT = "Construisez des ponts en bois, en acier et en corde au-dessus des gorges d'Azeroth, puis envoyez le véhicule de l'autre côté. Chaque poutre sent sa charge – et cède quand c'en est trop.",
@@ -800,6 +821,13 @@ ns.AddStrings("frFR", {
 })
 
 ns.AddStrings("esES", {
+    NEWS_161_1_TITLE = "Mantener abierto en combate",
+    NEWS_161_1_TEXT = "Una nueva opción en Ventana mantiene el arcade abierto al empezar un combate, y /arcade también lo abre en combate. Durante el combate tus teclas van al juego, así que moverte y lanzar hechizos siempre funciona; con el ratón sigues jugando. Desactivada por defecto.",
+    NEWS_161_2_TITLE = "Más addons nuestros",
+    NEWS_161_2_TEXT = "La última página de las opciones presenta nuestro otro addon para WoW: Forever, el Forever QoL Panel, con un enlace para copiar si quieres probarlo.",
+    NEWS_161_3_TITLE = "Opciones de Mercenaries",
+    NEWS_161_3_TEXT = "Mercenaries vuelve a tener su propia página en las opciones.",
+    NEWS_161_THANKS = "¡Muchas gracias a Deklatis en CurseForge por la idea!",
     NEWS_160_HEADLINE = "Goblin Bridge Architect",
     NEWS_160_1_TITLE = "Nuevo juego: Goblin Bridge Architect",
     NEWS_160_1_TEXT = "Construye puentes de madera, acero y cuerda sobre los desfiladeros de Azeroth y envía el vehículo al otro lado. Cada viga siente su carga – y se rompe cuando es demasiada.",
@@ -1060,6 +1088,13 @@ ns.AddStrings("esES", {
 })
 
 ns.AddStrings("ruRU", {
+    NEWS_161_1_TITLE = "Не закрывать в бою",
+    NEWS_161_1_TEXT = "Новая настройка в разделе «Окно» оставляет аркаду открытой в начале боя, а /arcade открывает её и в бою. Во время боя клавиши работают для игры, так что передвижение и заклинания всегда доступны; мышью можно играть дальше. По умолчанию выключена.",
+    NEWS_161_2_TITLE = "Другие наши аддоны",
+    NEWS_161_2_TEXT = "Последняя страница настроек представляет наш другой аддон для WoW: Forever – Forever QoL Panel, со ссылкой для копирования, если захотите попробовать.",
+    NEWS_161_3_TITLE = "Настройки Mercenaries",
+    NEWS_161_3_TEXT = "У Mercenaries снова есть своя страница в настройках.",
+    NEWS_161_THANKS = "Большое спасибо Deklatis на CurseForge за идею!",
     NEWS_160_HEADLINE = "Goblin Bridge Architect",
     NEWS_160_1_TITLE = "Новая игра: Goblin Bridge Architect",
     NEWS_160_1_TEXT = "Стройте мосты из дерева, стали и канатов над ущельями Азерота и отправляйте транспорт на другую сторону. Каждая балка чувствует нагрузку – и ломается, если она слишком велика.",
@@ -1321,6 +1356,13 @@ ns.AddStrings("ruRU", {
 })
 
 ns.AddStrings("zhCN", {
+    NEWS_161_1_TITLE = "战斗中保持打开",
+    NEWS_161_1_TEXT = "“窗口”中的新选项让街机在进入战斗时保持打开，/arcade 在战斗中也能打开它。战斗中按键交给游戏，移动和施法始终可用；仍可用鼠标继续玩。默认关闭。",
+    NEWS_161_2_TITLE = "我们的其他插件",
+    NEWS_161_2_TEXT = "选项的最后一页介绍我们为 WoW: Forever 制作的另一款插件 Forever QoL Panel，如果想试试，可以复制链接。",
+    NEWS_161_3_TITLE = "Mercenaries 选项",
+    NEWS_161_3_TEXT = "Mercenaries 在选项中重新拥有了自己的页面。",
+    NEWS_161_THANKS = "非常感谢 CurseForge 用户 Deklatis 的创意！",
     NEWS_160_HEADLINE = "Goblin Bridge Architect",
     NEWS_160_1_TITLE = "新游戏：Goblin Bridge Architect",
     NEWS_160_1_TEXT = "用木材、钢材和绳索在艾泽拉斯的峡谷上架桥，然后让载具驶过。每根梁都能感受到负荷——超载就会断裂。",

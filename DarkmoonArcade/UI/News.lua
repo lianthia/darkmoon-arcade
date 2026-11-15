@@ -26,6 +26,15 @@ local CAMP_ART, CAMP_V0, CAMP_V1 = 2821800, 0.255, 0.815
 -- is dimmed and says so.
 News.VERSIONS = {
     {
+        version = "1.6.1",
+        items = {
+            { icon = "Ability_Warrior_BattleShout", key = 1 },
+            { icon = "INV_Misc_Ticket_Darkmoon_01", key = 2 },
+            { icon = "INV_Misc_Gear_01", key = 3 },
+        },
+        thanks = "INV_ValentinesCard02",
+    },
+    {
         version = "1.6.0",
         headline = true,
         -- The Goblin Bridge Architect teaser (910x512 of a 1024x512 texture), round the goblins.
