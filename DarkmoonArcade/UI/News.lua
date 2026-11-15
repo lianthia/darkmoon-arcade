@@ -201,25 +201,11 @@ function News:Create(parent)
     view:Hide()
     self.frame = view
 
-    -- Left: every version, newest first; a green dot marks the ones a player missed.
+    -- Left: every version, newest first; a green dot marks the ones a player missed. Below the list,
+    -- fixed at the bottom: what else was missed, then the switch to never open by itself. The list
+    -- scrolls once it no longer fits.
     local list = Style.SideList(view, "NEWS_VERSIONS")
-    self.tabs = {}
-    for i in ipairs(News.VERSIONS) do
-        local b = Style.ListItem(list, function() self:Select(i) end, true)
-        b:SetPoint("TOPLEFT", 8, -list.top - (i - 1) * 50)
-        b.mark = b:CreateTexture(nil, "OVERLAY")
-        b.mark:SetSize(6, 6)
-        b.mark:SetTexture(Media.Tex("dot"))
-        b.mark:SetVertexColor(unpack(C.ready))
-        b.mark:SetPoint("RIGHT", -14, 0)
-        b.index = i
-        self.tabs[i] = b
-    end
-    self.missedLine = Style.Text(list, 10, C.ready)
-    self.missedLine:SetPoint("TOPLEFT", 16, -list.top - #News.VERSIONS * 50 - 6)
-    self.missedLine:SetWidth(Style.LIST_W - 32)
-    self.missedLine:SetWordWrap(true)
-    -- Never open by itself: the same switch as the option.
+    self.list = list
     local never = CreateFrame("CheckButton", nil, list, "UICheckButtonTemplate")
     never:SetSize(24, 24)
     never:SetPoint("BOTTOMLEFT", 10, 10)
@@ -229,6 +215,33 @@ function News:Create(parent)
     neverLabel:SetWidth(Style.LIST_W - 52)
     neverLabel:SetWordWrap(true)
     self.neverCheck = never
+    self.missedLine = Style.Text(list, 10, C.ready)
+    self.missedLine:SetPoint("BOTTOMLEFT", never, "TOPLEFT", 6, 8)
+    self.missedLine:SetWidth(Style.LIST_W - 32)
+    self.missedLine:SetJustifyH("LEFT")
+    self.missedLine:SetWordWrap(true)
+
+    local listScroll = CreateFrame("ScrollFrame", nil, list, "UIPanelScrollFrameTemplate")
+    listScroll:SetPoint("TOPLEFT", 0, -list.top)
+    self.listScroll = listScroll
+    local listContent = CreateFrame("Frame", nil, listScroll)
+    listContent:SetSize(Style.LIST_W, #News.VERSIONS * 50)
+    listScroll:SetScrollChild(listContent)
+    self.listContent = listContent
+    self.tabs = {}
+    for i in ipairs(News.VERSIONS) do
+        local b = Style.ListItem(listContent, function() self:Select(i) end, true)
+        b:SetPoint("TOPLEFT", 8, -(i - 1) * 50)
+        b.mark = b:CreateTexture(nil, "OVERLAY")
+        b.mark:SetSize(6, 6)
+        b.mark:SetTexture(Media.Tex("dot"))
+        b.mark:SetVertexColor(unpack(C.ready))
+        b.mark:SetPoint("RIGHT", -14, 0)
+        b.index = i
+        self.tabs[i] = b
+    end
+    list:SetScript("OnSizeChanged", function() self:LayoutList() end)
+    self:LayoutList()
 
     -- Right: the camp painting with the version's headline, then its highlights on plates in two
     -- columns.
@@ -334,6 +347,7 @@ function News:Refresh(index)
         if self.missed[v.version] then names[#names + 1] = v.version end
     end
     self.missedLine:SetText(#names > 0 and L.NEWS_MISSED:format(table.concat(names, ", ")) or "")
+    self:LayoutList()
     self.neverCheck:SetChecked(ns.db.newsNever and true or false)
     ns.db.newsSeen = ns.Version()
     self:Select(index or 1, true)
@@ -413,6 +427,26 @@ function News:SetLogo(logo)
             t:SetTexCoord(0, 1, 0, 347 / 512)
         end
     end
+end
+
+-- The version list ends above the "missed" line; with more versions than fit, a scroll bar on the
+-- right and the plates a little narrower.
+local BAR_W = 22
+function News:LayoutList()
+    local scroll, list = self.listScroll, self.list
+    local missed = self.missedLine:GetText()
+    local bottom = 44 + ((missed and missed ~= "") and ((self.missedLine:GetStringHeight() or 12) + 10) or 0)
+    local available = (list:GetHeight() or 0) - list.top - bottom
+    local needs = available > 0 and self.listContent:GetHeight() > available
+    scroll:ClearAllPoints()
+    scroll:SetPoint("TOPLEFT", 0, -list.top)
+    scroll:SetPoint("BOTTOMRIGHT", needs and -BAR_W or 0, bottom)
+    local bar = scroll.ScrollBar
+    if type(bar) == "table" then bar:SetShown(needs) end
+    if not needs then scroll:SetVerticalScroll(0) end
+    local width = Style.LIST_W - 16 - (needs and BAR_W - 6 or 0)
+    self.listContent:SetWidth(Style.LIST_W - (needs and BAR_W or 0))
+    for _, b in ipairs(self.tabs) do b:SetWidth(width) end
 end
 
 function News:Select(index, quiet)

@@ -79,6 +79,8 @@ Tab("news", function()
     ns.Window:OpenNews()
     ns.News.content:ClearAllPoints()
     ns.News.content:SetPoint("TOPLEFT", ns.News.art, "BOTTOMLEFT", 0, -16)
+    ns.News.listContent:ClearAllPoints()
+    ns.News.listContent:SetPoint("TOPLEFT", ns.News.listScroll, "TOPLEFT")
 end)
 -- The lower rows of 1.4.0: the ones planned for later builds.
 Tab("news_planned", function()
