@@ -187,6 +187,9 @@ function Module:BuildBattle()
     end)
     self.logButton = Kit.Button(view, 136, 24, "MC_LOG", function() self:ToggleLog() end, "blue")
     Kit.Place(self.logButton, W - 166, 22)
+    -- A way out of every fight (with the same question as on the map), even one that went wrong.
+    self.abandonButton = Kit.Button(view, 150, 24, "MC_ABANDON", function() self.overlay:Show("confirm") end, "red")
+    Kit.Place(self.abandonButton, W - 572, 22)
     self:BuildBattleLog(view)
     self:BuildTimeline(view)
 
@@ -296,7 +299,13 @@ function Module:IsBench(uid)
     return false
 end
 
+-- Redraws the battle. A Lua error while drawing is reported but must not leave the fight without
+-- its buttons (the abandon button in the header stays either way).
 function Module:RefreshBattle()
+    MC.SafeCall(self.DrawBattle, self)
+end
+
+function Module:DrawBattle()
     local b, run = self:Battle()
     local view = self.views.battle
     if not b then return end
@@ -304,7 +313,7 @@ function Module:RefreshBattle()
     local zone = Describe.ZoneName(run.zone) .. (run.heroic and (" (" .. L.MC_HEROIC .. ")") or "")
     local node = MC.Bounty.Node(run)
     local kind = node and (node.type == "boss" and L.MC_NODE_BOSS or node.type == "elite" and L.MC_NODE_ELITE or L.MC_NODE_FIGHT) or ""
-    Kit.FitText(view.zone, zone .. "  ·  " .. kind, W - 500, 14, 10)
+    Kit.FitText(view.zone, zone .. "  ·  " .. kind, W - 680, 14, 10)
     view.turn:SetText(L.MC_TURN:format(b.turn))
     self:UpdateSoundButton()
     view.reserve:SetText(#b.bench.enemy > 0 and L.MC_RESERVE:format(#b.bench.enemy) or "")
@@ -590,9 +599,16 @@ function Module:ResolveTurn()
     end
     self:AddLog(" ")
     self:AddLog(ABILITY_NAME .. L.MC_TURN:format(b.turn) .. "|r")
-    local events = Combat.Resolve(b)
+    local ok, events = MC.SafeCall(Combat.Resolve, b)
+    if not ok then
+        -- Resolving went wrong: back to giving orders instead of a board without buttons.
+        self.disp = nil
+        self:RefreshBattle()
+        return
+    end
     self.queue, self.queueIndex, self.queueWait = events, 0, 0.15
-    self.playing = true
+    self.playing, self.playStall = true, 0
+    self.playStallIndex = 0
     MC.Sound("ready")
 end
 
@@ -818,6 +834,34 @@ function Module:PlayEvent(e)
     return 0.05
 end
 
+function Module:PlayQueued(e)
+    self:LogEvent(e)
+    return self:PlayEvent(e)
+end
+
+-- Safety net, called before anything else each frame: a playback that has not moved on for
+-- STALL_LIMIT seconds (something kept failing) ends, so the fight can go on.
+local STALL_LIMIT = 8
+function Module:WatchPlayback(dt)
+    if not self.playing then return end
+    if self.queueIndex ~= self.playStallIndex then
+        self.playStallIndex, self.playStall = self.queueIndex, 0
+        return
+    end
+    self.playStall = (self.playStall or 0) + dt
+    if self.playStall > STALL_LIMIT then
+        self.playStall = 0
+        if not MC.SafeCall(self.EndPlayback, self) then self:StopPlayback() end
+    end
+end
+
+-- Drops every playback state at once (leaving a fight, abandoning it, a stalled playback).
+function Module:StopPlayback()
+    self.playing, self.queue, self.disp = false, nil, nil
+    self.finishTimer, self.autoBattle, self.pending = nil, false, nil
+    if self.timeline then self.timeline:Hide() end
+end
+
 function Module:EndPlayback()
     self.playing = false
     self.timeline:Hide()
@@ -956,8 +1000,9 @@ function Module:UpdateBattle(dt)
                 self:EndPlayback()
                 break
             end
-            self:LogEvent(e)
-            self.queueWait = self.queueWait + self:PlayEvent(e)
+            -- One broken event is reported and skipped; the turn plays on.
+            local ok, wait = MC.SafeCall(self.PlayQueued, self, e)
+            self.queueWait = self.queueWait + (ok and tonumber(wait) or 0.05)
         end
     end
     if self.finishTimer then

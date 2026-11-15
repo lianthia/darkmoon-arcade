@@ -84,7 +84,9 @@ function SettingsPage:Register()
     local types = { check = Settings.VarType.Boolean, choice = Settings.VarType.String, range = Settings.VarType.Number }
 
     for _, def in ipairs(SettingsPage.Definitions()) do
-        if def.kind == "section" then
+        if def.kind == "button" then
+            -- Actions live in the arcade's own options only.
+        elseif def.kind == "section" then
             layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L[def.label]))
         else
             local variable = PREFIX .. (def.scope and (def.scope .. "_") or "") .. def.key

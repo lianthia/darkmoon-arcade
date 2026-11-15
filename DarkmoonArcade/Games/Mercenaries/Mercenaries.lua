@@ -39,6 +39,12 @@ MC.Module = Module
 function MC.Tex(name) return Media.Tex("mercs/" .. name) end
 function MC.Sound(name) Media.Play("mercs/" .. name) end
 
+-- Calls fn(...); a Lua error is printed and kept in the SavedVariables (Core/Debug.lua) instead of
+-- stopping the caller: a fight or its playback must never get stuck on one. Returns ok, result.
+function MC.SafeCall(fn, ...)
+    return ns.SafeCall("Mercenaries", fn, ...)
+end
+
 MC.ROLE_COLORS = {
     protector = { 0.86, 0.2, 0.16 },
     fighter = { 0.28, 0.74, 0.22 },
@@ -480,6 +486,7 @@ end
 function Module:AbandonRun()
     local store = self:Store()
     if not store.run then return end
+    self:StopPlayback()
     Bounty.Abandon(store, store.run)
     self:Route()
 end
@@ -903,6 +910,8 @@ function Module:ShowHelp()
 end
 
 function Module:Enter()
+    -- A saved run that waits for something the player can't answer goes back to the map.
+    if Bounty.Repair(self:Store()) then self:StopPlayback() end
     -- Also grants achievements earned before they existed.
     self:CheckLevels()
     self:Route()
@@ -934,6 +943,8 @@ function Module:OnKey(key)
 end
 
 function Module:OnUpdate(dt)
+    -- First, so a playback that keeps failing further down still ends.
+    self:WatchPlayback(dt)
     if self.view == "battle" then self:UpdateBattle(dt) end
     if self.view == "map" then self:UpdateMap(dt) end
     if self.view == "travel" then self:UpdateTravel(dt) end
@@ -996,7 +1007,32 @@ function Module:Options()
             default = "ingame", choices = function()
                 return { { "ingame", L.MC_SOUNDS_INGAME }, { "simple", L.MC_SOUNDS_SIMPLE } }
             end },
+        -- Ways out, also when the game itself does not react any more.
+        { kind = "button", label = "MC_OPT_ABANDON", button = "MC_ABANDON", tip = "MC_OPT_ABANDON_TIP",
+            enabled = function() return self:Store().run ~= nil end,
+            onClick = function(done)
+                ns.Confirm(L.MC_ABANDON_TEXT, function()
+                    self:AbandonFromOptions()
+                    done()
+                end)
+            end },
+        { kind = "button", label = "MC_OPT_RESET", button = "MC_RESET", tip = "MC_OPT_RESET_TIP",
+            onClick = function(done)
+                ns.Confirm(L.MC_RESET_TEXT, function()
+                    self:ResetProgress()
+                    ns.Print(L.MC_RESET_DONE)
+                    done()
+                end)
+            end },
     }
+end
+
+-- "Abandon bounty" from the options: the same as on the map, also before the game was opened.
+function Module:AbandonFromOptions()
+    local store = self:Store()
+    if not store.run then return end
+    if self.overlay then return self:AbandonRun() end
+    Bounty.Abandon(store, store.run)
 end
 
 function Module:StatLines()
@@ -1020,12 +1056,15 @@ function Module:StatLines()
     }
 end
 
+-- Starts Mercenaries over: collection, levels, coins, items and the running bounty. The game's
+-- options stay; achievements and high scores are the arcade's and stay as well.
 function Module:ResetProgress()
     local store = Arcade.Settings(self)
     for k in pairs(store) do
-        if k ~= "fast" then store[k] = nil end
+        if Module.defaults[k] == nil then store[k] = nil end
     end
     Bounty.Init(store)
+    self:StopPlayback()
     if self.overlay then self:Route() end
 end
 

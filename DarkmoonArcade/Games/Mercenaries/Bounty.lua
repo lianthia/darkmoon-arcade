@@ -874,6 +874,64 @@ function Bounty.Abandon(store, run)
     run.battle = nil
 end
 
+-- Load check for a saved run (older versions, or a step that failed half way): whatever the run
+-- waits for must be something the player can answer, else it goes back to the map. A run that can't
+-- be read at all is dropped. Returns true when something was repaired.
+local PHASES = { map = true, battle = true, treasure = true, healer = true, stranger = true, complete = true, lost = true }
+local function BattleReadable(b)
+    if type(b) ~= "table" or type(b.units) ~= "table" or type(b.board) ~= "table" then return false end
+    for _, u in pairs(b.units) do
+        if type(u) ~= "table" or type(u.abilities) ~= "table" then return false end
+        for _, slot in ipairs(u.abilities) do
+            if type(slot) ~= "table" or not MC.Abilities[slot.id] then return false end
+        end
+    end
+    return true
+end
+function Bounty.Repair(store)
+    local run = store.run
+    if not run then return false end
+    if type(run.party) ~= "table" or #run.party == 0 or not MC.Zones[run.zone] or type(run.map) ~= "table" then
+        store.run = nil
+        return true
+    end
+    local fixed = false
+    for _, member in ipairs(run.party) do
+        if type(member.treasures) ~= "table" then member.treasures = {} end
+        for i = #member.treasures, 1, -1 do
+            if not MC.Treasures[member.treasures[i]] then
+                table.remove(member.treasures, i)
+                fixed = true
+            end
+        end
+    end
+    local phase = run.phase
+    local stuck = not PHASES[phase]
+    if phase == "battle" then
+        stuck = not BattleReadable(run.battle)
+        if stuck then run.battle = nil end
+    elseif phase == "treasure" then
+        local offer = run.offer
+        if type(offer) == "table" and type(offer.options) == "table" and run.party[offer.member] then
+            local options = {}
+            for _, id in ipairs(offer.options) do
+                if MC.Treasures[id] then options[#options + 1] = id end
+            end
+            offer.options = options
+            stuck = #options == 0
+        else
+            stuck = true
+        end
+        if stuck then run.offer = nil end
+    elseif phase == "healer" then
+        stuck = #Bounty.DeadMembers(run) == 0
+    elseif phase == "stranger" then
+        stuck = #Bounty.StrangerOptions(run) == 0
+    end
+    if stuck then run.phase = "map" end
+    return fixed or stuck
+end
+
 -- Clears the finished run from the store.
 function Bounty.EndRun(store)
     store.run = nil

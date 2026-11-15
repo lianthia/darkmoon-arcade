@@ -203,8 +203,8 @@ function StaticPopup_Show(which, _, _, data)
     box.GetText = function() return popupText ~= "" and popupText or "Guildie" end
     local popup = Wrap({ editBox = box, data = data })
     box._parent = popup
-    dialog.OnShow(popup)
-    dialog.EditBoxOnEnterPressed(box)
+    if dialog.OnShow then dialog.OnShow(popup) end
+    if dialog.EditBoxOnEnterPressed then dialog.EditBoxOnEnterPressed(box) else dialog.OnAccept(popup, data) end
 end
 function UnitIsPlayer() return true end
 function UnitIsUnit() return false end
@@ -825,6 +825,90 @@ if mc.overlay.current ~= "result" then
 end
 mc.resultClose._scripts.OnClick(mc.resultClose)
 assert(not store.run and mc.view == "camp", "back in camp")
+
+-- Never stuck (CurseForge report): a failing playback event is skipped, a stalled playback ends,
+-- every fight can be abandoned, and a broken saved run goes back to the map.
+do
+    local printedBefore = #printed
+    mc:StartBounty("elwynn", false)
+    local first = MC.Bounty.Choices(store.run)[1]
+    mc:Travel(first.layer, first.index)
+    assert(store.run.phase == "battle" and mc.view == "battle", "stuck: in a fight")
+    local b = store.run.battle
+    while b.phase == "deploy" or b.phase == "replace" do MC.Combat.Deploy(b, b.bench.ally[1]) end
+    mc:RefreshBattle()
+    assert(mc.abandonButton._shown, "stuck: abandon bounty in the fight's header")
+    -- One event throws: reported, skipped, the turn still ends.
+    local playEvent, thrown = mc.PlayEvent, 0
+    mc.PlayEvent = function(self, e)
+        if thrown == 0 then thrown = 1; error("test: broken event") end
+        return playEvent(self, e)
+    end
+    Window.frame._scripts.OnKeyDown(Window.frame, "R")
+    assert(mc.playing, "stuck: turn started")
+    for _ = 1, 40 do
+        if not mc.playing then break end
+        Tick(0.5)
+    end
+    mc.PlayEvent = playEvent
+    assert(thrown == 1 and not mc.playing, "stuck: a failing event does not stop the turn")
+    assert(DarkmoonArcadeDB.errors and DarkmoonArcadeDB.errors[1].message:find("broken event"), "stuck: the error is kept")
+    -- A playback that does not move on (something keeps failing) ends after a few seconds.
+    if b.phase == "command" then
+        mc.playing, mc.queue, mc.queueIndex, mc.queueWait = true, { { t = "noop" } }, 0, 1e9
+        mc.playStallIndex, mc.playStall = 0, 0
+        Tick(9)
+        assert(not mc.playing, "stuck: a stalled playback ends")
+        assert(mc.readyButton._shown or mc.playButton._shown, "stuck: orders again after the stall")
+    end
+    -- Abandon from the fight, with the question first.
+    mc.abandonButton._scripts.OnClick(mc.abandonButton)
+    assert(mc.overlay.current == "confirm", "stuck: abandon asks first")
+    mc:AbandonRun()
+    assert(store.run.phase == "lost" and mc.overlay.current == "result" and not mc.playing, "stuck: fight abandoned")
+    mc.resultClose._scripts.OnClick(mc.resultClose)
+    assert(not store.run and mc.view == "camp", "stuck: back in camp")
+    -- A saved run waiting for a treasure that does not exist (any more) goes back to the map.
+    mc:StartBounty("elwynn", false)
+    store.run.phase, store.run.offer = "treasure", { kind = "treasure", member = 1, options = { "no_such_treasure" } }
+    mc:Enter()
+    assert(store.run.phase == "map" and not store.run.offer and mc.view == "map", "stuck: broken offer repaired")
+    store.run.phase, store.run.battle = "battle", { units = { x = { abilities = { { id = "no_such_ability", cd = 0 } } } }, board = {} }
+    mc:Enter()
+    assert(store.run.phase == "map" and not store.run.battle, "stuck: unreadable fight repaired")
+    -- From the options: abandon the bounty, then reset Mercenaries (options stay).
+    local defs = mc:Options()
+    local abandonDef, resetDef
+    for _, def in ipairs(defs) do
+        if def.label == "MC_OPT_ABANDON" then abandonDef = def end
+        if def.label == "MC_OPT_RESET" then resetDef = def end
+    end
+    assert(abandonDef.enabled(), "stuck: abandon offered while a bounty runs")
+    local refreshed = false
+    abandonDef.onClick(function() refreshed = true end)
+    assert(refreshed and store.run.phase == "lost", "stuck: abandoned from the options")
+    mc.resultClose._scripts.OnClick(mc.resultClose)
+    assert(not abandonDef.enabled(), "stuck: nothing to abandon without a bounty")
+    local function DeepCopy(t)
+        if type(t) ~= "table" then return t end
+        local c = {}
+        for k, v in pairs(t) do c[k] = DeepCopy(v) end
+        return c
+    end
+    local saved = DeepCopy(ns.Arcade.Settings(mc))
+    MC.Bounty.Entry(store, MC.STARTERS[1]).level = 7
+    ns.Arcade.Settings(mc).effects = false
+    resetDef.onClick(function() end)
+    store = mc:Store()
+    assert(MC.Bounty.Entry(store, MC.STARTERS[1]).level == 1, "stuck: progress reset")
+    assert(ns.Arcade.Settings(mc).effects == false, "stuck: options kept after the reset")
+    DarkmoonArcadeDB.games.mercenaries = saved
+    store = mc:Store()
+    mc:Route()
+    -- The test's own error is not one of the addon's.
+    DarkmoonArcadeDB.errors = nil
+    for i = #printed, printedBefore + 1, -1 do table.remove(printed, i) end
+end
 -- Elwynn is cleared: Hogger fell. Achievements also come afterwards, from the saved progress.
 assert(ns.Achievements.IsDone("mc_hogger"), "hogger achievement")
 DarkmoonArcadeDB.achievements.mc_hogger = nil

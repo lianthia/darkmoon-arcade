@@ -9,6 +9,13 @@ function ns.AddStrings(language, values)
 end
 
 ns.AddStrings("enUS", {
+    NEWS_162_1_TITLE = "Mercenaries can no longer get stuck",
+    NEWS_162_1_TEXT = "If something goes wrong while a turn plays, the fight now carries on instead of freezing. A broken save is repaired when you open the game.",
+    NEWS_162_2_TITLE = "Abandon during a fight",
+    NEWS_162_2_TEXT = "\"Abandon bounty\" now sits in the header of every fight, too - with the usual question first.",
+    NEWS_162_3_TITLE = "Mercenaries in the options",
+    NEWS_162_3_TEXT = "Two new buttons: end the running bounty, even when the game itself no longer reacts, or start Mercenaries over. Your options, achievements and high scores stay.",
+    NEWS_162_THANKS = "Many thanks to BamBam1984 on CurseForge for reporting a bounty that got stuck!",
     NEWS_161_1_TITLE = "Stay open in combat",
     NEWS_161_1_TEXT = "A new option under Window keeps the arcade open when a fight starts, and /arcade opens it in combat too. During the fight your keys go to the game, so moving and casting always work; the mouse keeps playing. Off by default.",
     NEWS_161_2_TITLE = "More addons from us",
@@ -283,6 +290,13 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    NEWS_162_1_TITLE = "Mercenaries kann nicht mehr hängen bleiben",
+    NEWS_162_1_TEXT = "Geht beim Abspielen eines Zugs etwas schief, läuft der Kampf jetzt weiter, statt einzufrieren. Ein beschädigter Spielstand wird beim Öffnen des Spiels repariert.",
+    NEWS_162_2_TITLE = "Aufgeben im Kampf",
+    NEWS_162_2_TEXT = "„Kopfgeld aufgeben“ steht jetzt auch in der Kopfzeile jedes Kampfes – wie gewohnt mit Rückfrage.",
+    NEWS_162_3_TITLE = "Mercenaries in den Optionen",
+    NEWS_162_3_TEXT = "Zwei neue Knöpfe: das laufende Kopfgeld beenden, auch wenn das Spiel selbst nicht mehr reagiert, oder Mercenaries von vorn beginnen. Deine Optionen, Erfolge und Bestenlisten bleiben.",
+    NEWS_162_THANKS = "Vielen Dank an BamBam1984 auf CurseForge für die Meldung eines hängengebliebenen Kopfgelds!",
     NEWS_161_1_TITLE = "Im Kampf geöffnet lassen",
     NEWS_161_1_TEXT = "Eine neue Option unter Fenster hält die Arcade offen, wenn ein Kampf beginnt, und /arcade öffnet sie auch im Kampf. Im Kampf gehen deine Tasten ans Spiel, Laufen und Zaubern funktionieren also immer; mit der Maus spielst du weiter. Standardmäßig aus.",
     NEWS_161_2_TITLE = "Weitere Addons von uns",
@@ -554,6 +568,13 @@ ns.AddStrings("deDE", {
 })
 
 ns.AddStrings("frFR", {
+    NEWS_162_1_TITLE = "Mercenaries ne peut plus rester bloqué",
+    NEWS_162_1_TEXT = "Si quelque chose tourne mal pendant qu'un tour se joue, le combat continue au lieu de se figer. Une sauvegarde endommagée est réparée à l'ouverture du jeu.",
+    NEWS_162_2_TITLE = "Abandonner en combat",
+    NEWS_162_2_TEXT = "« Abandonner la prime » se trouve désormais aussi dans l'en-tête de chaque combat – avec la question habituelle.",
+    NEWS_162_3_TITLE = "Mercenaries dans les options",
+    NEWS_162_3_TEXT = "Deux nouveaux boutons : terminer la prime en cours, même si le jeu ne réagit plus, ou recommencer Mercenaries depuis le début. Vos options, hauts faits et meilleurs scores sont conservés.",
+    NEWS_162_THANKS = "Un grand merci à BamBam1984 sur CurseForge d'avoir signalé une prime bloquée !",
     NEWS_161_1_TITLE = "Rester ouvert en combat",
     NEWS_161_1_TEXT = "Une nouvelle option dans Fenêtre garde l'arcade ouverte quand un combat commence, et /arcade l'ouvre aussi en combat. Pendant le combat, vos touches vont au jeu : se déplacer et lancer des sorts fonctionne toujours ; la souris continue de jouer. Désactivée par défaut.",
     NEWS_161_2_TITLE = "Autres addons de notre part",
@@ -821,6 +842,13 @@ ns.AddStrings("frFR", {
 })
 
 ns.AddStrings("esES", {
+    NEWS_162_1_TITLE = "Mercenaries ya no puede quedarse bloqueado",
+    NEWS_162_1_TEXT = "Si algo falla mientras se juega un turno, el combate sigue en lugar de congelarse. Una partida guardada dañada se repara al abrir el juego.",
+    NEWS_162_2_TITLE = "Abandonar en combate",
+    NEWS_162_2_TEXT = "«Abandonar la recompensa» está ahora también en la cabecera de cada combate, con la pregunta de siempre.",
+    NEWS_162_3_TITLE = "Mercenaries en las opciones",
+    NEWS_162_3_TEXT = "Dos botones nuevos: terminar la recompensa en curso, aunque el juego ya no reaccione, o empezar Mercenaries de nuevo. Tus opciones, logros y mejores puntuaciones se conservan.",
+    NEWS_162_THANKS = "¡Muchas gracias a BamBam1984 en CurseForge por avisar de una recompensa bloqueada!",
     NEWS_161_1_TITLE = "Mantener abierto en combate",
     NEWS_161_1_TEXT = "Una nueva opción en Ventana mantiene el arcade abierto al empezar un combate, y /arcade también lo abre en combate. Durante el combate tus teclas van al juego, así que moverte y lanzar hechizos siempre funciona; con el ratón sigues jugando. Desactivada por defecto.",
     NEWS_161_2_TITLE = "Más addons nuestros",
@@ -1088,6 +1116,13 @@ ns.AddStrings("esES", {
 })
 
 ns.AddStrings("ruRU", {
+    NEWS_162_1_TITLE = "Mercenaries больше не зависает",
+    NEWS_162_1_TEXT = "Если во время хода что-то пойдёт не так, бой продолжится, а не застынет. Повреждённое сохранение исправляется при открытии игры.",
+    NEWS_162_2_TITLE = "Отказ от награды в бою",
+    NEWS_162_2_TEXT = "Кнопка «Бросить награду» теперь есть и в заголовке каждого боя – как обычно, с подтверждением.",
+    NEWS_162_3_TITLE = "Mercenaries в настройках",
+    NEWS_162_3_TEXT = "Две новые кнопки: завершить текущую награду, даже если игра сама уже не реагирует, или начать Mercenaries заново. Настройки, достижения и рекорды сохранятся.",
+    NEWS_162_THANKS = "Большое спасибо BamBam1984 на CurseForge за сообщение о зависшей награде!",
     NEWS_161_1_TITLE = "Не закрывать в бою",
     NEWS_161_1_TEXT = "Новая настройка в разделе «Окно» оставляет аркаду открытой в начале боя, а /arcade открывает её и в бою. Во время боя клавиши работают для игры, так что передвижение и заклинания всегда доступны; мышью можно играть дальше. По умолчанию выключена.",
     NEWS_161_2_TITLE = "Другие наши аддоны",
@@ -1356,6 +1391,13 @@ ns.AddStrings("ruRU", {
 })
 
 ns.AddStrings("zhCN", {
+    NEWS_162_1_TITLE = "Mercenaries 不会再卡住",
+    NEWS_162_1_TEXT = "如果回合播放时出现问题，战斗会继续进行而不是卡住。打开游戏时会修复损坏的存档。",
+    NEWS_162_2_TITLE = "战斗中放弃",
+    NEWS_162_2_TEXT = "“放弃悬赏”现在也位于每场战斗的标题栏中——和往常一样会先询问确认。",
+    NEWS_162_3_TITLE = "选项中的 Mercenaries",
+    NEWS_162_3_TEXT = "两个新按钮：结束进行中的悬赏（即使游戏本身已无响应），或从头开始 Mercenaries。你的选项、成就和最高分会保留。",
+    NEWS_162_THANKS = "非常感谢 CurseForge 用户 BamBam1984 报告了卡住的悬赏！",
     NEWS_161_1_TITLE = "战斗中保持打开",
     NEWS_161_1_TEXT = "“窗口”中的新选项让街机在进入战斗时保持打开，/arcade 在战斗中也能打开它。战斗中按键交给游戏，移动和施法始终可用；仍可用鼠标继续玩。默认关闭。",
     NEWS_161_2_TITLE = "我们的其他插件",

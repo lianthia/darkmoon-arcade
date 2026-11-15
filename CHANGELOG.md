@@ -1,10 +1,10 @@
-### Darkmoon Arcade 1.6.1
+### Darkmoon Arcade 1.6.2
 
-#### New option
-- **Stay open in combat:** a new option under Window keeps the arcade open when a fight starts, and `/arcade` opens it in combat too. During the fight your keys go to the game, so moving and casting always work; the mouse keeps playing. Off by default. Many thanks to Deklatis on CurseForge for the idea of keeping the arcade open in combat!
+#### Mercenaries
+- **Can no longer get stuck:** if something goes wrong while a turn plays, the fight now carries on instead of freezing. A broken save is repaired when you open the game.
+- **Abandon during a fight:** "Abandon bounty" now sits in the header of every fight, too - with the usual question first.
+- **New in the options:** end the running bounty (even when the game itself no longer reacts) or start Mercenaries over. Your options, achievements and high scores stay.
 
-#### Options
-- **More addons from us:** the last page of the options introduces our other addon for WoW: Forever, the Forever QoL Panel – with a CurseForge link to copy if you would like to try it
-- **Mercenaries** has its own page in the options again
+Many thanks to BamBam1984 on CurseForge for reporting a bounty that got stuck!
 
 Ideas, wishes or bugs? Let us know on CurseForge or GitHub.

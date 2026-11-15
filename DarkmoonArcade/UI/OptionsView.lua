@@ -157,6 +157,38 @@ function OptionsView:CreateTab(view, category)
             Tooltip(check, def)
             row.check = check
             y = y - CHECK_ROW
+        elseif def.kind == "button" then
+            -- An action (a game's reset): label on the left, a quiet button where the choices sit.
+            local label = Style.LocalizedText(content, 12, C.text, def.label)
+            label:SetPoint("TOPLEFT", 8, y - 6)
+            local button = CreateFrame("Button", nil, content)
+            button:SetSize(210, 24)
+            button:SetPoint("TOPLEFT", 360, y)
+            button.plate = Style.Rounded(button, button, 4, C.secondary)
+            button.label = Style.LocalizedText(button, 11, C.text, def.button)
+            button.label:SetPoint("LEFT", 8, 0)
+            button.label:SetPoint("RIGHT", -8, 0)
+            button.label:SetJustifyH("CENTER")
+            button.label:SetWordWrap(false)
+            button:SetScript("OnEnter", function(b)
+                b.plate:SetColor(C.secondaryHover)
+                if def.tip then
+                    GameTooltip:SetOwner(b, "ANCHOR_RIGHT")
+                    GameTooltip:SetText(L[def.label], 1, 1, 1)
+                    GameTooltip:AddLine(L[def.tip], nil, nil, nil, true)
+                    GameTooltip:Show()
+                end
+            end)
+            button:SetScript("OnLeave", function(b)
+                b.plate:SetColor(C.secondary)
+                GameTooltip_Hide()
+            end)
+            button:SetScript("OnClick", function()
+                PlaySound(SOUNDKIT.IG_MAINMENU_OPTION)
+                def.onClick(function() self:Refresh() end)
+            end)
+            row.button = button
+            y = y - CHOICE_ROW
         else
             local label = Style.LocalizedText(content, 12, C.text, def.label)
             label:SetPoint("TOPLEFT", 8, y - 6)
@@ -188,6 +220,17 @@ local function AddonLoaded(folder)
     local A = C_AddOns
     if A and A.IsAddOnLoaded then return A.IsAddOnLoaded(folder) or A.IsAddOnLoaded(folder .. "_Dev") end
     return IsAddOnLoaded and (IsAddOnLoaded(folder) or IsAddOnLoaded(folder .. "_Dev")) or false
+end
+
+-- Asks before an action that can't be undone; `onAccept` runs on Yes.
+function ns.Confirm(text, onAccept)
+    if not StaticPopupDialogs then return onAccept() end
+    StaticPopupDialogs.DARKMOONARCADE_CONFIRM = StaticPopupDialogs.DARKMOONARCADE_CONFIRM or {
+        text = "%s", button1 = YES, button2 = NO, timeout = 0, whileDead = true, hideOnEscape = true,
+        showAlert = true, preferredIndex = 3,
+        OnAccept = function(_, data) if data then data() end end,
+    }
+    StaticPopup_Show("DARKMOONARCADE_CONFIRM", text, nil, onAccept)
 end
 
 -- A box with the link, selected for Ctrl+C (an addon cannot open a browser).
@@ -358,7 +401,11 @@ function OptionsView:Refresh()
                 if def.onChange then def.onChange(snapped) end
             end
         end
-        if row.check then
+        if row.button then
+            local on = not def.enabled or def.enabled()
+            row.button:SetEnabled(on)
+            row.button:SetAlpha(on and 1 or 0.45)
+        elseif row.check then
             row.check:SetChecked(def.tbl[def.key] and true or false)
         elseif row.dropdown then
             row.dropdown:GenerateMenu()

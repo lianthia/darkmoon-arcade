@@ -103,6 +103,11 @@ end)
 Tab("options_flights", function() OptionsPage(4) end)
 Tab("options_minigames", function() OptionsPage(6) end)
 Tab("options_more", function() ns.OptionsView:SelectTab(#ns.OptionsView.panels) end)
+Tab("options_mercenaries", function()
+    for i, category in ipairs(ns.OptionsView.categories) do
+        if category.label == "MC_TITLE" or category.label == ns.Mercenaries.Module.nameKey then OptionsPage(i) end
+    end
+end)
 -- The launcher's other pages, the bell's list, a minigame and the navigation opened over a game.
 Tab("favorites_empty", function()
     DarkmoonArcadeDB.favorites = {}
