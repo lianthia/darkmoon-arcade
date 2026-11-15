@@ -5,6 +5,9 @@
 - **Abandon during a fight:** "Abandon bounty" now sits in the header of every fight, too - with the usual question first.
 - **New in the options:** end the running bounty (even when the game itself no longer reacts) or start Mercenaries over. Your options, achievements and high scores stay.
 
+#### Arcade
+- **What's new:** the list of versions now scrolls, so the switch at its bottom stays reachable
+
 Many thanks to BamBam1984 on CurseForge for reporting a bounty that got stuck!
 
 Ideas, wishes or bugs? Let us know on CurseForge or GitHub.
