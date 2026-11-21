@@ -363,6 +363,17 @@ assert(#Nav.games == registeredHighlights, "the highlighted games in the navigat
 -- A game: the games tab stays active, the navigation shrinks to its icons and marks the game.
 SlashCmdList.DARKMOONARCADE("mercenaries")
 assert(Window.tab == "home" and not Nav.wide and Nav.width == ns.Arcade.NAV_COLLAPSED, "game: narrow navigation")
+-- The mouse resting on it opens it (IsMouseOver is always true here) - unless the option keeps it narrow.
+DarkmoonArcadeDB.navHover = false
+Nav:OnUpdate(1)
+assert(Nav.width == ns.Arcade.NAV_COLLAPSED, "navigation stays narrow with the option")
+Nav.discover._scripts.OnEnter(Nav.discover)
+Nav.discover._scripts.OnLeave(Nav.discover)
+DarkmoonArcadeDB.navHover = true
+Nav:OnUpdate(0.2)
+Nav:OnUpdate(0.2)
+assert(Nav.width > ns.Arcade.NAV_COLLAPSED, "navigation opens on mouseover by default")
+Nav:SetWide(false)
 assert(math.abs(Window.content._w * Window.content._scale - ns.Arcade.FULL_W) < 1, "Mercenaries fills the area")
 assert(not Window.sidebar._shown and Window.frame._w == 1082, "no sidebar, the window keeps its size")
 -- A minigame outside the highlighted ones gets its own entry while it is open; the window narrows.

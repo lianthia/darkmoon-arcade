@@ -32,6 +32,7 @@ function SettingsPage.Definitions()
         { kind = "range", tbl = db, key = "scale", label = "OPT_SCALE", tip = "OPT_SCALE_TIP", default = 1.1,
             min = 0.8, max = 1.6, step = 0.1, onChange = function() Window:ApplyScale() end,
             format = function(value) return ("%d%%"):format(value * 100 + 0.5) end },
+        { kind = "check", tbl = db, key = "navHover", label = "OPT_NAV_HOVER", tip = "OPT_NAV_HOVER_TIP", default = true },
         { kind = "check", tbl = db, key = "stayInCombat", label = "OPT_STAY_COMBAT", tip = "OPT_STAY_COMBAT_TIP", default = false },
         { kind = "check", tbl = db, key = "fadeMoving", label = "OPT_FADE_MOVING", tip = "OPT_FADE_MOVING_TIP", default = false },
         { kind = "range", tbl = db, key = "fadeAlpha", label = "OPT_FADE_ALPHA", tip = "OPT_FADE_ALPHA_TIP", default = 0.4,

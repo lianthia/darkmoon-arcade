@@ -46,8 +46,21 @@ local function Item(nav, opts)
     b.label = Style.Text(b, 11, C.muted)
     b.label:SetPoint("LEFT", 46, 0)
     b.opts, b.hover = opts, false
-    b:SetScript("OnEnter", function() b.hover = true; nav:Paint(b) end)
-    b:SetScript("OnLeave", function() b.hover = false; nav:Paint(b) end)
+    b:SetScript("OnEnter", function()
+        b.hover = true
+        nav:Paint(b)
+        -- Narrow and staying so: the name as a tooltip instead.
+        if not b.label:IsShown() then
+            GameTooltip:SetOwner(b, "ANCHOR_RIGHT")
+            GameTooltip:SetText(b.label:GetText() or "", 1, 1, 1)
+            GameTooltip:Show()
+        end
+    end)
+    b:SetScript("OnLeave", function()
+        b.hover = false
+        nav:Paint(b)
+        GameTooltip_Hide()
+    end)
     b:SetScript("OnClick", function()
         PlaySound(SOUNDKIT.IG_MAINMENU_OPTION)
         opts.onClick()
@@ -140,10 +153,10 @@ function Nav:SetWidth(width)
 end
 
 -- While narrow, the navigation opens over the page when the mouse rests on it, and closes again
--- when the mouse leaves.
+-- when the mouse leaves (unless the option keeps it narrow).
 function Nav:OnUpdate(elapsed)
     if self.wide then return end
-    local over = self.frame:IsMouseOver()
+    local over = ns.db.navHover ~= false and self.frame:IsMouseOver()
     self.hoverTime = over and (self.hoverTime + elapsed) or 0
     local target = (over and self.hoverTime >= OPEN_DELAY) and WIDE or NARROW
     if self.width ~= target then

@@ -1,13 +1,8 @@
-### Darkmoon Arcade 1.6.2
+### Darkmoon Arcade 1.6.3
 
-#### Mercenaries
-- **Can no longer get stuck:** if something goes wrong while a turn plays, the fight now carries on instead of freezing. A broken save is repaired when you open the game.
-- **Abandon during a fight:** "Abandon bounty" now sits in the header of every fight, too - with the usual question first.
-- **New in the options:** end the running bounty (even when the game itself no longer reacts) or start Mercenaries over. Your options, achievements and high scores stay.
+#### New option
+- **Navigation stays narrow on request:** a new option under Window keeps the narrow navigation next to an open game from opening on mouseover. Its entries then show their names as tooltips.
 
-#### Arcade
-- **What's new:** the list of versions now scrolls, so the switch at its bottom stays reachable
-
-Many thanks to BamBam1984 on CurseForge for reporting a bounty that got stuck!
+Many thanks to BuurmanDB on CurseForge for the idea of keeping the navigation narrow!
 
 Ideas, wishes or bugs? Let us know on CurseForge or GitHub.

@@ -16,6 +16,7 @@ local DEFAULTS = {
     fadeAlpha = 0.4,
     corpseRun = false,
     stayInCombat = false,
+    navHover = true,
     language = "auto",
 }
 

@@ -9,6 +9,9 @@ function ns.AddStrings(language, values)
 end
 
 ns.AddStrings("enUS", {
+    NEWS_163_1_TITLE = "Navigation stays narrow on request",
+    NEWS_163_1_TEXT = "A new option under Window: the narrow navigation next to an open game no longer opens on mouseover. Its entries then show their names as tooltips.",
+    NEWS_163_THANKS = "Many thanks to BuurmanDB on CurseForge for the idea of keeping the navigation narrow!",
     NEWS_162_1_TITLE = "Mercenaries can no longer get stuck",
     NEWS_162_1_TEXT = "If something goes wrong while a turn plays, the fight now carries on instead of freezing. A broken save is repaired when you open the game.",
     NEWS_162_2_TITLE = "Abandon during a fight",
@@ -275,6 +278,8 @@ ns.AddStrings("enUS", {
     OPT_CORPSE_RUN_TIP = "When you release your spirit, the arcade opens just like on a flight (with the game chosen above). Once you are resurrected, it closes again.",
     OPT_STAY_COMBAT = "Stay open in combat",
     OPT_STAY_COMBAT_TIP = "The arcade no longer closes when a fight starts. During the fight your keys go to the game, not to the arcade; you can keep playing with the mouse.",
+    OPT_NAV_HOVER = "Open the navigation on mouseover",
+    OPT_NAV_HOVER_TIP = "In a game, the narrow navigation on the left opens when the mouse rests on it. Off: it stays narrow, its entries show their names as tooltips.",
     MORE_ADDONS = "More addons from us",
     MORE_TIP = "Our other addons for WoW: Forever.",
     MORE_FQP = "An all-in-one quality-of-life addon that looks like part of the base game: an info panel with an XP bar, quest markers on nameplates, smarter action bars, buff and consumable warnings, tooltip extras and more. Every feature can be switched off on its own.",
@@ -290,6 +295,9 @@ ns.AddStrings("enUS", {
 })
 
 ns.AddStrings("deDE", {
+    NEWS_163_1_TITLE = "Navigation bleibt auf Wunsch schmal",
+    NEWS_163_1_TEXT = "Eine neue Option unter Fenster: Die schmale Navigation neben einem geöffneten Spiel klappt nicht mehr bei Mausberührung auf. Die Einträge zeigen ihren Namen dann als Tooltip.",
+    NEWS_163_THANKS = "Vielen Dank an BuurmanDB auf CurseForge für die Idee, die Navigation schmal zu lassen!",
     NEWS_162_1_TITLE = "Mercenaries kann nicht mehr hängen bleiben",
     NEWS_162_1_TEXT = "Geht beim Abspielen eines Zugs etwas schief, läuft der Kampf jetzt weiter, statt einzufrieren. Ein beschädigter Spielstand wird beim Öffnen des Spiels repariert.",
     NEWS_162_2_TITLE = "Aufgeben im Kampf",
@@ -553,6 +561,8 @@ ns.AddStrings("deDE", {
     OPT_CORPSE_RUN_TIP = "Lässt du deinen Geist frei, öffnet sich die Arcade wie bei einem Flug (mit dem oben gewählten Spiel). Nach der Wiederbelebung schließt sie sich wieder.",
     OPT_STAY_COMBAT = "Im Kampf geöffnet lassen",
     OPT_STAY_COMBAT_TIP = "Die Arcade schließt sich bei Kampfbeginn nicht mehr. Im Kampf gehen deine Tasten ans Spiel, nicht an die Arcade; mit der Maus kannst du weiterspielen.",
+    OPT_NAV_HOVER = "Navigation bei Mausberührung aufklappen",
+    OPT_NAV_HOVER_TIP = "In einem Spiel klappt die schmale Navigation links auf, wenn die Maus darauf ruht. Aus: Sie bleibt schmal, die Einträge zeigen ihren Namen als Tooltip.",
     MORE_ADDONS = "Weitere Addons von uns",
     MORE_TIP = "Unsere anderen Addons für WoW: Forever.",
     MORE_FQP = "Ein All-in-one-Addon für mehr Komfort, das wie ein Teil des Spiels aussieht: Infoleiste mit EP-Balken, Questmarker auf Namensplaketten, mitdenkende Aktionsleisten, Warnungen für Buffs und Verbrauchsgüter, Tooltip-Extras und mehr. Jede Funktion lässt sich einzeln abschalten.",
@@ -568,6 +578,9 @@ ns.AddStrings("deDE", {
 })
 
 ns.AddStrings("frFR", {
+    NEWS_163_1_TITLE = "La navigation reste étroite si vous le souhaitez",
+    NEWS_163_1_TEXT = "Une nouvelle option dans Fenêtre : la navigation étroite à côté d'un jeu ouvert ne s'ouvre plus au survol. Ses entrées affichent alors leur nom en infobulle.",
+    NEWS_163_THANKS = "Un grand merci à BuurmanDB sur CurseForge pour l'idée de garder la navigation étroite !",
     NEWS_162_1_TITLE = "Mercenaries ne peut plus rester bloqué",
     NEWS_162_1_TEXT = "Si quelque chose tourne mal pendant qu'un tour se joue, le combat continue au lieu de se figer. Une sauvegarde endommagée est réparée à l'ouverture du jeu.",
     NEWS_162_2_TITLE = "Abandonner en combat",
@@ -827,6 +840,8 @@ ns.AddStrings("frFR", {
     OPT_CORPSE_RUN_TIP = "Quand vous libérez votre esprit, l'arcade s'ouvre comme pendant un vol (avec le jeu choisi ci-dessus). Une fois ressuscité, elle se referme.",
     OPT_STAY_COMBAT = "Rester ouvert en combat",
     OPT_STAY_COMBAT_TIP = "L'arcade ne se ferme plus au début d'un combat. Pendant le combat, vos touches vont au jeu et non à l'arcade ; vous pouvez continuer à jouer à la souris.",
+    OPT_NAV_HOVER = "Ouvrir la navigation au survol",
+    OPT_NAV_HOVER_TIP = "Dans un jeu, la navigation étroite à gauche s'ouvre quand la souris s'y attarde. Désactivé : elle reste étroite, ses entrées affichent leur nom en infobulle.",
     MORE_ADDONS = "Autres addons de notre part",
     MORE_TIP = "Nos autres addons pour WoW: Forever.",
     MORE_FQP = "Un addon tout-en-un de confort qui ressemble au jeu de base : barre d'infos avec barre d'expérience, marqueurs de quête sur les barres de nom, barres d'action intelligentes, alertes de buffs et de consommables, infobulles enrichies et plus encore. Chaque fonction peut être désactivée séparément.",
@@ -842,6 +857,9 @@ ns.AddStrings("frFR", {
 })
 
 ns.AddStrings("esES", {
+    NEWS_163_1_TITLE = "La navegación se queda estrecha si quieres",
+    NEWS_163_1_TEXT = "Una nueva opción en Ventana: la navegación estrecha junto a un juego abierto ya no se abre al pasar el ratón. Sus entradas muestran entonces su nombre como descripción.",
+    NEWS_163_THANKS = "¡Muchas gracias a BuurmanDB en CurseForge por la idea de mantener estrecha la navegación!",
     NEWS_162_1_TITLE = "Mercenaries ya no puede quedarse bloqueado",
     NEWS_162_1_TEXT = "Si algo falla mientras se juega un turno, el combate sigue en lugar de congelarse. Una partida guardada dañada se repara al abrir el juego.",
     NEWS_162_2_TITLE = "Abandonar en combate",
@@ -1101,6 +1119,8 @@ ns.AddStrings("esES", {
     OPT_CORPSE_RUN_TIP = "Al liberar tu espíritu, el arcade se abre como en un vuelo (con el juego elegido arriba). Al resucitar, se vuelve a cerrar.",
     OPT_STAY_COMBAT = "Mantener abierto en combate",
     OPT_STAY_COMBAT_TIP = "El arcade ya no se cierra al empezar un combate. Durante el combate tus teclas van al juego, no al arcade; puedes seguir jugando con el ratón.",
+    OPT_NAV_HOVER = "Abrir la navegación al pasar el ratón",
+    OPT_NAV_HOVER_TIP = "En un juego, la navegación estrecha de la izquierda se abre cuando el ratón se detiene encima. Desactivado: se queda estrecha y sus entradas muestran su nombre como descripción.",
     MORE_ADDONS = "Más addons nuestros",
     MORE_TIP = "Nuestros otros addons para WoW: Forever.",
     MORE_FQP = "Un addon todo en uno de comodidad que parece parte del juego base: barra de información con barra de experiencia, marcadores de misión en las placas de nombre, barras de acción inteligentes, avisos de beneficios y consumibles, extras en las descripciones y más. Cada función se puede desactivar por separado.",
@@ -1116,6 +1136,9 @@ ns.AddStrings("esES", {
 })
 
 ns.AddStrings("ruRU", {
+    NEWS_163_1_TITLE = "Навигация может оставаться узкой",
+    NEWS_163_1_TEXT = "Новая настройка в разделе «Окно»: узкая навигация рядом с открытой игрой больше не раскрывается при наведении. Названия пунктов тогда видны во всплывающих подсказках.",
+    NEWS_163_THANKS = "Большое спасибо BuurmanDB на CurseForge за идею оставлять навигацию узкой!",
     NEWS_162_1_TITLE = "Mercenaries больше не зависает",
     NEWS_162_1_TEXT = "Если во время хода что-то пойдёт не так, бой продолжится, а не застынет. Повреждённое сохранение исправляется при открытии игры.",
     NEWS_162_2_TITLE = "Отказ от награды в бою",
@@ -1376,6 +1399,8 @@ ns.AddStrings("ruRU", {
     OPT_CORPSE_RUN_TIP = "Когда вы покидаете тело, аркада открывается, как в полёте (с игрой, выбранной выше). После воскрешения она снова закрывается.",
     OPT_STAY_COMBAT = "Не закрывать в бою",
     OPT_STAY_COMBAT_TIP = "Аркада больше не закрывается в начале боя. Во время боя клавиши работают для игры, а не для аркады; мышью можно играть дальше.",
+    OPT_NAV_HOVER = "Раскрывать навигацию при наведении",
+    OPT_NAV_HOVER_TIP = "В игре узкая панель навигации слева раскрывается, когда на ней задерживается курсор. Выкл.: она остаётся узкой, а названия пунктов видны во всплывающих подсказках.",
     MORE_ADDONS = "Другие наши аддоны",
     MORE_TIP = "Наши другие аддоны для WoW: Forever.",
     MORE_FQP = "Универсальный аддон для удобства, который выглядит как часть игры: информационная панель с полосой опыта, метки заданий на индикаторах здоровья, умные панели команд, напоминания о баффах и расходниках, дополнения к подсказкам и многое другое. Каждую функцию можно отключить отдельно.",
@@ -1391,6 +1416,9 @@ ns.AddStrings("ruRU", {
 })
 
 ns.AddStrings("zhCN", {
+    NEWS_163_1_TITLE = "导航栏可保持窄条",
+    NEWS_163_1_TEXT = "“窗口”中的新选项：打开游戏时旁边的窄导航栏不再因鼠标悬停而展开，条目名称改以鼠标提示显示。",
+    NEWS_163_THANKS = "非常感谢 CurseForge 用户 BuurmanDB 提出让导航栏保持窄条的创意！",
     NEWS_162_1_TITLE = "Mercenaries 不会再卡住",
     NEWS_162_1_TEXT = "如果回合播放时出现问题，战斗会继续进行而不是卡住。打开游戏时会修复损坏的存档。",
     NEWS_162_2_TITLE = "战斗中放弃",
@@ -1651,6 +1679,8 @@ ns.AddStrings("zhCN", {
     OPT_CORPSE_RUN_TIP = "释放灵魂后，街机会像飞行时一样打开（使用上面选择的游戏）。复活后会再次关闭。",
     OPT_STAY_COMBAT = "战斗中保持打开",
     OPT_STAY_COMBAT_TIP = "进入战斗时街机不再关闭。战斗中按键交给游戏而不是街机；仍可用鼠标继续玩。",
+    OPT_NAV_HOVER = "鼠标悬停时展开导航栏",
+    OPT_NAV_HOVER_TIP = "在游戏中，鼠标停留在左侧窄导航栏上时会展开。关闭：导航栏保持窄条，条目名称以鼠标提示显示。",
     MORE_ADDONS = "我们的其他插件",
     MORE_TIP = "我们为 WoW: Forever 制作的其他插件。",
     MORE_FQP = "一款看起来像游戏本身一部分的一体化便利插件：带经验条的信息栏、姓名板上的任务标记、智能动作条、增益和消耗品提醒、鼠标提示增强等等。每项功能都可以单独关闭。",
