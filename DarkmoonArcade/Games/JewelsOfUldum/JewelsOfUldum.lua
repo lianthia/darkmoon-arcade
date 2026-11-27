@@ -100,14 +100,32 @@ function Module:CreateVisual()
     v.time = layer:CreateFontString(nil, "OVERLAY")
     v.time:SetFont(Media.FontFile(), 12, "OUTLINE")
     v.time:SetTextColor(0.6, 1, 1)
+    -- Special gems are marked on top of the gem (the glow behind it hides under the gem's square
+    -- art): a turning ring in the special's colour and a small symbol in the corner (a flame, a
+    -- star); the flame gem also flickers with heat.
+    v.ring = layer:CreateTexture(nil, "ARTWORK", nil, 3)
+    v.ring:SetTexture(Media.Tex("ring"))
+    v.ring:SetBlendMode("ADD")
+    v.heat = layer:CreateTexture(nil, "ARTWORK", nil, 4)
+    v.heat:SetBlendMode("ADD")
+    v.heat:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+    v.heat:SetVertexColor(1, 0.45, 0.1)
+    v.badge = layer:CreateTexture(nil, "ARTWORK", nil, 5)
+    v.badge:SetTexCoord(0.08, 0.92, 0.08, 0.92)
     return v
 end
+
+local SPECIAL_RING = { power = { 1, 0.45, 0.08 }, star = { 0.75, 0.9, 1 } }
+local SPECIAL_BADGE = { power = "Interface\\Icons\\Spell_Fire_Fire", star = "Interface\\Icons\\Spell_Arcane_StarFire" }
 
 local function HideVisual(v)
     v.icon:Hide()
     v.glow:Hide()
     v.star:Hide()
     v.time:Hide()
+    v.ring:Hide()
+    v.heat:Hide()
+    v.badge:Hide()
     v.icon:SetRotation(0)
 end
 
@@ -124,6 +142,15 @@ function Module:SetGem(v, gem)
     v.glow:SetVertexColor(tint[1], tint[2], tint[3])
     v.glow:SetShown(gem.special ~= nil)
     v.star:SetShown(gem.special == "star")
+    local ring = SPECIAL_RING[gem.special]
+    v.ring:SetShown(ring ~= nil)
+    if ring then v.ring:SetVertexColor(ring[1], ring[2], ring[3]) end
+    local flame = gem.special == "power"
+    v.heat:SetShown(flame)
+    if flame then v.heat:SetTexture(GEM_ICONS[gem.color]) end
+    local badge = SPECIAL_BADGE[gem.special]
+    v.badge:SetShown(badge ~= nil)
+    if badge then v.badge:SetTexture(badge) end
     v.time:SetShown(gem.time ~= nil)
     v.time:SetText(gem.time and ("+" .. gem.time) or "")
     v.icon:Show()
@@ -145,9 +172,26 @@ function Module:DrawVisual(v)
         if v.gem.color == Game.PRISM then v.icon:SetRotation(GetTime() * 1.5) end
         if v.gem.special == "star" then
             v.star:SetSize(62 * scale, 62 * scale)
-            v.star:SetAlpha(0.8 * (v.alpha or 1))
+            v.star:SetAlpha(v.alpha or 1)
             v.star:SetRotation(GetTime() * 2)
             Place(v.star, v.x, v.y)
+        end
+        if SPECIAL_RING[v.gem.special] then
+            v.ring:SetSize((GEM_SIZE + 10) * scale, (GEM_SIZE + 10) * scale)
+            v.ring:SetAlpha((0.65 + 0.35 * math.sin(GetTime() * 4 + v.y * 0.1)) * (v.alpha or 1))
+            v.ring:SetRotation(-GetTime() * 1.2)
+            Place(v.ring, v.x, v.y)
+        end
+        if v.gem.special == "power" then
+            local t = GetTime() * 11 + v.x * 0.3
+            v.heat:SetSize(GEM_SIZE * scale, GEM_SIZE * scale)
+            v.heat:SetAlpha((0.28 + 0.12 * math.sin(t) + 0.08 * math.sin(t * 2.3)) * (v.alpha or 1))
+            Place(v.heat, v.x, v.y)
+        end
+        if SPECIAL_BADGE[v.gem.special] then
+            v.badge:SetSize(16 * scale, 16 * scale)
+            v.badge:SetAlpha(v.alpha or 1)
+            Place(v.badge, v.x + 14 * scale, v.y + 14 * scale)
         end
     end
     if v.gem and v.gem.time then

@@ -1,8 +1,8 @@
-### Darkmoon Arcade 1.6.3
+### Darkmoon Arcade 1.6.4
 
-#### New option
-- **Navigation stays narrow on request:** a new option under Window keeps the narrow navigation next to an open game from opening on mouseover. Its entries then show their names as tooltips.
+#### Jewels of Uldum
+- **Special gems you can tell apart:** flame gems now carry a burning ring and a small flame, star gems a light ring and a small star - before, their glow hid behind the gem.
 
-Many thanks to BuurmanDB on CurseForge for the idea of keeping the navigation narrow!
+Many thanks to stonevigil on CurseForge for pointing out that the special gems looked like plain ones!
 
 Ideas, wishes or bugs? Let us know on CurseForge or GitHub.

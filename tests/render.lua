@@ -132,6 +132,26 @@ Tab("bell", function()
     ns.Window:OpenHub()
     ns.Bell:Open()
 end)
+-- Jewels of Ul'dum: the special gems next to plain ones (flame, star, prism, time).
+Tab("jewels_specials", function()
+    ns.Window.frame:Show()
+    ns.Bell:Close()
+    ns.Window:OpenGame("jewelsofuldum")
+    local ju = ns.Window.activeGame
+    ju:NewGame()
+    local b = ju.game.board
+    b[3][3] = { color = 1, special = "power" }
+    b[3][4] = { color = 1 }
+    b[3][5] = { color = 2, special = "power" }
+    b[3][6] = { color = 2 }
+    b[5][3] = { color = 3, special = "star" }
+    b[5][4] = { color = 4, special = "power" }
+    b[5][5] = { color = 0, special = "prism" }
+    b[5][6] = { color = 5, time = 5 }
+    b[6][3] = { color = 6, special = "power" }
+    b[6][4] = { color = 7, special = "power" }
+    ju:RebuildBoard()
+end)
 Tab("minigame", function()
     ns.Bell:Close()
     ns.Window:OpenGame("goblinslots")
