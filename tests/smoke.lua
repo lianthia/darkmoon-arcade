@@ -1216,6 +1216,15 @@ for _ = 1, 5 do
     Tick(3)
 end
 assert(ju.game.state == "PLAYING", "zen keeps going")
+-- Help: how to play, then the gems page with every kind of gem; back where help was opened.
+ju:ShowHelp()
+assert(ju.overlay.current == "help", "jewels help")
+ju.overlay:Show("helpgems")
+assert(ju.overlay.current == "helpgems", "jewels help: the gems page")
+ns.Widgets.BackFromSubPage(ju)
+assert(ju.overlay.current ~= "help" and ju.overlay.current ~= "helpgems", "jewels help: back")
+ju.overlay:Hide()
+ju.game.state = "PLAYING"
 ns.Arcade.Settings(ju).mode = "classic"
 
 -- Flappy Griffin as the Horde: desert scenery and the wind rider.

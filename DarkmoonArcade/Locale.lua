@@ -10,7 +10,7 @@ end
 
 ns.AddStrings("enUS", {
     NEWS_164_1_TITLE = "Special gems you can tell apart",
-    NEWS_164_1_TEXT = "In Jewels of Uldum, special gems are now gems of their own: flame gems a brilliant cut, star gems a sparkling cut, in their colour. Before, they looked like plain gems.",
+    NEWS_164_1_TEXT = "In Jewels of Uldum, special gems are now gems of their own: flame gems a brilliant cut, star gems a sparkling cut, in their colour. The help has a new page, Gems, that shows every kind of gem in every colour and what it does.",
     NEWS_164_THANKS = "Many thanks to stonevigil on CurseForge for pointing out that the special gems looked like plain ones!",
     NEWS_163_1_TITLE = "Navigation stays narrow on request",
     NEWS_163_1_TEXT = "A new option under Window: the narrow navigation next to an open game no longer opens on mouseover. Its entries then show their names as tooltips.",
@@ -299,7 +299,7 @@ ns.AddStrings("enUS", {
 
 ns.AddStrings("deDE", {
     NEWS_164_1_TITLE = "Spezialjuwelen erkennbar",
-    NEWS_164_1_TEXT = "In Jewels of Uldum sind Spezialjuwelen jetzt eigene Edelsteine: Flammenjuwelen im Brillantschliff, Sternjuwelen funkelnd geschliffen, jeweils in ihrer Farbe. Vorher sahen sie wie normale Juwelen aus.",
+    NEWS_164_1_TEXT = "In Jewels of Uldum sind Spezialsteine jetzt eigene Edelsteine: Flammensteine im Brillantschliff, Sternsteine funkelnd geschliffen, jeweils in ihrer Farbe. Die Hilfe hat eine neue Seite „Edelsteine“, die jede Art in jeder Farbe zeigt und erklärt, was sie auslöst.",
     NEWS_164_THANKS = "Vielen Dank an stonevigil auf CurseForge für den Hinweis, dass die Spezialjuwelen wie normale aussahen!",
     NEWS_163_1_TITLE = "Navigation bleibt auf Wunsch schmal",
     NEWS_163_1_TEXT = "Eine neue Option unter Fenster: Die schmale Navigation neben einem geöffneten Spiel klappt nicht mehr bei Mausberührung auf. Die Einträge zeigen ihren Namen dann als Tooltip.",
@@ -585,7 +585,7 @@ ns.AddStrings("deDE", {
 
 ns.AddStrings("frFR", {
     NEWS_164_1_TITLE = "Des joyaux spéciaux reconnaissables",
-    NEWS_164_1_TEXT = "Dans Jewels of Uldum, les joyaux spéciaux sont désormais des gemmes à part : taille brillant pour les joyaux de flamme, taille scintillante pour les joyaux étoile, dans leur couleur. Avant, ils ressemblaient aux joyaux normaux.",
+    NEWS_164_1_TEXT = "Dans Jewels of Uldum, les gemmes spéciales sont désormais des gemmes à part : taille brillant pour les gemmes de flamme, taille scintillante pour les gemmes étoile, dans leur couleur. L'aide a une nouvelle page, Gemmes, qui montre chaque type dans chaque couleur et ce qu'il déclenche.",
     NEWS_164_THANKS = "Un grand merci à stonevigil sur CurseForge d'avoir signalé que les joyaux spéciaux ressemblaient aux joyaux normaux !",
     NEWS_163_1_TITLE = "La navigation reste étroite si vous le souhaitez",
     NEWS_163_1_TEXT = "Une nouvelle option dans Fenêtre : la navigation étroite à côté d'un jeu ouvert ne s'ouvre plus au survol. Ses entrées affichent alors leur nom en infobulle.",
@@ -867,7 +867,7 @@ ns.AddStrings("frFR", {
 
 ns.AddStrings("esES", {
     NEWS_164_1_TITLE = "Gemas especiales reconocibles",
-    NEWS_164_1_TEXT = "En Jewels of Uldum, las gemas especiales son ahora gemas propias: las de llama con talla brillante y las estrella con una talla centelleante, cada una en su color. Antes parecían gemas normales.",
+    NEWS_164_1_TEXT = "En Jewels of Uldum, las gemas especiales son ahora gemas propias: las de llama con talla brillante y las estrella con una talla centelleante, cada una en su color. La ayuda tiene una página nueva, Gemas, que muestra cada tipo en cada color y lo que provoca.",
     NEWS_164_THANKS = "¡Muchas gracias a stonevigil en CurseForge por avisar de que las gemas especiales parecían normales!",
     NEWS_163_1_TITLE = "La navegación se queda estrecha si quieres",
     NEWS_163_1_TEXT = "Una nueva opción en Ventana: la navegación estrecha junto a un juego abierto ya no se abre al pasar el ratón. Sus entradas muestran entonces su nombre como descripción.",
@@ -1149,7 +1149,7 @@ ns.AddStrings("esES", {
 
 ns.AddStrings("ruRU", {
     NEWS_164_1_TITLE = "Особые самоцветы теперь заметны",
-    NEWS_164_1_TEXT = "В Jewels of Uldum особые самоцветы теперь выглядят как отдельные камни: огненные – бриллиантовой огранки, звёздные – с искрящейся огранкой, каждый своего цвета. Раньше они выглядели как обычные.",
+    NEWS_164_1_TEXT = "В Jewels of Uldum особые самоцветы теперь выглядят как отдельные камни: огненные – бриллиантовой огранки, звёздные – с искрящейся огранкой, каждый своего цвета. В справке появилась страница «Самоцветы»: все виды во всех цветах и что они делают.",
     NEWS_164_THANKS = "Большое спасибо stonevigil на CurseForge за замечание, что особые самоцветы выглядели как обычные!",
     NEWS_163_1_TITLE = "Навигация может оставаться узкой",
     NEWS_163_1_TEXT = "Новая настройка в разделе «Окно»: узкая навигация рядом с открытой игрой больше не раскрывается при наведении. Названия пунктов тогда видны во всплывающих подсказках.",
@@ -1432,7 +1432,7 @@ ns.AddStrings("ruRU", {
 
 ns.AddStrings("zhCN", {
     NEWS_164_1_TITLE = "特殊宝石一眼可辨",
-    NEWS_164_1_TEXT = "在 Jewels of Uldum 中，特殊宝石现在拥有独立外观：火焰宝石为明亮式切割，星辰宝石为闪耀切割，颜色与本色一致。此前它们看起来和普通宝石一样。",
+    NEWS_164_1_TEXT = "在 Jewels of Uldum 中，特殊宝石现在拥有独立外观：火焰宝石为明亮式切割，星辰宝石为闪耀切割，颜色与本色一致。帮助中新增“宝石”页面，展示每种宝石的所有颜色及其效果。",
     NEWS_164_THANKS = "非常感谢 CurseForge 用户 stonevigil 指出特殊宝石看起来和普通宝石一样！",
     NEWS_163_1_TITLE = "导航栏可保持窄条",
     NEWS_163_1_TEXT = "“窗口”中的新选项：打开游戏时旁边的窄导航栏不再因鼠标悬停而展开，条目名称改以鼠标提示显示。",

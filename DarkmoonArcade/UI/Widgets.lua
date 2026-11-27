@@ -309,7 +309,8 @@ end
 function Widgets.ShowSubPage(module, name)
     module:Pause({})
     local overlay = module.overlay
-    if overlay.current ~= "achievements" and overlay.current ~= "help" then
+    -- Help may have pages of its own ("help", "helpgems" ...): back always leads where help was opened.
+    if overlay.current ~= "achievements" and not tostring(overlay.current or ""):find("^help") then
         module.subPageBack, module.subPageBackData = overlay.current or "menu", overlay.data
     end
     overlay:Show(name)
@@ -337,6 +338,7 @@ function Widgets.HelpPage(overlay, width, rulesKey, controlsKey, onBack)
     Widgets.OnRefresh(function() controls:SetText((L[controlsKey]:gsub("%s+·%s+", "\n"))) end)
     local back = Widgets.Button(page, 200, 26, "BACK", onBack)
     back:SetPoint("BOTTOM", 0, 18)
+    page.back = back
     return page
 end
 

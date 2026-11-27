@@ -642,7 +642,7 @@ function Module:Build(container)
         onBack = function() self.overlay:Show("menu") end,
     })
     Widgets.AchievementsPage(self.overlay, W, self.id, function() Widgets.BackFromSubPage(self) end)
-    Widgets.HelpPage(self.overlay, W, "JU_RULES", "JU_HELP", function() Widgets.BackFromSubPage(self) end)
+    self:BuildHelp()
 
     game:Start(Settings().mode)
     game.state = "READY"
@@ -801,6 +801,82 @@ end
 
 function Module:ShowHelp()
     Widgets.ShowSubPage(self, "help")
+end
+
+-- Help in two pages: how to play, then every kind of gem with its colours and what it does.
+local HELP_ROWS = {
+    { key = "JU_GEM_NORMAL" },
+    { key = "JU_GEM_POWER", special = "power" },
+    { key = "JU_GEM_STAR", special = "star" },
+    { key = "JU_GEM_PRISM", prism = true },
+    { key = "JU_GEM_TIME", time = true },
+    { key = "JU_GEM_COMBO", combo = true },
+}
+local HELP_ICON, HELP_GAP, HELP_ROW = 18, 2, 52
+
+function Module:HelpIcon(page, color, special, x, y)
+    local icon = page:CreateTexture(nil, "ARTWORK")
+    icon:SetSize(HELP_ICON, HELP_ICON)
+    icon:SetPoint("TOPLEFT", x, y)
+    if color == Game.PRISM then
+        icon:SetTexture(Tex("prism"))
+        return icon
+    end
+    local spec = special and SPECIAL_ICONS[special][color]
+    icon:SetTexture(spec and spec[1] or GEM_ICONS[color])
+    icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+    icon:SetDesaturated(spec and spec[2] or false)
+    local c = spec and spec[3]
+    if c then icon:SetVertexColor(c[1], c[2], c[3]) end
+    return icon
+end
+
+function Module:BuildHelp()
+    local overlay = self.overlay
+    local back = function() Widgets.BackFromSubPage(self) end
+    local rules = Widgets.HelpPage(overlay, W, "JU_RULES", "JU_HELP", back)
+    rules.back:ClearAllPoints()
+    rules.back:SetPoint("BOTTOM", -106, 18)
+    local toGems = Widgets.Button(rules, 200, 26, "JU_HELP_GEMS", function() overlay:Show("helpgems") end)
+    toGems:SetPoint("BOTTOM", 106, 18)
+
+    local page = overlay:AddPage("helpgems")
+    Widgets.PageTitle(page, "JU_HELP_GEMS", -22)
+    local textX = 20 + 7 * (HELP_ICON + HELP_GAP) + 12
+    for i, row in ipairs(HELP_ROWS) do
+        local y = -62 - (i - 1) * HELP_ROW
+        if row.prism then
+            self:HelpIcon(page, Game.PRISM, nil, 20, y)
+        elseif row.time then
+            self:HelpIcon(page, 3, nil, 20, y)
+            local plus = Widgets.Text(page, 10, "white")
+            plus:SetTextColor(0.6, 1, 1)
+            plus:SetPoint("TOPLEFT", 20 + HELP_ICON - 6, y - HELP_ICON + 6)
+            plus:SetText("+5")
+        elseif row.combo then
+            self:HelpIcon(page, 1, "power", 20, y)
+            self:HelpIcon(page, 5, "power", 20 + HELP_ICON + HELP_GAP, y)
+            self:HelpIcon(page, 2, "star", 20 + 2 * (HELP_ICON + HELP_GAP) + 6, y)
+            self:HelpIcon(page, 4, "power", 20 + 3 * (HELP_ICON + HELP_GAP) + 6, y)
+        else
+            for color = 1, #GEM_ICONS do
+                self:HelpIcon(page, color, row.special, 20 + (color - 1) * (HELP_ICON + HELP_GAP), y)
+            end
+        end
+        local name = Widgets.LocalizedText(page, 12, "gold", row.key)
+        name:SetPoint("TOPLEFT", textX, y + 2)
+        name:SetWidth(W - textX - 16)
+        name:SetJustifyH("LEFT")
+        name:SetWordWrap(false)
+        local text = Widgets.LocalizedText(page, 10, "white", row.key .. "_TEXT")
+        text:SetPoint("TOPLEFT", name, "BOTTOMLEFT", 0, -2)
+        text:SetWidth(W - textX - 16)
+        text:SetJustifyH("LEFT")
+    end
+    local toRules = Widgets.Button(page, 200, 26, "JU_HELP_RULES", function() overlay:Show("help") end)
+    toRules:SetPoint("BOTTOM", -106, 18)
+    local backGems = Widgets.Button(page, 200, 26, "BACK", back)
+    backGems:SetPoint("BOTTOM", 106, 18)
 end
 
 function Module:Enter()
