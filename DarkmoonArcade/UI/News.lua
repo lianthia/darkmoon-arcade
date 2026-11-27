@@ -28,7 +28,7 @@ News.VERSIONS = {
     {
         version = "1.6.4",
         items = {
-            { icon = "Spell_Fire_Fire", key = 1 },
+            { icon = "INV_Jewelcrafting_Gem_21", key = 1 },
         },
         thanks = "INV_ValentinesCard02",
     },

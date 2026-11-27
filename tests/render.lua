@@ -150,6 +150,9 @@ Tab("jewels_specials", function()
     b[5][6] = { color = 5, time = 5 }
     b[6][3] = { color = 6, special = "power" }
     b[6][4] = { color = 7, special = "power" }
+    b[7][3] = { color = 7, special = "star" }
+    b[7][4] = { color = 5, special = "star" }
+    b[7][5] = { color = 1, special = "star" }
     ju:RebuildBoard()
 end)
 Tab("minigame", function()

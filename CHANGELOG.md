@@ -1,7 +1,7 @@
 ### Darkmoon Arcade 1.6.4
 
 #### Jewels of Uldum
-- **Special gems you can tell apart:** flame gems now carry a burning ring and a small flame, star gems a light ring and a small star - before, their glow hid behind the gem.
+- **Special gems you can tell apart:** special gems are now gems of their own - flame gems a brilliant cut, star gems a sparkling cut, in their colour. Before, they looked like plain gems.
 
 Many thanks to stonevigil on CurseForge for pointing out that the special gems looked like plain ones!
 
